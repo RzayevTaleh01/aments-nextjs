@@ -1,0 +1,48 @@
+.breadcrumb-wrapper {
+  padding-top: 60px;
+  padding-bottom: 60px;
+  background: var(--aments-color-f8f9fa);
+  margin-bottom: 60px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 80px;
+  }
+
+  @media (min-width: 992px) {
+    margin-bottom: 100px;
+  }
+}
+
+.breadcrumb-nav {
+  li {
+    display: inline-block;
+    margin-right: 30px;
+    position: relative;
+
+    &::after {
+      position: absolute;
+      content: "/";
+      left: calc(100% + 15px);
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:last-child::after {
+      display: none;
+    }
+
+    a {
+      color: var(--aments-color-adb5bd);
+    }
+
+    a:hover {
+      color: var(--aments-color-ea1c26);
+    }
+  }
+}
+
+.active {
+  color: var(--aments-color-666);
+}

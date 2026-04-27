@@ -1,0 +1,35 @@
+.checkout_btn{
+    text-align: right
+}
+.checkout_btn a{
+    background: var(--aments-color-ea1c26);
+    font-size: 15px;
+    padding: 3px 14px;
+    line-height: 30px;
+    font-weight: 500;
+    display: inline-block;
+    text-transform: capitalize;
+    margin-bottom: 0;
+    color: var(--aments-color-fff)
+}
+.checkout_btn a:hover{
+    background: var(--aments-color-333)
+}
+.checkout_info{
+    border: 1px solid var(--aments-color-eee);
+    margin-top: 25px;
+    padding: 20px 30px
+}
+.checkout_info p{
+    margin-bottom: 15px;
+    font-size: 14px
+}
+.checkout_form .h3, .checkout_form h3{
+    font-size: 16px;
+    line-height: 30px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    color: var(--aments-color-fff);
+    background: var(--aments-color-333);
+    font-weight: 500
+}

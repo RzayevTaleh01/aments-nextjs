@@ -1,0 +1,74 @@
+"use client";
+
+import { useRef, useState } from "react";
+import { Breadcrumb } from "@/components/ui";
+import { products } from "@/constants/products";
+import ProductDetailsGallery from "./ProductDetailsGallery";
+import ProductDetailsSummary from "./ProductDetailsSummary";
+import ProductDetailsTabs from "./ProductDetailsTabs";
+import RelatedProductsCarousel from "./RelatedProductsCarousel";
+import styles from "./ProductDetailsPage.module.scss";
+
+export default function ProductDetailsPage({ title, breadcrumbLabel, productId = "p1" }) {
+  const product = products.find((p) => p.id === productId) || products[0];
+  const [activeTab, setActiveTab] = useState("description");
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  const thumbPrevRef = useRef(null);
+  const thumbNextRef = useRef(null);
+  const relatedPrevRef = useRef(null);
+  const relatedNextRef = useRef(null);
+
+  const safeThumbsSwiper = thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null;
+
+  // Use product images if available, otherwise fallback to defaults
+  const productImages = [
+    product.imageSrc,
+    "/assets/images/products_images/aments_products_image_2.jpg",
+    "/assets/images/products_images/aments_products_image_3.jpg",
+    "/assets/images/products_images/aments_products_image_4.jpg",
+    "/assets/images/products_images/aments_products_image_5.jpg",
+    "/assets/images/products_images/aments_products_image_6.jpg",
+  ];
+
+  return (
+    <div className={styles.scope}>
+      <Breadcrumb
+        title={product.name || title}
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Shop", href: "/shop/grid/sidebar-left" },
+          { label: product.name || breadcrumbLabel },
+        ]}
+      />
+
+      <div className="product-details-section">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6">
+              <ProductDetailsGallery
+                galleryLargeImages={productImages}
+                galleryThumbImages={productImages}
+                safeThumbsSwiper={safeThumbsSwiper}
+                setThumbsSwiper={setThumbsSwiper}
+                activeImageIndex={activeImageIndex}
+                onActiveImageIndexChange={setActiveImageIndex}
+                thumbPrevRef={thumbPrevRef}
+                thumbNextRef={thumbNextRef}
+              />
+            </div>
+
+            <div className="col-md-6">
+              <ProductDetailsSummary product={product} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ProductDetailsTabs activeTab={activeTab} onTabChange={setActiveTab} product={product} />
+      <RelatedProductsCarousel products={products} prevRef={relatedPrevRef} nextRef={relatedNextRef} />
+    </div>
+  );
+}
+

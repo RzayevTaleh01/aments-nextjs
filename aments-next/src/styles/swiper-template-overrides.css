@@ -1,0 +1,21 @@
+.hero-area .swiper-pagination {
+  bottom: 30px;
+}
+
+.hero-area .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.hero-area .swiper-pagination-bullet-active {
+  background: #ffffff;
+}
+
+.product-default-slider .swiper-button-next,
+.product-default-slider .swiper-button-prev,
+.company-logo-slider .swiper-button-next,
+.company-logo-slider .swiper-button-prev {
+  color: inherit;
+}

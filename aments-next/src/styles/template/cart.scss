@@ -1,0 +1,42 @@
+.cart_submit{
+    text-align: right;
+    padding: 12px
+}
+.cart_submit button{
+    background: var(--aments-color-333);
+    border: 0;
+    color: var(--aments-color-fff);
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    height: 38px;
+    line-height: 18px;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    cursor: pointer;
+    -webkit-transition: .3s;
+    transition: .3s;
+    border-radius: 3px
+}
+.cart_submit button:hover{
+    background: var(--aments-color-ea1c26)
+}
+.cart_subtotal{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between
+}
+.cart_subtotal p{
+    font-weight: 600;
+    font-size: 14px
+}
+.cart_subtotal p span{
+    margin-right: 30px
+}
+.cart_subtotal .cart_amount{
+    font-size: 18px;
+    font-weight: 500
+}

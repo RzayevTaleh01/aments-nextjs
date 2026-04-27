@@ -1,0 +1,6 @@
+.scope{}
+:global(.sidebar-single-widget){margin-top:20px;margin-bottom:40px;padding-bottom:37px;border-bottom:2px solid var(--aments-color-f8f9fa)}
+:global(.sidebar-single-widget:first-child){margin-top:0}
+:global(.sidebar-single-widget:last-child){border-bottom:none;margin-bottom:0;padding-bottom:0}
+:global(.sidebar-title){text-transform:capitalize;margin-bottom:30px;font-weight:600}
+:global(.sidebar-banner){margin:0 auto;display:block}

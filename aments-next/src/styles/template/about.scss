@@ -1,0 +1,51 @@
+.about-us-top-content{
+    margin-bottom: -12px
+}
+.about-us-top-content .h4, .about-us-top-content h4{
+    margin-top: 27px;
+    margin-bottom: 15px
+}
+.about-us-top-content p{
+    padding: 0 0;
+    line-height: 26px;
+    margin-bottom: 0
+}
+@media (min-width:768px){.about-us-top-content p{
+        padding: 0 2%
+    }}
+@media (min-width:992px){.about-us-top-content p{
+        padding: 0 8%
+    }}
+@media (min-width:1200px){.about-us-top-content p{
+        padding: 0 12%
+    }}
+.about-us-bottom-area, .about-us-center-area{
+    margin-bottom: -37px
+}
+.about-us-center-content .h4, .about-us-center-content h4{
+    margin-bottom: 15px
+}
+.about-promo-single-item{
+    text-align: center;
+    margin-bottom: 30px
+}
+.about-promo-single-item img{
+    width: 90px;
+    height: 90px
+}
+.about-promo-single-item .h6, .about-promo-single-item h6{
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 15px
+}
+.about-feature-single-item{
+    text-align: center;
+    margin-bottom: 30px
+}
+.about-feature-single-item .h6, .about-feature-single-item h6{
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 15px
+}
