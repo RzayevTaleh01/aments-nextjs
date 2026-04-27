@@ -1,13 +1,10 @@
 export { default as AboutUsPage } from "./AboutUsPage";
-export { default as BlogListPage } from "./BlogListPage";
-export { default as BlogPostPage } from "./BlogPostPage";
 export { default as CartPage } from "./CartPage";
 export { default as CheckoutPage } from "./CheckoutPage";
 export { default as ComparePage } from "./ComparePage";
 export { default as ContactUsPage } from "./ContactUsPage";
 export { default as FAQPage } from "./FAQPage";
 export { default as HomePage } from "./HomePage";
-export { default as HomePage2 } from "./HomePage2";
 export { default as LoginPage } from "./LoginPage";
 export { default as MyAccountPage } from "./MyAccountPage";
 export { default as NotFoundPage } from "./NotFoundPage";

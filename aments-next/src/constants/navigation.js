@@ -17,25 +17,13 @@ export const navigation = {
       label: "Home",
       href: "/",
       children: [
-        { label: "Home 1", href: "/" },
-        { label: "Home 2", href: "/home-2" }
+        { label: "Home 1", href: "/" }
       ]
     },
     {
       label: "Shop",
       href: "/product/default",
       mega: true
-    },
-    {
-      label: "Blog",
-      href: "/blog/full-width",
-      children: [
-        { label: "Blog Grid Sidebar left", href: "/blog/grid/sidebar-left" },
-        { label: "Blog Grid Sidebar Right", href: "/blog/grid/sidebar-right" },
-        { label: "Blog Full Width", href: "/blog/full-width" },
-        { label: "Blog Single Sidebar left", href: "/blog/post/sidebar-left" },
-        { label: "Blog Single Sidebar Right", href: "/blog/post/sidebar-right" }
-      ]
     },
     {
       label: "Pages",

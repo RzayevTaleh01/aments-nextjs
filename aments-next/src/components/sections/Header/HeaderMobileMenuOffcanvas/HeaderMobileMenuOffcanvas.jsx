@@ -171,11 +171,6 @@ export default function HeaderMobileMenuOffcanvas({
                       Home 1
                     </Link>
                   </li>
-                  <li>
-                    <Link href="/home-2" onClick={onClose}>
-                      Home 2
-                    </Link>
-                  </li>
                 </ul>
               </li>
               <li>
@@ -313,48 +308,6 @@ export default function HeaderMobileMenuOffcanvas({
                       <li>
                         <Link href="/product/sticky-right" onClick={onClose}>
                           Product Sticky right
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#">
-                  <span>Blogs</span>
-                </a>
-                <ul className={cx("mobile-sub-menu")}>
-                  <li>
-                    <a href="#">Blog Grid</a>
-                    <ul className={cx("mobile-sub-menu")}>
-                      <li>
-                        <Link href="/blog/grid/sidebar-left" onClick={onClose}>
-                          Blog Grid Sidebar left
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="/blog/grid/sidebar-right" onClick={onClose}>
-                          Blog Grid Sidebar Right
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <Link href="/blog/full-width" onClick={onClose}>
-                      Blog Full Width
-                    </Link>
-                  </li>
-                  <li>
-                    <a href="#">Blog Single</a>
-                    <ul className={cx("mobile-sub-menu")}>
-                      <li>
-                        <Link href="/blog/post/sidebar-left" onClick={onClose}>
-                          Blog Single Sidebar left
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="/blog/post/sidebar-right" onClick={onClose}>
-                          Blog Single Sidebar Right
                         </Link>
                       </li>
                     </ul>

@@ -4,10 +4,9 @@ import {
   BannerSection,
   ProductTabsSection,
   CompanyLogoSection,
-  BlogFeedSection,
 } from "@/components/sections";
 import { products } from "@/constants/products";
-import { companyLogos, home1HeroSlides, homeBanners, homeBlogFeed, popularCategories } from "@/constants/home";
+import { companyLogos, home1HeroSlides, homeBanners, popularCategories } from "@/constants/home";
 import styles from "./HomePage.module.scss";
 
 export default function HomePage() {
@@ -25,7 +24,6 @@ export default function HomePage() {
         ]}
       />
       <CompanyLogoSection logos={companyLogos} />
-      <BlogFeedSection posts={homeBlogFeed} />
     </div>
   );
 }

@@ -57,77 +57,9 @@ export const homeBanners = [
   },
 ];
 
-export const home2HeroSlides = [
-  {
-    id: "home2-hero-1",
-    eyebrow: "World Best Quality",
-    title: "Car Parts",
-    description: "Lorem ipsum dolor sit amet consectet",
-    imageSrc: "/assets/images/slider_images/home_2/aments_home_2_slider_1.jpg",
-    ctaLabel: "Shopping Now",
-    ctaHref: "/product/default",
-  },
-  {
-    id: "home2-hero-2",
-    eyebrow: "World Best Quality",
-    title: "Car Parts",
-    description: "Lorem ipsum dolor sit amet consectet",
-    imageSrc: "/assets/images/slider_images/home_2/aments_home_2_slider_2.jpg",
-    ctaLabel: "Shopping Now",
-    ctaHref: "/product/default",
-  },
-];
-
-export const home2SidebarBanners = [
-  {
-    id: "home2-banner-1",
-    imageSrc: "/assets/images/banner_images/aments_banner_01.jpg",
-    eyebrow: "Car Wheel",
-    title: "30% Off",
-    ctaLabel: "Shop Now",
-    href: "/product/default",
-  },
-  {
-    id: "home2-banner-2",
-    imageSrc: "/assets/images/banner_images/aments_banner_02.jpg",
-    eyebrow: "Car Vails",
-    title: "40% Off",
-    ctaLabel: "Shop Now",
-    href: "/product/default",
-  },
-];
-
 export const companyLogos = [
   { id: "logo-1", imageSrc: "/assets/images/company_logo/company_logo_1.png", alt: "Company logo 1" },
   { id: "logo-2", imageSrc: "/assets/images/company_logo/company_logo_2.png", alt: "Company logo 2" },
   { id: "logo-3", imageSrc: "/assets/images/company_logo/company_logo_3.png", alt: "Company logo 3" },
   { id: "logo-4", imageSrc: "/assets/images/company_logo/company_logo_4.png", alt: "Company logo 4" },
 ];
-
-export const homeBlogFeed = [
-  {
-    id: "home-blog-1",
-    title: "Lorem ipsum dolor amet cons adipisicing elit",
-    href: "/blog/post/sidebar-left",
-    author: "Admin",
-    date: "Sep 14, 2022",
-    imageSrc: "/assets/images/blog_images/aments_blog_01.jpg",
-  },
-  {
-    id: "home-blog-2",
-    title: "Lorem ipsum dolor amet cons adipisicing elit",
-    href: "/blog/post/sidebar-left",
-    author: "Admin",
-    date: "Sep 14, 2022",
-    imageSrc: "/assets/images/blog_images/aments_blog_02.jpg",
-  },
-  {
-    id: "home-blog-3",
-    title: "Lorem ipsum dolor amet cons adipisicing elit",
-    href: "/blog/post/sidebar-left",
-    author: "Admin",
-    date: "Sep 14, 2022",
-    imageSrc: "/assets/images/blog_images/aments_blog_03.jpg",
-  },
-];
-

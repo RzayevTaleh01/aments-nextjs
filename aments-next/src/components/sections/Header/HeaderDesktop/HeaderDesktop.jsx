@@ -157,9 +157,6 @@ export default function HeaderDesktop({
                         <li>
                           <Link href="/">Home 1</Link>
                         </li>
-                        <li>
-                          <Link href="/home-2">Home 2</Link>
-                        </li>
                       </ul>
                     </li>
                     <li className={cx("has-dropdown has-megaitem")}>
@@ -275,28 +272,6 @@ export default function HeaderDesktop({
                           </Link>
                         </div>
                       </div>
-                    </li>
-                    <li className={cx("has-dropdown")}>
-                      <Link href="/blog/post/sidebar-left">
-                        Blog <Icon name="FaAngleDown" size={14} />
-                      </Link>
-                      <ul className={cx("sub-menu")}>
-                        <li>
-                          <Link href="/blog/grid/sidebar-left">Blog Grid Sidebar left</Link>
-                        </li>
-                        <li>
-                          <Link href="/blog/grid/sidebar-right">Blog Grid Sidebar Right</Link>
-                        </li>
-                        <li>
-                          <Link href="/blog/full-width">Blog Full Width</Link>
-                        </li>
-                        <li>
-                          <Link href="/blog/post/sidebar-left">Blog Single Sidebar left</Link>
-                        </li>
-                        <li>
-                          <Link href="/blog/post/sidebar-right">Blog Single Sidebar Right</Link>
-                        </li>
-                      </ul>
                     </li>
                     <li className={cx("has-dropdown")}>
                       <a href="#" onClick={(e) => e.preventDefault()}>
