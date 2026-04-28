@@ -1,2 +1,2 @@
-export { default as WishlistSection } from "./Wishlist";
+export { default } from "./Wishlist";
 

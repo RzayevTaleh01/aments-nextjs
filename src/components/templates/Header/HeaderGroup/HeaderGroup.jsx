@@ -12,7 +12,25 @@ export default function HeaderGroup({
   isActive,
   onOffcanvasToggle,
   BottomHeaderData,
+  topHeaderData,
 }) {
+  const settingsLabel = topHeaderData?.settingsLabel ?? "Setting";
+  const settingsItems = topHeaderData?.settings ?? [];
+
+  const currencyItems = topHeaderData?.currencies ?? [];
+  const currencyLabel =
+    topHeaderData?.currencyLabel ??
+    (typeof currencyItems[0] === "string" ? currencyItems[0] : currencyItems[0]?.label) ??
+    "$ USD";
+
+  const languageItems = topHeaderData?.languages ?? [];
+  const languageLabel =
+    topHeaderData?.languageLabel ??
+    (typeof languageItems[0] === "string" ? languageItems[0] : languageItems[0]?.label) ??
+    "English";
+
+  const compare = topHeaderData?.compare ?? { href: "/compare", label: "Compare (0)", iconName: "FaRetweet" };
+
   return (
     <header className={cn(styles, "header-section d-lg-block d-none")}>
       <div className={cn(styles, "header-top")}>
@@ -20,7 +38,7 @@ export default function HeaderGroup({
           <div className={cn(styles, "row d-flex justify-content-between align-items-center")}>
             <div className={cn(styles, "col-6")}>
               <div className={cn(styles, "header-top--left")}>
-                <span>Welcome to our store!</span>
+                <span>{topHeaderData?.welcomeText ?? "Welcome to our store!"}</span>
               </div>
             </div>
             <div className={cn(styles, "col-6")}>
@@ -28,73 +46,66 @@ export default function HeaderGroup({
                 <ul className={cn(styles, "header-user-menu")}>
                   <li className={cn(styles, "has-user-dropdown")}>
                     <Link href="/">
-                      Setting <Icon name="FaAngleDown" size={14} />
+                      {settingsLabel} <Icon name="FaAngleDown" size={14} />
                     </Link>
                     <ul className={cn(styles, "user-sub-menu")}>
-                      <li>
-                        <Link href="/checkout">Checkout</Link>
-                      </li>
-                      <li>
-                        <Link href="/my-account">My Account</Link>
-                      </li>
-                      <li>
-                        <Link href="/cart">Shopping Cart</Link>
-                      </li>
-                      <li>
-                        <Link href="/wishlist">Wishlist</Link>
-                      </li>
+                      {settingsItems.map((item) => (
+                        <li key={item.href ?? item.label}>
+                          <Link href={item.href ?? "/"}>{item.label}</Link>
+                        </li>
+                      ))}
                     </ul>
                   </li>
                   <li className={cn(styles, "has-user-dropdown")}>
                     <Link href="/">
-                      $ USD <Icon name="FaAngleDown" size={14} />
+                      {currencyLabel} <Icon name="FaAngleDown" size={14} />
                     </Link>
                     <ul className={cn(styles, "user-sub-menu")}>
-                      <li>
-                        <Link href="/">EUR – Euro</Link>
-                      </li>
-                      <li>
-                        <Link href="/">GBP – British Pound</Link>
-                      </li>
-                      <li>
-                        <Link href="/">INR – India Rupee</Link>
-                      </li>
+                      {currencyItems.map((item) => {
+                        const label = typeof item === "string" ? item : item.label;
+                        const href = typeof item === "string" ? "/" : item.href ?? "/";
+                        return (
+                          <li key={label}>
+                            <Link href={href}>{label}</Link>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </li>
                   <li className={cn(styles, "has-user-dropdown")}>
                     <Link href="/">
-                      English <Icon name="FaAngleDown" size={14} />
+                      {languageLabel} <Icon name="FaAngleDown" size={14} />
                     </Link>
                     <ul className={cn(styles, "user-sub-menu")}>
-                      <li>
-                        <Link href="/">
-                          <Image
-                            className={cn(styles, "user-sub-menu-in-icon")}
-                            src="/assets/images/icon/lang-en.png"
-                            alt=""
-                            width={16}
-                            height={11}
-                          />{" "}
-                          English
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="/">
-                          <Image
-                            className={cn(styles, "user-sub-menu-in-icon")}
-                            src="/assets/images/icon/lang-gr.png"
-                            alt=""
-                            width={16}
-                            height={11}
-                          />{" "}
-                          Germany
-                        </Link>
-                      </li>
+                      {languageItems.map((item) => {
+                        const label = typeof item === "string" ? item : item.label;
+                        const href = typeof item === "string" ? "/" : item.href ?? "/";
+                        const iconSrc = typeof item === "string" ? null : item.iconSrc;
+
+                        return (
+                          <li key={label}>
+                            <Link href={href}>
+                              {iconSrc ? (
+                                <>
+                                  <Image
+                                    className={cn(styles, "user-sub-menu-in-icon")}
+                                    src={iconSrc}
+                                    alt={label ?? ""}
+                                    width={16}
+                                    height={11}
+                                  />{" "}
+                                </>
+                              ) : null}
+                              {label}
+                            </Link>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </li>
                   <li>
-                    <Link href="/compare">
-                      <Icon name="FaRetweet" size={14} /> Compare (0)
+                    <Link href={compare.href ?? "/compare"}>
+                      <Icon name={compare.iconName ?? "FaRetweet"} size={14} /> {compare.label ?? "Compare (0)"}
                     </Link>
                   </li>
                 </ul>

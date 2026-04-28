@@ -23,7 +23,7 @@
 }
 
 .tabButton {
-  color: var(--aments-color-666);
+  color: var(--color-666);
   transition: all 0.3s ease 0s;
   font-weight: 500;
   padding: 0;
@@ -33,11 +33,11 @@
 }
 
 .tabButton:hover {
-  color: var(--aments-color-ea1c26);
+  color: var(--color-ea1c26);
 }
 
 .tabButtonActive {
-  color: var(--aments-color-ea1c26);
+  color: var(--color-ea1c26);
 }
 
 .tabPane {

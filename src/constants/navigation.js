@@ -1,5 +1,7 @@
 export const navigation = {
   topLinks: {
+    welcomeText: "Welcome to our store!",
+    settingsLabel: "Setting",
     settings: [
       { label: "Checkout", href: "/checkout" },
       { label: "My Account", href: "/my-account" },
@@ -10,24 +12,29 @@ export const navigation = {
     languages: [
       { label: "English", iconSrc: "/assets/images/icon/lang-en.png" },
       { label: "Germany", iconSrc: "/assets/images/icon/lang-gr.png" }
-    ]
+    ],
+    compare: { label: "Compare (0)", href: "/compare", iconName: "FaRetweet" },
   },
   main: [
     {
+      id: "home",
       label: "Home",
       href: "/",
-      children: [
-        { label: "Home 1", href: "/" }
-      ]
+      activeMatch: "/",
+      // children: [{ label: "Home 1", href: "/" }]
     },
+    // {
+    //   id: "shop",
+    //   label: "Shop",
+    //   href: "/product/default",
+    //   mega: true,
+    //   activeMatch: ["/shop", "/product"]
+    // },
     {
-      label: "Shop",
-      href: "/product/default",
-      mega: true
-    },
-    {
+      id: "pages",
       label: "Pages",
       href: "#",
+      activeMatch: ["/service", "/faq", "/privacy-policy", "/404"],
       children: [
         { label: "About Us", href: "/about-us" },
         { label: "Service", href: "/service" },
@@ -36,43 +43,44 @@ export const navigation = {
         { label: "404 Page", href: "/404" }
       ]
     },
-    { label: "Contact Us", href: "/contact-us" }
+    { id: "contact-us", label: "Contact Us", href: "/contact-us", activeMatch: "/contact-us" },
+    { id: "about-us", label: "About Us", href: "/about-us", activeMatch: "/about-us" }
   ],
-  megaMenu: {
-    shopLayouts: [
-      { label: "Grid Left Sidebar", href: "/shop/grid/sidebar-left" },
-      { label: "Grid Right Sidebar", href: "/shop/grid/sidebar-right" },
-      { label: "Full Width", href: "/shop/full-width" },
-      { label: "List Left Sidebar", href: "/shop/list/sidebar-left" },
-      { label: "List Right Sidebar", href: "/shop/list/sidebar-right" }
-    ],
-    otherPages: [
-      { label: "Cart", href: "/cart" },
-      { label: "Wishlist", href: "/wishlist" },
-      { label: "Compare", href: "/compare" },
-      { label: "Checkout", href: "/checkout" },
-      { label: "Login", href: "/login" },
-      { label: "My Account", href: "/my-account" }
-    ],
-    productTypes: [
-      { label: "Product Default", href: "/product/default" },
-      { label: "Product Variable", href: "/product/variable" },
-      { label: "Product Referral", href: "/product/affiliate" },
-      { label: "Product Group", href: "/product/group" },
-      { label: "Product Slider", href: "/product/single-slide" },
-      { label: "Product Tab Left", href: "/product/tab-left" },
-      { label: "Product Tab Right", href: "/product/tab-right" },
-      { label: "Product Gallery Left", href: "/product/gallery-left" },
-      { label: "Product Gallery Right", href: "/product/gallery-right" },
-      { label: "Product Sticky Left", href: "/product/sticky-left" },
-      { label: "Product Sticky right", href: "/product/sticky-right" }
-    ],
-    banner: {
-      href: "/",
-      imageSrc: "/assets/images/banner/menu-banner.jpg",
-      alt: "Menu banner"
-    }
-  },
+  // megaMenu: {
+  //   shopLayouts: [
+  //     { label: "Grid Left Sidebar", href: "/shop/grid/sidebar-left" },
+  //     { label: "Grid Right Sidebar", href: "/shop/grid/sidebar-right" },
+  //     { label: "Full Width", href: "/shop/full-width" },
+  //     { label: "List Left Sidebar", href: "/shop/list/sidebar-left" },
+  //     { label: "List Right Sidebar", href: "/shop/list/sidebar-right" }
+  //   ],
+  //   otherPages: [
+  //     { label: "Cart", href: "/cart" },
+  //     { label: "Wishlist", href: "/wishlist" },
+  //     { label: "Compare", href: "/compare" },
+  //     { label: "Checkout", href: "/checkout" },
+  //     { label: "Login", href: "/login" },
+  //     { label: "My Account", href: "/my-account" }
+  //   ],
+  //   productTypes: [
+  //     { label: "Product Default", href: "/product/default" },
+  //     { label: "Product Variable", href: "/product/variable" },
+  //     { label: "Product Referral", href: "/product/affiliate" },
+  //     { label: "Product Group", href: "/product/group" },
+  //     { label: "Product Slider", href: "/product/single-slide" },
+  //     { label: "Product Tab Left", href: "/product/tab-left" },
+  //     { label: "Product Tab Right", href: "/product/tab-right" },
+  //     { label: "Product Gallery Left", href: "/product/gallery-left" },
+  //     { label: "Product Gallery Right", href: "/product/gallery-right" },
+  //     { label: "Product Sticky Left", href: "/product/sticky-left" },
+  //     { label: "Product Sticky right", href: "/product/sticky-right" }
+  //   ],
+  //   banner: {
+  //     href: "/",
+  //     imageSrc: "/assets/images/banner/menu-banner.jpg",
+  //     alt: "Menu banner"
+  //   }
+  // },
   footer: {
     information: [
       { label: "Delivery", href: "/" },

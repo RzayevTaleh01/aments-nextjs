@@ -1,7 +1,7 @@
 .breadcrumb-wrapper {
   padding-top: 60px;
   padding-bottom: 60px;
-  background: var(--aments-color-f8f9fa);
+  background: var(--color-f8f9fa);
   margin-bottom: 60px;
 
   @media (min-width: 768px) {
@@ -34,15 +34,15 @@
     }
 
     a {
-      color: var(--aments-color-adb5bd);
+      color: var(--color-adb5bd);
     }
 
     a:hover {
-      color: var(--aments-color-ea1c26);
+      color: var(--color-ea1c26);
     }
   }
 }
 
 .active {
-  color: var(--aments-color-666);
+  color: var(--color-666);
 }

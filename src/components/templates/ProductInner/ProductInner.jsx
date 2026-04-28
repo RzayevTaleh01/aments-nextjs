@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/ui";
-import styles from "./ProductCardTemplate.module.scss";
+import styles from "./ProductInner.module.scss";
 
-export default function ProductCardTemplate({ product, actionsVariant = "links" }) {
+export default function ProductInner({ product, actionsVariant = "links" }) {
   const useModalActions = actionsVariant === "modals";
 
   return (

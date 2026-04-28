@@ -1,7 +1,7 @@
 "use client";
 
 import { Breadcrumb } from "@/components/ui";
-import { WishlistSection } from "@/components/sections";
+import { Wishlist } from "@/components/templates";
 
 export default function WishlistPage() {
   const items = [
@@ -21,7 +21,7 @@ export default function WishlistPage() {
         ]}
       />
 
-      <WishlistSection items={items} />
+      <Wishlist items={items} />
     </div>
   );
 }

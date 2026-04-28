@@ -12,14 +12,14 @@
   height: 30px;
   line-height: 30px;
   border: 0;
-  background: var(--aments-color-333);
-  color: var(--aments-color-fff);
+  background: var(--color-333);
+  color: var(--color-fff);
   border-radius: 4px;
   margin-top: 10px;
 }
 
 .account_login_form form .save_button button:hover {
-  background: var(--aments-color-ea1c26);
+  background: var(--color-ea1c26);
 }
 
 .account_form.register {
@@ -40,15 +40,15 @@
 }
 
 .account_form form {
-  border: 1px solid var(--aments-color-ededed);
+  border: 1px solid var(--color-ededed);
   padding: 23px 20px 29px;
   border-radius: 5px;
 }
 
 .account_form button {
-  background: var(--aments-color-ea1c26);
+  background: var(--color-ea1c26);
   border: 0;
-  color: var(--aments-color-fff);
+  color: var(--color-fff);
   display: inline-block;
   font-size: 12px;
   font-weight: 700;
@@ -62,7 +62,7 @@
 }
 
 .account_form button:hover {
-  background: var(--aments-color-333);
+  background: var(--color-333);
 }
 
 .login_submit * {

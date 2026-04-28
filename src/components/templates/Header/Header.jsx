@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/utils/cn";
 import styles from "./Header.module.scss";
+import { navigation } from "@/constants/navigation";
 import CartOffcanvas from "../CartOffcanvas";
 import HeaderGroup from "./HeaderGroup";
 import HeaderMobileBar from "./HeaderMobileBar";
@@ -69,97 +70,112 @@ export default function Header() {
     [pathname]
   );
 
-  // Bottom header data array
-  const BottomHeaderData = [
-    {
-      id: "home",
-      type: "dropdown",
-      label: "Home",
-      href: "/",
-      activeMatch: "/",
-      items: [{ id: "home-1", label: "Home 1", href: "/" }],
-    },
-    {
-      id: "shop",
-      type: "mega",
-      label: "Shop",
-      href: "/product/default",
-      activeMatch: ["/shop", "/product"],
-      mega: {
-        columns: [
-          {
-            id: "shop-layouts",
-            title: "Shop Layouts",
-            items: [
-              { id: "grid-left", label: "Grid Left Sidebar", href: "/shop/grid/sidebar-left" },
-              { id: "grid-right", label: "Grid Right Sidebar", href: "/shop/grid/sidebar-right" },
-              { id: "full-width", label: "Full Width", href: "/shop/full-width" },
-              { id: "list-left", label: "List Left Sidebar", href: "/shop/list/sidebar-left" },
-              { id: "list-right", label: "List Right Sidebar", href: "/shop/list/sidebar-right" },
-            ],
-          },
-          {
-            id: "other-pages",
-            title: "Other Pages",
-            items: [
-              { id: "cart", label: "Cart", href: "/cart" },
-              { id: "wishlist", label: "Wishlist", href: "/wishlist" },
-              { id: "compare", label: "Compare", href: "/compare" },
-              { id: "checkout", label: "Checkout", href: "/checkout" },
-              { id: "login", label: "Login", href: "/login" },
-              { id: "my-account", label: "My Account", href: "/my-account" },
-            ],
-          },
-          {
-            id: "product-types-1",
-            title: "Product Types",
-            items: [
-              { id: "product-default", label: "Product Default", href: "/product/default" },
-              { id: "product-variable", label: "Product Variable", href: "/product/variable" },
-              { id: "product-affiliate", label: "Product Referral", href: "/product/affiliate" },
-              { id: "product-group", label: "Product Group", href: "/product/group" },
-              { id: "product-single-slide", label: "Product Slider", href: "/product/single-slide" },
-            ],
-          },
-          {
-            id: "product-types-2",
-            title: "Product Types",
-            items: [
-              { id: "product-tab-left", label: "Product Tab Left", href: "/product/tab-left" },
-              { id: "product-tab-right", label: "Product Tab Right", href: "/product/tab-right" },
-              { id: "product-gallery-left", label: "Product Gallery Left", href: "/product/gallery-left" },
-              { id: "product-gallery-right", label: "Product Gallery Right", href: "/product/gallery-right" },
-              { id: "product-sticky-left", label: "Product Sticky Left", href: "/product/sticky-left" },
-              { id: "product-sticky-right", label: "Product Sticky right", href: "/product/sticky-right" },
-            ],
-          },
-        ],
-        banner: {
-          href: "/",
-          image: {
-            src: "/assets/images/banner/menu-banner.jpg",
-            width: 320,
-            height: 320,
-            alt: "",
-          },
+  const makeId = (value) =>
+    String(value ?? "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+
+  const makeLinkId = (href, label) => makeId(href || label);
+
+  const megaProductTypes = navigation.megaMenu?.productTypes ?? [];
+  const megaProductTypesCol1 = megaProductTypes.slice(0, 5);
+  const megaProductTypesCol2 = megaProductTypes.slice(5);
+
+  const BottomHeaderData = (navigation.main ?? []).map((item) => {
+    if (item.mega) {
+      return {
+        id: item.id ?? makeId(item.label),
+        type: "mega",
+        label: item.label,
+        href: item.href,
+        activeMatch: item.activeMatch ?? item.href,
+        mega: {
+          columns: [
+            {
+              id: "shop-layouts",
+              title: "Shop Layouts",
+              items: (navigation.megaMenu?.shopLayouts ?? []).map((link) => ({
+                id: makeLinkId(link.href, link.label),
+                label: link.label,
+                href: link.href,
+              })),
+            },
+            {
+              id: "other-pages",
+              title: "Other Pages",
+              items: (navigation.megaMenu?.otherPages ?? []).map((link) => ({
+                id: makeLinkId(link.href, link.label),
+                label: link.label,
+                href: link.href,
+              })),
+            },
+            {
+              id: "product-types-1",
+              title: "Product Types",
+              items: megaProductTypesCol1.map((link) => ({
+                id: makeLinkId(link.href, link.label),
+                label: link.label,
+                href: link.href,
+              })),
+            },
+            {
+              id: "product-types-2",
+              title: "Product Types",
+              items: megaProductTypesCol2.map((link) => ({
+                id: makeLinkId(link.href, link.label),
+                label: link.label,
+                href: link.href,
+              })),
+            },
+          ],
+          banner: navigation.megaMenu?.banner
+            ? {
+                href: navigation.megaMenu.banner.href,
+                image: {
+                  src: navigation.megaMenu.banner.imageSrc,
+                  width: 320,
+                  height: 320,
+                  alt: navigation.megaMenu.banner.alt ?? "",
+                },
+              }
+            : null,
         },
-      },
-    },
-    {
-      id: "pages",
-      type: "dropdown",
-      label: "Pages",
-      activeMatch: ["/service", "/faq", "/privacy-policy", "/404"],
-      items: [
-        { id: "service", label: "Service", href: "/service" },
-        { id: "faq", label: "Frequently Questions", href: "/faq" },
-        { id: "privacy-policy", label: "Privacy Policy", href: "/privacy-policy" },
-        { id: "error-404", label: "404 Page", href: "/404" },
-      ],
-    },
-    { id: "about-us", type: "link", label: "About Us", href: "/about-us", activeMatch: "/about-us" },
-    { id: "contact-us", type: "link", label: "Contact Us", href: "/contact-us", activeMatch: "/contact-us" },
-  ];
+      };
+    }
+
+    if (item.children?.length) {
+      return {
+        id: item.id ?? makeId(item.label),
+        type: "dropdown",
+        label: item.label,
+        href: item.href === "#" ? null : item.href,
+        activeMatch: item.activeMatch ?? item.href,
+        items: item.children.map((link) => ({
+          id: makeLinkId(link.href, link.label),
+          label: link.label,
+          href: link.href,
+        })),
+      };
+    }
+
+    return {
+      id: item.id ?? makeId(item.label),
+      type: "link",
+      label: item.label,
+      href: item.href,
+      activeMatch: item.activeMatch ?? item.href,
+    };
+  });
+
+  const topHeaderData = {
+    welcomeText: navigation.topLinks.welcomeText,
+    settingsLabel: navigation.topLinks.settingsLabel,
+    settings: navigation.topLinks.settings,
+    currencies: navigation.topLinks.currencies,
+    languages: navigation.topLinks.languages,
+    compare: navigation.topLinks.compare,
+  };
 
   return (
     <>
@@ -168,6 +184,7 @@ export default function Header() {
         isActive={isActive}
         onOffcanvasToggle={handleOffcanvasToggle}
         BottomHeaderData={BottomHeaderData}
+        topHeaderData={topHeaderData}
       />
       <HeaderMobileBar onOffcanvasToggle={handleOffcanvasToggle} />
       <MobileMenuOffcanvas

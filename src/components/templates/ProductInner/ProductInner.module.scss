@@ -1,6 +1,6 @@
 .card{
   padding: 0 30px 30px;
-  border: 2px solid var(--aments-color-eee);
+  border: 2px solid var(--color-eee);
 }
 
 .imageWrap{
@@ -72,41 +72,41 @@
   border-radius: 50%;
   line-height: 40px;
   text-align: center;
-  border: 2px solid var(--aments-color-eee);
+  border: 2px solid var(--color-eee);
   display: block;
-  background: var(--aments-color-fff);
+  background: var(--color-fff);
 }
 
 .actionIconButton:hover{
-  background: var(--aments-color-ea1c26);
-  border-color: var(--aments-color-ea1c26);
-  color: var(--aments-color-fff);
+  background: var(--color-ea1c26);
+  border-color: var(--color-ea1c26);
+  color: var(--color-fff);
 }
 
 .content{
-  border-top: 2px solid var(--aments-color-eee);
+  border-top: 2px solid var(--color-eee);
   padding-top: 25px;
 }
 
 .titleLink{
   display: block;
-  color: var(--aments-color-000);
+  color: var(--color-000);
   margin-bottom: 15px;
   line-height: 1.625;
   font-size: 16px;
 }
 
 .titleLink:hover{
-  color: var(--aments-color-ea1c26);
+  color: var(--color-ea1c26);
 }
 
 .price{
   display: block;
-  color: var(--aments-color-ea1c26);
+  color: var(--color-ea1c26);
   font-size: 16px;
 }
 
 .priceOff{
-  color: var(--aments-color-8a8a8a);
+  color: var(--color-8a8a8a);
   margin-right: 6px;
 }

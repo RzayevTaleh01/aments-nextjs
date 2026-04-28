@@ -3,10 +3,7 @@
 import { useRef, useState } from "react";
 import { Breadcrumb } from "@/components/ui";
 import { products } from "@/constants/products";
-import ProductDetailsGallery from "./ProductDetailsGallery";
-import ProductDetailsSummary from "./ProductDetailsSummary";
-import ProductDetailsTabs from "./ProductDetailsTabs";
-import RelatedProductsCarousel from "./RelatedProductsCarousel";
+import { ProductDetailsSummary, ProductDetailsTabs, RelatedProductsCarousel, ProductDetailsGallery } from "@/components/templates";
 import styles from "./ProductDetailsPage.module.scss";
 
 export default function ProductDetailsPage({ title, breadcrumbLabel, productId = "p1" }) {

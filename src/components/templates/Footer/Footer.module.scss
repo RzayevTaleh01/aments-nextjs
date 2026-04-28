@@ -27,7 +27,7 @@
   font-size: 17px;
   line-height: 27px;
   font-weight: 600;
-  color: var(--aments-color-666);
+  color: var(--color-666);
   font-family: Raleway, sans-serif;
 
   @media (min-width: 1200px) {
@@ -35,7 +35,7 @@
   }
 
   &:hover {
-    color: var(--aments-color-ea1c26);
+    color: var(--color-ea1c26);
   }
 }
 
@@ -64,7 +64,7 @@
       height: 40px;
       border-radius: 100%;
       text-align: center;
-      color: var(--aments-color-fff) !important;
+      color: var(--color-fff) !important;
     }
 
     > a:hover {
@@ -72,23 +72,23 @@
     }
 
     > a[class~="facebook"] {
-      background: var(--aments-color-4867aa);
+      background: var(--color-4867aa);
     }
 
     > a[class~="twitter"] {
-      background: var(--aments-color-1da1f2);
+      background: var(--color-1da1f2);
     }
 
     > a[class~="youtube"] {
-      background: var(--aments-color-fe0000);
+      background: var(--color-fe0000);
     }
 
     > a[class~="pinterest"] {
-      background: var(--aments-color-bd081b);
+      background: var(--color-bd081b);
     }
 
     > a[class~="instagram"] {
-      background: var(--aments-color-b23a94);
+      background: var(--color-b23a94);
     }
   }
 }
@@ -136,11 +136,11 @@
   display: block;
   font-weight: 400;
   font-size: 14px;
-  color: var(--aments-color-666);
+  color: var(--color-666);
 }
 
 .footer-menu-nav > li > a:hover {
-  color: var(--aments-color-ea1c26);
+  color: var(--color-ea1c26);
   transform: translateX(10px);
 }
 
@@ -159,7 +159,7 @@
 }
 
 .copyright-area-text {
-  color: var(--aments-color-666);
+  color: var(--color-666);
   margin-bottom: 10px;
 
   @media (min-width: 768px) {
@@ -169,10 +169,10 @@
 
 .copyright-link {
   font-weight: 600;
-  color: var(--aments-color-ea1c26);
+  color: var(--color-ea1c26);
 
   &:hover {
-    color: var(--aments-color-ea1c26);
+    color: var(--color-ea1c26);
   }
 }
 

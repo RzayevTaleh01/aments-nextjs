@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ProductCardTemplate } from "@/components/templates";
+import { ProductInner } from "@/components/templates";
 import { Breadcrumb, Icon } from "@/components/ui";
 import { products as allProducts } from "@/constants/products";
 import styles from "./ShopCatalogPage.module.scss";
@@ -341,8 +341,8 @@ export default function ShopCatalogPage({
                             <div className="row">
                               {products.map((p, idx) => (
                                 <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12">
-                                  <div data-aos="fade-up" data-aos-delay={String((idx % 4) * 200)}>
-                                    <ProductCardTemplate product={p} actionsVariant="modals" />
+                                  <div data-aos="fade-up">
+                                    <ProductInner product={p} actionsVariant="modals" />
                                   </div>
                                 </div>
                               ))}

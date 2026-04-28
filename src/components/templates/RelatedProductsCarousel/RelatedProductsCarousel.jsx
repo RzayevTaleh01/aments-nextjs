@@ -3,16 +3,18 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { Icon } from "@/components/ui";
-import { ProductCardTemplate } from "@/components/templates";
+import { ProductInner } from "@/components/templates";
+import { cn } from "@/utils/cn";
+import styles from "./RelatedProductsCarousel.module.scss";
 
 export default function RelatedProductsCarousel({ products, prevRef, nextRef }) {
   return (
-    <div className="product-section section-top-gap-100">
-      <div className="section-content-gap">
+    <div className={cn(styles.section, "section-top-gap-100")}>
+      <div className={styles.sectionContentGap}>
         <div className="container">
           <div className="row">
-            <div className="section-content">
-              <h3 className="section-title" data-aos="fade-up" data-aos-delay="0">
+            <div className={styles.sectionContent}>
+              <h3 className={styles.sectionTitle} data-aos="fade-up" data-aos-delay="0">
                 Related Products
               </h3>
             </div>
@@ -20,15 +22,15 @@ export default function RelatedProductsCarousel({ products, prevRef, nextRef }) 
         </div>
       </div>
 
-      <div className="product-wrapper" data-aos="fade-up" data-aos-delay="200">
+      <div className={styles.productWrapper} data-aos="fade-up" data-aos-delay="200">
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <div className="product-default-slider product-default-slider-4grids-1row">
-                <button type="button" className="default-slider-arrow default-slider-arrow--left prevArrow" ref={prevRef}>
+              <div className={cn(styles.productDefaultSlider, styles.productDefaultSlider4Grids1Row)}>
+                <button type="button" className={cn(styles.defaultSliderArrow, styles.defaultSliderArrowLeft)} ref={prevRef}>
                   <Icon name="FaChevronLeft" size={18} />
                 </button>
-                <button type="button" className="default-slider-arrow default-slider-arrow--right nextArrow" ref={nextRef}>
+                <button type="button" className={cn(styles.defaultSliderArrow, styles.defaultSliderArrowRight)} ref={nextRef}>
                   <Icon name="FaChevronRight" size={18} />
                 </button>
 
@@ -55,7 +57,7 @@ export default function RelatedProductsCarousel({ products, prevRef, nextRef }) 
                 >
                   {products.slice(0, 6).map((p) => (
                     <SwiperSlide key={p.id}>
-                      <ProductCardTemplate product={p} />
+                      <ProductInner product={p} />
                     </SwiperSlide>
                   ))}
                 </Swiper>

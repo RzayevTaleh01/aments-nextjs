@@ -1,0 +1,70 @@
+.galleryArea {
+  margin-bottom: 60px;
+}
+
+.largeImageHorizontal {
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+.largeImg {
+  width: 100%;
+}
+
+.thumbArea {
+  position: relative;
+}
+
+.thumbAreaHorizontal {
+  margin-top: 15px;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+.thumbImg {
+  border: 1px solid #eee;
+}
+
+.thumbSingle {
+  border: 1px solid transparent;
+}
+
+.zoomActive {
+  border-color: #ea1c26;
+}
+
+.galleryNav {
+  z-index: 9;
+  width: 30px;
+  height: 30px;
+  background: #e9ecef;
+  border-radius: 3px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease 0s;
+}
+
+.thumbArea:hover .galleryNav {
+  visibility: visible;
+  opacity: 1;
+}
+
+.galleryNav:hover {
+  background: #ea1c26;
+  color: #fff;
+}
+
+.galleryNavHorizontal {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.galleryNavHorizontalLeft {
+  left: 0;
+}
+
+.galleryNavHorizontalRight {
+  right: 0;
+}
+
