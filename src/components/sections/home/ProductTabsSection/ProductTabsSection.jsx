@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Carousel } from "@/components/ui";
-import { ProductInner } from "@/components/templates";
+import { ProductCard } from "@/components/templates";
 import { cn } from "@/utils/cn";
 import styles from "./ProductTabsSection.module.scss";
 
@@ -62,7 +62,7 @@ export default function ProductTabsSection({ title, tabs }) {
                         992: { slidesPerView: 4, spaceBetween: 20 },
                       }}
                       swiperClassName="product-default-slider product-default-slider-4grids-1row"
-                      renderItem={(product) => <ProductInner product={product} />}
+                      renderItem={(product) => <ProductCard product={product} />}
                     />
                   </div>
                 ))}

@@ -1,8 +1,8 @@
-.sectionContentGap {
+:global(.section-content-gap) {
   margin-bottom: 50px;
 }
 
-.sectionTitle {
+:global(.section-title) {
   font-size: 26px;
   font-weight: 700;
   position: relative;
@@ -10,12 +10,12 @@
 }
 
 @media (min-width: 768px) {
-  .sectionTitle {
+  :global(.section-title) {
     font-size: 30px;
   }
 }
 
-.sectionTitle::after {
+:global(.section-title::after) {
   position: absolute;
   content: "";
   width: 100px;
@@ -25,11 +25,7 @@
   bottom: -15px;
 }
 
-.productDefaultSlider {
-  position: relative;
-}
-
-.defaultSliderArrow {
+:global(.default-slider-arrow) {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -44,24 +40,27 @@
   transition: all 0.3s ease 0s;
 }
 
-.defaultSliderArrowLeft {
+:global(.product-default-slider) {
+  position: relative;
+}
+
+:global(.default-slider-arrow--left) {
   left: calc(0% + 15px);
 }
 
-.defaultSliderArrowRight {
+:global(.default-slider-arrow--right) {
   right: calc(0% + 15px);
 }
 
-.productDefaultSlider:hover .defaultSliderArrow {
+:global(.product-default-slider:hover .default-slider-arrow) {
   visibility: visible;
   opacity: 1;
 }
 
-.productDefaultSlider:hover .defaultSliderArrowLeft {
+:global(.product-default-slider:hover .default-slider-arrow--left) {
   left: 0;
 }
 
-.productDefaultSlider:hover .defaultSliderArrowRight {
+:global(.product-default-slider:hover .default-slider-arrow--right) {
   right: 0;
 }
-

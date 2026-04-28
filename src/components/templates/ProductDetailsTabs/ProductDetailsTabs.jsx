@@ -3,19 +3,19 @@
 import Image from "next/image";
 import { Icon } from "@/components/ui";
 import { cn } from "@/utils/cn";
-import styles from "./ProductDetailsTabs.module.scss";
+import "./ProductDetailsTabs.module.scss";
 
 export default function ProductDetailsTabs({ activeTab, onTabChange, product }) {
   return (
-    <div className={cn(styles.section, "section-inner-bg section-top-gap-100")}>
+    <div className="section-inner-bg section-top-gap-100">
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <div className={styles.wrapper} data-aos="fade-up" data-aos-delay="0">
-              <ul className={cn(styles.tabBtn, "nav tablist d-flex justify-content-center")}>
+            <div className="product-details-content-tab-wrapper">
+              <ul className="product-details-content-tab-btn nav tablist d-flex justify-content-center">
                 <li>
                   <a
-                    className={cn(styles.tabLink, activeTab === "description" && styles.activeTabLink)}
+                    className={cn("nav-link", activeTab === "description" && "active")}
                     href="#description"
                     onClick={(e) => {
                       e.preventDefault();
@@ -27,7 +27,7 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                 </li>
                 <li>
                   <a
-                    className={cn(styles.tabLink, activeTab === "specification" && styles.activeTabLink)}
+                    className={cn("nav-link", activeTab === "specification" && "active")}
                     href="#specification"
                     onClick={(e) => {
                       e.preventDefault();
@@ -39,7 +39,7 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                 </li>
                 <li>
                   <a
-                    className={cn(styles.tabLink, activeTab === "review" && styles.activeTabLink)}
+                    className={cn("nav-link", activeTab === "review" && "active")}
                     href="#review"
                     onClick={(e) => {
                       e.preventDefault();
@@ -51,10 +51,10 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                 </li>
               </ul>
 
-              <div className={styles.tabContent}>
-                <div className={styles.tabPanes}>
-                  <div className={cn(styles.tabPane, activeTab === "description" && styles.active)} id="description">
-                    <div className={styles.singleTabContentItem}>
+              <div className="product-details-content-tab">
+                <div className="tab-content">
+                  <div className={cn("tab-pane fade", activeTab === "description" && "show active")} id="description">
+                    <div>
                       <p>
                         {product?.description ||
                           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla augue nec est tristique auctor. Donec non est at libero vulputate rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi, vulputate adipiscing cursus eu, suscipit id nulla."}
@@ -69,8 +69,8 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                     </div>
                   </div>
 
-                  <div className={cn(styles.tabPane, activeTab === "specification" && styles.active)} id="specification">
-                    <div className={styles.singleTabContentItem}>
+                  <div className={cn("tab-pane fade", activeTab === "specification" && "show active")} id="specification">
+                    <div>
                       <table className="table table-bordered mb-20">
                         <tbody>
                           <tr>
@@ -97,45 +97,47 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                     </div>
                   </div>
 
-                  <div className={cn(styles.tabPane, activeTab === "review" && styles.active)} id="review">
-                    <div className={styles.singleTabContentItem}>
-                      <ul className={styles.comment}>
-                        <li className={styles.commentList}>
-                          <div className={styles.commentWrapper}>
-                            <div className={styles.commentImg}>
+                  <div className={cn("tab-pane fade", activeTab === "review" && "show active")} id="review">
+                    <div>
+                      <ul>
+                        <li className="comment-list">
+                          <div className="comment-wrapper">
+                            <div className="comment-img">
                               <Image src="/assets/images/user/image-1.png" alt="" width={80} height={80} />
                             </div>
-                            <div className={styles.commentContent}>
-                              <div className={styles.commentContentTop}>
-                                <div className={styles.commentContentLeft}>
-                                  <h6 className={styles.commentName}>Kaedyn Fraser</h6>
-                                  <div className={styles.productReview}>
-                                    <span className={styles.reviewFill}>
+                            <div>
+                              <div className="comment-content-top">
+                                <div>
+                                  <h6 className="comment-name">Kaedyn Fraser</h6>
+                                  <div className="product-review">
+                                    <span className="review-fill">
                                       <Icon name="FaStar" size={14} />
                                     </span>
-                                    <span className={styles.reviewFill}>
+                                    <span className="review-fill">
                                       <Icon name="FaStar" size={14} />
                                     </span>
-                                    <span className={styles.reviewFill}>
+                                    <span className="review-fill">
                                       <Icon name="FaStar" size={14} />
                                     </span>
-                                    <span className={styles.reviewFill}>
+                                    <span className="review-fill">
                                       <Icon name="FaStar" size={14} />
                                     </span>
-                                    <span className={styles.reviewEmpty}>
+                                    <span className="review-empty">
                                       <Icon name="FaRegStar" size={14} />
                                     </span>
                                   </div>
                                 </div>
-                                <div className={styles.commentContentRight}>
+                                <div className="comment-content-right">
                                   <a href="#" onClick={(e) => e.preventDefault()}>
-                                    <Icon name="FaReply" size={16} className="me-1" />
+                                    <i>
+                                      <Icon name="FaReply" size={16} />
+                                    </i>
                                     Reply
                                   </a>
                                 </div>
                               </div>
 
-                              <div className={styles.paraContent}>
+                              <div>
                                 <p>
                                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora inventore dolorem a unde modi iste odio amet, fugit fuga
                                   aliquam, voluptatem maiores animi dolor nulla magnam ea! Dignissimos aspernatur cumque nam quod sint provident modi alias
@@ -146,26 +148,28 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                             </div>
                           </div>
 
-                          <ul className={styles.commentReply}>
-                            <li className={styles.commentReplyList}>
-                              <div className={styles.commentWrapper}>
-                                <div className={styles.commentImg}>
+                          <ul className="comment-reply">
+                            <li>
+                              <div className="comment-wrapper">
+                                <div className="comment-img">
                                   <Image src="/assets/images/user/image-2.png" alt="" width={80} height={80} />
                                 </div>
-                                <div className={styles.commentContent}>
-                                  <div className={styles.commentContentTop}>
-                                    <div className={styles.commentContentLeft}>
-                                      <h6 className={styles.commentName}>Oaklee Odom</h6>
+                                <div>
+                                  <div className="comment-content-top">
+                                    <div>
+                                      <h6 className="comment-name">Oaklee Odom</h6>
                                     </div>
-                                    <div className={styles.commentContentRight}>
+                                    <div className="comment-content-right">
                                       <a href="#" onClick={(e) => e.preventDefault()}>
-                                        <Icon name="FaReply" size={16} className="me-1" />
+                                        <i>
+                                          <Icon name="FaReply" size={16} />
+                                        </i>
                                         Reply
                                       </a>
                                     </div>
                                   </div>
 
-                                  <div className={styles.paraContent}>
+                                  <div>
                                     <p>
                                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora inventore dolorem a unde modi iste odio amet, fugit
                                       fuga aliquam, voluptatem maiores animi dolor nulla magnam ea! Dignissimos aspernatur cumque nam quod sint provident modi
@@ -179,42 +183,44 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                           </ul>
                         </li>
 
-                        <li className={styles.commentList}>
-                          <div className={styles.commentWrapper}>
-                            <div className={styles.commentImg}>
+                        <li className="comment-list">
+                          <div className="comment-wrapper">
+                            <div className="comment-img">
                               <Image src="/assets/images/user/image-3.png" alt="" width={80} height={80} />
                             </div>
-                            <div className={styles.commentContent}>
-                              <div className={styles.commentContentTop}>
-                                <div className={styles.commentContentLeft}>
-                                  <h6 className={styles.commentName}>Jaydin Jones</h6>
-                                  <div className={styles.productReview}>
-                                    <span className={styles.reviewFill}>
+                            <div>
+                              <div className="comment-content-top">
+                                <div>
+                                  <h6 className="comment-name">Jaydin Jones</h6>
+                                  <div className="product-review">
+                                    <span className="review-fill">
                                       <Icon name="FaStar" size={14} />
                                     </span>
-                                    <span className={styles.reviewFill}>
+                                    <span className="review-fill">
                                       <Icon name="FaStar" size={14} />
                                     </span>
-                                    <span className={styles.reviewFill}>
+                                    <span className="review-fill">
                                       <Icon name="FaStar" size={14} />
                                     </span>
-                                    <span className={styles.reviewFill}>
+                                    <span className="review-fill">
                                       <Icon name="FaStar" size={14} />
                                     </span>
-                                    <span className={styles.reviewEmpty}>
+                                    <span className="review-empty">
                                       <Icon name="FaRegStar" size={14} />
                                     </span>
                                   </div>
                                 </div>
-                                <div className={styles.commentContentRight}>
+                                <div className="comment-content-right">
                                   <a href="#" onClick={(e) => e.preventDefault()}>
-                                    <Icon name="FaReply" size={16} className="me-1" />
+                                    <i>
+                                      <Icon name="FaReply" size={16} />
+                                    </i>
                                     Reply
                                   </a>
                                 </div>
                               </div>
 
-                              <div className={styles.paraContent}>
+                              <div>
                                 <p>
                                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora inventore dolorem a unde modi iste odio amet, fugit fuga
                                   aliquam, voluptatem maiores animi dolor nulla magnam ea! Dignissimos aspernatur cumque nam quod sint provident modi alias
@@ -227,8 +233,8 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                         </li>
                       </ul>
 
-                      <div className={styles.reviewForm}>
-                        <div className={styles.reviewFormTextTop}>
+                      <div>
+                        <div className="review-form-text-top">
                           <h5>ADD A REVIEW</h5>
                           <p>Your email address will not be published. Required fields are marked *</p>
                         </div>
@@ -236,7 +242,7 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                         <form action="#" method="post" onSubmit={(e) => e.preventDefault()}>
                           <div className="row">
                             <div className="col-md-6">
-                              <div className={cn(styles.defaultFormBox, "mb-20")}>
+                              <div className="default-form-box mb-20">
                                 <label htmlFor="comment-name">
                                   Your name <span>*</span>
                                 </label>
@@ -244,7 +250,7 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                               </div>
                             </div>
                             <div className="col-md-6">
-                              <div className={cn(styles.defaultFormBox, "mb-20")}>
+                              <div className="default-form-box mb-20">
                                 <label htmlFor="comment-email">
                                   Your Email <span>*</span>
                                 </label>
@@ -252,7 +258,7 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                               </div>
                             </div>
                             <div className="col-12">
-                              <div className={cn(styles.defaultFormBox, "mb-20")}>
+                              <div className="default-form-box mb-20">
                                 <label htmlFor="comment-review-text">
                                   Your review <span>*</span>
                                 </label>
@@ -260,7 +266,7 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
                               </div>
                             </div>
                             <div className="col-12">
-                              <button className={styles.formSubmitBtn} type="submit">
+                              <button className="form-submit-btn" type="submit">
                                 Submit
                               </button>
                             </div>

@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn";
-import { ProductCategorySingle } from "@/components/ui";
+import { ProductCategorySingle } from "@/components/templates";
 import styles from "./PopularCategoriesSection.module.scss";
 
 export default function PopularCategoriesSection({ categories }) {

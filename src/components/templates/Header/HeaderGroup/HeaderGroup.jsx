@@ -14,22 +14,7 @@ export default function HeaderGroup({
   BottomHeaderData,
   topHeaderData,
 }) {
-  const settingsLabel = topHeaderData?.settingsLabel ?? "Setting";
-  const settingsItems = topHeaderData?.settings ?? [];
-
-  const currencyItems = topHeaderData?.currencies ?? [];
-  const currencyLabel =
-    topHeaderData?.currencyLabel ??
-    (typeof currencyItems[0] === "string" ? currencyItems[0] : currencyItems[0]?.label) ??
-    "$ USD";
-
-  const languageItems = topHeaderData?.languages ?? [];
-  const languageLabel =
-    topHeaderData?.languageLabel ??
-    (typeof languageItems[0] === "string" ? languageItems[0] : languageItems[0]?.label) ??
-    "English";
-
-  const compare = topHeaderData?.compare ?? { href: "/compare", label: "Compare (0)", iconName: "FaRetweet" };
+  const topLinks = topHeaderData?.links ?? [];
 
   return (
     <header className={cn(styles, "header-section d-lg-block d-none")}>
@@ -44,70 +29,47 @@ export default function HeaderGroup({
             <div className={cn(styles, "col-6")}>
               <div className={cn(styles, "header-top--right")}>
                 <ul className={cn(styles, "header-user-menu")}>
-                  <li className={cn(styles, "has-user-dropdown")}>
-                    <Link href="/">
-                      {settingsLabel} <Icon name="FaAngleDown" size={14} />
-                    </Link>
-                    <ul className={cn(styles, "user-sub-menu")}>
-                      {settingsItems.map((item) => (
-                        <li key={item.href ?? item.label}>
-                          <Link href={item.href ?? "/"}>{item.label}</Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                  <li className={cn(styles, "has-user-dropdown")}>
-                    <Link href="/">
-                      {currencyLabel} <Icon name="FaAngleDown" size={14} />
-                    </Link>
-                    <ul className={cn(styles, "user-sub-menu")}>
-                      {currencyItems.map((item) => {
-                        const label = typeof item === "string" ? item : item.label;
-                        const href = typeof item === "string" ? "/" : item.href ?? "/";
-                        return (
-                          <li key={label}>
-                            <Link href={href}>{label}</Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </li>
-                  <li className={cn(styles, "has-user-dropdown")}>
-                    <Link href="/">
-                      {languageLabel} <Icon name="FaAngleDown" size={14} />
-                    </Link>
-                    <ul className={cn(styles, "user-sub-menu")}>
-                      {languageItems.map((item) => {
-                        const label = typeof item === "string" ? item : item.label;
-                        const href = typeof item === "string" ? "/" : item.href ?? "/";
-                        const iconSrc = typeof item === "string" ? null : item.iconSrc;
+                  {topLinks.map((item) => {
+                    const hasDropdown = Array.isArray(item.children) && item.children.length > 0;
+                    const parentHref = item.href && item.href !== "#" ? item.href : "/";
+                    const itemKey = item.id ?? item.href ?? item.label;
 
-                        return (
-                          <li key={label}>
-                            <Link href={href}>
-                              {iconSrc ? (
-                                <>
+                    if (!hasDropdown) {
+                      return (
+                        <li key={itemKey}>
+                          <Link href={parentHref}>
+                            {item.iconName ? <Icon name={item.iconName} size={14} /> : null} {item.label}
+                          </Link>
+                        </li>
+                      );
+                    }
+
+                    return (
+                      <li key={itemKey} className={cn(styles, "has-user-dropdown")}>
+                        <Link href={parentHref}>
+                          {item.label} <Icon name="FaAngleDown" size={14} />
+                        </Link>
+                        <ul className={cn(styles, "user-sub-menu")}>
+                          {item.children.map((child) => (
+                            <li key={`${itemKey}-${child.id ?? child.label ?? child.href}`}>
+                              <Link href={child.href && child.href !== "#" ? child.href : "/"}>
+                                {child.iconSrc ? (
                                   <Image
                                     className={cn(styles, "user-sub-menu-in-icon")}
-                                    src={iconSrc}
-                                    alt={label ?? ""}
+                                    src={child.iconSrc}
+                                    alt={child.label ?? ""}
                                     width={16}
                                     height={11}
-                                  />{" "}
-                                </>
-                              ) : null}
-                              {label}
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </li>
-                  <li>
-                    <Link href={compare.href ?? "/compare"}>
-                      <Icon name={compare.iconName ?? "FaRetweet"} size={14} /> {compare.label ?? "Compare (0)"}
-                    </Link>
-                  </li>
+                                  />
+                                ) : null}
+                                {child.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>

@@ -1,4 +1,4 @@
-export { default as ProductInner } from "./ProductInner";
+export { default as ProductCard } from "./ProductCard";
 export { default as OffcanvasPanel } from "./OffcanvasPanel";
 export { default as Header } from "./Header";
 export { default as Footer } from "./Footer";
@@ -7,4 +7,7 @@ export { default as ProductDetailsGallery } from "./ProductDetailsGallery";
 export { default as ProductDetailsSummary } from "./ProductDetailsSummary";
 export { default as ProductDetailsTabs } from "./ProductDetailsTabs";
 export { default as RelatedProductsCarousel } from "./RelatedProductsCarousel";
+export { default as LoginTemplate } from "./LoginTemplate";
+export { default as RegisterTemplate } from "./RegisterTemplate";
+export { default as ProductCategorySingle } from "./ProductCategorySingle";
 

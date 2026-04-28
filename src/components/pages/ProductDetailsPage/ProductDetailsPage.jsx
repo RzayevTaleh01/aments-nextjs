@@ -40,7 +40,7 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId =
         ]}
       />
 
-      <div className="product-details-section">
+      <div className="section-top-gap-100">
         <div className="container">
           <div className="row">
             <div className="col-md-6">

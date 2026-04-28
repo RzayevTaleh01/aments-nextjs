@@ -2,39 +2,38 @@
 
 import Link from "next/link";
 import { Icon } from "@/components/ui";
-import { cn } from "@/utils/cn";
-import styles from "./ProductDetailsSummary.module.scss";
+import "./ProductDetailsSummary.module.scss";
 
 export default function ProductDetailsSummary({ product }) {
   if (!product) return null;
 
   return (
-    <div className={styles.contentArea} data-aos="fade-up" data-aos-delay="200">
-      <div className={styles.text}>
-        <h4 className={styles.title}>{product.name}</h4>
+    <div className="product-details-content-area-sticky">
+      <div className="product-details-text">
+        <h4 className="title">{product.name}</h4>
         <div className="d-flex align-items-center">
-          <div className={styles.productReview}>
-            <span className={styles.reviewFill}>
+          <div className="product-review">
+            <span className="review-fill">
               <Icon name="FaStar" size={14} />
             </span>
-            <span className={styles.reviewFill}>
+            <span className="review-fill">
               <Icon name="FaStar" size={14} />
             </span>
-            <span className={styles.reviewFill}>
+            <span className="review-fill">
               <Icon name="FaStar" size={14} />
             </span>
-            <span className={styles.reviewFill}>
+            <span className="review-fill">
               <Icon name="FaStar" size={14} />
             </span>
-            <span className={styles.reviewEmpty}>
+            <span className="review-empty">
               <Icon name="FaRegStar" size={14} />
             </span>
           </div>
-          <Link href="/product/default" className={styles.customerReview}>
+          <Link href="/product/default" className="customer-review">
             (customer review )
           </Link>
         </div>
-        <div className={styles.price}>
+        <div className="price">
           {product.compareAt && <del>{product.compareAt}</del>}
           {product.price}
         </div>
@@ -44,48 +43,48 @@ export default function ProductDetailsSummary({ product }) {
         </p>
       </div>
 
-      <div className={styles.variable}>
-        <h4 className={styles.variableTitle}>Available Options</h4>
+      <div className="product-details-variable">
+        <h4 className="title">Available Options</h4>
 
-        <div className={styles.variableSingleItem}>
+        <div className="variable-single-item">
           <span>Color</span>
-          <div className={styles.variableColor}>
+          <div className="product-variable-color">
             <label htmlFor="product-color-red">
-              <input name="product-color" id="product-color-red" className={styles.colorSelect} type="radio" defaultChecked />
-              <span className={styles.productColorRed} />
+              <input name="product-color" id="product-color-red" type="radio" defaultChecked />
+              <span className="product-color-red" />
             </label>
             <label htmlFor="product-color-tomato">
-              <input name="product-color" id="product-color-tomato" className={styles.colorSelect} type="radio" />
-              <span className={styles.productColorTomato} />
+              <input name="product-color" id="product-color-tomato" type="radio" />
+              <span className="product-color-tomato" />
             </label>
             <label htmlFor="product-color-green">
-              <input name="product-color" id="product-color-green" className={styles.colorSelect} type="radio" />
-              <span className={styles.productColorGreen} />
+              <input name="product-color" id="product-color-green" type="radio" />
+              <span className="product-color-green" />
             </label>
             <label htmlFor="product-color-light-green">
-              <input name="product-color" id="product-color-light-green" className={styles.colorSelect} type="radio" />
-              <span className={styles.productColorLightGreen} />
+              <input name="product-color" id="product-color-light-green" type="radio" />
+              <span className="product-color-light-green" />
             </label>
             <label htmlFor="product-color-blue">
-              <input name="product-color" id="product-color-blue" className={styles.colorSelect} type="radio" />
-              <span className={styles.productColorBlue} />
+              <input name="product-color" id="product-color-blue" type="radio" />
+              <span className="product-color-blue" />
             </label>
             <label htmlFor="product-color-light-blue">
-              <input name="product-color" id="product-color-light-blue" className={styles.colorSelect} type="radio" />
-              <span className={styles.productColorLightBlue} />
+              <input name="product-color" id="product-color-light-blue" type="radio" />
+              <span className="product-color-light-blue" />
             </label>
           </div>
         </div>
 
         <div className="d-flex align-items-center">
-          <div className={cn(styles.variableSingleItem, styles.variableSingleItemInline)}>
+          <div className="variable-single-item">
             <span>Quantity</span>
-            <div className={styles.variableQuantity}>
-              <input className={styles.quantityInput} min="1" max="100" defaultValue="1" type="number" />
+            <div className="product-variable-quantity">
+              <input min="1" max="100" defaultValue="1" type="number" />
             </div>
           </div>
 
-          <div className={styles.addToCartBtn}>
+          <div className="product-add-to-cart-btn">
             <a href="#modalAddcart" data-bs-toggle="modal" data-bs-target="#modalAddcart">
               Add To Cart
             </a>
@@ -93,66 +92,52 @@ export default function ProductDetailsSummary({ product }) {
         </div>
       </div>
 
-      <div className={cn(styles.meta, "mb-20")}>
+      <div className="product-details-meta mb-20">
         <ul>
           <li>
             <Link href="/wishlist">
-              <span className={styles.inlineIcon}>
-                <Icon name="FaHeart" />
-              </span>
+              <Icon name="FaHeart" />
               Add to wishlist
             </Link>
           </li>
           <li>
             <Link href="/compare">
-              <span className={styles.inlineIcon}>
-                <Icon name="FaRetweet" />
-              </span>
+              <Icon name="FaRetweet" />
               Compare
             </Link>
           </li>
         </ul>
       </div>
 
-      <div className={styles.social}>
+      <div className="product-details-social">
         <ul>
           <li>
-            <a href="#" className={styles.facebook} onClick={(e) => e.preventDefault()}>
-              <span className={styles.inlineIcon}>
-                <Icon name="FaFacebookF" size={16} />
-              </span>
+            <a href="#" className="facebook" onClick={(e) => e.preventDefault()}>
+              <Icon name="FaFacebookF" size={16} />
               Like
             </a>
           </li>
           <li>
-            <a href="#" className={styles.twitter} onClick={(e) => e.preventDefault()}>
-              <span className={styles.inlineIcon}>
-                <Icon name="FaTwitter" size={16} />
-              </span>
+            <a href="#" className="twitter" onClick={(e) => e.preventDefault()}>
+              <Icon name="FaTwitter" size={16} />
               Tweet
             </a>
           </li>
           <li>
-            <a href="#" className={styles.pinterest} onClick={(e) => e.preventDefault()}>
-              <span className={styles.inlineIcon}>
-                <Icon name="FaPinterestP" size={16} />
-              </span>
+            <a href="#" className="pinterest" onClick={(e) => e.preventDefault()}>
+              <Icon name="FaPinterestP" size={16} />
               Save
             </a>
           </li>
           <li>
-            <a href="#" className={styles.googlePlus} onClick={(e) => e.preventDefault()}>
-              <span className={styles.inlineIcon}>
-                <Icon name="FaGooglePlusG" size={16} />
-              </span>
+            <a href="#" className="google-plus" onClick={(e) => e.preventDefault()}>
+              <Icon name="FaGooglePlusG" size={16} />
               Save
             </a>
           </li>
           <li>
-            <a href="#" className={styles.linkedin} onClick={(e) => e.preventDefault()}>
-              <span className={styles.inlineIcon}>
-                <Icon name="FaLinkedinIn" size={16} />
-              </span>
+            <a href="#" className="linkedin" onClick={(e) => e.preventDefault()}>
+              <Icon name="FaLinkedinIn" size={16} />
               Linked
             </a>
           </li>
@@ -161,4 +146,3 @@ export default function ProductDetailsSummary({ product }) {
     </div>
   );
 }
-

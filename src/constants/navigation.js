@@ -1,20 +1,30 @@
 export const navigation = {
-  topLinks: {
-    welcomeText: "Welcome to our store!",
-    settingsLabel: "Setting",
-    settings: [
-      { label: "Checkout", href: "/checkout" },
-      { label: "My Account", href: "/my-account" },
-      { label: "Shopping Cart", href: "/cart" },
-      { label: "Wishlist", href: "/wishlist" }
-    ],
-    currencies: ["$ USD", "EUR – Euro", "GBP – British Pound", "INR – India Rupee"],
-    languages: [
-      { label: "English", iconSrc: "/assets/images/icon/lang-en.png" },
-      { label: "Germany", iconSrc: "/assets/images/icon/lang-gr.png" }
-    ],
-    compare: { label: "Compare (0)", href: "/compare", iconName: "FaRetweet" },
-  },
+  topWelcomeText: "Welcome to our store!",
+  topLinks: [
+    { id: "login", label: "Login", href: "/login" },
+    { id: "register", label: "Register", href: "/register" },
+    { id: "my-account", label: "My Account", href: "/my-account" },
+    {
+      id: "settings",
+      label: "Setting",
+      href: "#",
+      children: [
+        { label: "Checkout", href: "/checkout" },
+        { label: "Shopping Cart", href: "/cart" },
+        { label: "Wishlist", href: "/wishlist" },
+      ],
+    },
+    {
+      id: "language",
+      label: "English",
+      href: "#",
+      children: [
+        { label: "English", href: "#", iconSrc: "/assets/images/icon/lang-en.png" },
+        { label: "Germany", href: "#", iconSrc: "/assets/images/icon/lang-gr.png" },
+      ],
+    },
+    { id: "compare", label: "Compare (0)", href: "/compare", iconName: "FaRetweet" },
+  ],
   main: [
     {
       id: "home",

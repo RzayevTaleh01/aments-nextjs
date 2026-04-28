@@ -1,0 +1,63 @@
+.account_login_form form span input[type="checkbox"],
+.input-radio span input[type="radio"] {
+  width: 15px;
+  height: 15px;
+  margin-right: 2px;
+  position: relative;
+  top: 2px;
+}
+
+.account_login_form form .save_button button {
+  padding: 0 20px;
+  height: 30px;
+  line-height: 30px;
+  border: 0;
+  background: var(--color-333);
+  color: var(--color-fff);
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.account_login_form form .save_button button:hover {
+  background: var(--color-ea1c26);
+}
+
+.account_form .h3,
+.account_form h3 {
+  font-size: 28px;
+  text-transform: capitalize;
+  font-weight: 500;
+  line-height: 22px;
+  margin-bottom: 30px;
+}
+
+.account_form form {
+  border: 1px solid var(--color-ededed);
+  padding: 23px 20px 29px;
+  border-radius: 5px;
+}
+
+.account_form button {
+  background: var(--color-ea1c26);
+  border: 0;
+  color: var(--color-fff);
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  height: 34px;
+  line-height: 24px;
+  padding: 5px 20px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 20px;
+}
+
+.account_form button:hover {
+  background: var(--color-333);
+}
+
+.login_submit * {
+  display: block;
+}
+

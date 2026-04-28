@@ -4,8 +4,7 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Icon } from "@/components/ui";
-import { cn } from "@/utils/cn";
-import styles from "./ProductDetailsGallery.module.scss";
+import "./ProductDetailsGallery.module.scss";
 
 export default function ProductDetailsGallery({
   galleryLargeImages,
@@ -18,8 +17,8 @@ export default function ProductDetailsGallery({
   thumbNextRef,
 }) {
   return (
-    <div className={styles.galleryArea} data-aos="fade-up" data-aos-delay="0">
-      <div className={cn(styles.largeImage, styles.largeImageHorizontal)}>
+    <div className="product-details-gallery-area" data-aos="fade-up" data-aos-delay="0">
+      <div className="product-large-image-horaizontal">
         <Swiper
           modules={[EffectFade, Thumbs]}
           effect="fade"
@@ -29,25 +28,25 @@ export default function ProductDetailsGallery({
         >
           {galleryLargeImages.map((src) => (
             <SwiperSlide key={src}>
-              <div className={styles.largeSingle}>
-                <Image src={src} alt="" width={570} height={570} className={styles.largeImg} />
+              <div className="product-large-image-single-slider">
+                <Image src={src} alt="" width={570} height={570} />
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
 
-      <div className={cn(styles.thumbArea, styles.thumbAreaHorizontal)}>
+      <div className="product-image-thumb product-image-thumb-horizontal">
         <button
           type="button"
-          className={cn(styles.galleryNav, styles.galleryNavHorizontal, styles.galleryNavHorizontalLeft)}
+          className="gallery-nav gallery-nav-horizontal gallery-nav-horizontal-left"
           ref={thumbPrevRef}
         >
           <Icon name="FaChevronLeft" size={18} />
         </button>
         <button
           type="button"
-          className={cn(styles.galleryNav, styles.galleryNavHorizontal, styles.galleryNavHorizontalRight)}
+          className="gallery-nav gallery-nav-horizontal gallery-nav-horizontal-right"
           ref={thumbNextRef}
         >
           <Icon name="FaChevronRight" size={18} />
@@ -79,8 +78,8 @@ export default function ProductDetailsGallery({
         >
           {galleryThumbImages.map((src, idx) => (
             <SwiperSlide key={`${src}-${idx}`}>
-              <div className={cn(styles.thumbSingle, idx === activeImageIndex && styles.zoomActive)}>
-                <Image className={styles.thumbImg} src={src} alt="" width={140} height={140} />
+              <div aria-current={idx === activeImageIndex}>
+                <Image src={src} alt="" width={140} height={140} />
               </div>
             </SwiperSlide>
           ))}
@@ -89,4 +88,3 @@ export default function ProductDetailsGallery({
     </div>
   );
 }
-

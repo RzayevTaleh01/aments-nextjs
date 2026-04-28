@@ -6,6 +6,7 @@ export { default as ContactUsPage } from "./ContactUsPage";
 export { default as FAQPage } from "./FAQPage";
 export { default as HomePage } from "./HomePage";
 export { default as LoginPage } from "./LoginPage";
+export { default as RegisterPage } from "./RegisterPage";
 export { default as MyAccountPage } from "./MyAccountPage";
 export { default as NotFoundPage } from "./NotFoundPage";
 export { default as PrivacyPolicyPage } from "./PrivacyPolicyPage";

@@ -169,12 +169,8 @@ export default function Header() {
   });
 
   const topHeaderData = {
-    welcomeText: navigation.topLinks.welcomeText,
-    settingsLabel: navigation.topLinks.settingsLabel,
-    settings: navigation.topLinks.settings,
-    currencies: navigation.topLinks.currencies,
-    languages: navigation.topLinks.languages,
-    compare: navigation.topLinks.compare,
+    welcomeText: navigation.topWelcomeText,
+    links: navigation.topLinks ?? [],
   };
 
   return (
