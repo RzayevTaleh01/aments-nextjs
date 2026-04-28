@@ -1,1 +1,53 @@
-.scope{}
+.button {
+  display: block;
+  position: fixed;
+  width: 0;
+  height: 0;
+  bottom: 23px;
+  right: 23px;
+  padding: 0;
+  overflow: hidden;
+  outline: 0;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  background: var(--aments-color-ea1c26);
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.3s cubic-bezier(0.25, 0.25, 0, 1);
+
+  background-image: url("/assets/images/icon/top-arrow.svg");
+  background-position: center 50%;
+  background-repeat: no-repeat;
+}
+
+.button:hover {
+  background-color: var(--aments-color-ea1c26);
+  text-decoration: none;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5), 0 3px 15px rgba(0, 0, 0, 0.5);
+}
+
+.button::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  content: "";
+  width: 0;
+  border-radius: 100%;
+  background: var(--aments-color-ed3e47);
+  background-image: url("/assets/images/icon/top-arrow.svg");
+  background-position: center 50%;
+  background-repeat: no-repeat;
+}
+
+.button:active::before {
+  width: 120%;
+  padding-top: 120%;
+  transition: all 0.2s ease-out;
+}
+
+.visible {
+  width: 56px;
+  height: 56px;
+}

@@ -17,18 +17,18 @@ export default function ProductTabsSection({ title, tabs }) {
   }, [activeId, tabs]);
 
   return (
-    <div className={cn(styles.scope, "product-tab-section section-top-gap-100")}>
+    <div className={cn(styles.root, "product-tab-section section-top-gap-100")}>
       <div className="section-content-gap">
         <div className="container">
           <div className="row">
             <div className="section-content d-flex justify-content-between align-items-md-center align-items-start flex-md-row flex-column">
               <h3 className="section-title">{title}</h3>
-              <ul className="tablist nav product-tab-btn">
+              <ul className={cn("nav", styles.tabList)}>
                 {tabs.map((tab) => (
-                  <li key={tab.id}>
+                  <li key={tab.id} className={styles.tabItem}>
                     <button
                       type="button"
-                      className={cn("nav-link", resolvedActiveId === tab.id && "active")}
+                      className={cn(styles.tabButton, resolvedActiveId === tab.id && styles.tabButtonActive)}
                       onClick={() => setActiveId(tab.id)}
                     >
                       {tab.label}
@@ -50,7 +50,7 @@ export default function ProductTabsSection({ title, tabs }) {
                   <div
                     key={tab.id}
                     id={tab.id}
-                    className={cn("tab-pane", resolvedActiveId === tab.id && "show active")}
+                    className={cn(styles.tabPane, resolvedActiveId === tab.id && styles.tabPaneActive)}
                   >
                     <Carousel
                       items={tab.products}

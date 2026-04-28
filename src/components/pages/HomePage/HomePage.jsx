@@ -7,11 +7,10 @@ import {
 } from "@/components/sections";
 import { products } from "@/constants/products";
 import { companyLogos, home1HeroSlides, homeBanners, popularCategories } from "@/constants/home";
-import styles from "./HomePage.module.scss";
 
 export default function HomePage() {
   return (
-    <div className={styles.scope}>
+    <>
       <HeroHome1 slides={home1HeroSlides} />
       <PopularCategoriesSection categories={popularCategories} />
       <BannerSection banners={homeBanners} />
@@ -24,6 +23,6 @@ export default function HomePage() {
         ]}
       />
       <CompanyLogoSection logos={companyLogos} />
-    </div>
+    </>
   );
 }

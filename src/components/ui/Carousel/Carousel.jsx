@@ -25,7 +25,7 @@ export default function Carousel({
   if (pagination) modules.push(Pagination);
 
   return (
-    <div className={cn(styles.scope, "relative", className)}>
+    <div className={cn(styles.root, "relative", className)}>
       <Swiper
         className={cn("w-full", swiperClassName)}
         modules={modules}

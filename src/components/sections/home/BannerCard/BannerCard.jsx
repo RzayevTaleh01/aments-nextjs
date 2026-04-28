@@ -6,7 +6,7 @@ import styles from "./BannerCard.module.scss";
 export default function BannerCard({ banner, delay = 0, className }) {
   return (
     <Reveal delay={delay} className={className}>
-      <div className={`${styles.scope} group relative overflow-hidden rounded-3xl`}>
+      <div className={`${styles.root} group relative overflow-hidden rounded-3xl`}>
         <Link href={banner.href} className="absolute inset-0 z-10">
           <span className="sr-only">{banner.title}</span>
         </Link>

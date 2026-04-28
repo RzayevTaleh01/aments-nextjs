@@ -2,40 +2,67 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useCallback, useState } from "react";
 import { OffcanvasPanel } from "@/components/templates";
 import { Icon } from "@/components/ui";
+import { cn } from "@/utils/cn";
+import styles from "./MobileMenuOffcanvas.module.scss";
 
-export default function HeaderMobileMenuOffcanvas({
-  cx,
+export default function MobileMenuOffcanvas({
   isOpen,
   onClose,
-  mobileMenuRef,
 }) {
+  const [openByGroup, setOpenByGroup] = useState({});
+
+  const toggleGroup = useCallback((groupId, key) => {
+    setOpenByGroup((prev) => ({
+      ...prev,
+      [groupId]: prev[groupId] === key ? null : key,
+    }));
+  }, []);
+
+  const isGroupOpen = (groupId, key) => openByGroup[groupId] === key;
+
+  const createToggleClickHandler = useCallback(
+    (groupId, key) => (e) => {
+      e.preventDefault();
+      toggleGroup(groupId, key);
+    },
+    [toggleGroup]
+  );
+
+  const isRootHomeOpen = isGroupOpen("root", "home");
+  const isRootShopOpen = isGroupOpen("root", "shop");
+  const isRootPagesOpen = isGroupOpen("root", "pages");
+  const isShopLayoutOpen = isGroupOpen("shop-sections", "layout");
+  const isShopPagesOpen = isGroupOpen("shop-sections", "pages");
+  const isShopProductOpen = isGroupOpen("shop-sections", "product");
+
   return (
     <OffcanvasPanel
       id="mobile-menu-offcanvas"
-      className={cx("offcanvas offcanvas-leftside offcanvas-mobile-menu-section")}
+      className={cn(styles, "offcanvas offcanvas-leftside offcanvas-mobile-menu-section")}
       isOpen={isOpen}
-      openClassName={cx("offcanvas-open")}
-      headerClassName={cx("offcanvas-header d-flex justify-content-end")}
-      closeButtonClassName={cx("offcanvas-close")}
+      openClassName={cn(styles, "offcanvas-open")}
+      headerClassName={cn(styles, "offcanvas-header d-flex justify-content-end")}
+      closeButtonClassName={cn(styles, "offcanvas-close")}
       closeIconName="FaTimes"
       onClose={onClose}
     >
-      <div className={cx("offcanvas-mobile-menu-wrapper")}>
-        <div className={cx("mobile-menu-top")}>
+      <div className={cn(styles, "offcanvas-mobile-menu-wrapper")}>
+        <div className={cn(styles, "mobile-menu-top")}>
           <span>Welcome to our store!</span>
-          <ul className={cx("mobile-menu-user-menu")}>
+          <ul className={cn(styles, "mobile-menu-user-menu")}>
             <li>
-              <Link className={cx("header-user-menu-link")} href="/compare" onClick={onClose}>
+              <Link className={cn(styles, "header-user-menu-link")} href="/compare" onClick={onClose}>
                 <Icon name="FaRetweet" size={14} /> Compare (0)
               </Link>
             </li>
-            <li className={cx("has-mobile-user-dropdown")}>
-              <Link className={cx("mobile-user-menu-link")} href="/" onClick={onClose}>
-                Setting
+            <li className={cn(styles, "has-mobile-user-dropdown")}>
+              <Link className={cn(styles, "mobile-user-menu-link")} href="/" onClick={onClose}>
+                Setting <Icon name="FaAngleDown" size={14} />
               </Link>
-              <ul className={cx("mobile-user-sub-menu")}>
+              <ul className={cn(styles, "mobile-user-sub-menu")}>
                 <li>
                   <Link href="/checkout" onClick={onClose}>
                     Checkout
@@ -58,11 +85,11 @@ export default function HeaderMobileMenuOffcanvas({
                 </li>
               </ul>
             </li>
-            <li className={cx(" has-mobile-user-dropdown")}>
-              <Link className={cx("mobile-user-menu-link")} href="/" onClick={onClose}>
-                $ USD
+            <li className={cn(styles, "has-mobile-user-dropdown")}>
+              <Link className={cn(styles, "mobile-user-menu-link")} href="/" onClick={onClose}>
+                $ USD <Icon name="FaAngleDown" size={14} />
               </Link>
-              <ul className={cx("mobile-user-sub-menu")}>
+              <ul className={cn(styles, "mobile-user-sub-menu")}>
                 <li>
                   <Link href="/" onClick={onClose}>
                     EUR – Euro
@@ -85,15 +112,15 @@ export default function HeaderMobileMenuOffcanvas({
                 </li>
               </ul>
             </li>
-            <li className={cx("has-mobile-user-dropdown")}>
-              <Link className={cx("mobile-user-menu-link")} href="/" onClick={onClose}>
-                English
+            <li className={cn(styles, "has-mobile-user-dropdown")}>
+              <Link className={cn(styles, "mobile-user-menu-link")} href="/" onClick={onClose}>
+                English <Icon name="FaAngleDown" size={14} />
               </Link>
-              <ul className={cx("mobile-user-sub-menu")}>
+              <ul className={cn(styles, "mobile-user-sub-menu")}>
                 <li>
                   <Link href="/" onClick={onClose}>
                     <Image
-                      className={cx("user-sub-menu-link-icon")}
+                      className={cn(styles, "user-sub-menu-link-icon")}
                       src="/assets/images/icon/lang-en.png"
                       alt=""
                       width={16}
@@ -105,7 +132,7 @@ export default function HeaderMobileMenuOffcanvas({
                 <li>
                   <Link href="/" onClick={onClose}>
                     <Image
-                      className={cx("user-sub-menu-link-icon")}
+                      className={cn(styles, "user-sub-menu-link-icon")}
                       src="/assets/images/icon/lang-gr.png"
                       alt=""
                       width={16}
@@ -118,69 +145,80 @@ export default function HeaderMobileMenuOffcanvas({
             </li>
           </ul>
         </div>
-        <div className={cx("mobile-menu-center")}>
+        <div className={cn(styles, "mobile-menu-center")}>
           <form action="#" method="post">
-            <div className={cx("header-search-box default-search-style d-flex")}>
+            <div className={cn(styles, "header-search-box default-search-style d-flex")}>
               <input
-                className={cx("default-search-style-input-box border-around border-right-none")}
+                className={cn(styles, "default-search-style-input-box border-around border-right-none")}
                 type="search"
                 placeholder="Search entire store here ..."
                 required
               />
-              <button className={cx("default-search-style-input-btn")} type="submit">
+              <button className={cn(styles, "default-search-style-input-btn")} type="submit">
                 <Icon name="FaSearch" size={16} />
               </button>
             </div>
           </form>
-          <div className={cx("mobile-menu-customer-support")}>
-            <div className={cx("mobile-menu-customer-support-icon")}>
+          <div className={cn(styles, "mobile-menu-customer-support")}>
+            <div className={cn(styles, "mobile-menu-customer-support-icon")}>
               <Image src="/assets/images/icon/support-icon.png" alt="" width={48} height={48} />
             </div>
-            <div className={cx("mobile-menu-customer-support-text")}>
+            <div className={cn(styles, "mobile-menu-customer-support-text")}>
               <span>Customer Support</span>
-              <a className={cx("mobile-menu-customer-support-text-phone")} href="tel:(08)123456789">
+              <a className={cn(styles, "mobile-menu-customer-support-text-phone")} href="tel:(08)123456789">
                 (08) 123 456 789
               </a>
             </div>
           </div>
-          <ul className={cx("mobile-action-icon")}>
-            <li className={cx("mobile-action-icon-item")}>
-              <Link href="/wishlist" className={cx("mobile-action-icon-link")} onClick={onClose}>
+          <ul className={cn(styles, "mobile-action-icon")}>
+            <li className={cn(styles, "mobile-action-icon-item")}>
+              <Link href="/wishlist" className={cn(styles, "mobile-action-icon-link")} onClick={onClose}>
                 <Icon name="FaHeart" />
-                <span className={cx("mobile-action-icon-item-count")}>3</span>
+                <span className={cn(styles, "mobile-action-icon-item-count")}>3</span>
               </Link>
             </li>
-            <li className={cx("mobile-action-icon-item")}>
-              <Link href="/cart" className={cx("mobile-action-icon-link")} onClick={onClose}>
+            <li className={cn(styles, "mobile-action-icon-item")}>
+              <Link href="/cart" className={cn(styles, "mobile-action-icon-link")} onClick={onClose}>
                 <Icon name="FaShoppingCart" />
-                <span className={cx("mobile-action-icon-item-count")}>3</span>
+                <span className={cn(styles, "mobile-action-icon-item-count")}>3</span>
               </Link>
             </li>
           </ul>
         </div>
-        <div className={cx("mobile-menu-bottom")}>
-          <div className={cx("offcanvas-menu")} ref={mobileMenuRef}>
+        <div className={cn(styles, "mobile-menu-bottom")}>
+          <div className={cn(styles, "offcanvas-menu")}>
             <ul>
-              <li>
-                <a href="#">
+              <li className={cn(styles, isRootHomeOpen && "active")}>
+                <a href="#" onClick={createToggleClickHandler("root", "home")}>
                   <span>Home</span>
                 </a>
-                <ul className={cx("mobile-sub-menu")}>
+                <ul className={cn(styles, "mobile-sub-menu")}>
                   <li>
                     <Link href="/" onClick={onClose}>
                       Home 1
                     </Link>
                   </li>
                 </ul>
+                <button
+                  type="button"
+                  className={cn(styles, "offcanvas-menu-expand")}
+                  onClick={() => toggleGroup("root", "home")}
+                  aria-label="Toggle Home menu"
+                  aria-expanded={isRootHomeOpen}
+                >
+                  <Icon name={isRootHomeOpen ? "FaMinus" : "FaPlus"} size={14} />
+                </button>
               </li>
-              <li>
-                <a href="#">
+              <li className={cn(styles, isRootShopOpen && "active")}>
+                <a href="#" onClick={createToggleClickHandler("root", "shop")}>
                   <span>Shop</span>
                 </a>
-                <ul className={cx("mobile-sub-menu")}>
-                  <li>
-                    <a href="#">Shop Layout</a>
-                    <ul className={cx("mobile-sub-menu")}>
+                <ul className={cn(styles, "mobile-sub-menu")}>
+                  <li className={cn(styles, isShopLayoutOpen && "active")}>
+                    <a href="#" onClick={createToggleClickHandler("shop-sections", "layout")}>
+                      Shop Layout
+                    </a>
+                    <ul className={cn(styles, "mobile-sub-menu")}>
                       <li>
                         <Link href="/shop/grid/sidebar-left" onClick={onClose}>
                           Grid Left Sidebar
@@ -207,12 +245,23 @@ export default function HeaderMobileMenuOffcanvas({
                         </Link>
                       </li>
                     </ul>
+                    <button
+                      type="button"
+                      className={cn(styles, "offcanvas-menu-expand")}
+                      onClick={() => toggleGroup("shop-sections", "layout")}
+                      aria-label="Toggle Shop Layout menu"
+                      aria-expanded={isShopLayoutOpen}
+                    >
+                      <Icon name={isShopLayoutOpen ? "FaMinus" : "FaPlus"} size={14} />
+                    </button>
                   </li>
                 </ul>
-                <ul className={cx("mobile-sub-menu")}>
-                  <li>
-                    <a href="#">Shop Pages</a>
-                    <ul className={cx("mobile-sub-menu")}>
+                <ul className={cn(styles, "mobile-sub-menu")}>
+                  <li className={cn(styles, isShopPagesOpen && "active")}>
+                    <a href="#" onClick={createToggleClickHandler("shop-sections", "pages")}>
+                      Shop Pages
+                    </a>
+                    <ul className={cn(styles, "mobile-sub-menu")}>
                       <li>
                         <Link href="/cart" onClick={onClose}>
                           Cart
@@ -249,12 +298,23 @@ export default function HeaderMobileMenuOffcanvas({
                         </Link>
                       </li>
                     </ul>
+                    <button
+                      type="button"
+                      className={cn(styles, "offcanvas-menu-expand")}
+                      onClick={() => toggleGroup("shop-sections", "pages")}
+                      aria-label="Toggle Shop Pages menu"
+                      aria-expanded={isShopPagesOpen}
+                    >
+                      <Icon name={isShopPagesOpen ? "FaMinus" : "FaPlus"} size={14} />
+                    </button>
                   </li>
                 </ul>
-                <ul className={cx("mobile-sub-menu")}>
-                  <li>
-                    <a href="#">Product Single</a>
-                    <ul className={cx("mobile-sub-menu")}>
+                <ul className={cn(styles, "mobile-sub-menu")}>
+                  <li className={cn(styles, isShopProductOpen && "active")}>
+                    <a href="#" onClick={createToggleClickHandler("shop-sections", "product")}>
+                      Product Single
+                    </a>
+                    <ul className={cn(styles, "mobile-sub-menu")}>
                       <li>
                         <Link href="/product/default" onClick={onClose}>
                           Product Default
@@ -311,14 +371,32 @@ export default function HeaderMobileMenuOffcanvas({
                         </Link>
                       </li>
                     </ul>
+                    <button
+                      type="button"
+                      className={cn(styles, "offcanvas-menu-expand")}
+                      onClick={() => toggleGroup("shop-sections", "product")}
+                      aria-label="Toggle Product Single menu"
+                      aria-expanded={isShopProductOpen}
+                    >
+                      <Icon name={isShopProductOpen ? "FaMinus" : "FaPlus"} size={14} />
+                    </button>
                   </li>
                 </ul>
+                <button
+                  type="button"
+                  className={cn(styles, "offcanvas-menu-expand")}
+                  onClick={() => toggleGroup("root", "shop")}
+                  aria-label="Toggle Shop menu"
+                  aria-expanded={isRootShopOpen}
+                >
+                  <Icon name={isRootShopOpen ? "FaMinus" : "FaPlus"} size={14} />
+                </button>
               </li>
-              <li>
-                <a href="#">
+              <li className={cn(styles, isRootPagesOpen && "active")}>
+                <a href="#" onClick={createToggleClickHandler("root", "pages")}>
                   <span>Pages</span>
                 </a>
-                <ul className={cx("mobile-sub-menu")}>
+                <ul className={cn(styles, "mobile-sub-menu")}>
                   <li>
                     <Link href="/about-us" onClick={onClose}>
                       About Us
@@ -345,6 +423,15 @@ export default function HeaderMobileMenuOffcanvas({
                     </Link>
                   </li>
                 </ul>
+                <button
+                  type="button"
+                  className={cn(styles, "offcanvas-menu-expand")}
+                  onClick={() => toggleGroup("root", "pages")}
+                  aria-label="Toggle Pages menu"
+                  aria-expanded={isRootPagesOpen}
+                >
+                  <Icon name={isRootPagesOpen ? "FaMinus" : "FaPlus"} size={14} />
+                </button>
               </li>
               <li>
                 <Link href="/contact-us" onClick={onClose}>
@@ -353,32 +440,32 @@ export default function HeaderMobileMenuOffcanvas({
               </li>
             </ul>
           </div>
-          <a className={cx("mobile-menu-email icon-text-end")} href="mailto:info@yourdomain.com">
+          <a className={cn(styles, "mobile-menu-email icon-text-end")} href="mailto:info@yourdomain.com">
             <Icon name="FaEnvelope" size={14} /> info@yourdomain.com
           </a>
-          <ul className={cx("mobile-menu-social")}>
+          <ul className={cn(styles, "mobile-menu-social")}>
             <li>
-              <Link href="/" className={cx("facebook")} onClick={onClose}>
+              <Link href="/" className={cn(styles, "facebook")} onClick={onClose}>
                 <Icon name="FaFacebookF" size={14} />
               </Link>
             </li>
             <li>
-              <Link href="/" className={cx("twitter")} onClick={onClose}>
+              <Link href="/" className={cn(styles, "twitter")} onClick={onClose}>
                 <Icon name="FaTwitter" size={14} />
               </Link>
             </li>
             <li>
-              <Link href="/" className={cx("youtube")} onClick={onClose}>
+              <Link href="/" className={cn(styles, "youtube")} onClick={onClose}>
                 <Icon name="FaYoutube" size={14} />
               </Link>
             </li>
             <li>
-              <Link href="/" className={cx("pinterest")} onClick={onClose}>
+              <Link href="/" className={cn(styles, "pinterest")} onClick={onClose}>
                 <Icon name="FaPinterestP" size={14} />
               </Link>
             </li>
             <li>
-              <Link href="/" className={cx("instagram")} onClick={onClose}>
+              <Link href="/" className={cn(styles, "instagram")} onClick={onClose}>
                 <Icon name="FaInstagram" size={14} />
               </Link>
             </li>

@@ -7,7 +7,7 @@ export default function ProductCard({ product, className }) {
   return (
     <div
       className={cn(
-        styles.scope,
+        styles.root,
         "group overflow-hidden rounded-2xl border border-zinc-100 bg-white dark:border-zinc-900 dark:bg-zinc-950",
         className
       )}

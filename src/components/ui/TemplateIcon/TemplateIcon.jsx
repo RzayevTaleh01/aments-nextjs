@@ -8,5 +8,5 @@ export default function Icon({ name, className, ...props }) {
   const IconComponent = FaIcons[name];
   if (!IconComponent) return null;
 
-  return <IconComponent {...props} className={cn(styles.scope, className)} />;
+  return <IconComponent {...props} className={cn(styles.root, className)} />;
 }

@@ -1,11 +1,10 @@
-import Image from "next/image";
-import Link from "next/link";
 import { cn } from "@/utils/cn";
+import { ProductCategorySingle } from "@/components/ui";
 import styles from "./PopularCategoriesSection.module.scss";
 
 export default function PopularCategoriesSection({ categories }) {
   return (
-    <div className={cn(styles.scope, "product-catagory-section section-top-gap-100")}>
+    <div className={cn(styles.root, "product-catagory-section section-top-gap-100")}>
       <div className="section-content-gap">
         <div className="container">
           <div className="row">
@@ -21,15 +20,7 @@ export default function PopularCategoriesSection({ categories }) {
           <div className="row">
             {categories.map((cat) => (
               <div key={cat.id} className="col-lg-3 col-md-4 col-sm-6 col-12">
-                <Link href={cat.href} className="product-catagory-single">
-                  <div className="product-catagory-img">
-                    <Image src={cat.imageSrc} alt={cat.title} width={300} height={300} />
-                  </div>
-                  <div className="product-catagory-content">
-                    <h5 className="product-catagory-title">{cat.title}</h5>
-                    <span className="product-catagory-items">{cat.items}</span>
-                  </div>
-                </Link>
+                <ProductCategorySingle href={cat.href} imageSrc={cat.imageSrc} title={cat.title} items={cat.items} />
               </div>
             ))}
           </div>

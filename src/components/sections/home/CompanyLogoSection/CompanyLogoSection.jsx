@@ -7,7 +7,7 @@ import styles from "./CompanyLogoSection.module.scss";
 
 export default function CompanyLogoSection({ logos }) {
   return (
-    <div className={cn(styles.scope, "company-logo-section section-top-gap-100")}>
+    <div className={cn(styles.root, "company-logo-section section-top-gap-100")}>
       <div className="company-logo-wrapper">
         <div className="container">
           <div className="row">
@@ -21,9 +21,9 @@ export default function CompanyLogoSection({ logos }) {
                   576: { slidesPerView: 3, spaceBetween: 18 },
                   992: { slidesPerView: 4, spaceBetween: 22 },
                 }}
-                swiperClassName="company-logo-slider"
+                swiperClassName={styles.slider}
                 renderItem={(logo) => (
-                  <div className="company-logo-single">
+                  <div className={styles.item}>
                     <Image src={logo.imageSrc} alt={logo.alt} width={200} height={80} className="img-fluid company-logo-image" />
                   </div>
                 )}

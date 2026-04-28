@@ -1,10 +1,12 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ProductCardTemplate } from "@/components/templates";
 import { Breadcrumb, Icon } from "@/components/ui";
 import { products as allProducts } from "@/constants/products";
 import styles from "./ShopCatalogPage.module.scss";
+import { cn } from "@/utils/cn";
 
 export default function ShopCatalogPage({
   title,
@@ -15,10 +17,12 @@ export default function ShopCatalogPage({
 }) {
   const products = allProducts.slice(0, 8);
   const rowClass = sidebarPosition === "right" ? "row flex-column-reverse flex-lg-row-reverse" : "row flex-column-reverse flex-lg-row";
-  const isGridDefault = defaultView !== "list";
+  const [activeView, setActiveView] = useState(defaultView);
+  const isGridDefault = activeView !== "list";
+  const gridLayoutId = useMemo(() => (withSidebar ? (sidebarPosition === "right" ? "layout-3-grid" : "layout-3-grid") : "layout-4-grid"), [withSidebar, sidebarPosition]);
 
   return (
-    <div className={styles.scope}>
+    <div>
       <Breadcrumb
         title={title}
         items={[
@@ -34,8 +38,8 @@ export default function ShopCatalogPage({
             <div className={rowClass}>
               <div className="col-lg-3">
                 <div className="siderbar-section" data-aos="fade-up" data-aos-delay="0">
-                  <div className="sidebar-single-widget">
-                    <h6 className="sidebar-title">FILTER BY PRICE</h6>
+                  <div className={styles.sidebarSingleWidget}>
+                    <h6 className={styles.sidebarTitle}>FILTER BY PRICE</h6>
                     <div className="sidebar-content">
                       <div id="slider-range" />
                       <div className="filter-type-price">
@@ -45,8 +49,8 @@ export default function ShopCatalogPage({
                     </div>
                   </div>
 
-                  <div className="sidebar-single-widget">
-                    <h6 className="sidebar-title">CATEGORIES</h6>
+                  <div className={styles.sidebarSingleWidget}>
+                    <h6 className={styles.sidebarTitle}>CATEGORIES</h6>
                     <div className="sidebar-content">
                       <div className="filter-type-select">
                         <ul>
@@ -63,8 +67,8 @@ export default function ShopCatalogPage({
                     </div>
                   </div>
 
-                  <div className="sidebar-single-widget">
-                    <h6 className="sidebar-title">MANUFACTURER</h6>
+                  <div className={styles.sidebarSingleWidget}>
+                    <h6 className={styles.sidebarTitle}>MANUFACTURER</h6>
                     <div className="sidebar-content">
                       <div className="filter-type-select">
                         <ul>
@@ -87,8 +91,8 @@ export default function ShopCatalogPage({
                     </div>
                   </div>
 
-                  <div className="sidebar-single-widget">
-                    <h6 className="sidebar-title">SELECT BY COLOR</h6>
+                  <div className={styles.sidebarSingleWidget}>
+                    <h6 className={styles.sidebarTitle}>SELECT BY COLOR</h6>
                     <div className="sidebar-content">
                       <div className="filter-type-select">
                         <ul>
@@ -111,9 +115,9 @@ export default function ShopCatalogPage({
                     </div>
                   </div>
 
-                  <div className="sidebar-single-widget">
+                  <div className={styles.sidebarSingleWidget}>
                     <div className="sidebar-content">
-                      <Link href="/product/default" className="sidebar-banner">
+                      <Link href="/product/default" className={styles.sidebarBanner}>
                         <img className="img-fluid" src="/assets/images/banner_images/aments_banner_04.jpg" alt="" />
                       </Link>
                     </div>
@@ -127,16 +131,24 @@ export default function ShopCatalogPage({
                     <div className="row">
                       <div className="sort-box d-flex justify-content-between align-items-center flex-wrap">
                         <div className="sort-tablist">
-                          <ul className="tablist nav sort-tab-btn">
-                            <li>
-                              <a className={`nav-link${isGridDefault ? " active" : ""}`} data-bs-toggle="tab" href="#layout-3-grid">
+                          <ul className={cn("nav", styles.sortTabBtn)}>
+                            <li className={styles.sortTabBtnItem}>
+                              <button
+                                type="button"
+                                className={cn(styles.sortTabLink, isGridDefault && styles.sortTabLinkActive)}
+                                onClick={() => setActiveView("grid")}
+                              >
                                 <img src="/assets/images/icon/bkg_grid.png" alt="" />
-                              </a>
+                              </button>
                             </li>
-                            <li>
-                              <a className={`nav-link${!isGridDefault ? " active" : ""}`} data-bs-toggle="tab" href="#layout-list">
+                            <li className={styles.sortTabBtnItem}>
+                              <button
+                                type="button"
+                                className={cn(styles.sortTabLink, !isGridDefault && styles.sortTabLinkActive)}
+                                onClick={() => setActiveView("list")}
+                              >
                                 <img src="/assets/images/icon/bkg_list.png" alt="" />
-                              </a>
+                              </button>
                             </li>
                           </ul>
                         </div>
@@ -169,7 +181,7 @@ export default function ShopCatalogPage({
                     <div className="row">
                       <div className="col-12">
                         <div className="tab-content tab-animate-zoom">
-                          <div className={`tab-pane sort-layout-single${isGridDefault ? " active show" : ""}`} id="layout-3-grid">
+                          <div className={cn(styles.tabPane, isGridDefault && styles.tabPaneActive)} id={gridLayoutId}>
                             <div className="row">
                               {products.map((p, idx) => (
                                 <div key={p.id} className="col-xl-4 col-sm-6 col-12">
@@ -181,7 +193,7 @@ export default function ShopCatalogPage({
                             </div>
                           </div>
 
-                          <div className={`tab-pane sort-layout-single${!isGridDefault ? " active show" : ""}`} id="layout-list">
+                          <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
                               {products.slice(0, 5).map((p) => (
                                 <div key={p.id} className="col-12">
@@ -275,16 +287,24 @@ export default function ShopCatalogPage({
                     <div className="row">
                       <div className="sort-box d-flex justify-content-between align-items-center flex-wrap">
                         <div className="sort-tablist">
-                          <ul className="tablist nav sort-tab-btn">
-                            <li>
-                              <a className={`nav-link${isGridDefault ? " active" : ""}`} data-bs-toggle="tab" href="#layout-4-grid">
+                          <ul className={cn("nav", styles.sortTabBtn)}>
+                            <li className={styles.sortTabBtnItem}>
+                              <button
+                                type="button"
+                                className={cn(styles.sortTabLink, isGridDefault && styles.sortTabLinkActive)}
+                                onClick={() => setActiveView("grid")}
+                              >
                                 <img src="/assets/images/icon/bkg_grid.png" alt="" />
-                              </a>
+                              </button>
                             </li>
-                            <li>
-                              <a className={`nav-link${!isGridDefault ? " active" : ""}`} data-bs-toggle="tab" href="#layout-list">
+                            <li className={styles.sortTabBtnItem}>
+                              <button
+                                type="button"
+                                className={cn(styles.sortTabLink, !isGridDefault && styles.sortTabLinkActive)}
+                                onClick={() => setActiveView("list")}
+                              >
                                 <img src="/assets/images/icon/bkg_list.png" alt="" />
-                              </a>
+                              </button>
                             </li>
                           </ul>
                         </div>
@@ -317,7 +337,7 @@ export default function ShopCatalogPage({
                     <div className="row">
                       <div className="col-12">
                         <div className="tab-content tab-animate-zoom">
-                          <div className={`tab-pane sort-layout-single${isGridDefault ? " active show" : ""}`} id="layout-4-grid">
+                          <div className={cn(styles.tabPane, isGridDefault && styles.tabPaneActive)} id="layout-4-grid">
                             <div className="row">
                               {products.map((p, idx) => (
                                 <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12">
@@ -329,7 +349,7 @@ export default function ShopCatalogPage({
                             </div>
                           </div>
 
-                          <div className={`tab-pane sort-layout-single${!isGridDefault ? " active show" : ""}`} id="layout-list">
+                          <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
                               {products.slice(0, 5).map((p) => (
                                 <div key={p.id} className="col-12">

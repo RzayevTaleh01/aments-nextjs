@@ -1,4 +1,4 @@
-import { Header, Footer } from "@/components/sections";
+import { Header, Footer } from "@/components/templates";
 import { GlobalModals } from "@/components/helper";
 import { ScrollTop } from "@/components/ui";
 import styles from "./MainLayout.module.scss";

@@ -20,7 +20,7 @@ export default function ScrollTop() {
     <button
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={cn(styles.scope, "material-scrolltop", visible && "show")}
+      className={cn(styles.button, visible && styles.visible)}
       aria-label="Scroll to top"
     />
   );

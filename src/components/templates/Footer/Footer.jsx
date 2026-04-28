@@ -18,10 +18,8 @@ export default function Footer() {
             <div className="col-lg-3 col-md-3 col-sm-5">
               <div
                 className="footer-widget footer-widget-contact"
-                data-aos="fade-up"
-                data-aos-delay="0"
               >
-                <div className={cn(styles["footer-logo"], "footer-logo")}>
+                <div className={styles["footer-logo"]}>
                   <Link href="/">
                     <img
                       src="/assets/images/logo/logo.png"
@@ -30,19 +28,19 @@ export default function Footer() {
                     />
                   </Link>
                 </div>
-                <div className={cn(styles["footer-contact"], "footer-contact")}>
+                <div className={styles["footer-contact"]}>
                   <p>
                     We are a team of designers and developers that create high
                     quality Magento, Prestashop, Opencart...
                   </p>
-                  <div className="customer-support">
-                    <div className="customer-support-icon">
+                  <div className={styles["customer-support"]}>
+                    <div className={styles["customer-support-icon"]}>
                       <img src="/assets/images/icon/support-icon.png" alt="" />
                     </div>
                     <div className="customer-support-text">
                       <span>Customer Support</span>
                       <a
-                        className="customer-support-text-phone"
+                        className={styles["customer-support-text-phone"]}
                         href="tel:(08)123456789"
                       >
                         (08) 123 456 789
@@ -54,11 +52,9 @@ export default function Footer() {
             </div>
             <div className="col-lg-5 col-md-5 col-sm-7">
               <div
-                className={cn("footer-widget", styles["footer-widget-subscribe"], "footer-widget-subscribe")}
-                data-aos="fade-up"
-                data-aos-delay="200"
+                className={cn("footer-widget", styles["footer-widget-subscribe"])}
               >
-                <h3 className={cn(styles["footer-widget-title"], "footer-widget-title")}>
+                <h3 className={styles["footer-widget-title"]}>
                   Subscribe newsletter to get updated
                 </h3>
                 <form action="#" method="post" onSubmit={(e) => e.preventDefault()}>
@@ -77,11 +73,11 @@ export default function Footer() {
                     </button>
                   </div>
                 </form>
-                <p className={cn(styles["footer-widget-subscribe-note"], "footer-widget-subscribe-note")}>
+                <p className={styles["footer-widget-subscribe-note"]}>
                   We’ll never share your email address <br /> with a
                   third-party.
                 </p>
-                <ul className={cn(styles["footer-social"], "footer-social")}>
+                <ul className={styles["footer-social"]}>
                   <li>
                     <a href="#" className="facebook" onClick={(e) => e.preventDefault()}>
                           <Icon name="FaFacebookF" size={16} />
@@ -112,20 +108,18 @@ export default function Footer() {
             </div>
             <div className="col-lg-4 col-md-4 col-sm-6">
               <div
-                className={cn("footer-widget", styles["footer-widget-menu"], "footer-widget-menu")}
-                data-aos="fade-up"
-                data-aos-delay="600"
+                className={cn("footer-widget", styles["footer-widget-menu"])}
               >
-                <h3 className={cn(styles["footer-widget-title"], "footer-widget-title")}>Information</h3>
-                <div className={cn(styles["footer-menu"], "footer-menu")}>
-                  <ul className={cn(styles["footer-menu-nav"], "footer-menu-nav")}>
+                <h3 className={styles["footer-widget-title"]}>Information</h3>
+                <div className={styles["footer-menu"]}>
+                  <ul className={styles["footer-menu-nav"]}>
                     {information.map((item, index) => (
                       <li key={index}>
                         <Link href={item.href}>{item.label}</Link>
                       </li>
                     ))}
                   </ul>
-                  <ul className={cn(styles["footer-menu-nav"], "footer-menu-nav")}>
+                  <ul className={styles["footer-menu-nav"]}>
                     {account.map((item, index) => (
                       <li key={index}>
                         <Link href={item.href}>{item.label}</Link>
@@ -140,19 +134,19 @@ export default function Footer() {
       </div>{" "}
       {/* End Footer Top Area */}
       {/* Start Footer Bottom Area */}
-      <div className={cn(styles["footer-bottom"], "footer-bottom")}>
+      <div className={styles["footer-bottom"]}>
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-6 col-md-6">
-              <div className="copyright-area">
-                <p className="copyright-area-text">
+              <div className={styles["copyright-area"]}>
+                <p className={styles["copyright-area-text"]}>
                   Copyright &copy; {new Date().getFullYear()}{" "}
                   
                 </p>
               </div>
             </div>
             <div className="col-lg-6 col-md-6">
-              <div className={cn(styles["footer-payment"], "footer-payment")}>
+              <div className={styles["footer-payment"]}>
                 <a href="#">
                   <img
                     className="img-fluid"

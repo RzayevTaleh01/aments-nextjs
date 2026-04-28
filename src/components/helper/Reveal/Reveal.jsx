@@ -32,7 +32,7 @@ export default function Reveal({
 
   return (
     <motion.div
-      className={cn(styles.scope, className)}
+      className={cn(styles.root, className)}
       initial="hidden"
       whileInView="visible"
       viewport={{ once, amount }}

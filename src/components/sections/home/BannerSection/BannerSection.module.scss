@@ -1,1 +1,66 @@
-.scope{}
+.root {
+}
+
+.wrapper {
+  margin-bottom: -30px;
+}
+
+@media (min-width: 576px) {
+  .wrapper {
+    margin-bottom: -30px;
+  }
+}
+
+@media (min-width: 992px) {
+  .wrapper {
+    margin-bottom: -30px;
+  }
+}
+
+.card {
+  position: relative;
+}
+
+.imageLink {
+  overflow: hidden;
+  display: block;
+}
+
+.image {
+  object-fit: cover;
+  width: 100%;
+  transition: all 0.3s ease 0s;
+  transform: scale(1);
+  position: relative;
+}
+
+.card:hover .image {
+  transform: scale(1.2);
+}
+
+.content {
+  position: absolute;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.eyebrow {
+  display: block;
+  font-size: 16px;
+  color: #939292;
+  font-weight: 500;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-top: 6px;
+  margin-bottom: 30px;
+}
+
+.link {
+  color: var(--aments-color-ea1c26);
+  border-bottom: 1px solid;
+  font-weight: 500;
+}

@@ -6,7 +6,7 @@ import styles from "./GlobalModals.module.scss";
 
 export default function GlobalModals() {
   return (
-    <div className={styles.scope}>
+    <div className={styles.root}>
       <AddToCartModal />
       <QuickviewModal />
     </div>

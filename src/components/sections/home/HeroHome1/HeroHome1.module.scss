@@ -1,1 +1,127 @@
-.scope{}
+.root {
+}
+
+.slide {
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  object-fit: cover;
+  height: 360px;
+}
+
+@media (min-width: 576px) {
+  .image {
+    height: 480px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .image {
+    height: 630px;
+  }
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  color: #000;
+}
+
+.eyebrow {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 1px;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 700;
+  position: relative;
+}
+
+@media (min-width: 576px) {
+  .title {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 60px;
+  }
+}
+
+@media (min-width: 992px) {
+  .title {
+    font-size: 68px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .title {
+    font-size: 79px;
+  }
+}
+
+.title::after {
+  position: absolute;
+  content: "";
+  width: 100px;
+  height: 2px;
+  background: #ea1c26;
+  left: 0;
+  bottom: 0;
+}
+
+.description {
+  font-size: 16px;
+  margin-top: 12px;
+  margin-bottom: 38px;
+}
+
+.button {
+  background: #ea1c26;
+  display: inline-block;
+  color: #fff;
+  padding: 10px 15px;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+}
+
+@media (min-width: 576px) {
+  .button {
+    padding: 15px 30px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .button {
+    padding: 20px 40px;
+  }
+}
+
+.button::after {
+  position: absolute;
+  content: "";
+  width: 0%;
+  height: 100%;
+  top: 0;
+  left: auto;
+  right: 0;
+  transition: all 0.3s ease 0s;
+  z-index: -1;
+  background: #000;
+}
+
+.button:hover::after {
+  width: 100%;
+  left: 0;
+  right: auto;
+}

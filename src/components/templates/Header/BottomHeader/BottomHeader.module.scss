@@ -1,0 +1,200 @@
+.header-bottom{
+  background:#333;
+  position:relative
+}
+
+.sticky-header.sticky{
+  position:fixed;
+  z-index:99;
+  width:100%;
+  top:0;
+  background:#333;
+  -webkit-box-shadow:0 0 2px rgba(0,0,0,.1);
+  box-shadow:0 0 2px rgba(0,0,0,.1);
+  -webkit-animation-name:fadeInDown;
+  animation-name:fadeInDown;
+  -webkit-animation-duration:.9s;
+  animation-duration:.9s;
+  -webkit-animation-timing-function:cubic-bezier(.2,1,.22,1);
+  animation-timing-function:cubic-bezier(.2,1,.22,1);
+  -webkit-animation-delay:0s;
+  animation-delay:0s;
+  -webkit-animation-iteration-count:1;
+  animation-iteration-count:1;
+  -webkit-animation-direction:normal;
+  animation-direction:normal;
+  -webkit-animation-fill-mode:none;
+  animation-fill-mode:none;
+  -webkit-animation-play-state:running;
+  animation-play-state:running;
+  border-bottom:0
+}
+
+.main-menu{
+  position:relative
+}
+
+.main-menu nav>ul>li{
+  position:relative;
+  display:inline-block
+}
+
+.main-menu nav>ul>.has-dropdown{
+  margin-right:5px
+}
+
+.main-menu nav>ul>.has-dropdown:last-child{
+  margin-right:0
+}
+
+.main-menu nav>ul>.has-megaitem{
+  position:static
+}
+
+.main-menu nav>ul>li>a{
+  display:block;
+  line-height:24px;
+  padding:15px 30px;
+  font-size:16px;
+  line-height:30px;
+  text-transform:capitalize;
+  font-weight:500;
+  color:#fff
+}
+
+.main-menu nav>ul>li>a.active, .main-menu nav>ul>li>a:hover{
+  background:#ea1c26;
+  color:#fff
+}
+
+.mega-menu-sub>li>a, .sub-menu>li>a{
+  font-weight:400;
+  display:block;
+  line-height:35px;
+  text-transform:capitalize;
+  color:#666;
+  position:relative;
+  -webkit-transition:all .3s ease 0s;
+  transition:all .3s ease 0s
+}
+
+.mega-menu-sub>li>a::after, .sub-menu>li>a::after{
+  position:absolute;
+  content:"";
+  top:50%;
+  left:0;
+  -webkit-transform:translate(0,-50%);
+  transform:translate(0,-50%);
+  height:5px;
+  width:5px;
+  border-radius:50%;
+  background:#ea1c26;
+  visibility:hidden;
+  opacity:0;
+  -webkit-transition:all .3s ease 0s;
+  transition:all .3s ease 0s
+}
+
+.mega-menu-sub>li>a:hover, .sub-menu>li>a:hover{
+  color:#ea1c26;
+  -webkit-transform:translateX(10px);
+  transform:translateX(10px)
+}
+
+.mega-menu-sub>li>a:hover::after, .sub-menu>li>a:hover::after{
+  -webkit-transform:translate(-10px,-50%);
+  transform:translate(-10px,-50%);
+  visibility:visible;
+  opacity:1
+}
+
+.sub-menu{
+  position:absolute;
+  min-width:230px;
+  padding:25px 20px;
+  background:#fff;
+  -webkit-box-shadow:0 3px 11px 0 rgba(0,0,0,.1);
+  box-shadow:0 3px 11px 0 rgba(0,0,0,.1);
+  -webkit-transform:perspective(600px) rotateX(-90deg);
+  transform:perspective(600px) rotateX(-90deg);
+  -webkit-transform-origin:0 0 0;
+  transform-origin:0 0 0;
+  left:0;
+  right:auto;
+  opacity:0;
+  visibility:hidden;
+  -webkit-transition:.5s;
+  transition:.5s;
+  z-index:99;
+  top:100%;
+  text-align:left
+}
+
+.mega-menu{
+  position:absolute;
+  min-width:100%;
+  padding:25px 30px 30px 30px;
+  background:#fff;
+  -webkit-box-shadow:0 3px 11px 0 rgba(0,0,0,.1);
+  box-shadow:0 3px 11px 0 rgba(0,0,0,.1);
+  -webkit-transform:perspective(600px) rotateX(-90deg);
+  transform:perspective(600px) rotateX(-90deg);
+  -webkit-transform-origin:0 0 0;
+  transform-origin:0 0 0;
+  left:0;
+  right:0;
+  opacity:0;
+  visibility:hidden;
+  -webkit-transition:.5s;
+  transition:.5s;
+  z-index:99;
+  top:100%;
+  text-align:left
+}
+
+.mega-menu-inner{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:justify;
+  -ms-flex-pack:justify;
+  justify-content:space-between
+}
+
+.mega-menu-item-title{
+  font-size:16px;
+  line-height:24px;
+  text-transform:uppercase;
+  font-weight:700;
+  display:block;
+  margin-bottom:13px;
+  color:#333
+}
+
+.mega-menu-item-title:hover{
+  color:#ea1c26
+}
+
+.mega-menu-sub>li{
+  display:block
+}
+
+.main-menu nav>ul>li:hover .mega-menu, .main-menu nav>ul>li:hover .sub-menu{
+  opacity:1;
+  visibility:visible;
+  -webkit-transform:perspective(600px) rotateX(0);
+  transform:perspective(600px) rotateX(0)
+}
+
+.menu-banner{
+  margin-top:20px
+}
+
+.menu-banner>a{
+  display:block;
+  width:100%
+}
+
+.menu-banner img{
+  width:100%
+}

@@ -1,6 +1,79 @@
-.scope{}
-:global(.sidebar-single-widget){margin-top:20px;margin-bottom:40px;padding-bottom:37px;border-bottom:2px solid var(--aments-color-f8f9fa)}
-:global(.sidebar-single-widget:first-child){margin-top:0}
-:global(.sidebar-single-widget:last-child){border-bottom:none;margin-bottom:0;padding-bottom:0}
-:global(.sidebar-title){text-transform:capitalize;margin-bottom:30px;font-weight:600}
-:global(.sidebar-banner){margin:0 auto;display:block}
+.sidebarSingleWidget {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  padding-bottom: 37px;
+  border-bottom: 2px solid var(--aments-color-f8f9fa);
+}
+
+.sidebarSingleWidget:first-child {
+  margin-top: 0;
+}
+
+.sidebarSingleWidget:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sidebarTitle {
+  text-transform: capitalize;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.sidebarBanner {
+  margin: 0 auto;
+  display: block;
+}
+
+.sortTabBtn {
+  margin-top: 0;
+}
+
+.sortTabBtnItem {
+  margin-right: 20px;
+}
+
+.sortTabBtnItem:last-child {
+  margin-right: 0;
+}
+
+.sortTabLink {
+  color: var(--aments-color-666);
+  transition: all 0.3s ease 0s;
+  font-weight: 500;
+  padding: 0;
+  margin-top: 0;
+  background: transparent;
+  border: 0;
+}
+
+.sortTabLink:hover {
+  color: var(--aments-color-ea1c26);
+}
+
+.sortTabLinkActive {
+  color: var(--aments-color-ea1c26);
+}
+
+.sortTabLinkActive img,
+.sortTabLink:hover img {
+  transition: all 0.3s ease 0s;
+  filter: invert(100%);
+}
+
+.tabPane {
+  display: block;
+  height: 0;
+  max-width: 100%;
+  visibility: hidden;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.tabPaneActive {
+  height: auto;
+  visibility: visible;
+  opacity: 1;
+  overflow: visible;
+}
