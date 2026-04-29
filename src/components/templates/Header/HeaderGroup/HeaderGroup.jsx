@@ -2,10 +2,26 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 import { Icon } from "@/components/ui";
 import { cn } from "@/utils/cn";
 import BottomHeader from "../BottomHeader";
 import styles from "./HeaderGroup.module.scss";
+
+function buildDisplayName(user) {
+  return user?.username || user?.email || "My Account";
+}
+
+function buildInitials(displayName) {
+  const parts = String(displayName || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  const first = parts[0]?.[0] || "";
+  const last = parts.length > 1 ? parts[parts.length - 1]?.[0] : "";
+  return `${first}${last}`.toUpperCase() || "U";
+}
 
 export default function HeaderGroup({
   isSticky,
@@ -14,7 +30,15 @@ export default function HeaderGroup({
   BottomHeaderData,
   topHeaderData,
 }) {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
+
+  const displayName = buildDisplayName(session?.user);
+  const initials = buildInitials(displayName);
+
   const topLinks = topHeaderData?.links ?? [];
+  const filteredTopLinks = isAuthenticated ? topLinks.filter((x) => x?.id !== "login" && x?.id !== "register") : topLinks;
 
   return (
     <header className={cn(styles, "header-section d-lg-block d-none")}>
@@ -29,7 +53,7 @@ export default function HeaderGroup({
             <div className={cn(styles, "col-6")}>
               <div className={cn(styles, "header-top--right")}>
                 <ul className={cn(styles, "header-user-menu")}>
-                  {topLinks.map((item) => {
+                  {filteredTopLinks.map((item) => {
                     const hasDropdown = Array.isArray(item.children) && item.children.length > 0;
                     const parentHref = item.href && item.href !== "#" ? item.href : "/";
                     const itemKey = item.id ?? item.href ?? item.label;
@@ -106,18 +130,39 @@ export default function HeaderGroup({
             </div>
             <div className={cn(styles, "col-3 text-end")}>
               <ul className={cn(styles, "header-action-icon")}>
-                <li>
-                  <a href="#offcanvas-wishlish" className={cn(styles, "offcanvas-toggle")} onClick={onOffcanvasToggle}>
-                    <Icon name="FaHeart" />
-                    <span className={cn(styles, "header-action-icon-item-count")}>3</span>
-                  </a>
-                </li>
+                
                 <li>
                   <a href="#offcanvas-add-cart" className={cn(styles, "offcanvas-toggle")} onClick={onOffcanvasToggle}>
                     <Icon name="FaShoppingCart" />
                     <span className={cn(styles, "header-action-icon-item-count")}>3</span>
                   </a>
                 </li>
+                {isAuthenticated ? (
+                  <li className={cn(styles, "profile-menu")}>
+                    <Link href="/my-account" className={cn(styles, "profile-trigger")}>
+                      <span className={cn(styles, "profile-avatar")}>
+                        <Icon name="FaUserCircle" size={28} />
+                      </span>
+                      <span className={cn(styles, "profile-name")}>{displayName}</span>
+                      <Icon name="FaAngleDown" size={14} />
+                    </Link>
+                    <ul className={cn(styles, "profile-sub-menu")}>
+                      <li>
+                        <button
+                          type="button"
+                          className={cn(styles, "profile-logout")}
+                          onClick={async () => {
+                            const callbackUrl = `${process.env.NEXT_PUBLIC_REQUEST_NEXT_ADMIN_BASE_URL ?? ""}/`;
+                            await signOut({ redirect: false, callbackUrl });
+                            router.push("/");
+                          }}
+                        >
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  </li>
+                ) : null}
               </ul>
             </div>
           </div>

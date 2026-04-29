@@ -1,5 +1,14 @@
 :global(.product-default-single) {
-  padding: 0 30px 30px 30px;
+  padding: 0 15px 30px 15px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+:global(.product-default-single:hover) {
+  border-color: #e1e1e1;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
 }
 
 :global(.product-default-content) {
@@ -9,7 +18,7 @@
 
 :global(.product-default-img) {
   display: block;
-  min-height: 273px;
+  min-height: 220px;
   width: 100%;
   object-fit: cover;
 }

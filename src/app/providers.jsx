@@ -3,6 +3,9 @@
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { SessionProvider } from "next-auth/react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Providers({ children }) {
   useEffect(() => {
@@ -16,6 +19,9 @@ export default function Providers({ children }) {
   }, []);
 
   return (
-    <>{children}</>
+    <SessionProvider>
+      {children}
+      <ToastContainer position="top-right" autoClose={5000} closeOnClick pauseOnHover newestOnTop />
+    </SessionProvider>
   );
 }

@@ -10,7 +10,6 @@ export default function LoginPage() {
         title="Login"
         items={[
           { label: "Home", href: "/" },
-          { label: "Shop", href: "/shop/grid/sidebar-left" },
           { label: "Login" },
         ]}
       />

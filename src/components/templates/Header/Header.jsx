@@ -9,7 +9,6 @@ import CartOffcanvas from "../CartOffcanvas";
 import HeaderGroup from "./HeaderGroup";
 import HeaderMobileBar from "./HeaderMobileBar";
 import MobileMenuOffcanvas from "../MobileMenuOffcanvas";
-import WishlistOffcanvas from "../WishlistOffcanvas";
 
 export default function Header() {
   const pathname = usePathname();
@@ -34,10 +33,6 @@ export default function Header() {
     },
     [openOffcanvas]
   );
-
-  useEffect(() => {
-    closeOffcanvas();
-  }, [closeOffcanvas, pathname]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -189,11 +184,6 @@ export default function Header() {
       />
       
       <CartOffcanvas isOpen={openOffcanvasId === "offcanvas-add-cart"} onClose={closeOffcanvas} />
-      
-      <WishlistOffcanvas
-        isOpen={openOffcanvasId === "offcanvas-wishlish"}
-        onClose={closeOffcanvas}
-      />
 
       <div
         className={cn(styles, "offcanvas-overlay")}

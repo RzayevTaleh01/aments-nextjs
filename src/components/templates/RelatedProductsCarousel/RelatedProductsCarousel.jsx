@@ -36,10 +36,7 @@ export default function RelatedProductsCarousel({ products, prevRef, nextRef }) 
                   spaceBetween={30}
                   slidesPerView={4}
                   loop={false}
-                  navigation={{
-                    prevEl: prevRef.current,
-                    nextEl: nextRef.current,
-                  }}
+                  navigation={{}}
                   onBeforeInit={(swiper) => {
                     swiper.params.navigation.prevEl = prevRef.current;
                     swiper.params.navigation.nextEl = nextRef.current;

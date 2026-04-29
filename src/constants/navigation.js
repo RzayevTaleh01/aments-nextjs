@@ -54,7 +54,8 @@ export const navigation = {
       ]
     },
     { id: "contact-us", label: "Contact Us", href: "/contact-us", activeMatch: "/contact-us" },
-    { id: "about-us", label: "About Us", href: "/about-us", activeMatch: "/about-us" }
+    { id: "about-us", label: "About Us", href: "/about-us", activeMatch: "/about-us" },
+    { id: "products", label: "Products", href: "/products", activeMatch: "/products" }
   ],
   // megaMenu: {
   //   shopLayouts: [
