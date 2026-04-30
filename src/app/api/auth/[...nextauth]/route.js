@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { fetchWithTimeout } from "@/services/FetchService";
 import { AUTH_LOGIN_ROUTE } from "@/configs/apiRoutes";
+import ApiService from "@/services/api/ApiService";
 
 export const dynamic = "force-dynamic";
 
@@ -15,24 +15,21 @@ export const authOptions = {
         password: { type: "password" },
       },
       async authorize(credentials) {
-        const baseURL = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL;
-        if (!baseURL) throw new Error("Backend base URL is not configured");
-
-        const res = await fetchWithTimeout(
-          `${baseURL}${AUTH_LOGIN_ROUTE}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
+        let data;
+        try {
+          const res = await ApiService.post(
+            AUTH_LOGIN_ROUTE,
+            {
               username: credentials?.username,
               password: credentials?.password,
-            }),
-          },
-          Number(process.env.NEXT_PUBLIC_REQUEST_TIME_OUT ?? 30000)
-        );
-
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data?.message || "Login failed");
+            },
+            { headers: { "Content-Type": "application/json" } }
+          );
+          data = res?.data;
+        } catch (error) {
+          const message = error?.response?.data?.message || error?.message || "Login failed";
+          throw new Error(message);
+        }
 
         if (!data?.user || !data?.token) throw new Error("Invalid login response");
 

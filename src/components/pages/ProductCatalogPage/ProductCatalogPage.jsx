@@ -3,6 +3,7 @@
 import { Breadcrumb } from "@/components/ui";
 import { products as allProducts } from "@/constants/products";
 import ShopSection from "@/components/sections/shop/ShopSection";
+import { ProductCatalogSidebar } from "@/components/templates";
 
 export default function ProductCatalogPage({
   title,
@@ -19,11 +20,46 @@ export default function ProductCatalogPage({
         title={title}
         items={[
           { label: "Home", href: "/" },
-          { label: "Shop", href: "/shop/grid/sidebar-left" },
+          { label: "Product List", href: "/products" },
           { label: breadcrumbLabel },
         ]}
       />
-      <ShopSection products={products} withSidebar={withSidebar} sidebarPosition={sidebarPosition} defaultView={defaultView} />
+      <ShopSection
+        products={products}
+        withSidebar={withSidebar}
+        sidebarPosition={sidebarPosition}
+        defaultView={defaultView}
+        renderSidebar={({
+          searchInput,
+          setSearchInput,
+          category,
+          setCategory,
+          brand,
+          setBrand,
+          mark,
+          setMark,
+          model,
+          setModel,
+          applyFilters,
+          resetFilters,
+        }) => (
+          <ProductCatalogSidebar
+            title="Filter"
+            searchValue={searchInput}
+            onSearchChange={(e) => setSearchInput(e.target.value)}
+            categoryValue={category}
+            onCategoryChange={(e) => setCategory(e.target.value)}
+            brandValue={brand}
+            onBrandChange={(e) => setBrand(e.target.value)}
+            markValue={mark}
+            onMarkChange={(e) => setMark(e.target.value)}
+            modelValue={model}
+            onModelChange={(e) => setModel(e.target.value)}
+            onSearch={applyFilters}
+            onClear={resetFilters}
+          />
+        )}
+      />
     </div>
   );
 }

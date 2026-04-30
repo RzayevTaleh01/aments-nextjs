@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Fragment, useMemo, useState } from "react";
 import { Icon } from "@/components/ui";
+import styles from "./ProductOffersTable.module.scss";
 
 const defaultGroups = [
   {
@@ -84,7 +85,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
   }, [groups, selectedBrand, selectedQty]);
 
   return (
-    <div className="wishlish-table-wrapper section-top-gap-100">
+    <div className={`${styles.scope} wishlish-table-wrapper section-top-gap-100`}>
       <div className="container">
         <div className="row mb-30">
           <div className="col-lg-3 col-md-4 mb-10">
@@ -189,7 +190,18 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                               <td className="product_quantity">{r.qty}</td>
                               <td className="product_total">{r.price}</td>
                               <td className="product_addcart">
-                                <button type="button">
+                                <button
+                                  type="button"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#modalProductOffer"
+                                  onClick={() => {
+                                    window.dispatchEvent(
+                                      new CustomEvent("aments:product-offer-modal", {
+                                        detail: { row: r, product },
+                                      })
+                                    );
+                                  }}
+                                >
                                   <Icon name="FaShoppingCart" size={16} /> ƏLAVƏ ET
                                 </button>
                               </td>

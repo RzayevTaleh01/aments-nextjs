@@ -6,16 +6,18 @@ import {
   CompanyLogoSection,
 } from "@/components/sections";
 import { products } from "@/constants/products";
-import { companyLogos, home1HeroSlides, homeBanners, popularCategories } from "@/constants/home";
+import { companyLogos, home1HeroSlides, homeBanners, popularCategories as fallbackPopularCategories } from "@/constants/home";
 
-export default function HomePage() {
+export default function HomePage({ popularCategories }) {
+  const categories = popularCategories?.length ? popularCategories : fallbackPopularCategories;
+
   return (
     <>
       <HeroHome1 slides={home1HeroSlides} />
-      <PopularCategoriesSection categories={popularCategories} />
+      <PopularCategoriesSection categories={categories} />
       <BannerSection banners={homeBanners} />
       <ProductTabsSection
-        title="New Arrivals"
+        title="Products"
         tabs={[
           { id: "car_and_drive", label: "Car & Drive", products },
           { id: "motorcycle", label: "Motorcycle", products },

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getSession, signOut } from "next-auth/react";
 import { toast } from "react-toastify";
 
 function getHeaderValue(headers, key) {
@@ -39,18 +38,22 @@ let originalConfig = { url: "" };
 
 ApiService.interceptors.request.use(async (config) => {
     let _config = { ...config };
-    const session = await getSession();
+    _config.headers = _config.headers ?? {};
 
-    if (_config.headers) {
-      if (REQUEST_HEADER_AUTH_KEY && !getHeaderValue(_config.headers, REQUEST_HEADER_AUTH_KEY)) {
-        if (session?.token?.accessToken) {
-          setHeaderIfMissing(_config.headers, REQUEST_HEADER_AUTH_KEY, `${REQUEST_TOKEN_TYPE} ${session?.token?.accessToken}`);
-        }
-      }
+    let session;
+    if (typeof window !== "undefined") {
+      const { getSession } = await import("next-auth/react");
+      session = await getSession();
+    }
 
-      if (session?.adminToken?.accessToken) {
-        setHeaderIfMissing(_config.headers, "Authorization-Admin", `${REQUEST_TOKEN_TYPE} ${session?.adminToken?.accessToken}`);
+    if (REQUEST_HEADER_AUTH_KEY && !getHeaderValue(_config.headers, REQUEST_HEADER_AUTH_KEY)) {
+      if (session?.token?.accessToken) {
+        setHeaderIfMissing(_config.headers, REQUEST_HEADER_AUTH_KEY, `${REQUEST_TOKEN_TYPE} ${session?.token?.accessToken}`);
       }
+    }
+
+    if (session?.adminToken?.accessToken) {
+      setHeaderIfMissing(_config.headers, "Authorization-Admin", `${REQUEST_TOKEN_TYPE} ${session?.adminToken?.accessToken}`);
     }
 
     return _config;
@@ -68,6 +71,7 @@ ApiService.interceptors.response.use(
         originalConfig._retry = true;
 
         if (typeof window !== "undefined") {
+          const { signOut } = await import("next-auth/react");
           await signOut({
             redirect: false,
             callbackUrl: `${REQUEST_NEXT_ADMIN_BASE_URL ?? ""}/`,

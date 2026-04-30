@@ -1,0 +1,89 @@
+.scope :global(.table_desc) {
+  border: 1px solid #eee;
+}
+
+.scope :global(.table_desc table tbody tr td:last-child),
+.scope :global(.table_page table thead tr:last-child th) {
+  border-right: 0;
+}
+
+.scope :global(.table-responsive) {
+  position: relative;
+  z-index: 1;
+}
+
+.scope :global(.table-responsive table thead) {
+  background: #f2f2f2;
+}
+
+.scope :global(.table_page table thead tr th) {
+  color: #333;
+  border-bottom: 3px solid #ea1c26;
+  border-right: 1px solid #eee;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 10px;
+  text-align: center;
+}
+
+.scope :global(.table_page table tbody tr td) {
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #eee;
+  text-align: center;
+  padding: 10px;
+}
+
+.scope :global(.table-responsive table tbody tr td) {
+  border-right: 1px solid #eee;
+  font-weight: 500;
+  text-transform: capitalize;
+  font-size: 14px;
+  text-align: center;
+  min-width: 150px;
+}
+
+.scope :global(.table_page table tbody tr td.product_thumb) {
+  max-width: 180px;
+  overflow: hidden;
+}
+
+.scope :global(.table_page table tbody tr td.product_thumb img) {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+}
+
+.scope :global(.table_page table tbody tr td.product_name) {
+  min-width: 180px;
+}
+
+.scope :global(.table_page table tbody tr td.product_quantity) {
+  min-width: 180px;
+}
+
+.scope :global(.table_page table tbody tr td.product_addcart) {
+  min-width: 180px;
+}
+
+.scope :global(.table_page table tbody tr td.product_addcart button) {
+  background: #ea1c26;
+  font-size: 12px;
+  font-weight: 700;
+  height: 38px;
+  line-height: 18px;
+  padding: 10px 20px;
+  color: #fff;
+  text-transform: uppercase;
+  border-radius: 3px;
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.scope :global(.table_page table tbody tr td.product_addcart button:hover) {
+  background: #333;
+}

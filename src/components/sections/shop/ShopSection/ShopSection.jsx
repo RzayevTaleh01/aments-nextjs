@@ -12,6 +12,7 @@ export default function ShopSection({
   withSidebar = false,
   sidebarPosition = "left",
   defaultView = "list",
+  renderSidebar,
 }) {
   const rowClass = sidebarPosition === "right" ? "row flex-column-reverse flex-lg-row-reverse" : "row flex-column-reverse flex-lg-row";
   const [activeView, setActiveView] = useState(defaultView);
@@ -36,6 +37,35 @@ export default function ShopSection({
     return filteredProducts.slice(0, 5);
   }, [filteredProducts, searchQuery]);
 
+  function applyFilters() {
+    setSearchQuery(searchInput);
+  }
+
+  function resetFilters() {
+    setSearchInput("");
+    setSearchQuery("");
+    setCategory("");
+    setBrand("");
+    setMark("");
+    setModel("");
+  }
+
+  const sidebarApi = {
+    searchInput,
+    setSearchInput,
+    searchQuery,
+    category,
+    setCategory,
+    brand,
+    setBrand,
+    mark,
+    setMark,
+    model,
+    setModel,
+    applyFilters,
+    resetFilters,
+  };
+
   return (
     <div className={styles.scope}>
       <div className="shop-section">
@@ -44,73 +74,79 @@ export default function ShopSection({
             <div className={rowClass}>
               <div className="col-lg-3">
                 <div className="siderbar-section" data-aos="fade-up" data-aos-delay="0">
-                  <div className={styles.sidebarSingleWidget}>
-                    <h6 className={styles.sidebarTitle}>Search</h6>
-                    <div className="sidebar-content">
-                      <form
-                        className="d-flex gap-2"
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          setSearchQuery(searchInput);
-                        }}
-                      >
-                        <input
-                          className="form-control"
-                          type="text"
-                          value={searchInput}
-                          onChange={(e) => setSearchInput(e.target.value)}
-                          placeholder="Ada görə axtar"
-                        />
-                        <button type="submit" className="btn btn-dark">
-                          Search
-                        </button>
-                      </form>
-                    </div>
-                  </div>
+                  {renderSidebar ? (
+                    renderSidebar(sidebarApi)
+                  ) : (
+                    <>
+                      <div className={styles.sidebarSingleWidget}>
+                        <h6 className={styles.sidebarTitle}>Search</h6>
+                        <div className="sidebar-content">
+                          <form
+                            className="d-flex gap-2"
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              applyFilters();
+                            }}
+                          >
+                            <input
+                              className="form-control"
+                              type="text"
+                              value={searchInput}
+                              onChange={(e) => setSearchInput(e.target.value)}
+                              placeholder="Ada görə axtar"
+                            />
+                            <button type="submit" className="btn btn-dark">
+                              Search
+                            </button>
+                          </form>
+                        </div>
+                      </div>
 
-                  <div className={styles.sidebarSingleWidget}>
-                    <h6 className={styles.sidebarTitle}>Categories</h6>
-                    <div className="sidebar-content">
-                      <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
-                        <option value="" />
-                      </select>
-                    </div>
-                  </div>
+                      <div className={styles.sidebarSingleWidget}>
+                        <h6 className={styles.sidebarTitle}>Categories</h6>
+                        <div className="sidebar-content">
+                          <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+                            <option value="" />
+                          </select>
+                        </div>
+                      </div>
 
-                  <div className={styles.sidebarSingleWidget}>
-                    <h6 className={styles.sidebarTitle}>Brend</h6>
-                    <div className="sidebar-content">
-                      <select className="form-select" value={brand} onChange={(e) => setBrand(e.target.value)}>
-                        <option value="" />
-                      </select>
-                    </div>
-                  </div>
+                      <div className={styles.sidebarSingleWidget}>
+                        <h6 className={styles.sidebarTitle}>Brend</h6>
+                        <div className="sidebar-content">
+                          <select className="form-select" value={brand} onChange={(e) => setBrand(e.target.value)}>
+                            <option value="" />
+                          </select>
+                        </div>
+                      </div>
 
-                  <div className={styles.sidebarSingleWidget}>
-                    <h6 className={styles.sidebarTitle}>Mark</h6>
-                    <div className="sidebar-content">
-                      <select className="form-select" value={mark} onChange={(e) => setMark(e.target.value)}>
-                        <option value="" />
-                      </select>
-                    </div>
-                  </div>
+                      <div className={styles.sidebarSingleWidget}>
+                        <h6 className={styles.sidebarTitle}>Mark</h6>
+                        <div className="sidebar-content">
+                          <select className="form-select" value={mark} onChange={(e) => setMark(e.target.value)}>
+                            <option value="" />
+                          </select>
+                        </div>
+                      </div>
 
-                  <div className={styles.sidebarSingleWidget}>
-                    <h6 className={styles.sidebarTitle}>Model</h6>
-                    <div className="sidebar-content">
-                      <select className="form-select" value={model} onChange={(e) => setModel(e.target.value)}>
-                        <option value="" />
-                      </select>
-                    </div>
-                  </div>
+                      <div className={styles.sidebarSingleWidget}>
+                        <h6 className={styles.sidebarTitle}>Model</h6>
+                        <div className="sidebar-content">
+                          <select className="form-select" value={model} onChange={(e) => setModel(e.target.value)}>
+                            <option value="" />
+                          </select>
+                        </div>
+                      </div>
 
-                  <div className={styles.sidebarSingleWidget}>
-                    <div className="sidebar-content">
-                      <Link href="/product/default" className={styles.sidebarBanner}>
-                        <img className="img-fluid" src="/assets/images/banner_images/aments_banner_04.jpg" alt="" />
-                      </Link>
-                    </div>
-                  </div>
+                      <div className={styles.sidebarSingleWidget}>
+                        <div className="sidebar-content">
+                          <Link href="/product/default" className={styles.sidebarBanner}>
+                            <img className="img-fluid" src="/assets/images/banner_images/aments_banner_04.jpg" alt="" />
+                          </Link>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 

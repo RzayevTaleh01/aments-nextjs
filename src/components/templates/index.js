@@ -10,3 +10,4 @@ export { default as RelatedProductsCarousel } from "./RelatedProductsCarousel";
 export { default as LoginTemplate } from "./LoginTemplate";
 export { default as Register } from "./Register";
 export { default as ProductCategorySingle } from "./ProductCategorySingle";
+export { default as ProductCatalogSidebar } from "./ProductCatalogSidebar";
