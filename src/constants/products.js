@@ -2,6 +2,7 @@ export const products = [
   {
     id: "p1",
     name: "New Balance Fresh Foam Kaymin Car Purts",
+    description: "Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts Fresh Balance Fresh Foam Kaymin Car Purts ",
     href: "/product/default",
     imageSrc: "/assets/images/products_images/aments_products_image_1.jpg",
     price: "$25.12",

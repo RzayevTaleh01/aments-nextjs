@@ -1,7 +1,7 @@
 "use client";
 
 import { Breadcrumb } from "@/components/ui";
-import { RegisterTemplate } from "@/components/templates";
+import { Register } from "@/components/templates";
 
 export default function RegisterPage() {
   return (
@@ -14,7 +14,7 @@ export default function RegisterPage() {
           { label: "Register" },
         ]}
       />
-      <RegisterTemplate />
+      <Register />
     </div>
   );
 }

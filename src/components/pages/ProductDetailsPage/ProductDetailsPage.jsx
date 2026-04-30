@@ -3,10 +3,10 @@
 import { useRef, useState } from "react";
 import { Breadcrumb } from "@/components/ui";
 import { products } from "@/constants/products";
-import { ProductDetailsSummary, ProductDetailsTabs, RelatedProductsCarousel, ProductDetailsGallery } from "@/components/templates";
+import { ProductDetailsSummary, ProductDetailsTabs, RelatedProductsCarousel, ProductDetailsGallery, ProductOffersTable } from "@/components/templates";
 import styles from "./ProductDetailsPage.module.scss";
 
-export default function ProductDetailsPage({ title, breadcrumbLabel, productId = "p1" }) {
+export default function ProductDetailsPage({ title, breadcrumbLabel, productId = "p1", variant = "default" }) {
   const product = products.find((p) => p.id === productId) || products[0];
   const [activeTab, setActiveTab] = useState("description");
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -19,7 +19,6 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId =
 
   const safeThumbsSwiper = thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null;
 
-  // Use product images if available, otherwise fallback to defaults
   const productImages = [
     product.imageSrc,
     "/assets/images/products_images/aments_products_image_2.jpg",
@@ -28,6 +27,8 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId =
     "/assets/images/products_images/aments_products_image_5.jpg",
     "/assets/images/products_images/aments_products_image_6.jpg",
   ];
+
+  const galleryVariant = variant === "default" ? "gallery-left" : variant;
 
   return (
     <div className={styles.scope}>
@@ -53,6 +54,7 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId =
                 onActiveImageIndexChange={setActiveImageIndex}
                 thumbPrevRef={thumbPrevRef}
                 thumbNextRef={thumbNextRef}
+                variant={galleryVariant}
               />
             </div>
 
@@ -63,6 +65,7 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId =
         </div>
       </div>
 
+      <ProductOffersTable product={product} />
       <ProductDetailsTabs activeTab={activeTab} onTabChange={setActiveTab} product={product} />
       <RelatedProductsCarousel products={products} prevRef={relatedPrevRef} nextRef={relatedNextRef} />
     </div>

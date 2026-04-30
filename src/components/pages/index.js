@@ -12,5 +12,4 @@ export { default as NotFoundPage } from "./NotFoundPage";
 export { default as PrivacyPolicyPage } from "./PrivacyPolicyPage";
 export { default as ProductDetailsPage } from "./ProductDetailsPage";
 export { default as ServicePage } from "./ServicePage";
-export { default as ShopCatalogPage } from "./ShopCatalogPage";
-export { default as WishlistPage } from "./WishlistPage";
+export { default as ProductCatalogPage } from "./ProductCatalogPage";

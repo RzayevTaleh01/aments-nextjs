@@ -1,4 +1,4 @@
-import { ShopCatalogPage } from "@/components/pages";
+import { ProductCatalogPage } from "@/components/pages";
 
 export const metadata = {
   title: "Shop Grid Sidebar Left",
@@ -6,7 +6,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <ShopCatalogPage
+    <ProductCatalogPage
       title="Shop Grid Sidebar Left"
       breadcrumbLabel="Shop Grid Sidebar Left"
       withSidebar

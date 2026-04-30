@@ -1,4 +1,4 @@
-import { ShopCatalogPage } from "@/components/pages";
+import { ProductCatalogPage } from "@/components/pages";
 
 export const metadata = {
   title: "Products",
@@ -6,9 +6,9 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <ShopCatalogPage
-      title="Shop List Sidebar Left"
-      breadcrumbLabel="Shop List Sidebar Left"
+    <ProductCatalogPage
+      title="Product List Catalog"
+      breadcrumbLabel="Product List Catalog"
       withSidebar
       sidebarPosition="left"
       defaultView="list"

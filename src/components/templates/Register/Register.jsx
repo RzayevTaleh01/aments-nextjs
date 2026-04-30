@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/utils/cn";
-import styles from "./RegisterTemplate.module.scss";
+import styles from "./Register.module.scss";
 
-export default function RegisterTemplate() {
+export default function Register() {
   return (
     <div className="customer_login">
       <div className="container">

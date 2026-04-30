@@ -4,7 +4,7 @@ import { Breadcrumb } from "@/components/ui";
 import { products as allProducts } from "@/constants/products";
 import ShopSection from "@/components/sections/shop/ShopSection";
 
-export default function ShopCatalogPage({
+export default function ProductCatalogPage({
   title,
   breadcrumbLabel,
   withSidebar = false,
