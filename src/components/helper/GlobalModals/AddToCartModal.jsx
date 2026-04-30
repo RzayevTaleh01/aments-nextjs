@@ -66,9 +66,9 @@ export default function AddToCartModal() {
                       <strong>TOTAL PRICE: </strong> <span>$187.00</span>
                     </li>
                     <li className="modal-continue-button">
-                      <a href="#" data-bs-dismiss="modal">
+                      <button type="button" data-bs-dismiss="modal">
                         CONTINUE SHOPPING
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>

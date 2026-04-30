@@ -235,17 +235,23 @@
   transform: translateY(0)
 }
 
-.header-action-icon>li>a {
+.header-action-icon>li>a,
+.header-action-icon>li>button {
   position: relative;
   font-size: 27px;
-  color: #333
+  color: #333;
+  background: transparent;
+  border: 0;
+  padding: 0
 }
 
-.header-action-icon>li>a:hover {
+.header-action-icon>li>a:hover,
+.header-action-icon>li>button:hover {
   color: #ea1c26
 }
 
-.header-action-icon>li>a:hover .header-action-icon-item-count {
+.header-action-icon>li>a:hover .header-action-icon-item-count,
+.header-action-icon>li>button:hover .header-action-icon-item-count {
   background: #ea1c26
 }
 

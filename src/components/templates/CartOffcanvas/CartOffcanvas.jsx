@@ -44,9 +44,9 @@ export default function CartOffcanvas({ isOpen, onClose }) {
               </div>
             </div>
             <div className={cn(styles, "offcanvas-cart-item-delete text-end")}>
-              <a href="#" className={cn(styles, "offcanvas-cart-item-delete")} onClick={(e) => e.preventDefault()}>
+              <button type="button" aria-label="Delete" className={cn(styles, "offcanvas-cart-item-delete p-0 border-0 bg-transparent")}>
                 <Icon name="FaTrashAlt" size={16} />
-              </a>
+              </button>
             </div>
           </li>
           <li className={cn(styles, "offcanvas-cart-item-single")}>
@@ -71,9 +71,9 @@ export default function CartOffcanvas({ isOpen, onClose }) {
               </div>
             </div>
             <div className={cn(styles, "offcanvas-cart-item-delete text-end")}>
-              <a href="#" className={cn(styles, "offcanvas-cart-item-delete")} onClick={(e) => e.preventDefault()}>
+              <button type="button" aria-label="Delete" className={cn(styles, "offcanvas-cart-item-delete p-0 border-0 bg-transparent")}>
                 <Icon name="FaTrashAlt" size={16} />
-              </a>
+              </button>
             </div>
           </li>
           <li className={cn(styles, "offcanvas-cart-item-single")}>
@@ -98,9 +98,9 @@ export default function CartOffcanvas({ isOpen, onClose }) {
               </div>
             </div>
             <div className={cn(styles, "offcanvas-cart-item-delete text-end")}>
-              <a href="#" className={cn(styles, "offcanvas-cart-item-delete")} onClick={(e) => e.preventDefault()}>
+              <button type="button" aria-label="Delete" className={cn(styles, "offcanvas-cart-item-delete p-0 border-0 bg-transparent")}>
                 <Icon name="FaTrashAlt" size={16} />
-              </a>
+              </button>
             </div>
           </li>
         </ul>

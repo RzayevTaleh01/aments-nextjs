@@ -112,38 +112,38 @@ export default function QuickviewModal() {
                           </Link>
                         </li>
                         <li>
-                          <a href="#modalAddcart" data-bs-toggle="modal" data-bs-target="#modalAddcart">
+                          <button type="button" data-bs-toggle="modal" data-bs-target="#modalAddcart">
                             <Icon name="FaShoppingCart" />
                             Add To Cart
-                          </a>
+                          </button>
                         </li>
                       </ul>
                     </div>
                     <ul className="modal-product-details-social">
                       <li>
-                        <a href="#" className="facebook" onClick={(e) => e.preventDefault()}>
+                        <button type="button" className="facebook" aria-label="Facebook">
                           <Icon name="FaFacebookF" size={16} />
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a href="#" className="twitter" onClick={(e) => e.preventDefault()}>
+                        <button type="button" className="twitter" aria-label="Twitter">
                           <Icon name="FaTwitter" size={16} />
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a href="#" className="pinterest" onClick={(e) => e.preventDefault()}>
+                        <button type="button" className="pinterest" aria-label="Pinterest">
                           <Icon name="FaPinterestP" size={16} />
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a href="#" className="google-plus" onClick={(e) => e.preventDefault()}>
+                        <button type="button" className="google-plus" aria-label="Google Plus">
                           <Icon name="FaGooglePlusG" size={16} />
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a href="#" className="linkedin" onClick={(e) => e.preventDefault()}>
+                        <button type="button" className="linkedin" aria-label="LinkedIn">
                           <Icon name="FaLinkedinIn" size={16} />
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </div>

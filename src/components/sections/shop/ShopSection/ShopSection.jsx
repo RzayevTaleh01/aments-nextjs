@@ -15,11 +15,26 @@ export default function ShopSection({
 }) {
   const rowClass = sidebarPosition === "right" ? "row flex-column-reverse flex-lg-row-reverse" : "row flex-column-reverse flex-lg-row";
   const [activeView, setActiveView] = useState(defaultView);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
+  const [mark, setMark] = useState("");
+  const [model, setModel] = useState("");
   const isGridDefault = activeView !== "list";
   const gridLayoutId = useMemo(
     () => (withSidebar ? (sidebarPosition === "right" ? "layout-3-grid" : "layout-3-grid") : "layout-4-grid"),
     [withSidebar, sidebarPosition],
   );
+  const filteredProducts = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return products;
+    return products.filter((p) => (p?.name ?? "").toLowerCase().includes(query));
+  }, [products, searchQuery]);
+  const listProducts = useMemo(() => {
+    if (searchQuery.trim()) return filteredProducts;
+    return filteredProducts.slice(0, 5);
+  }, [filteredProducts, searchQuery]);
 
   return (
     <div className={styles.scope}>
@@ -30,79 +45,62 @@ export default function ShopSection({
               <div className="col-lg-3">
                 <div className="siderbar-section" data-aos="fade-up" data-aos-delay="0">
                   <div className={styles.sidebarSingleWidget}>
-                    <h6 className={styles.sidebarTitle}>FILTER BY PRICE</h6>
+                    <h6 className={styles.sidebarTitle}>Search</h6>
                     <div className="sidebar-content">
-                      <div id="slider-range" />
-                      <div className="filter-type-price">
-                        <label htmlFor="amount">Price range:</label>
-                        <input type="text" id="amount" />
-                      </div>
+                      <form
+                        className="d-flex gap-2"
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          setSearchQuery(searchInput);
+                        }}
+                      >
+                        <input
+                          className="form-control"
+                          type="text"
+                          value={searchInput}
+                          onChange={(e) => setSearchInput(e.target.value)}
+                          placeholder="Ada görə axtar"
+                        />
+                        <button type="submit" className="btn btn-dark">
+                          Search
+                        </button>
+                      </form>
                     </div>
                   </div>
 
                   <div className={styles.sidebarSingleWidget}>
-                    <h6 className={styles.sidebarTitle}>CATEGORIES</h6>
+                    <h6 className={styles.sidebarTitle}>Categories</h6>
                     <div className="sidebar-content">
-                      <div className="filter-type-select">
-                        <ul>
-                          {[1, 2, 3, 4, 5].map((n) => (
-                            <li key={n}>
-                              <label className="checkbox-default" htmlFor={`catagory_${n}`}>
-                                <input type="checkbox" id={`catagory_${n}`} />
-                                <span>Catagory ({n})</span>
-                              </label>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+                        <option value="" />
+                      </select>
                     </div>
                   </div>
 
                   <div className={styles.sidebarSingleWidget}>
-                    <h6 className={styles.sidebarTitle}>MANUFACTURER</h6>
+                    <h6 className={styles.sidebarTitle}>Brend</h6>
                     <div className="sidebar-content">
-                      <div className="filter-type-select">
-                        <ul>
-                          {[
-                            { id: "brakeParts", label: "Brake Parts(6)" },
-                            { id: "accessories", label: "Accessories (10)" },
-                            { id: "EngineParts", label: "Engine Parts (4)" },
-                            { id: "hermes", label: "hermes (10)" },
-                            { id: "tommyHilfiger", label: "Tommy Hilfiger(7)" },
-                          ].map((i) => (
-                            <li key={i.id}>
-                              <label className="checkbox-default" htmlFor={i.id}>
-                                <input type="checkbox" id={i.id} />
-                                <span>{i.label}</span>
-                              </label>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      <select className="form-select" value={brand} onChange={(e) => setBrand(e.target.value)}>
+                        <option value="" />
+                      </select>
                     </div>
                   </div>
 
                   <div className={styles.sidebarSingleWidget}>
-                    <h6 className={styles.sidebarTitle}>SELECT BY COLOR</h6>
+                    <h6 className={styles.sidebarTitle}>Mark</h6>
                     <div className="sidebar-content">
-                      <div className="filter-type-select">
-                        <ul>
-                          {[
-                            { id: "black", label: "Black (6)" },
-                            { id: "blue", label: "Blue (8)" },
-                            { id: "brown", label: "Brown (10)" },
-                            { id: "Green", label: "Green (6)" },
-                            { id: "pink", label: "Pink (4)" },
-                          ].map((i) => (
-                            <li key={i.id}>
-                              <label className="checkbox-default" htmlFor={i.id}>
-                                <input type="checkbox" id={i.id} />
-                                <span>{i.label}</span>
-                              </label>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      <select className="form-select" value={mark} onChange={(e) => setMark(e.target.value)}>
+                        <option value="" />
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className={styles.sidebarSingleWidget}>
+                    <h6 className={styles.sidebarTitle}>Model</h6>
+                    <div className="sidebar-content">
+                      <select className="form-select" value={model} onChange={(e) => setModel(e.target.value)}>
+                        <option value="" />
+                      </select>
                     </div>
                   </div>
 
@@ -160,7 +158,7 @@ export default function ShopSection({
                         </div>
 
                         <div className="page-amount">
-                          <span>Showing 1–9 of 21 results</span>
+                          <span>Showing {filteredProducts.length} results</span>
                         </div>
                       </div>
                     </div>
@@ -174,7 +172,7 @@ export default function ShopSection({
                         <div className="tab-content tab-animate-zoom">
                           <div className={cn(styles.tabPane, isGridDefault && styles.tabPaneActive)} id={gridLayoutId}>
                             <div className="row">
-                              {products.map((p, idx) => (
+                              {filteredProducts.map((p, idx) => (
                                 <div key={p.id} className="col-xl-4 col-sm-6 col-12">
                                   <div data-aos="fade-up" data-aos-delay={String((idx % 3) * 200)}>
                                     <ProductCard product={p} actionsVariant="modals" />
@@ -186,7 +184,7 @@ export default function ShopSection({
 
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
-                              {products.slice(0, 5).map((p) => (
+                              {listProducts.map((p) => (
                                 <div key={p.id} className="col-12">
                                   <div className="product-list-single border-around">
                                     <Link href={p.href} className="product-list-img-link">
@@ -216,14 +214,14 @@ export default function ShopSection({
                                             </Link>
                                           </li>
                                           <li>
-                                            <a href="#modalQuickview" data-bs-toggle="modal" data-bs-target="#modalQuickview">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#modalQuickview" aria-label="Quick view">
                                               <Icon name="FaEye" />
-                                            </a>
+                                            </button>
                                           </li>
                                           <li>
-                                            <a href="#modalAddcart" data-bs-toggle="modal" data-bs-target="#modalAddcart">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#modalAddcart" aria-label="Add to cart">
                                               <Icon name="FaShoppingCart" />
-                                            </a>
+                                            </button>
                                           </li>
                                         </ul>
                                       </div>
@@ -242,29 +240,29 @@ export default function ShopSection({
                 <div className="page-pagination text-center" data-aos="fade-up" data-aos-delay="0">
                   <ul>
                     <li>
-                      <a href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button">
                         Previous
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="active" href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button" className="active">
                         1
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button">
                         2
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button">
                         3
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button">
                         Next
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -316,7 +314,7 @@ export default function ShopSection({
                         </div>
 
                         <div className="page-amount">
-                          <span>Showing 1–9 of 21 results</span>
+                          <span>Showing {filteredProducts.length} results</span>
                         </div>
                       </div>
                     </div>
@@ -330,7 +328,7 @@ export default function ShopSection({
                         <div className="tab-content tab-animate-zoom">
                           <div className={cn(styles.tabPane, isGridDefault && styles.tabPaneActive)} id="layout-4-grid">
                             <div className="row">
-                              {products.map((p) => (
+                              {filteredProducts.map((p) => (
                                 <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12">
                                   <div data-aos="fade-up">
                                     <ProductCard product={p} actionsVariant="modals" />
@@ -342,7 +340,7 @@ export default function ShopSection({
 
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
-                              {products.slice(0, 5).map((p) => (
+                              {listProducts.map((p) => (
                                 <div key={p.id} className="col-12">
                                   <div className="product-list-single border-around">
                                     <Link href={p.href} className="product-list-img-link">
@@ -372,14 +370,14 @@ export default function ShopSection({
                                             </Link>
                                           </li>
                                           <li>
-                                            <a href="#modalQuickview" data-bs-toggle="modal" data-bs-target="#modalQuickview">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#modalQuickview" aria-label="Quick view">
                                               <Icon name="FaEye" />
-                                            </a>
+                                            </button>
                                           </li>
                                           <li>
-                                            <a href="#modalAddcart" data-bs-toggle="modal" data-bs-target="#modalAddcart">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#modalAddcart" aria-label="Add to cart">
                                               <Icon name="FaShoppingCart" />
-                                            </a>
+                                            </button>
                                           </li>
                                         </ul>
                                       </div>
@@ -398,29 +396,29 @@ export default function ShopSection({
                 <div className="page-pagination text-center" data-aos="fade-up" data-aos-delay="0">
                   <ul>
                     <li>
-                      <a href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button">
                         Previous
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="active" href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button" className="active">
                         1
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button">
                         2
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button">
                         3
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button">
                         Next
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -432,4 +430,3 @@ export default function ShopSection({
     </div>
   );
 }
-

@@ -80,6 +80,18 @@
   background: #fff;
 }
 
+:global(.product-action-icon-link li button) {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  line-height: 40px;
+  text-align: center;
+  border: 2px solid #eee;
+  display: block;
+  background: #fff;
+  padding: 0;
+}
+
 :global(.product-default-single:hover .product-action-icon-link li) {
   visibility: visible;
   opacity: 1;
@@ -103,6 +115,12 @@
 }
 
 :global(.product-action-icon-link li a:hover) {
+  background: #ea1c26;
+  border-color: #ea1c26;
+  color: #fff;
+}
+
+:global(.product-action-icon-link li button:hover) {
   background: #ea1c26;
   border-color: #ea1c26;
   color: #fff;

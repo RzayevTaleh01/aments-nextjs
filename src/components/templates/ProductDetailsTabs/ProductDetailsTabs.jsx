@@ -11,28 +11,22 @@ export default function ProductDetailsTabs({ activeTab, onTabChange, product }) 
             <div className="product-details-content-tab-wrapper">
               <ul className="product-details-content-tab-btn nav tablist d-flex justify-content-center">
                 <li>
-                  <a
+                  <button
+                    type="button"
                     className={cn("nav-link", activeTab === "description" && "active")}
-                    href="#description"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onTabChange("description");
-                    }}
+                    onClick={() => onTabChange("description")}
                   >
                     <h5>Description</h5>
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a
+                  <button
+                    type="button"
                     className={cn("nav-link", activeTab === "specification" && "active")}
-                    href="#specification"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onTabChange("specification");
-                    }}
+                    onClick={() => onTabChange("specification")}
                   >
                     <h5>Specification</h5>
-                  </a>
+                  </button>
                 </li>
               </ul>
 

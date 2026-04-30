@@ -14,35 +14,25 @@ export default function ProductCard({ product, actionsVariant = "links" }) {
         </Link>
         <div className="product-action-icon-link">
           <ul>
-            <li>
-              <Link href="/wishlist">
-                <Icon name="FaHeart" />
-              </Link>
-            </li>
-            <li>
-              <Link href="/compare">
-                <Icon name="FaRetweet" />
-              </Link>
-            </li>
-            <li>
+              <li>
               {useModalActions ? (
-                <a href="#modalQuickview" data-bs-toggle="modal" data-bs-target="#modalQuickview">
-                  <Icon name="FaEye" />
-                </a>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#modalAddcart" aria-label="Add to cart">
+                  <Icon name="FaShoppingCart" />
+                </button>
               ) : (
-                <Link href={product.href}>
-                  <Icon name="FaEye" />
+                <Link href="/cart">
+                  <Icon name="FaShoppingCart" />
                 </Link>
               )}
             </li>
             <li>
               {useModalActions ? (
-                <a href="#modalAddcart" data-bs-toggle="modal" data-bs-target="#modalAddcart">
-                  <Icon name="FaShoppingCart" />
-                </a>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#modalQuickview" aria-label="Quick view">
+                  <Icon name="FaEye" />
+                </button>
               ) : (
-                <Link href="/cart">
-                  <Icon name="FaShoppingCart" />
+                <Link href={product.href}>
+                  <Icon name="FaEye" />
                 </Link>
               )}
             </li>

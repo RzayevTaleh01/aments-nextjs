@@ -99,9 +99,9 @@ export default function ComparePage() {
                           <td className="first-column">Add to cart</td>
                           {products.map((p) => (
                             <td key={p.title} className="pro-addtocart">
-                              <a href="#" className="add-to-cart" onClick={(e) => e.preventDefault()}>
+                              <button type="button" className="add-to-cart">
                                 <span>ADD TO CART</span>
-                              </a>
+                              </button>
                             </td>
                           ))}
                         </tr>

@@ -38,7 +38,11 @@ export default function HeaderGroup({
   const initials = buildInitials(displayName);
 
   const topLinks = topHeaderData?.links ?? [];
-  const filteredTopLinks = isAuthenticated ? topLinks.filter((x) => x?.id !== "login" && x?.id !== "register") : topLinks;
+  const filteredTopLinks = topLinks.filter((x) => {
+    if (!x) return false;
+    if (isAuthenticated) return x?.id !== "login" && x?.id !== "register";
+    return x?.id !== "my-account";
+  });
 
   return (
     <header className={cn(styles, "header-section d-lg-block d-none")}>
@@ -113,7 +117,7 @@ export default function HeaderGroup({
             </div>
             <div className={cn(styles, "col-6")}>
               <div className={cn(styles, "header-search")}>
-                <form action="#" method="post">
+                <form action="#" method="post" onSubmit={(e) => e.preventDefault()}>
                   <div className={cn(styles, "header-search-box default-search-style d-flex")}>
                     <input
                       className={cn(styles, "default-search-style-input-box border-around border-right-none")}
@@ -132,10 +136,16 @@ export default function HeaderGroup({
               <ul className={cn(styles, "header-action-icon")}>
                 
                 <li>
-                  <a href="#offcanvas-add-cart" className={cn(styles, "offcanvas-toggle")} onClick={onOffcanvasToggle}>
+                  <button
+                    type="button"
+                    className={cn(styles, "offcanvas-toggle")}
+                    data-offcanvas-id="offcanvas-add-cart"
+                    onClick={onOffcanvasToggle}
+                    aria-label="Open cart"
+                  >
                     <Icon name="FaShoppingCart" />
                     <span className={cn(styles, "header-action-icon-item-count")}>3</span>
-                  </a>
+                  </button>
                 </li>
                 {isAuthenticated ? (
                   <li className={cn(styles, "profile-menu")}>

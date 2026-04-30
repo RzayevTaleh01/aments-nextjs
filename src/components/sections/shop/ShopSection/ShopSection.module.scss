@@ -198,6 +198,38 @@
   font-weight: 500;
 }
 
+:global(.page-pagination li button) {
+  padding: 5px 10px;
+  display: block;
+  background: #f1f1f1;
+  border-radius: 3px;
+  font-weight: 500;
+  border: 0;
+}
+
+:global(.page-pagination li button.active),
+:global(.page-pagination li button:hover) {
+  background: #ea1c26;
+  color: #fff;
+}
+
+:global(.product-action-icon-link-list li button) {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  line-height: 39px;
+  text-align: center;
+  border: 2px solid #eee;
+  display: block;
+  background: #fff;
+}
+
+:global(.product-action-icon-link-list li button:hover) {
+  background: #ea1c26;
+  border-color: #ea1c26;
+  color: #fff;
+}
+
 :global(.page-pagination li a.active),
 :global(.page-pagination li a:hover) {
   background: #ea1c26;
@@ -303,4 +335,3 @@
   border-color: #ea1c26;
   color: #fff;
 }
-

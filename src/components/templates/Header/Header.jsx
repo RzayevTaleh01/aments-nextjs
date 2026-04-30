@@ -26,10 +26,11 @@ export default function Header() {
   const handleOffcanvasToggle = useCallback(
     (e) => {
       const href = e.currentTarget.getAttribute("href");
-      if (!href) return;
-      if (!href.startsWith("#")) return;
+      const dataId = e.currentTarget.getAttribute("data-offcanvas-id");
+      const id = dataId || (href && href.startsWith("#") ? href.slice(1) : null);
+      if (!id) return;
       e.preventDefault();
-      openOffcanvas(href.slice(1));
+      openOffcanvas(id);
     },
     [openOffcanvas]
   );

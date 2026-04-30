@@ -23,7 +23,6 @@ export const navigation = {
         { label: "Germany", href: "#", iconSrc: "/assets/images/icon/lang-gr.png" },
       ],
     },
-    { id: "compare", label: "Compare (0)", href: "/compare", iconName: "FaRetweet" },
   ],
   main: [
     {
@@ -40,22 +39,22 @@ export const navigation = {
     //   mega: true,
     //   activeMatch: ["/shop", "/product"]
     // },
-    {
-      id: "pages",
-      label: "Pages",
-      href: "#",
-      activeMatch: ["/service", "/faq", "/privacy-policy", "/404"],
-      children: [
-        { label: "About Us", href: "/about-us" },
-        { label: "Service", href: "/service" },
-        { label: "Frequently Questions", href: "/faq" },
-        { label: "Privacy Policy", href: "/privacy-policy" },
-        { label: "404 Page", href: "/404" }
-      ]
-    },
-    { id: "contact-us", label: "Contact Us", href: "/contact-us", activeMatch: "/contact-us" },
+    // {
+    //   id: "pages",
+    //   label: "Pages",
+    //   href: "#",
+    //   activeMatch: ["/service", "/faq", "/privacy-policy", "/404"],
+    //   children: [
+    //     { label: "About Us", href: "/about-us" },
+    //     { label: "Service", href: "/service" },
+    //     { label: "Frequently Questions", href: "/faq" },
+    //     { label: "Privacy Policy", href: "/privacy-policy" },
+    //     { label: "404 Page", href: "/404" }
+    //   ]
+    // },
     { id: "about-us", label: "About Us", href: "/about-us", activeMatch: "/about-us" },
-    { id: "products", label: "Products", href: "/products", activeMatch: "/products" }
+    { id: "products", label: "Products", href: "/products", activeMatch: "/products" },
+    { id: "contact-us", label: "Contact Us", href: "/contact-us", activeMatch: "/contact-us" },
   ],
   // megaMenu: {
   //   shopLayouts: [

@@ -66,29 +66,29 @@ export default function ContactUsPage() {
                   <h4>Follow Us</h4>
                   <ul>
                     <li>
-                      <a href="#" aria-label="Facebook" onClick={(e) => e.preventDefault()}>
+                      <button type="button" aria-label="Facebook">
                         <Icon name="FaFacebookF" size={16} />
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a href="#" aria-label="Twitter" onClick={(e) => e.preventDefault()}>
+                      <button type="button" aria-label="Twitter">
                         <Icon name="FaTwitter" size={16} />
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a href="#" aria-label="YouTube" onClick={(e) => e.preventDefault()}>
+                      <button type="button" aria-label="YouTube">
                         <Icon name="FaYoutube" size={16} />
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a href="#" aria-label="Google Plus" onClick={(e) => e.preventDefault()}>
+                      <button type="button" aria-label="Google Plus">
                         <Icon name="FaGooglePlusG" size={16} />
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a href="#" aria-label="Instagram" onClick={(e) => e.preventDefault()}>
+                      <button type="button" aria-label="Instagram">
                         <Icon name="FaInstagram" size={16} />
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -97,7 +97,7 @@ export default function ContactUsPage() {
             <div className="col-lg-8">
               <div className="contact-form section-top-gap-100">
                 <h3>Get In Touch</h3>
-                <form id="contact-form" action="#" method="POST">
+                <form id="contact-form" action="#" method="POST" onSubmit={(e) => e.preventDefault()}>
                   <div className="row">
                     <div className="col-lg-6">
                       <div className="default-form-box mb-20">

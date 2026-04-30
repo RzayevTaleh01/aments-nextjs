@@ -45,9 +45,9 @@ export default function CartPage() {
                         {items.map((row) => (
                           <tr key={row.name}>
                             <td className="product_remove">
-                              <a href="#" onClick={(e) => e.preventDefault()} aria-label="Delete">
+                              <button type="button" aria-label="Delete" className="p-0 border-0 bg-transparent">
                                 <Icon name="FaTrashAlt" size={18} />
-                              </a>
+                              </button>
                             </td>
                             <td className="product_thumb">
                               <Link href="/product/default">
@@ -104,9 +104,9 @@ export default function CartPage() {
                         <span>Flat Rate:</span> $255.00
                       </p>
                     </div>
-                    <a href="#" onClick={(e) => e.preventDefault()}>
+                    <button type="button" className="btn btn-link p-0">
                       Calculate shipping
-                    </a>
+                    </button>
                     <div className="cart_subtotal">
                       <p>Total</p>
                       <p className="cart_amount">$215.00</p>

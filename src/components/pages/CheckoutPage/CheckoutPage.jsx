@@ -22,9 +22,9 @@ export default function CheckoutPageClient() {
               <div className="user-actions accordion" data-aos="fade-up" data-aos-delay="0">
                 <h3>
                   Returning customer?
-                  <a className="Returning" href="#checkout_login" data-bs-toggle="collapse" data-bs-target="#checkout_login" aria-expanded="true">
+                  <button type="button" className="Returning" data-bs-toggle="collapse" data-bs-target="#checkout_login" aria-expanded="true">
                     Click here to login
-                  </a>
+                  </button>
                 </h3>
                 <div id="checkout_login" className="collapse" data-bs-parent="#checkout_login">
                   <div className="checkout_info">
@@ -32,7 +32,7 @@ export default function CheckoutPageClient() {
                       If you have shopped with us before, please enter your details in the boxes below. If you are a new customer please proceed to the
                       Billing &amp; Shipping section.
                     </p>
-                    <form action="#">
+                    <form action="#" onSubmit={(e) => e.preventDefault()}>
                       <div className="form_group default-form-box">
                         <label>
                           Username or email <span>*</span>
@@ -52,9 +52,9 @@ export default function CheckoutPageClient() {
                           <span>Remember me</span>
                         </label>
                       </div>
-                      <a href="#" onClick={(e) => e.preventDefault()}>
+                      <button type="button" className="btn btn-link p-0">
                         Lost your password?
-                      </a>
+                      </button>
                     </form>
                   </div>
                 </div>
@@ -63,13 +63,13 @@ export default function CheckoutPageClient() {
               <div className="user-actions accordion" data-aos="fade-up" data-aos-delay="200">
                 <h3>
                   Returning customer?
-                  <a className="Returning" href="#checkout_coupon" data-bs-toggle="collapse" data-bs-target="#checkout_coupon" aria-expanded="true">
+                  <button type="button" className="Returning" data-bs-toggle="collapse" data-bs-target="#checkout_coupon" aria-expanded="true">
                     Click here to enter your code
-                  </a>
+                  </button>
                 </h3>
                 <div id="checkout_coupon" className="collapse" data-bs-parent="#checkout_coupon">
                   <div className="checkout_info">
-                    <form action="#">
+                    <form action="#" onSubmit={(e) => e.preventDefault()}>
                       <input placeholder="Coupon code" type="text" />
                       <button type="submit">Apply coupon</button>
                     </form>
@@ -79,10 +79,10 @@ export default function CheckoutPageClient() {
             </div>
           </div>
 
-          <div className="checkout_form" data-aos="fade-up" data-aos-delay="400">
+              <div className="checkout_form" data-aos="fade-up" data-aos-delay="400">
             <div className="row">
               <div className="col-lg-6 col-md-6">
-                <form action="#">
+                <form action="#" onSubmit={(e) => e.preventDefault()}>
                   <h3>Billing Details</h3>
                   <div className="row">
                     <div className="col-lg-6 mb-20">
@@ -296,7 +296,7 @@ export default function CheckoutPageClient() {
               </div>
 
               <div className="col-lg-6 col-md-6">
-                <form action="#">
+                <form action="#" onSubmit={(e) => e.preventDefault()}>
                   <h3>Your order</h3>
                   <div className="order_table table-responsive">
                     <table>

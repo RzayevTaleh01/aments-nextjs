@@ -2,22 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import styles from "./MyAccountPage.module.scss";
 import { cn } from "@/utils/cn";
 
 function TabLink({ id, activeId, setActiveId, children }) {
   const isActive = activeId === id;
   return (
-    <a
-      href={`#${id}`}
-      className={`nav-link${isActive ? " active" : ""}`}
-      onClick={(e) => {
-        e.preventDefault();
-        setActiveId(id);
-      }}
-    >
+    <button type="button" className={`nav-link${isActive ? " active" : ""}`} onClick={() => setActiveId(id)}>
       {children}
-    </a>
+    </button>
   );
 }
 
@@ -32,6 +27,7 @@ function TabPane({ id, activeId, children }) {
 
 export default function MyAccountPageClient() {
   const [activeId, setActiveId] = useState("dashboard");
+  const router = useRouter();
 
   return (
     <div className="account_dashboard">
@@ -66,9 +62,16 @@ export default function MyAccountPageClient() {
                   </TabLink>
                 </li>
                 <li>
-                  <Link href="/login" className="nav-link">
+                  <button
+                    type="button"
+                    className="nav-link"
+                    onClick={async () => {
+                      await signOut({ redirect: false });
+                      router.push("/");
+                    }}
+                  >
                     logout
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -80,17 +83,17 @@ export default function MyAccountPageClient() {
                 <h4>Dashboard </h4>
                 <p>
                   From your account dashboard. you can easily check &amp; view your{" "}
-                  <a href="#" onClick={(e) => e.preventDefault()}>
+                  <button type="button" className="p-0 border-0 bg-transparent" onClick={() => setActiveId("orders")}>
                     recent orders
-                  </a>
+                  </button>
                   , manage your{" "}
-                  <a href="#" onClick={(e) => e.preventDefault()}>
+                  <button type="button" className="p-0 border-0 bg-transparent" onClick={() => setActiveId("address")}>
                     shipping and billing addresses
-                  </a>{" "}
+                  </button>{" "}
                   and{" "}
-                  <a href="#" onClick={(e) => e.preventDefault()}>
+                  <button type="button" className="p-0 border-0 bg-transparent" onClick={() => setActiveId("account-details")}>
                     Edit your password and account details.
-                  </a>
+                  </button>
                 </p>
               </TabPane>
 
@@ -157,9 +160,9 @@ export default function MyAccountPageClient() {
                           <span className="danger">Expired</span>
                         </td>
                         <td>
-                          <a href="#" className="view" onClick={(e) => e.preventDefault()}>
+                          <button type="button" className="view">
                             Click Here To Download Your File
-                          </a>
+                          </button>
                         </td>
                       </tr>
                       <tr>
@@ -167,9 +170,9 @@ export default function MyAccountPageClient() {
                         <td>Sep 11, 2022</td>
                         <td>Never</td>
                         <td>
-                          <a href="#" className="view" onClick={(e) => e.preventDefault()}>
+                          <button type="button" className="view">
                             Click Here To Download Your File
-                          </a>
+                          </button>
                         </td>
                       </tr>
                     </tbody>
@@ -180,9 +183,9 @@ export default function MyAccountPageClient() {
               <TabPane id="address" activeId={activeId}>
                 <p>The following addresses will be used on the checkout page by default.</p>
                 <h5 className="billing-address">Billing address</h5>
-                <a href="#" className="view" onClick={(e) => e.preventDefault()}>
+                <button type="button" className="view">
                   Edit
-                </a>
+                </button>
                 <p>
                   <strong>Bobby Jackson</strong>
                 </p>
@@ -194,12 +197,12 @@ export default function MyAccountPageClient() {
                 <div className="login">
                   <div className="login_form_container">
                     <div className={cn(styles.account_login_form, "account_login_form")}>
-                      <form action="#">
+                      <form action="#" onSubmit={(e) => e.preventDefault()}>
                         <p>
                           Already have an account?{" "}
-                          <a href="#" onClick={(e) => e.preventDefault()}>
+                          <button type="button" className="p-0 border-0 bg-transparent">
                             Log in instead!
-                          </a>
+                          </button>
                         </p>
                         <div className={cn(styles["input-radio"], "input-radio")}>
                           <span className="custom-radio">

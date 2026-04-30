@@ -15215,7 +15215,8 @@ table {
     min-width: 180px
 }
 
-.table_page table tbody tr td.product_addcart a {
+.table_page table tbody tr td.product_addcart a,
+.table_page table tbody tr td.product_addcart button {
     background: #ea1c26;
     font-size: 12px;
     font-weight: 700;
@@ -15224,10 +15225,12 @@ table {
     padding: 10px 20px;
     color: #fff;
     text-transform: uppercase;
-    border-radius: 3px
+    border-radius: 3px;
+    border: 0
 }
 
-.table_page table tbody tr td.product_addcart a:hover {
+.table_page table tbody tr td.product_addcart a:hover,
+.table_page table tbody tr td.product_addcart button:hover {
     background: #333
 }
 
@@ -17127,9 +17130,13 @@ table {
     margin-right: 17px
 }
 
-.contact-social li a {
+.contact-social li a,
+.contact-social li button {
     font-size: 18px;
-    display: block
+    display: block;
+    background: 0 0;
+    border: 0;
+    padding: 0
 }
 
 .contact-form {
@@ -17417,12 +17424,17 @@ table {
     font-size: 16px
 }
 
-.modal-continue-button a {
+.modal-continue-button a,
+.modal-continue-button button {
     text-decoration: underline;
-    color: #ea1c26
+    color: #ea1c26;
+    background: 0 0;
+    border: 0;
+    padding: 0
 }
 
-.modal-continue-button a:hover {
+.modal-continue-button a:hover,
+.modal-continue-button button:hover {
     text-decoration: none
 }
 
@@ -17448,14 +17460,17 @@ table {
     margin-right: 10px
 }
 
-.modal-product-details-social li a {
+.modal-product-details-social li a,
+.modal-product-details-social li button {
     width: 30px;
     height: 30px;
     display: block;
     line-height: 30px;
     text-align: center;
     color: #fff;
-    border-radius: 50%
+    border-radius: 50%;
+    border: 0;
+    padding: 0
 }
 
 .product-image-thumb {

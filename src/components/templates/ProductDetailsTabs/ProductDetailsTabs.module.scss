@@ -14,8 +14,12 @@
   margin-right: 0;
 }
 
-:global(.product-details-content-tab-btn > li a) {
+:global(.product-details-content-tab-btn > li a),
+:global(.product-details-content-tab-btn > li button) {
   margin-right: 40px;
+  background: transparent;
+  border: 0;
+  padding: 0;
 }
 
 :global(.product-details-content-tab-btn > li > .nav-link h5) {

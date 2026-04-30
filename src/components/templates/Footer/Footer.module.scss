@@ -55,7 +55,8 @@
       margin-right: 0;
     }
 
-    > a {
+    > a,
+    > button {
       display: inline-block;
       font-size: 16px;
       padding: 0;
@@ -65,29 +66,36 @@
       border-radius: 100%;
       text-align: center;
       color: var(--color-fff) !important;
+      border: 0;
     }
 
-    > a:hover {
+    > a:hover,
+    > button:hover {
       opacity: 0.7;
     }
 
-    > a[class~="facebook"] {
+    > a[class~="facebook"],
+    > button[class~="facebook"] {
       background: var(--color-4867aa);
     }
 
-    > a[class~="twitter"] {
+    > a[class~="twitter"],
+    > button[class~="twitter"] {
       background: var(--color-1da1f2);
     }
 
-    > a[class~="youtube"] {
+    > a[class~="youtube"],
+    > button[class~="youtube"] {
       background: var(--color-fe0000);
     }
 
-    > a[class~="pinterest"] {
+    > a[class~="pinterest"],
+    > button[class~="pinterest"] {
       background: var(--color-bd081b);
     }
 
-    > a[class~="instagram"] {
+    > a[class~="instagram"],
+    > button[class~="instagram"] {
       background: var(--color-b23a94);
     }
   }

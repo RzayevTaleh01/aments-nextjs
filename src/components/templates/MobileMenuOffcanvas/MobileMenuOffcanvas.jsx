@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useState } from "react";
+import { useSession } from "next-auth/react";
 import { OffcanvasPanel } from "@/components/templates";
 import { Icon } from "@/components/ui";
 import { cn } from "@/utils/cn";
@@ -13,6 +14,8 @@ export default function MobileMenuOffcanvas({
   onClose,
 }) {
   const [openByGroup, setOpenByGroup] = useState({});
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
 
   const toggleGroup = useCallback((groupId, key) => {
     setOpenByGroup((prev) => ({
@@ -24,8 +27,7 @@ export default function MobileMenuOffcanvas({
   const isGroupOpen = (groupId, key) => openByGroup[groupId] === key;
 
   const createToggleClickHandler = useCallback(
-    (groupId, key) => (e) => {
-      e.preventDefault();
+    (groupId, key) => () => {
       toggleGroup(groupId, key);
     },
     [toggleGroup]
@@ -68,11 +70,13 @@ export default function MobileMenuOffcanvas({
                     Checkout
                   </Link>
                 </li>
-                <li>
-                  <Link href="/my-account" onClick={onClose}>
-                    My Account
-                  </Link>
-                </li>
+                {isAuthenticated ? (
+                  <li>
+                    <Link href="/my-account" onClick={onClose}>
+                      My Account
+                    </Link>
+                  </li>
+                ) : null}
                 <li>
                   <Link href="/cart" onClick={onClose}>
                     Shopping Cart
@@ -189,9 +193,9 @@ export default function MobileMenuOffcanvas({
           <div className={cn(styles, "offcanvas-menu")}>
             <ul>
               <li className={cn(styles, isRootHomeOpen && "active")}>
-                <a href="#" onClick={createToggleClickHandler("root", "home")}>
+                <button type="button" onClick={createToggleClickHandler("root", "home")}>
                   <span>Home</span>
-                </a>
+                </button>
                 <ul className={cn(styles, "mobile-sub-menu")}>
                   <li>
                     <Link href="/" onClick={onClose}>
@@ -210,14 +214,14 @@ export default function MobileMenuOffcanvas({
                 </button>
               </li>
               <li className={cn(styles, isRootShopOpen && "active")}>
-                <a href="#" onClick={createToggleClickHandler("root", "shop")}>
+                <button type="button" onClick={createToggleClickHandler("root", "shop")}>
                   <span>Shop</span>
-                </a>
+                </button>
                 <ul className={cn(styles, "mobile-sub-menu")}>
                   <li className={cn(styles, isShopLayoutOpen && "active")}>
-                    <a href="#" onClick={createToggleClickHandler("shop-sections", "layout")}>
+                    <button type="button" onClick={createToggleClickHandler("shop-sections", "layout")}>
                       Shop Layout
-                    </a>
+                    </button>
                     <ul className={cn(styles, "mobile-sub-menu")}>
                       <li>
                         <Link href="/shop/grid/sidebar-left" onClick={onClose}>
@@ -258,9 +262,9 @@ export default function MobileMenuOffcanvas({
                 </ul>
                 <ul className={cn(styles, "mobile-sub-menu")}>
                   <li className={cn(styles, isShopPagesOpen && "active")}>
-                    <a href="#" onClick={createToggleClickHandler("shop-sections", "pages")}>
+                    <button type="button" onClick={createToggleClickHandler("shop-sections", "pages")}>
                       Shop Pages
-                    </a>
+                    </button>
                     <ul className={cn(styles, "mobile-sub-menu")}>
                       <li>
                         <Link href="/cart" onClick={onClose}>
@@ -282,16 +286,20 @@ export default function MobileMenuOffcanvas({
                           Checkout
                         </Link>
                       </li>
-                      <li>
-                        <Link href="/login" onClick={onClose}>
-                          Login
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="/my-account" onClick={onClose}>
-                          My Account
-                        </Link>
-                      </li>
+                      {!isAuthenticated ? (
+                        <li>
+                          <Link href="/login" onClick={onClose}>
+                            Login
+                          </Link>
+                        </li>
+                      ) : null}
+                      {isAuthenticated ? (
+                        <li>
+                          <Link href="/my-account" onClick={onClose}>
+                            My Account
+                          </Link>
+                        </li>
+                      ) : null}
                       <li>
                         <Link href="/404" onClick={onClose}>
                           Error 404
@@ -311,9 +319,9 @@ export default function MobileMenuOffcanvas({
                 </ul>
                 <ul className={cn(styles, "mobile-sub-menu")}>
                   <li className={cn(styles, isShopProductOpen && "active")}>
-                    <a href="#" onClick={createToggleClickHandler("shop-sections", "product")}>
+                    <button type="button" onClick={createToggleClickHandler("shop-sections", "product")}>
                       Product Single
-                    </a>
+                    </button>
                     <ul className={cn(styles, "mobile-sub-menu")}>
                       <li>
                         <Link href="/product/default" onClick={onClose}>
@@ -393,9 +401,9 @@ export default function MobileMenuOffcanvas({
                 </button>
               </li>
               <li className={cn(styles, isRootPagesOpen && "active")}>
-                <a href="#" onClick={createToggleClickHandler("root", "pages")}>
+                <button type="button" onClick={createToggleClickHandler("root", "pages")}>
                   <span>Pages</span>
-                </a>
+                </button>
                 <ul className={cn(styles, "mobile-sub-menu")}>
                   <li>
                     <Link href="/about-us" onClick={onClose}>

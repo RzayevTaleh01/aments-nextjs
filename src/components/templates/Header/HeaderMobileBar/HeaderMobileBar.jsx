@@ -24,15 +24,17 @@ export default function HeaderMobileBar({ onOffcanvasToggle }) {
                 </Link>
               </div>
               <div className={cn(styles, "mobile-header--right")}>
-                <a
-                  href="#mobile-menu-offcanvas"
+                <button
+                  type="button"
                   className={cn(styles, "mobile-menu offcanvas-toggle")}
+                  data-offcanvas-id="mobile-menu-offcanvas"
                   onClick={onOffcanvasToggle}
+                  aria-label="Open menu"
                 >
                   <span className={cn(styles, "mobile-menu-dash")}></span>
                   <span className={cn(styles, "mobile-menu-dash")}></span>
                   <span className={cn(styles, "mobile-menu-dash")}></span>
-                </a>
+                </button>
               </div>
             </div>
           </div>

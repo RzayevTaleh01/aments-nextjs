@@ -12,9 +12,6 @@ export default function AboutUsPage() {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <div className="about-us-top-img">
-                <Image className="img-fluid" src="/assets/images/about/about.jpg" alt="About" width={1140} height={520} />
-              </div>
               <div className="about-us-top-content text-center">
                 <h4>Welcome To Esther!</h4>
                 <p>

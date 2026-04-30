@@ -292,13 +292,20 @@
   border-bottom:none
 }
 
-.offcanvas-menu li a{
+.offcanvas-menu li a,
+.offcanvas-menu li button{
   display:block;
   color:#666;
-  text-decoration:none
+  text-decoration:none;
+  background:transparent;
+  border:0;
+  padding:0;
+  width:100%;
+  text-align:left
 }
 
-.offcanvas-menu li a:hover{
+.offcanvas-menu li a:hover,
+.offcanvas-menu li button:hover{
   color:#ea1c26
 }
 

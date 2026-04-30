@@ -34,13 +34,9 @@ export default function BottomHeader({ isSticky, isActive, BottomHeaderData = []
                             <ul className={cn(styles, "mega-menu-inner")}>
                               {item.mega.columns.map((col) => (
                                 <li key={col.id} className={cn(styles, "mega-menu-item")}>
-                                  <a
-                                    href="#"
-                                    className={cn(styles, "mega-menu-item-title")}
-                                    onClick={(e) => e.preventDefault()}
-                                  >
+                                  <button type="button" className={cn(styles, "mega-menu-item-title")}>
                                     {col.title}
-                                  </a>
+                                  </button>
                                   <ul className={cn(styles, "mega-menu-sub")}>
                                     {col.items.map((link) => (
                                       <li key={link.id}>
@@ -79,9 +75,9 @@ export default function BottomHeader({ isSticky, isActive, BottomHeaderData = []
                               {item.label} <Icon name="FaAngleDown" size={14} />
                             </Link>
                           ) : (
-                            <a href="#" className={cn(styles, active && "active")} onClick={(e) => e.preventDefault()}>
+                            <button type="button" className={cn(styles, active && "active")}>
                               {item.label} <Icon name="FaAngleDown" size={14} />
-                            </a>
+                            </button>
                           )}
                           <ul className={cn(styles, "sub-menu")}>
                             {item.items.map((link) => (

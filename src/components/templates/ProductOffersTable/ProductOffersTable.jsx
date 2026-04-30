@@ -182,16 +182,16 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                                 <div className="mt-5">{displayName}</div>
                               </td>
                               <td className="product_stock">
-                                <a href="#" onClick={(e) => e.preventDefault()}>
+                                <button type="button" className="btn btn-link p-0">
                                   {r.warehouse}
-                                </a>
+                                </button>
                               </td>
                               <td className="product_quantity">{r.qty}</td>
                               <td className="product_total">{r.price}</td>
                               <td className="product_addcart">
-                                <a href="#" onClick={(e) => e.preventDefault()}>
+                                <button type="button">
                                   <Icon name="FaShoppingCart" size={16} /> ƏLAVƏ ET
-                                </a>
+                                </button>
                               </td>
                             </tr>
                           );

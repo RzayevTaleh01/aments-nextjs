@@ -79,29 +79,29 @@ export default function Footer() {
                 </p>
                 <ul className={styles["footer-social"]}>
                   <li>
-                    <a href="#" className="facebook" onClick={(e) => e.preventDefault()}>
+                    <button type="button" className="facebook" aria-label="Facebook">
                           <Icon name="FaFacebookF" size={16} />
-                    </a>
+                    </button>
                   </li>
                   <li>
-                    <a href="#" className="twitter" onClick={(e) => e.preventDefault()}>
+                    <button type="button" className="twitter" aria-label="Twitter">
                           <Icon name="FaTwitter" size={16} />
-                    </a>
+                    </button>
                   </li>
                   <li>
-                    <a href="#" className="youtube" onClick={(e) => e.preventDefault()}>
+                    <button type="button" className="youtube" aria-label="YouTube">
                           <Icon name="FaYoutube" size={16} />
-                    </a>
+                    </button>
                   </li>
                   <li>
-                    <a href="#" className="pinterest" onClick={(e) => e.preventDefault()}>
+                    <button type="button" className="pinterest" aria-label="Pinterest">
                           <Icon name="FaPinterestP" size={16} />
-                    </a>
+                    </button>
                   </li>
                   <li>
-                    <a href="#" className="instagram" onClick={(e) => e.preventDefault()}>
+                    <button type="button" className="instagram" aria-label="Instagram">
                           <Icon name="FaInstagram" size={16} />
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -147,13 +147,13 @@ export default function Footer() {
             </div>
             <div className="col-lg-6 col-md-6">
               <div className={styles["footer-payment"]}>
-                <a href="#">
+                <button type="button" className="p-0 border-0 bg-transparent" aria-label="Payment methods">
                   <img
                     className="img-fluid"
                     src="/assets/images/icon/payment-icon.png"
                     alt=""
                   />
-                </a>
+                </button>
               </div>
             </div>
           </div>

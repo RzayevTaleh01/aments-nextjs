@@ -51,7 +51,8 @@
   position:static
 }
 
-.main-menu nav>ul>li>a{
+.main-menu nav>ul>li>a,
+.main-menu nav>ul>li>button{
   display:block;
   line-height:24px;
   padding:15px 30px;
@@ -59,10 +60,15 @@
   line-height:30px;
   text-transform:capitalize;
   font-weight:500;
-  color:#fff
+  color:#fff;
+  background:transparent;
+  border:0
 }
 
-.main-menu nav>ul>li>a.active, .main-menu nav>ul>li>a:hover{
+.main-menu nav>ul>li>a.active,
+.main-menu nav>ul>li>a:hover,
+.main-menu nav>ul>li>button.active,
+.main-menu nav>ul>li>button:hover{
   background:#ea1c26;
   color:#fff
 }
@@ -168,7 +174,11 @@
   font-weight:700;
   display:block;
   margin-bottom:13px;
-  color:#333
+  color:#333;
+  background:transparent;
+  border:0;
+  padding:0;
+  text-align:left
 }
 
 .mega-menu-item-title:hover{
