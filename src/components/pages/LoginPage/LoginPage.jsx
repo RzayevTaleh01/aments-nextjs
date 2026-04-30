@@ -3,7 +3,7 @@
 import { Breadcrumb } from "@/components/ui";
 import { LoginTemplate } from "@/components/templates";
 
-export default function LoginPage() {
+export default function LoginPage(props) {
   return (
     <div>
       <Breadcrumb
@@ -13,7 +13,7 @@ export default function LoginPage() {
           { label: "Login" },
         ]}
       />
-      <LoginTemplate />
+      <LoginTemplate {...props} />
     </div>
   );
 }
