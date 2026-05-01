@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { Icon } from "@/components/ui";
 import { cn } from "@/utils/cn";
+import { useCart } from "@/context/ui-drawers-context";
 import BottomHeader from "../BottomHeader";
 import styles from "./HeaderGroup.module.scss";
 
@@ -33,6 +34,7 @@ export default function HeaderGroup({
   const router = useRouter();
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
+  const { cartCount } = useCart();
 
   const displayName = buildDisplayName(session?.user);
   const initials = buildInitials(displayName);
@@ -144,7 +146,7 @@ export default function HeaderGroup({
                     aria-label="Open cart"
                   >
                     <Icon name="FaShoppingCart" />
-                    <span className={cn(styles, "header-action-icon-item-count")}>3</span>
+                    <span className={cn(styles, "header-action-icon-item-count")}>{cartCount}</span>
                   </button>
                 </li>
                 {isAuthenticated ? (

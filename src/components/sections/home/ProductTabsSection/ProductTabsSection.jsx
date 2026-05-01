@@ -1,12 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Carousel } from "@/components/ui";
 import { ProductCard } from "@/components/templates";
 import { cn } from "@/utils/cn";
 import styles from "./ProductTabsSection.module.scss";
 
 export default function ProductTabsSection({ title, tabs }) {
+  const { status } = useSession();
+  const showPrice = status === "authenticated";
   const defaultId = tabs?.[0]?.id;
   const [activeId, setActiveId] = useState(defaultId);
 
@@ -62,7 +65,7 @@ export default function ProductTabsSection({ title, tabs }) {
                         992: { slidesPerView: 4, spaceBetween: 20 },
                       }}
                       swiperClassName="product-default-slider product-default-slider-4grids-1row"
-                      renderItem={(product) => <ProductCard product={product} />}
+                      renderItem={(product) => <ProductCard product={product} showPrice={showPrice} />}
                     />
                   </div>
                 ))}

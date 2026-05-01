@@ -1,85 +1,87 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Breadcrumb } from "@/components/ui";
+import { useCart } from "@/context/ui-drawers-context";
 import styles from "./CheckoutPage.module.scss";
 
+function parsePriceNumber(priceText) {
+  if (typeof priceText === "number" && Number.isFinite(priceText)) return priceText;
+  if (typeof priceText !== "string") return null;
+  const normalized = priceText.replace(",", ".").replace(/[^\d.]/g, "");
+  const n = Number(normalized);
+  return Number.isFinite(n) ? n : null;
+}
+
+function formatMoney(value, currency) {
+  const n = typeof value === "number" ? value : parsePriceNumber(value);
+  if (!Number.isFinite(n)) return currency ? `0.00 ${currency}` : "0.00";
+  const text = n.toFixed(2);
+  return currency ? `${text} ${currency}` : text;
+}
+
 export default function CheckoutPageClient() {
+  const { data: session, status } = useSession();
+  const showPrice = status === "authenticated";
+  const { cartItems, cartSubtotalNumber, cartSubtotalText } = useCart();
+  const user = session?.user ?? {};
+
+  const [billing, setBilling] = useState({
+    firstName: "",
+    lastName: "",
+    companyName: "",
+    country: "",
+    street: "",
+    apartment: "",
+    city: "",
+    region: "",
+    phoneNumber: "",
+    email: "",
+  });
+
+  useEffect(() => {
+    if (status !== "authenticated") return;
+
+    setBilling((prev) => ({
+      ...prev,
+      firstName: user?.first_name ?? user?.firstName ?? prev.firstName,
+      lastName: user?.last_name ?? user?.lastName ?? prev.lastName,
+      companyName: user?.companyName ?? user?.company_name ?? prev.companyName,
+      country: user?.country ?? prev.country,
+      street: user?.street ?? prev.street,
+      apartment: user?.home_office ?? user?.apartment ?? prev.apartment,
+      city: user?.city ?? prev.city,
+      region: user?.region ?? user?.state ?? prev.region,
+      phoneNumber: user?.phoneNumber ?? user?.phone ?? prev.phoneNumber,
+      email: user?.email ?? prev.email,
+    }));
+  }, [status, user]);
+
+  const currency = useMemo(() => {
+    const first = cartItems.find((x) => x?.currency);
+    return first?.currency ?? "";
+  }, [cartItems]);
+
+  const shippingNumber = 0;
+  const orderTotalText = useMemo(() => {
+    const total = (Number.isFinite(cartSubtotalNumber) ? cartSubtotalNumber : 0) + shippingNumber;
+    return formatMoney(total, currency);
+  }, [cartSubtotalNumber, currency, shippingNumber]);
+
   return (
     <div className={styles.scope}>
       <Breadcrumb
         title="Checkout"
         items={[
           { label: "Home", href: "/" },
-          { label: "Shop", href: "/shop/grid/sidebar-left" },
           { label: "Checkout" },
         ]}
       />
 
       <div className="checkout_section">
         <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <div className="user-actions accordion" data-aos="fade-up" data-aos-delay="0">
-                <h3>
-                  Returning customer?
-                  <button type="button" className="Returning" data-bs-toggle="collapse" data-bs-target="#checkout_login" aria-expanded="true">
-                    Click here to login
-                  </button>
-                </h3>
-                <div id="checkout_login" className="collapse" data-bs-parent="#checkout_login">
-                  <div className="checkout_info">
-                    <p>
-                      If you have shopped with us before, please enter your details in the boxes below. If you are a new customer please proceed to the
-                      Billing &amp; Shipping section.
-                    </p>
-                    <form action="#" onSubmit={(e) => e.preventDefault()}>
-                      <div className="form_group default-form-box">
-                        <label>
-                          Username or email <span>*</span>
-                        </label>
-                        <input type="text" />
-                      </div>
-                      <div className="form_group default-form-box">
-                        <label>
-                          Password <span>*</span>
-                        </label>
-                        <input type="password" />
-                      </div>
-                      <div className="form_group group_3 default-form-box">
-                        <button type="submit">Login</button>
-                        <label className="checkbox-default">
-                          <input type="checkbox" />
-                          <span>Remember me</span>
-                        </label>
-                      </div>
-                      <button type="button" className="btn btn-link p-0">
-                        Lost your password?
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              <div className="user-actions accordion" data-aos="fade-up" data-aos-delay="200">
-                <h3>
-                  Returning customer?
-                  <button type="button" className="Returning" data-bs-toggle="collapse" data-bs-target="#checkout_coupon" aria-expanded="true">
-                    Click here to enter your code
-                  </button>
-                </h3>
-                <div id="checkout_coupon" className="collapse" data-bs-parent="#checkout_coupon">
-                  <div className="checkout_info">
-                    <form action="#" onSubmit={(e) => e.preventDefault()}>
-                      <input placeholder="Coupon code" type="text" />
-                      <button type="submit">Apply coupon</button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-              <div className="checkout_form" data-aos="fade-up" data-aos-delay="400">
+          <div className="checkout_form">
             <div className="row">
               <div className="col-lg-6 col-md-6">
                 <form action="#" onSubmit={(e) => e.preventDefault()}>
@@ -90,7 +92,11 @@ export default function CheckoutPageClient() {
                         <label>
                           First Name <span>*</span>
                         </label>
-                        <input type="text" />
+                        <input
+                          type="text"
+                          value={billing.firstName}
+                          onChange={(e) => setBilling((prev) => ({ ...prev, firstName: e.target.value }))}
+                        />
                       </div>
                     </div>
                     <div className="col-lg-6 mb-20">
@@ -98,13 +104,11 @@ export default function CheckoutPageClient() {
                         <label>
                           Last Name <span>*</span>
                         </label>
-                        <input type="text" />
-                      </div>
-                    </div>
-                    <div className="col-12 mb-20">
-                      <div className="default-form-box">
-                        <label>Company Name</label>
-                        <input type="text" />
+                        <input
+                          type="text"
+                          value={billing.lastName}
+                          onChange={(e) => setBilling((prev) => ({ ...prev, lastName: e.target.value }))}
+                        />
                       </div>
                     </div>
                     <div className="col-12 mb-20">
@@ -112,16 +116,12 @@ export default function CheckoutPageClient() {
                         <label htmlFor="country">
                           country <span>*</span>
                         </label>
-                        <select className="country_option nice-select wide" name="country" id="country" defaultValue="2">
-                          <option value="2">Bangladesh</option>
-                          <option value="3">Algeria</option>
-                          <option value="4">Afghanistan</option>
-                          <option value="5">Ghana</option>
-                          <option value="6">Albania</option>
-                          <option value="7">Bahrain</option>
-                          <option value="8">Colombia</option>
-                          <option value="9">Dominican Republic</option>
-                        </select>
+                        <input
+                          id="country"
+                          type="text"
+                          value={billing.country}
+                          onChange={(e) => setBilling((prev) => ({ ...prev, country: e.target.value }))}
+                        />
                       </div>
                     </div>
                     <div className="col-12 mb-20">
@@ -129,12 +129,22 @@ export default function CheckoutPageClient() {
                         <label>
                           Street address <span>*</span>
                         </label>
-                        <input placeholder="House number and street name" type="text" />
+                        <input
+                          placeholder="House number and street name"
+                          type="text"
+                          value={billing.street}
+                          onChange={(e) => setBilling((prev) => ({ ...prev, street: e.target.value }))}
+                        />
                       </div>
                     </div>
                     <div className="col-12 mb-20">
                       <div className="default-form-box">
-                        <input placeholder="Apartment, suite, unit etc. (optional)" type="text" />
+                        <input
+                          placeholder="Apartment, suite, unit etc. (optional)"
+                          type="text"
+                          value={billing.apartment}
+                          onChange={(e) => setBilling((prev) => ({ ...prev, apartment: e.target.value }))}
+                        />
                       </div>
                     </div>
                     <div className="col-12 mb-20">
@@ -142,7 +152,11 @@ export default function CheckoutPageClient() {
                         <label>
                           Town / City <span>*</span>
                         </label>
-                        <input type="text" />
+                        <input
+                          type="text"
+                          value={billing.city}
+                          onChange={(e) => setBilling((prev) => ({ ...prev, city: e.target.value }))}
+                        />
                       </div>
                     </div>
                     <div className="col-12 mb-20">
@@ -150,7 +164,11 @@ export default function CheckoutPageClient() {
                         <label>
                           State / County <span>*</span>
                         </label>
-                        <input type="text" />
+                        <input
+                          type="text"
+                          value={billing.region}
+                          onChange={(e) => setBilling((prev) => ({ ...prev, region: e.target.value }))}
+                        />
                       </div>
                     </div>
                     <div className="col-lg-6 mb-20">
@@ -158,7 +176,11 @@ export default function CheckoutPageClient() {
                         <label>
                           Phone<span>*</span>
                         </label>
-                        <input type="text" />
+                        <input
+                          type="text"
+                          value={billing.phoneNumber}
+                          onChange={(e) => setBilling((prev) => ({ ...prev, phoneNumber: e.target.value }))}
+                        />
                       </div>
                     </div>
                     <div className="col-lg-6 mb-20">
@@ -167,32 +189,16 @@ export default function CheckoutPageClient() {
                           {" "}
                           Email Address <span>*</span>
                         </label>
-                        <input type="text" />
+                        <input
+                          type="text"
+                          value={billing.email}
+                          onChange={(e) => setBilling((prev) => ({ ...prev, email: e.target.value }))}
+                        />
                       </div>
                     </div>
 
-                    <div className="col-12">
-                      <label className="checkbox-default" htmlFor="newAccount" data-bs-toggle="collapse" data-bs-target="#newAccountPassword">
-                        <input type="checkbox" id="newAccount" />
-                        <span>Create an account?</span>
-                      </label>
-                      <div id="newAccountPassword" className="collapse" data-bs-parent="#newAccountPassword">
-                        <div className="card-body1 default-form-box">
-                          <label>
-                            {" "}
-                            Account password <span>*</span>
-                          </label>
-                          <input placeholder="password" type="password" />
-                        </div>
-                      </div>
-                    </div>
 
                     <div className="col-12 mb-20">
-                      <label className="checkbox-default" htmlFor="newShipping" data-bs-toggle="collapse" data-bs-target="#anotherShipping">
-                        <input type="checkbox" id="newShipping" />
-                        <span>Ship to a different address?</span>
-                      </label>
-
                       <div id="anotherShipping" className="collapse" data-bs-parent="#anotherShipping">
                         <div className="row">
                           <div className="col-lg-6 mb-20">
@@ -307,81 +313,53 @@ export default function CheckoutPageClient() {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>
-                            {" "}
-                            Handbag fringilla <strong> × 2</strong>
-                          </td>
-                          <td> $165.00</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {" "}
-                            Handbag justo <strong> × 2</strong>
-                          </td>
-                          <td> $50.00</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {" "}
-                            Handbag elit <strong> × 2</strong>
-                          </td>
-                          <td> $50.00</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {" "}
-                            Handbag Rutrum <strong> × 1</strong>
-                          </td>
-                          <td> $50.00</td>
-                        </tr>
+                        {cartItems.map((row) => {
+                          const unit = parsePriceNumber(row.unitPrice) ?? parsePriceNumber(row.unitPriceText) ?? 0;
+                          const qty = Number(row.quantity ?? 1);
+                          const total = unit * (Number.isFinite(qty) ? qty : 1);
+                          const lineTotalText = formatMoney(total, row.currency ?? currency);
+
+                          return (
+                            <tr key={row.key}>
+                              <td>
+                                {row.name} <strong>× {row.quantity ?? 1}</strong>
+                              </td>
+                              <td>{showPrice ? lineTotalText : null}</td>
+                            </tr>
+                          );
+                        })}
+                        {cartItems.length === 0 ? (
+                          <tr>
+                            <td colSpan={2}>Cart is empty</td>
+                          </tr>
+                        ) : null}
                       </tbody>
                       <tfoot>
                         <tr>
                           <th>Cart Subtotal</th>
-                          <td>$215.00</td>
+                          <td>{showPrice ? cartSubtotalText : null}</td>
                         </tr>
                         <tr>
                           <th>Shipping</th>
                           <td>
-                            <strong>$5.00</strong>
+                            <strong>{showPrice ? formatMoney(shippingNumber, currency) : null}</strong>
                           </td>
                         </tr>
                         <tr className="order_total">
                           <th>Order Total</th>
                           <td>
-                            <strong>$220.00</strong>
+                            <strong>{showPrice ? orderTotalText : null}</strong>
                           </td>
                         </tr>
                       </tfoot>
                     </table>
                   </div>
+                  {!showPrice ? <div className="mt-10">Login to see prices</div> : null}
                   <div className="payment_method">
-                    <div className="panel-default">
-                      <label className="checkbox-default" htmlFor="currencyCod" data-bs-toggle="collapse" data-bs-target="#methodCod">
-                        <input type="checkbox" id="currencyCod" />
-                        <span>Cash on Delivery</span>
-                      </label>
-
-                      <div id="methodCod" className="collapse" data-bs-parent="#methodCod">
-                        <div className="card-body1">
-                          <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="panel-default">
-                      <label className="checkbox-default" htmlFor="currencyPaypal" data-bs-toggle="collapse" data-bs-target="#methodPaypal">
-                        <input type="checkbox" id="currencyPaypal" />
-                        <span>PayPal</span>
-                      </label>
-                      <div id="methodPaypal" className="collapse " data-bs-parent="#methodPaypal">
-                        <div className="card-body1">
-                          <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
-                        </div>
-                      </div>
-                    </div>
                     <div className="order_button pt-15">
-                      <button type="submit">Proceed to PayPal</button>
+                      <button type="submit" disabled={!cartItems.length}>
+                        Proceed to PayPal
+                      </button>
                     </div>
                   </div>
                 </form>

@@ -1,13 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Breadcrumb } from "@/components/ui";
 import { products } from "@/constants/products";
 import { ProductDetailsSummary, ProductDetailsTabs, RelatedProductsCarousel, ProductDetailsGallery, ProductOffersTable } from "@/components/templates";
 import styles from "./ProductDetailsPage.module.scss";
 
-export default function ProductDetailsPage({ title, breadcrumbLabel, productId = "p1", variant = "default" }) {
-  const product = products.find((p) => p.id === productId) || products[0];
+export default function ProductDetailsPage({ title, breadcrumbLabel, productId, productSlug, variant = "default" }) {
+  const product =
+    (productSlug ? products.find((p) => p.slug === productSlug) : null) ??
+    (productId ? products.find((p) => p.id === productId) : null) ??
+    products[0];
   const [activeTab, setActiveTab] = useState("description");
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -18,6 +21,18 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId =
   const relatedNextRef = useRef(null);
 
   const safeThumbsSwiper = thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash !== "#offers") return;
+
+    const el = document.getElementById("offers");
+    if (!el) return;
+
+    requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, []);
 
   const productImages = [
     product.imageSrc,
@@ -65,7 +80,7 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId =
         </div>
       </div>
 
-      <ProductOffersTable product={product} />
+      <ProductOffersTable product={product} groups={product?.offerGroups} />
       <ProductDetailsTabs activeTab={activeTab} onTabChange={setActiveTab} product={product} />
       <RelatedProductsCarousel products={products} prevRef={relatedPrevRef} nextRef={relatedNextRef} />
     </div>

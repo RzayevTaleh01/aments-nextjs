@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Icon } from "@/components/ui";
+import { useCart } from "@/context/ui-drawers-context";
+import { toast } from "react-toastify";
 import styles from "./ProductOfferModal.module.scss";
 
 function coerceNumber(value, fallback) {
@@ -23,6 +26,9 @@ function formatPrice(priceNumber, currencySuffix) {
 }
 
 export default function ProductOfferModal() {
+  const { status } = useSession();
+  const showPrice = status === "authenticated";
+  const { addToCart } = useCart();
   const [offer, setOffer] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [note, setNote] = useState("");
@@ -99,7 +105,7 @@ export default function ProductOfferModal() {
 
               <div>
                 <p className={styles.label}>Məbləğ</p>
-                <div className={styles.amount}>{totalPriceText}</div>
+                <div className={styles.amount}>{showPrice ? totalPriceText : ""}</div>
               </div>
             </div>
 
@@ -113,7 +119,60 @@ export default function ProductOfferModal() {
             </div>
 
             <div className={styles.action}>
-              <button type="button" className={styles.addButton} data-bs-dismiss="modal">
+              <button
+                type="button"
+                className={styles.addButton}
+                data-bs-dismiss="modal"
+                onClick={() => {
+                  const product = offer?.product ?? null;
+                  const row = offer?.row ?? null;
+
+                  const productId = product?.id ?? product?.slug ?? product?.code ?? "";
+                  const imageSrc = row?.img ?? product?.imageSrc ?? product?.image ?? "/assets/images/products_images/aments_products_image_1.jpg";
+                  const href = product?.href ?? (product?.slug ? `/product/${product.slug}` : "/product/default");
+
+                  const itemKey = `${String(productId)}::${String(row?.brand ?? "")}::${String(row?.code ?? "")}::${String(row?.warehouse ?? "")}`;
+                  const displayName = row?.name ?? product?.name ?? "";
+
+                  addToCart({
+                    key: itemKey,
+                    productId,
+                    name: displayName,
+                    brand: row?.brand ?? "",
+                    code: row?.code ?? "",
+                    warehouse: row?.warehouse ?? "",
+                    imageSrc,
+                    href,
+                    unitPrice: unitPrice ?? unitPriceText,
+                    unitPriceText,
+                    currency: currencySuffix,
+                    quantity,
+                    note,
+                  });
+
+                  window.dispatchEvent(
+                    new CustomEvent("aments:cart:added", {
+                      detail: {
+                        item: {
+                          key: itemKey,
+                          productId,
+                          name: displayName,
+                          imageSrc,
+                          href,
+                          quantity,
+                        },
+                      },
+                    })
+                  );
+                  toast.success("Səbətə uğurla əlavə edildi");
+
+                  const modalEl = document.getElementById("modalAddcart");
+                  const bs = typeof window !== "undefined" ? window.bootstrap : null;
+                  if (modalEl && bs?.Modal) {
+                    bs.Modal.getOrCreateInstance(modalEl).show();
+                  }
+                }}
+              >
                 <Icon name="FaShoppingCart" size={16} /> SƏBƏTƏ AT
               </button>
             </div>

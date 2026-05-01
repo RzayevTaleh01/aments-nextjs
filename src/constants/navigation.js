@@ -5,16 +5,6 @@ export const navigation = {
     { id: "register", label: "Register", href: "/register" },
     { id: "my-account", label: "My Account", href: "/my-account" },
     {
-      id: "settings",
-      label: "Setting",
-      href: "#",
-      children: [
-        { label: "Checkout", href: "/checkout" },
-        { label: "Shopping Cart", href: "/cart" },
-        { label: "Wishlist", href: "/wishlist" },
-      ],
-    },
-    {
       id: "language",
       label: "English",
       href: "#",

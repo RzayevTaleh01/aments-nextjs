@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Icon } from "@/components/ui";
+import { products } from "@/constants/products";
 
 const images = [
   "/assets/images/products_images/aments_products_image_1.jpg",
@@ -13,6 +14,8 @@ const images = [
 ];
 
 export default function QuickviewModal() {
+  const firstSlug = products?.[0]?.slug ?? "kapot";
+
   return (
     <div className="modal fade" id="modalQuickview" tabIndex={-1} role="dialog" aria-hidden="true">
       <div className="modal-dialog  modal-dialog-centered" role="document">
@@ -112,10 +115,10 @@ export default function QuickviewModal() {
                           </Link>
                         </li>
                         <li>
-                          <button type="button" data-bs-toggle="modal" data-bs-target="#modalAddcart">
+                          <Link href={`/product/${firstSlug}#offers`} data-bs-dismiss="modal">
                             <Icon name="FaShoppingCart" />
                             Add To Cart
-                          </button>
+                          </Link>
                         </li>
                       </ul>
                     </div>

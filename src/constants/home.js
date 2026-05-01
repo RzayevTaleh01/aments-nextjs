@@ -6,7 +6,7 @@ export const home1HeroSlides = [
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiu",
     imageSrc: "/assets/images/slider_images/home_1/aments_home_1_slider_1.jpg",
     ctaLabel: "Shopping Now",
-    ctaHref: "/product/default",
+    ctaHref: "/product/kapot",
   },
   {
     id: "home1-hero-2",
@@ -15,19 +15,19 @@ export const home1HeroSlides = [
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiu",
     imageSrc: "/assets/images/slider_images/home_1/aments_home_1_slider_2.jpg",
     ctaLabel: "Shopping Now",
-    ctaHref: "/product/default",
+    ctaHref: "/product/kapot",
   },
 ];
 
 export const popularCategories = [
-  { id: "cat-1", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_01.jpg", href: "/product/default" },
-  { id: "cat-2", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_02.jpg", href: "/product/default" },
-  { id: "cat-3", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_03.jpg", href: "/product/default" },
-  { id: "cat-4", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_04.jpg", href: "/product/default" },
-  { id: "cat-5", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_05.jpg", href: "/product/default" },
-  { id: "cat-6", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_06.jpg", href: "/product/default" },
-  { id: "cat-7", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_07.jpg", href: "/product/default" },
-  { id: "cat-8", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_08.jpg", href: "/product/default" },
+  { id: "cat-1", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_01.jpg", href: "/product/kapot" },
+  { id: "cat-2", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_02.jpg", href: "/product/kapot" },
+  { id: "cat-3", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_03.jpg", href: "/product/kapot" },
+  { id: "cat-4", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_04.jpg", href: "/product/kapot" },
+  { id: "cat-5", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_05.jpg", href: "/product/kapot" },
+  { id: "cat-6", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_06.jpg", href: "/product/kapot" },
+  { id: "cat-7", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_07.jpg", href: "/product/kapot" },
+  { id: "cat-8", title: "Parts Box", items: "(20 Items)", imageSrc: "/assets/images/categories_images/aments_categories_08.jpg", href: "/product/kapot" },
 ];
 
 export const homeBanners = [
@@ -37,7 +37,7 @@ export const homeBanners = [
     eyebrow: "Car Wheel",
     title: "30% Off",
     ctaLabel: "Shop Now",
-    href: "/product/default",
+    href: "/product/kapot",
   },
   {
     id: "banner-2",
@@ -45,7 +45,7 @@ export const homeBanners = [
     eyebrow: "Car Vails",
     title: "40% Off",
     ctaLabel: "Shop Now",
-    href: "/product/default",
+    href: "/product/kapot",
   },
   {
     id: "banner-3",
@@ -53,7 +53,25 @@ export const homeBanners = [
     eyebrow: "Car Vails",
     title: "50% Off",
     ctaLabel: "Shop Now",
-    href: "/product/default",
+    href: "/product/kapot",
+  },
+];
+
+export const homeProductTabs = [
+  {
+    id: 3,
+    name: "tet",
+    order_count: "2",
+  },
+  {
+    id: 1,
+    name: "Teker",
+    order_count: "0",
+  },
+  {
+    id: 2,
+    name: "Motor",
+    order_count: "0",
   },
 ];
 

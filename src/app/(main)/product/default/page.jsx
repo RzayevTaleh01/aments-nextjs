@@ -1,14 +1,13 @@
-import {ProductDetailsPage} from "@/components/pages";
+import { redirect } from "next/navigation";
+import { products } from "@/constants/products";
 
 export const metadata = {
     title: "Product Details Default",
 };
 
 export default function Page() {
-    return <ProductDetailsPage
-        title="Product Details Default"
-        breadcrumbLabel="Product Details Default"
-        variant="default"
-    />;
+    const firstSlug = products?.[0]?.slug;
+    if (firstSlug) redirect(`/product/${firstSlug}`);
+    redirect("/");
 }
 

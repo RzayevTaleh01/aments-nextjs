@@ -6,6 +6,7 @@ import "aos/dist/aos.css";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { UIDrawersProvider } from "@/context/ui-drawers-context";
 
 export default function Providers({ children }) {
   useEffect(() => {
@@ -20,8 +21,10 @@ export default function Providers({ children }) {
 
   return (
     <SessionProvider>
-      {children}
-      <ToastContainer position="top-right" autoClose={5000} closeOnClick pauseOnHover newestOnTop />
+      <UIDrawersProvider>
+        {children}
+        <ToastContainer position="top-right" autoClose={5000} closeOnClick pauseOnHover newestOnTop />
+      </UIDrawersProvider>
     </SessionProvider>
   );
 }

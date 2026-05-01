@@ -51,13 +51,13 @@ export default function ComparePage() {
                           <td className="first-column">Product</td>
                           {products.map((p) => (
                             <td key={p.title} className="product-image-title">
-                              <Link href="/product/default" className="image">
+                              <Link href="/product/kapot" className="image">
                                 <Image src={p.img} alt="Compare Product" width={210} height={210} />
                               </Link>
                               <Link href="/shop/grid/sidebar-left" className="category">
                                 {p.category}
                               </Link>
-                              <Link href="/product/default" className="title">
+                              <Link href="/product/kapot" className="title">
                                 {p.title}
                               </Link>
                             </td>

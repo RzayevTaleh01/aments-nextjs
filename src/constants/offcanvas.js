@@ -3,21 +3,21 @@ export const cartDrawer = {
   items: [
     {
       name: "Car Wheel",
-      href: "/product/default",
+      href: "/product/kapot",
       imageSrc: "/assets/images/products_images/aments_products_image_6.jpg",
       quantityText: "1 x",
       priceText: "$49.00"
     },
     {
       name: "Car Vails",
-      href: "/product/default",
+      href: "/product/kapot",
       imageSrc: "/assets/images/categories_images/aments_categories_08.jpg",
       quantityText: "3 x",
       priceText: "$500.00"
     },
     {
       name: "Shock Absorber",
-      href: "/product/default",
+      href: "/product/kapot",
       imageSrc: "/assets/images/products_images/aments_products_image_2.jpg",
       quantityText: "1 x",
       priceText: "$350.00"
@@ -35,21 +35,21 @@ export const wishlistDrawer = {
   items: [
     {
       name: "Car Wheel",
-      href: "/product/default",
+      href: "/product/kapot",
       imageSrc: "/assets/images/products_images/aments_products_image_6.jpg",
       quantityText: "1 x",
       priceText: "$49.00"
     },
     {
       name: "Car Vails",
-      href: "/product/default",
+      href: "/product/kapot",
       imageSrc: "/assets/images/categories_images/aments_categories_08.jpg",
       quantityText: "3 x",
       priceText: "$500.00"
     },
     {
       name: "Shock Absorber",
-      href: "/product/default",
+      href: "/product/kapot",
       imageSrc: "/assets/images/products_images/aments_products_image_2.jpg",
       quantityText: "1 x",
       priceText: "$350.00"
@@ -57,4 +57,3 @@ export const wishlistDrawer = {
   ],
   actions: [{ label: "View wishlist", href: "/wishlist" }]
 };
-

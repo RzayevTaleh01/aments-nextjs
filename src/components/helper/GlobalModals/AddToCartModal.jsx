@@ -1,7 +1,25 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Icon } from "@/components/ui";
+import { useCart } from "@/context/ui-drawers-context";
 
 export default function AddToCartModal() {
+  const { status } = useSession();
+  const showPrice = status === "authenticated";
+  const { cartCount, cartSubtotalText } = useCart();
+  const [lastItem, setLastItem] = useState(null);
+
+  useEffect(() => {
+    function onAdded(e) {
+      setLastItem(e?.detail?.item ?? null);
+    }
+    window.addEventListener("aments:cart:added", onAdded);
+    return () => window.removeEventListener("aments:cart:added", onAdded);
+  }, []);
+
   return (
     <div
       className="modal fade"
@@ -36,7 +54,7 @@ export default function AddToCartModal() {
                       <div className="modal-add-cart-product-img">
                         <img
                           className="img-fluid"
-                          src="/assets/images/products_images/aments_products_image_1.jpg"
+                          src={lastItem?.imageSrc ?? "/assets/images/products_images/aments_products_image_1.jpg"}
                           alt=""
                         />
                       </div>
@@ -46,6 +64,7 @@ export default function AddToCartModal() {
                         <Icon name="FaCheckSquare" size={18} className="me-2" />
                         Added to cart successfully!
                       </div>
+                      {lastItem?.name ? <div className="mt-2">{lastItem.name}</div> : null}
                       <div className="modal-add-cart-product-cart-buttons">
                         <Link href="/cart">View Cart</Link>
                         <Link href="/checkout">Checkout</Link>
@@ -58,12 +77,12 @@ export default function AddToCartModal() {
                     <li>
                       {" "}
                       <strong>
-                        <Icon name="FaShoppingCart" /> There Are 5 Items In Your Cart.
+                        <Icon name="FaShoppingCart" /> There Are {cartCount} Items In Your Cart.
                       </strong>
                     </li>
                     <li>
                       {" "}
-                      <strong>TOTAL PRICE: </strong> <span>$187.00</span>
+                      <strong>TOTAL PRICE: </strong> <span>{showPrice ? cartSubtotalText : null}</span>
                     </li>
                     <li className="modal-continue-button">
                       <button type="button" data-bs-dismiss="modal">
