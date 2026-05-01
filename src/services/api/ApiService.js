@@ -1,5 +1,4 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 
 function getHeaderValue(headers, key) {
   if (!headers) return undefined;
@@ -81,33 +80,10 @@ ApiService.interceptors.response.use(
 
         return Promise.reject(error);
       } else {
-        const message = error.response.data?.message || error.response.statusText;
-        const errors = Array.isArray(error.response.data?.errors) ? error.response.data.errors : [];
-
         if (typeof window !== "undefined") {
-          toast(
-            <>
-              {message}
-              <br />
-              <ul>
-                {errors.map((item, index) => (
-                  <li key={index} style={{ fontSize: "0.75em" }}>
-                    {index + 1}. {typeof item === "string" ? item : item?.message}
-                  </li>
-                ))}
-              </ul>
-            </>,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              type: "error",
-            }
-          );
+          const { extractApiErrorPayload, toastApiError } = await import("@/utils/toastApiError");
+          const { message, errors } = extractApiErrorPayload(error.response.data);
+          toastApiError(message || error.response.statusText || "Request failed", errors);
         }
       }
 

@@ -10,7 +10,8 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId, 
   const product =
     (productSlug ? products.find((p) => p.slug === productSlug) : null) ??
     (productId ? products.find((p) => p.id === productId) : null) ??
-    products[0];
+    null;
+  if (!product) return null;
   const [activeTab, setActiveTab] = useState("description");
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
