@@ -11,7 +11,7 @@ export default function Page() {
       breadcrumbLabel="Product List Catalog"
       withSidebar
       sidebarPosition="left"
-      defaultView="list"
+      defaultView="grid"
     />
   );
 }

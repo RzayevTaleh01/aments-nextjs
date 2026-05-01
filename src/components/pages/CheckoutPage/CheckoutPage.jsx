@@ -228,7 +228,7 @@ export default function CheckoutPageClient() {
                               <label htmlFor="countru_name">
                                 country <span>*</span>
                               </label>
-                              <select className="niceselect_option wide" name="cuntry" id="countru_name" defaultValue="2">
+                              <select className="form-select" name="cuntry" id="countru_name" defaultValue="2">
                                 <option value="2">Bangladesh</option>
                                 <option value="3">Algeria</option>
                                 <option value="4">Afghanistan</option>

@@ -94,7 +94,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
           <div className="col-lg-3 col-md-4 mb-10">
             <div className="default-form-box">
               <label>BRAND</label>
-              <select className="country_option nice-select wide" value={pendingBrand} onChange={(e) => setPendingBrand(e.target.value)}>
+              <select className="form-select" value={pendingBrand} onChange={(e) => setPendingBrand(e.target.value)}>
                 <option value="ALL">Hamısı</option>
                 {brands.map((b) => (
                   <option key={b} value={b}>
@@ -107,7 +107,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
           <div className="col-lg-3 col-md-4 mb-10">
             <div className="default-form-box">
               <label>MİQDAR SEÇİMİ</label>
-              <select className="country_option nice-select wide" value={pendingQty} onChange={(e) => setPendingQty(e.target.value)}>
+              <select className="form-select" value={pendingQty} onChange={(e) => setPendingQty(e.target.value)}>
                 <option value="ALL">Hamısı</option>
                 {[0, 1, 2, 3, 4, 5].map((n) => (
                   <option key={n} value={String(n)}>

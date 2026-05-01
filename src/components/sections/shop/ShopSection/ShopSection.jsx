@@ -184,7 +184,7 @@ export default function ShopSection({
                         <div className="sort-select-list">
                           <form action="#" onSubmit={(e) => e.preventDefault()}>
                             <fieldset>
-                              <select name="speed" id="speed" defaultValue="Sort by newness">
+                              <select className="form-select" name="speed" id="speed" defaultValue="Sort by newness">
                                 <option>Sort by average rating</option>
                                 <option>Sort by popularity</option>
                                 <option>Sort by newness</option>
@@ -210,7 +210,7 @@ export default function ShopSection({
                       <div className="col-12">
                         <div className="tab-content tab-animate-zoom">
                           <div className={cn(styles.tabPane, isGridDefault && styles.tabPaneActive)} id={gridLayoutId}>
-                            <div className="row">
+                            <div className="row g-4">
                               {filteredProducts.map((p, idx) => (
                                 <div key={p.id} className="col-xl-4 col-sm-6 col-12">
                                   <div data-aos="fade-up" data-aos-delay={String((idx % 3) * 200)}>
@@ -342,7 +342,7 @@ export default function ShopSection({
                         <div className="sort-select-list">
                           <form action="#" onSubmit={(e) => e.preventDefault()}>
                             <fieldset>
-                              <select name="speed" id="speed" defaultValue="Sort by newness">
+                              <select className="form-select" name="speed" id="speed" defaultValue="Sort by newness">
                                 <option>Sort by average rating</option>
                                 <option>Sort by popularity</option>
                                 <option>Sort by newness</option>
@@ -368,7 +368,7 @@ export default function ShopSection({
                       <div className="col-12">
                         <div className="tab-content tab-animate-zoom">
                           <div className={cn(styles.tabPane, isGridDefault && styles.tabPaneActive)} id="layout-4-grid">
-                            <div className="row">
+                            <div className="row g-4">
                               {filteredProducts.map((p) => (
                                 <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12">
                                   <div data-aos="fade-up">
