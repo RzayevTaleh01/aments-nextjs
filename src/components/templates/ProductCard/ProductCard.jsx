@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Icon } from "@/components/ui";
 import "./ProductCard.module.scss";
 
-export default function ProductCard({ product, actionsVariant = "links" }) {
+export default function ProductCard({ product, actionsVariant = "links", showPrice = true }) {
   const useModalActions = actionsVariant === "modals";
 
   return (
@@ -14,7 +14,7 @@ export default function ProductCard({ product, actionsVariant = "links" }) {
         </Link>
         <div className="product-action-icon-link">
           <ul>
-              <li>
+            <li>
               {useModalActions ? (
                 <button type="button" data-bs-toggle="modal" data-bs-target="#modalAddcart" aria-label="Add to cart">
                   <Icon name="FaShoppingCart" />
@@ -43,9 +43,11 @@ export default function ProductCard({ product, actionsVariant = "links" }) {
         <h6 className="product-default-link">
           <Link href={product.href}>{product.name}</Link>
         </h6>
-        <span className="product-default-price">
-          {product.compareAt ? <del className="product-default-price-off">{product.compareAt}</del> : null} {product.price}
-        </span>
+        {showPrice && (product?.price != null || product?.compareAt != null) ? (
+          <span className="product-default-price">
+            {product.compareAt ? <del className="product-default-price-off">{product.compareAt}</del> : null} {product.price}
+          </span>
+        ) : null}
       </div>
     </div>
   );

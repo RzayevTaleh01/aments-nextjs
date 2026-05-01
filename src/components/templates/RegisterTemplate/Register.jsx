@@ -22,11 +22,11 @@ export default function RegisterTemplate({
         <div className="row">
           <div className="col-12">
             <div className={cn(styles.account_form, "account_form", styles.register, "register")}>
-              <h3>Qeydiyyat</h3>
+              <h3>Register</h3>
               <form onSubmit={handleSubmit} noValidate>
                 <div className="row">
                   <div className="col-lg-6 mb-30">
-                    <h5 className="mb-20">Qeydiyyat detalları</h5>
+                    <h5 className="mb-20">Registration Details</h5>
                     <div className="default-form-box mb-20">
                       <label>
                         Email <span>*</span>
@@ -37,7 +37,7 @@ export default function RegisterTemplate({
 
                     <div className="default-form-box mb-20">
                       <label>
-                        İstifadəçi adı <span>*</span>
+                        Username <span>*</span>
                       </label>
                       <input type="text" value={safeForm.username ?? ""} onChange={(e) => setField("username", e.target.value)} />
                       {safeErrors.username ? <small className="text-danger">{safeErrors.username}</small> : null}
@@ -45,7 +45,7 @@ export default function RegisterTemplate({
 
                     <div className="default-form-box mb-20">
                       <label>
-                        Şifrə <span>*</span>
+                        Password <span>*</span>
                       </label>
                       <input type="password" value={safeForm.password ?? ""} onChange={(e) => setField("password", e.target.value)} />
                       {safeErrors.password ? <small className="text-danger">{safeErrors.password}</small> : null}
@@ -53,7 +53,7 @@ export default function RegisterTemplate({
 
                     <div className="default-form-box mb-20">
                       <label>
-                        Şifrəni təsdiqləyin <span>*</span>
+                        Confirm Password <span>*</span>
                       </label>
                       <input type="password" value={safeForm.passwordConfirm ?? ""} onChange={(e) => setField("passwordConfirm", e.target.value)} />
                       {safeErrors.passwordConfirm ? <small className="text-danger">{safeErrors.passwordConfirm}</small> : null}
@@ -61,10 +61,10 @@ export default function RegisterTemplate({
                   </div>
 
                   <div className="col-lg-6 mb-30">
-                    <h5 className="mb-20">Əlaqə məlumatlarınız</h5>
+                    <h5 className="mb-20">Contact Information</h5>
                     <div className="default-form-box mb-20">
                       <label>
-                        Ad <span>*</span>
+                        First Name <span>*</span>
                       </label>
                       <input type="text" value={safeForm.first_name ?? ""} onChange={(e) => setField("first_name", e.target.value)} />
                       {safeErrors.first_name ? <small className="text-danger">{safeErrors.first_name}</small> : null}
@@ -72,7 +72,7 @@ export default function RegisterTemplate({
 
                     <div className="default-form-box mb-20">
                       <label>
-                        Soyad <span>*</span>
+                        Last Name <span>*</span>
                       </label>
                       <input type="text" value={safeForm.last_name ?? ""} onChange={(e) => setField("last_name", e.target.value)} />
                       {safeErrors.last_name ? <small className="text-danger">{safeErrors.last_name}</small> : null}
@@ -80,7 +80,7 @@ export default function RegisterTemplate({
 
                     <div className="default-form-box mb-20">
                       <label>
-                        Əlaqə nömrəsi <span>*</span>
+                        Phone Number <span>*</span>
                       </label>
                       <input
                         type="text"
@@ -95,61 +95,82 @@ export default function RegisterTemplate({
                 </div>
 
                 <div className="mb-30">
-                  <h5 className="mb-20">Çatdırılma ünvanı</h5>
-                  <div className="default-form-box mb-20">
-                    <label>
-                      İndeks <span>*</span>
-                    </label>
-                    <input type="text" value={safeForm.post_index ?? ""} onChange={(e) => setField("post_index", e.target.value)} />
-                    {safeErrors.post_index ? <small className="text-danger">{safeErrors.post_index}</small> : null}
-                  </div>
+                  <h5 className="mb-20">Shipping Address</h5>
+                  <div className="row">
+                    <div className="col-md-6 mb-20">
+                      <div className="default-form-box">
+                        <label>
+                          Postal Code <span>*</span>
+                        </label>
+                        <input type="text" value={safeForm.post_index ?? ""} onChange={(e) => setField("post_index", e.target.value)} />
+                        {safeErrors.post_index ? <small className="text-danger">{safeErrors.post_index}</small> : null}
+                      </div>
+                    </div>
 
-                  <div className="default-form-box mb-20">
-                    <label>
-                      Ölkə <span>*</span>
-                    </label>
-                    <input type="text" value={safeForm.country ?? ""} onChange={(e) => setField("country", e.target.value)} />
-                    {safeErrors.country ? <small className="text-danger">{safeErrors.country}</small> : null}
-                  </div>
+                    <div className="col-md-6 mb-20">
+                      <div className="default-form-box">
+                        <label>
+                          Country <span>*</span>
+                        </label>
+                        <input type="text" value={safeForm.country ?? ""} onChange={(e) => setField("country", e.target.value)} />
+                        {safeErrors.country ? <small className="text-danger">{safeErrors.country}</small> : null}
+                      </div>
+                    </div>
 
-                  <div className="default-form-box mb-20">
-                    <label>
-                      Region <span>*</span>
-                    </label>
-                    <input type="text" value={safeForm.region ?? ""} onChange={(e) => setField("region", e.target.value)} />
-                    {safeErrors.region ? <small className="text-danger">{safeErrors.region}</small> : null}
-                  </div>
+                    <div className="col-md-6 mb-20">
+                      <div className="default-form-box">
+                        <label>
+                          Region/State <span>*</span>
+                        </label>
+                        <input type="text" value={safeForm.region ?? ""} onChange={(e) => setField("region", e.target.value)} />
+                        {safeErrors.region ? <small className="text-danger">{safeErrors.region}</small> : null}
+                      </div>
+                    </div>
 
-                  <div className="default-form-box mb-20">
-                    <label>
-                      Şəhər <span>*</span>
-                    </label>
-                    <input type="text" value={safeForm.city ?? ""} onChange={(e) => setField("city", e.target.value)} />
-                    {safeErrors.city ? <small className="text-danger">{safeErrors.city}</small> : null}
-                  </div>
+                    <div className="col-md-6 mb-20">
+                      <div className="default-form-box">
+                        <label>
+                          City <span>*</span>
+                        </label>
+                        <input type="text" value={safeForm.city ?? ""} onChange={(e) => setField("city", e.target.value)} />
+                        {safeErrors.city ? <small className="text-danger">{safeErrors.city}</small> : null}
+                      </div>
+                    </div>
 
-                  <div className="default-form-box mb-20">
-                    <label>
-                      Küçə <span>*</span>
-                    </label>
-                    <input type="text" value={safeForm.street ?? ""} onChange={(e) => setField("street", e.target.value)} />
-                    {safeErrors.street ? <small className="text-danger">{safeErrors.street}</small> : null}
-                  </div>
+                    <div className="col-md-6 mb-20">
+                      <div className="default-form-box">
+                        <label>
+                          Street <span>*</span>
+                        </label>
+                        <input type="text" value={safeForm.street ?? ""} onChange={(e) => setField("street", e.target.value)} />
+                        {safeErrors.street ? <small className="text-danger">{safeErrors.street}</small> : null}
+                      </div>
+                    </div>
 
-                  <div className="default-form-box mb-20">
-                    <label>
-                      Ev nömrəsi <span>*</span>
-                    </label>
-                    <input type="text" value={safeForm.home_number ?? ""} onChange={(e) => setField("home_number", e.target.value)} />
-                    {safeErrors.home_number ? <small className="text-danger">{safeErrors.home_number}</small> : null}
-                  </div>
+                    <div className="col-md-6 mb-20">
+                      <div className="default-form-box">
+                        <label>
+                          House Number <span>*</span>
+                        </label>
+                        <input type="text" value={safeForm.home_number ?? ""} onChange={(e) => setField("home_number", e.target.value)} />
+                        {safeErrors.home_number ? <small className="text-danger">{safeErrors.home_number}</small> : null}
+                      </div>
+                    </div>
 
-                  <div className="default-form-box mb-20">
-                    <label>
-                      Mənzil / Ofis <span>*</span>
-                    </label>
-                    <input type="text" value={safeForm.home_office ?? ""} onChange={(e) => setField("home_office", e.target.value)} placeholder="home / office" />
-                    {safeErrors.home_office ? <small className="text-danger">{safeErrors.home_office}</small> : null}
+                    <div className="col-md-6 mb-20">
+                      <div className="default-form-box">
+                        <label>
+                          Apartment/Office <span>*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={safeForm.home_office ?? ""}
+                          onChange={(e) => setField("home_office", e.target.value)}
+                          placeholder="Apartment / Office"
+                        />
+                        {safeErrors.home_office ? <small className="text-danger">{safeErrors.home_office}</small> : null}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -163,7 +184,7 @@ export default function RegisterTemplate({
                       onChange={(e) => setField("acceptTerms", e.target.checked)}
                     />
                     <label className="form-check-label" htmlFor="acceptTerms">
-                      Əsas şərtlər bölməsini oxudum və razıyam <span>*</span>
+                      I have read and agree to the Terms and Conditions <span>*</span>
                     </label>
                     {safeErrors.acceptTerms ? <small className="text-danger d-block">{safeErrors.acceptTerms}</small> : null}
                   </div>
@@ -177,7 +198,7 @@ export default function RegisterTemplate({
                       onChange={(e) => setField("acceptPrivacy", e.target.checked)}
                     />
                     <label className="form-check-label" htmlFor="acceptPrivacy">
-                      Mən şəxsi məlumatlarımın emalına razıyam və şərtləri qəbul edirəm <span>*</span>
+                      I agree to the processing of my personal data and accept the policy <span>*</span>
                     </label>
                     {safeErrors.acceptPrivacy ? <small className="text-danger d-block">{safeErrors.acceptPrivacy}</small> : null}
                   </div>
@@ -185,9 +206,9 @@ export default function RegisterTemplate({
 
                 <div className={cn(styles.login_submit, "login_submit")}>
                   <button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Göndərilir..." : "Qeydiyyat"}
+                    {isSubmitting ? "Submitting..." : "Register"}
                   </button>
-                  {hasAnyError ? <small className="text-danger mt-10">Zəhmət olmasa qeyd olunan sahələri yoxlayın</small> : null}
+                  {hasAnyError ? <small className="text-danger mt-10">Please check the highlighted fields.</small> : null}
                 </div>
               </form>
             </div>

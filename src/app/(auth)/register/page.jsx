@@ -9,59 +9,59 @@ import { RegisterPage } from "@/components/pages";
 
 const registerConstraints = {
   email: {
-    presence: { allowEmpty: false, message: "^Email tələb olunur" },
-    email: { message: "^Email formatı düzgün deyil" },
+    presence: { allowEmpty: false, message: "^Email is required" },
+    email: { message: "^Invalid email format" },
   },
   username: {
-    presence: { allowEmpty: false, message: "^İstifadəçi adı tələb olunur" },
-    length: { minimum: 3, maximum: 32, tooShort: "^İstifadəçi adı ən az 3 simvol olmalıdır", tooLong: "^İstifadəçi adı ən çox 32 simvol ola bilər" },
-    format: { pattern: "^[a-zA-Z0-9_]+$", message: "^İstifadəçi adında yalnız hərf, rəqəm və _ istifadə oluna bilər" },
+    presence: { allowEmpty: false, message: "^Username is required" },
+    length: { minimum: 3, maximum: 32, tooShort: "^Username must be at least 3 characters", tooLong: "^Username must be at most 32 characters" },
+    format: { pattern: "^[a-zA-Z0-9_]+$", message: "^Username can contain only letters, numbers, and _" },
   },
   password: {
-    presence: { allowEmpty: false, message: "^Şifrə tələb olunur" },
-    length: { minimum: 6, tooShort: "^Şifrə ən az 6 simvol olmalıdır" },
+    presence: { allowEmpty: false, message: "^Password is required" },
+    length: { minimum: 6, tooShort: "^Password must be at least 6 characters" },
   },
   passwordConfirm: {
-    presence: { allowEmpty: false, message: "^Şifrəni təsdiqləyin" },
-    equality: { attribute: "password", message: "^Şifrələr uyğun deyil" },
+    presence: { allowEmpty: false, message: "^Please confirm your password" },
+    equality: { attribute: "password", message: "^Passwords do not match" },
   },
   first_name: {
-    presence: { allowEmpty: false, message: "^Ad tələb olunur" },
+    presence: { allowEmpty: false, message: "^First name is required" },
   },
   last_name: {
-    presence: { allowEmpty: false, message: "^Soyad tələb olunur" },
+    presence: { allowEmpty: false, message: "^Last name is required" },
   },
   phoneNumber: {
-    presence: { allowEmpty: false, message: "^Əlaqə nömrəsi tələb olunur" },
-    format: { pattern: "^\\d{7,15}$", message: "^Əlaqə nömrəsi yalnız rəqəmlərdən ibarət olmalıdır (7-15 rəqəm)" },
+    presence: { allowEmpty: false, message: "^Phone number is required" },
+    format: { pattern: "^\\d{7,15}$", message: "^Phone number must contain only digits (7-15 digits)" },
   },
   post_index: {
-    presence: { allowEmpty: false, message: "^İndeks tələb olunur" },
-    format: { pattern: "^\\d{3,10}$", message: "^İndeks yalnız rəqəmlərdən ibarət olmalıdır" },
+    presence: { allowEmpty: false, message: "^Postal code is required" },
+    format: { pattern: "^\\d{3,10}$", message: "^Postal code must contain only digits" },
   },
   country: {
-    presence: { allowEmpty: false, message: "^Ölkə tələb olunur" },
+    presence: { allowEmpty: false, message: "^Country is required" },
   },
   region: {
-    presence: { allowEmpty: false, message: "^Region tələb olunur" },
+    presence: { allowEmpty: false, message: "^Region/State is required" },
   },
   city: {
-    presence: { allowEmpty: false, message: "^Şəhər tələb olunur" },
+    presence: { allowEmpty: false, message: "^City is required" },
   },
   street: {
-    presence: { allowEmpty: false, message: "^Küçə tələb olunur" },
+    presence: { allowEmpty: false, message: "^Street is required" },
   },
   home_number: {
-    presence: { allowEmpty: false, message: "^Ev nömrəsi tələb olunur" },
+    presence: { allowEmpty: false, message: "^House number is required" },
   },
   home_office: {
-    presence: { allowEmpty: false, message: "^Mənzil / Ofis tələb olunur" },
+    presence: { allowEmpty: false, message: "^Apartment/Office is required" },
   },
   acceptTerms: {
-    inclusion: { within: [true], message: "^Şərtləri qəbul etməlisiniz" },
+    inclusion: { within: [true], message: "^You must accept the Terms and Conditions" },
   },
   acceptPrivacy: {
-    inclusion: { within: [true], message: "^Şəxsi məlumatların emalına razılıq verməlisiniz" },
+    inclusion: { within: [true], message: "^You must consent to personal data processing" },
   },
 };
 
@@ -111,18 +111,14 @@ export default function Page() {
   }
 
   async function postRegister(payload) {
-    const routes = ["/api/user/register", "/user/register"];
     let lastError;
-
-    for (const route of routes) {
       try {
-        return await ApiService.post(route, payload, { headers: { "Content-Type": "application/json" } });
+        return await ApiService.post("/user/register", payload, { headers: { "Content-Type": "application/json" } });
       } catch (error) {
         const status = error?.response?.status;
         lastError = error;
-        if (status !== 404) break;
+        if (status !== 404) throw error;
       }
-    }
 
     throw lastError;
   }
@@ -159,10 +155,10 @@ export default function Page() {
 
       await postRegister(payload);
 
-      toast.success("Qeydiyyat uğurla tamamlandı");
+      toast.success("Registration completed successfully");
       router.push("/login");
     } catch (error) {
-      const message = error?.response?.data?.message || error?.message || "Qeydiyyat zamanı xəta baş verdi";
+      const message = error?.response?.data?.message || error?.message || "An error occurred during registration";
       toast.error(message);
     } finally {
       setIsSubmitting(false);

@@ -21,7 +21,7 @@ export default function LoginTemplate({
               <form action="#" method="POST" onSubmit={onSubmit}>
                 <div className="default-form-box mb-20">
                   <label>
-                    Username or email <span>*</span>
+                    Username <span>*</span>
                   </label>
                   <input
                     type="text"
