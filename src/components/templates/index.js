@@ -8,6 +8,6 @@ export { default as ProductDetailsSummary } from "./ProductDetailsSummary";
 export { default as ProductDetailsTabs } from "./ProductDetailsTabs";
 export { default as RelatedProductsCarousel } from "./RelatedProductsCarousel";
 export { default as LoginTemplate } from "./LoginTemplate";
-export { default as Register } from "./Register";
+export { default as RegisterTemplate } from "./RegisterTemplate";
 export { default as ProductCategorySingle } from "./ProductCategorySingle";
 export { default as ProductCatalogSidebar } from "./ProductCatalogSidebar";

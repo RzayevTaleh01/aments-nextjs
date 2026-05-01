@@ -12,7 +12,7 @@ export default function LoginTemplate({
   onSubmit,
 }) {
   return (
-    <div className="customer_login">
+    <div className={cn(styles.customer_login, "customer_login")}>
       <div className="container">
         <div className="row">
           <div className="col-lg-6 col-md-6">

@@ -1,21 +1,11 @@
 "use client";
 
-import { Breadcrumb } from "@/components/ui";
-import { Register } from "@/components/templates";
+import { RegisterTemplate } from "@/components/templates";
 
-export default function RegisterPage() {
+export default function RegisterPage(props) {
   return (
     <div>
-      <Breadcrumb
-        title="Register"
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Shop", href: "/shop/grid/sidebar-left" },
-          { label: "Register" },
-        ]}
-      />
-      <Register />
+      <RegisterTemplate {...props} />
     </div>
   );
 }
-
