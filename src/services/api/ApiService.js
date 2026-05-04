@@ -50,7 +50,6 @@ ApiService.interceptors.request.use(
         const { getSession } = await import("next-auth/react");
         const session = await getSession();
         accessToken = session?.token?.accessToken;
-        adminAccessToken = session?.adminToken?.accessToken;
       } else {
         const { cookies } = await import("next/headers");
         const { getToken } = await import("next-auth/jwt");
@@ -66,7 +65,6 @@ ApiService.interceptors.request.use(
         });
 
         accessToken = token?.token?.accessToken;
-        adminAccessToken = token?.adminToken?.accessToken;
       }
     } catch {
       return _config;
@@ -99,12 +97,12 @@ ApiService.interceptors.response.use(
         }
 
         return Promise.reject(error);
-      } else {
-        if (typeof window !== "undefined") {
-          const { extractApiErrorPayload, toastApiError } = await import("@/utils/toastApiError");
-          const { message, errors } = extractApiErrorPayload(error.response.data);
-          toastApiError(message || error.response.statusText || "Request failed", errors);
-        }
+      }
+
+      if (typeof window !== "undefined") {
+        const { extractApiErrorPayload, toastApiError } = await import("@/utils/toastApiError");
+        const { message, errors } = extractApiErrorPayload(error.response.data);
+        toastApiError(message || error.response.statusText || "Request failed", errors);
       }
 
       return Promise.reject(error);
