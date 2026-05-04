@@ -14,6 +14,10 @@ export default function ProductCatalogList({
   sidebarPosition = "left",
   defaultView = "list",
   renderSidebar,
+  showPagination = true,
+  emptyMessage,
+  pagination,
+  onPageChange,
 }) {
   const { status } = useSession();
   const showPrice = status === "authenticated";
@@ -35,10 +39,26 @@ export default function ProductCatalogList({
     if (!query) return products;
     return products.filter((p) => (p?.name ?? "").toLowerCase().includes(query));
   }, [products, searchQuery]);
+  const hasResults = filteredProducts.length > 0;
   const listProducts = useMemo(() => {
-    if (searchQuery.trim()) return filteredProducts;
-    return filteredProducts.slice(0, 5);
+    return filteredProducts;
   }, [filteredProducts, searchQuery]);
+
+  const page = Number(pagination?.page ?? 1) || 1;
+  const totalPages = Number(pagination?.totalPages ?? 1) || 1;
+  const shouldShowPagination = Boolean(showPagination && hasResults && totalPages > 1 && typeof onPageChange === "function");
+
+  const pageNumbers = useMemo(() => {
+    if (!shouldShowPagination) return [];
+    const windowSize = 5;
+    const half = Math.floor(windowSize / 2);
+    let start = Math.max(1, page - half);
+    let end = Math.min(totalPages, start + windowSize - 1);
+    start = Math.max(1, end - windowSize + 1);
+    const nums = [];
+    for (let i = start; i <= end; i += 1) nums.push(i);
+    return nums;
+  }, [page, shouldShowPagination, totalPages]);
 
   function applyFilters() {
     setSearchQuery(searchInput);
@@ -76,7 +96,7 @@ export default function ProductCatalogList({
           {withSidebar ? (
             <div className={rowClass}>
               <div className="col-lg-3">
-                <div className="siderbar-section" data-aos="fade-up" data-aos-delay="0">
+                <div className="siderbar-section">
                   {renderSidebar ? (
                     renderSidebar(sidebarApi)
                   ) : (
@@ -154,7 +174,7 @@ export default function ProductCatalogList({
               </div>
 
               <div className="col-lg-9">
-                <div className="shop-sort-section mb-4" data-aos="fade-up" data-aos-delay="0">
+                <div className="shop-sort-section mb-4">
                   <div className="container">
                     <div className="row">
                       <div className="sort-box d-flex justify-content-between align-items-center flex-wrap">
@@ -211,21 +231,31 @@ export default function ProductCatalogList({
                         <div className="tab-content tab-animate-zoom">
                           <div className={cn(styles.tabPane, isGridDefault && styles.tabPaneActive)} id={gridLayoutId}>
                             <div className="row g-4">
-                              {filteredProducts.map((p, idx) => (
-                                <div key={p.id} className="col-xl-4 col-sm-6 col-12 d-flex">
-                                  <div data-aos="fade-up" data-aos-delay={String((idx % 3) * 100)} className="w-100">
-                                    <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
+                              {hasResults ? (
+                                filteredProducts.map((p, idx) => (
+                                  <div key={p.id} className="col-xl-4 col-sm-6 col-12 d-flex">
+                                    <div className="w-100">
+                                      <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
+                                    </div>
                                   </div>
+                                ))
+                              ) : (
+                                <div className="col-12">
+                                  <div className="alert alert-light border mb-0">{emptyMessage ?? "Məhsul tapılmadı"}</div>
                                 </div>
-                              ))}
+                              )}
                             </div>
                           </div>
 
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
-                              {listProducts.map((p) => (
-                                <ProductListItem key={p.id} product={p} showPrice={showPrice} />
-                              ))}
+                              {hasResults ? (
+                                listProducts.map((p) => <ProductListItem key={p.id} product={p} showPrice={showPrice} />)
+                              ) : (
+                                <div className="col-12">
+                                  <div className="alert alert-light border mb-0">{emptyMessage ?? "Məhsul tapılmadı"}</div>
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -234,35 +264,29 @@ export default function ProductCatalogList({
                   </div>
                 </div>
 
-                <div className="page-pagination text-center" data-aos="fade-up" data-aos-delay="0">
-                  <ul>
-                    <li>
-                      <button type="button">
-                        Previous
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button" className="active">
-                        1
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button">
-                        2
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button">
-                        3
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button">
-                        Next
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+                {shouldShowPagination ? (
+                  <div className="page-pagination text-center">
+                    <ul>
+                      <li>
+                        <button type="button" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
+                          Previous
+                        </button>
+                      </li>
+                      {pageNumbers.map((n) => (
+                        <li key={n}>
+                          <button type="button" className={n === page ? "active" : undefined} onClick={() => onPageChange(n)}>
+                            {n}
+                          </button>
+                        </li>
+                      ))}
+                      <li>
+                        <button type="button" disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>
+                          Next
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             </div>
           ) : (
@@ -325,21 +349,31 @@ export default function ProductCatalogList({
                         <div className="tab-content tab-animate-zoom">
                           <div className={cn(styles.tabPane, isGridDefault && styles.tabPaneActive)} id="layout-4-grid">
                             <div className="row g-4">
-                              {filteredProducts.map((p) => (
-                                <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12 d-flex">
-                                  <div data-aos="fade-up" className="w-100">
-                                    <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
+                              {hasResults ? (
+                                filteredProducts.map((p) => (
+                                  <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12 d-flex">
+                                    <div data-aos="fade-up" className="w-100">
+                                      <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
+                                    </div>
                                   </div>
+                                ))
+                              ) : (
+                                <div className="col-12">
+                                  <div className="alert alert-light border mb-0">{emptyMessage ?? "Məhsul tapılmadı"}</div>
                                 </div>
-                              ))}
+                              )}
                             </div>
                           </div>
 
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
-                              {listProducts.map((p) => (
-                                <ProductListItem key={p.id} product={p} showPrice={showPrice} />
-                              ))}
+                              {hasResults ? (
+                                listProducts.map((p) => <ProductListItem key={p.id} product={p} showPrice={showPrice} />)
+                              ) : (
+                                <div className="col-12">
+                                  <div className="alert alert-light border mb-0">{emptyMessage ?? "Məhsul tapılmadı"}</div>
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -348,35 +382,29 @@ export default function ProductCatalogList({
                   </div>
                 </div>
 
-                <div className="page-pagination text-center" data-aos="fade-up" data-aos-delay="0">
-                  <ul>
-                    <li>
-                      <button type="button">
-                        Previous
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button" className="active">
-                        1
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button">
-                        2
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button">
-                        3
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button">
-                        Next
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+                {shouldShowPagination ? (
+                  <div className="page-pagination text-center">
+                    <ul>
+                      <li>
+                        <button type="button" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
+                          Previous
+                        </button>
+                      </li>
+                      {pageNumbers.map((n) => (
+                        <li key={n}>
+                          <button type="button" className={n === page ? "active" : undefined} onClick={() => onPageChange(n)}>
+                            {n}
+                          </button>
+                        </li>
+                      ))}
+                      <li>
+                        <button type="button" disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>
+                          Next
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             </div>
           )}

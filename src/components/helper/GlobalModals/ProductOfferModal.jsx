@@ -29,7 +29,7 @@ function formatPrice(priceNumber, currencySuffix) {
 export default function ProductOfferModal() {
   const { status } = useSession();
   const showPrice = status === "authenticated";
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
   const [offer, setOffer] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [note, setNote] = useState("");
@@ -66,6 +66,27 @@ export default function ProductOfferModal() {
   const unitPrice = parsePriceNumber(unitPriceText);
   const totalPriceText = unitPrice != null ? formatPrice(unitPrice * quantity, currencySuffix) : unitPriceText;
 
+  const storageProductId = offer?.row?.storageProductId ?? offer?.row?.storage_product_id ?? offer?.row?.id ?? null;
+
+  const maxSelectable = useMemo(() => {
+    const stock = Math.max(0, coerceNumber(offer?.row?.qty, 0));
+    if (!storageProductId) return stock;
+    const alreadyInCart = cartItems.reduce((sum, x) => {
+      if (String(x?.storageProductId ?? "") !== String(storageProductId)) return sum;
+      return sum + Math.max(0, coerceNumber(x?.quantity, 0));
+    }, 0);
+    return Math.max(0, stock - alreadyInCart);
+  }, [cartItems, offer, storageProductId]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setQuantity((q) => {
+      const desired = Math.max(1, coerceNumber(q, 1));
+      if (maxSelectable <= 0) return desired;
+      return Math.min(desired, maxSelectable);
+    });
+  }, [isOpen, maxSelectable]);
+
   return (
     <Modal
       id="modalProductOffer"
@@ -97,10 +118,24 @@ export default function ProductOfferModal() {
               <input
                 className={styles.qtyInput}
                 value={quantity}
-                onChange={(e) => setQuantity(Math.max(1, coerceNumber(e.target.value, 1)))}
+                onChange={(e) => {
+                  const desired = Math.max(1, coerceNumber(e.target.value, 1));
+                  setQuantity(maxSelectable > 0 ? Math.min(desired, maxSelectable) : desired);
+                }}
                 inputMode="numeric"
               />
-              <button type="button" className={styles.qtyBtn} onClick={() => setQuantity((q) => q + 1)} aria-label="Artır">
+              <button
+                type="button"
+                className={styles.qtyBtn}
+                onClick={() => {
+                  setQuantity((q) => {
+                    const next = q + 1;
+                    if (maxSelectable <= 0) return Math.max(1, next);
+                    return Math.min(Math.max(1, next), maxSelectable);
+                  });
+                }}
+                aria-label="Artır"
+              >
                 <Icon name="FaPlus" size={12} />
               </button>
             </div>
@@ -125,6 +160,7 @@ export default function ProductOfferModal() {
           <button
             type="button"
             className={styles.addButton}
+            disabled={maxSelectable === 0}
             onClick={() => {
               const product = offer?.product ?? null;
               const row = offer?.row ?? null;
@@ -133,11 +169,13 @@ export default function ProductOfferModal() {
               const imageSrc = row?.img ?? product?.imageSrc ?? product?.image ?? "/assets/images/products_images/aments_products_image_1.jpg";
               const href = product?.href ?? (product?.slug ? `/product/${product.slug}` : "/product/default");
 
-              const itemKey = `${String(productId)}::${String(row?.brand ?? "")}::${String(row?.code ?? "")}::${String(row?.warehouse ?? "")}`;
+              const itemKey = storageProductId ? `storage-product:${String(storageProductId)}` : `${String(productId)}::${String(row?.brand ?? "")}::${String(row?.code ?? "")}::${String(row?.warehouse ?? "")}`;
               const displayName = row?.name ?? product?.name ?? "";
 
               addToCart({
                 key: itemKey,
+                storageProductId,
+                maxQuantity: Math.max(0, coerceNumber(row?.qty, 0)),
                 productId,
                 name: displayName,
                 brand: row?.brand ?? "",
@@ -148,7 +186,7 @@ export default function ProductOfferModal() {
                 unitPrice: unitPrice ?? unitPriceText,
                 unitPriceText,
                 currency: currencySuffix,
-                quantity,
+                quantity: maxSelectable > 0 ? Math.min(Math.max(1, quantity), maxSelectable) : 1,
                 note,
               });
 

@@ -6,6 +6,6 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <ProductCatalogPage withSidebar title="Product List Catalog" sidebarPosition="left" defaultView="grid" productsApiRoute={ALL_PRODUCTS_ROUTE} />
+    <ProductCatalogPage withSidebar title="Product List Catalog" sidebarPosition="left" defaultView="grid" productsApiRoute={ALL_PRODUCTS_ROUTE} searchParamKey="q" />
   );
 }

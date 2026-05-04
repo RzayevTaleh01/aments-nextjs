@@ -21,7 +21,8 @@ function toAssetUrl(src) {
 }
 
 function mapApiProductToUiProduct(p) {
-  const priceValue = p?.storageProducts?.[0]?.price;
+  const firstStorageProduct = Array.isArray(p?.storageProducts) ? (p.storageProducts.find((sp) => sp?.price != null) ?? p.storageProducts[0]) : null;
+  const priceValue = firstStorageProduct?.price;
   const price = typeof priceValue === "string" || typeof priceValue === "number" ? `${priceValue} AZN` : "";
   return {
     ...p,
@@ -35,7 +36,9 @@ function buildProductDetailRoute(id) {
 }
 
 function buildOfferGroupsFromApiProduct(p) {
-  const rows = (p?.storageProducts ?? []).map((sp) => ({
+  const rows = (p?.storageProducts ?? []).map((sp) => {
+    const storageProductId = sp?.id ?? sp?.storageProductId ?? sp?.storage_product_id ?? sp?.storage_product?.id ?? null;
+    return {
     img: p?.imageSrc ?? "/assets/images/products_images/aments_products_image_1.jpg",
     brand: p?.brand?.name ?? p?.brand ?? "",
     code: p?.code ?? p?.oem_code ?? "",
@@ -43,7 +46,9 @@ function buildOfferGroupsFromApiProduct(p) {
     warehouse: sp?.storageId ? `Anbar #${sp.storageId}` : "Anbar",
     qty: Number(sp?.stockQuantity ?? 0),
     price: sp?.price ? `${sp.price} AZN` : "",
-  }));
+    storageProductId,
+    };
+  });
 
   if (rows.length === 0) return [];
   return [{ title: "Anbarlar", rows }];

@@ -24,6 +24,21 @@ function formatMoney(value, currency) {
   return currency ? `${text} ${currency}` : text;
 }
 
+function getItemMaxQuantity(item) {
+  const candidates = [item?.maxQuantity, item?.stockQuantity, item?.qty, item?.stock];
+  for (const c of candidates) {
+    const n = Number(c);
+    if (Number.isFinite(n) && n >= 0) return n;
+  }
+  return null;
+}
+
+function clampQuantity(desiredQuantity, maxQuantity) {
+  const base = Math.max(1, coerceNumber(desiredQuantity, 1));
+  if (!Number.isFinite(maxQuantity) || maxQuantity == null) return base;
+  return Math.min(base, Math.max(0, maxQuantity));
+}
+
 export function UIDrawersProvider({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -49,23 +64,43 @@ export function UIDrawersProvider({ children }) {
     const key = item.key ?? item.id ?? null;
     if (!key) return;
 
-    const quantity = Math.max(1, coerceNumber(item.quantity, 1));
+    const maxQuantity = getItemMaxQuantity(item);
+    if (maxQuantity === 0) return;
+
+    const quantity = clampQuantity(item.quantity, maxQuantity);
 
     setCartItems((prev) => {
       const existingIndex = prev.findIndex((x) => x?.key === key);
-      if (existingIndex === -1) return [...prev, { ...item, key, quantity }];
+      if (existingIndex === -1) return [...prev, { ...item, key, quantity, maxQuantity: maxQuantity ?? item?.maxQuantity }];
 
       const existing = prev[existingIndex];
+      const existingMaxQuantity = getItemMaxQuantity(existing);
+      const nextMaxQuantity = maxQuantity ?? existingMaxQuantity;
+      if (nextMaxQuantity === 0) return prev.filter((x) => x?.key !== key);
+
       const next = [...prev];
-      next[existingIndex] = { ...existing, ...item, key, quantity: Math.max(1, coerceNumber(existing?.quantity, 1) + quantity) };
+      const desired = Math.max(1, coerceNumber(existing?.quantity, 1) + quantity);
+      next[existingIndex] = {
+        ...existing,
+        ...item,
+        key,
+        quantity: clampQuantity(desired, nextMaxQuantity),
+        maxQuantity: nextMaxQuantity ?? item?.maxQuantity ?? existing?.maxQuantity,
+      };
       return next;
     });
   }
 
   function setCartItemQuantity(key, quantity) {
     if (!key) return;
-    const qty = Math.max(1, coerceNumber(quantity, 1));
-    setCartItems((prev) => prev.map((x) => (x?.key === key ? { ...x, quantity: qty } : x)));
+    setCartItems((prev) =>
+      prev.map((x) => {
+        if (x?.key !== key) return x;
+        const maxQuantity = getItemMaxQuantity(x);
+        if (maxQuantity === 0) return x;
+        return { ...x, quantity: clampQuantity(quantity, maxQuantity), maxQuantity: maxQuantity ?? x?.maxQuantity };
+      })
+    );
   }
 
   function removeCartItem(key) {
@@ -134,4 +169,3 @@ export function useUIDrawers() {
 export function useCart() {
   return useUIDrawers();
 }
-

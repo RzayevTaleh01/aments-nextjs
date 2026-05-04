@@ -2,9 +2,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Collapse } from "reactstrap";
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import { useCart } from "@/context/ui-drawers-context";
+import { ORDER_POST_ROUTE } from "@/configs/apiRoutes";
+import ApiService from "@/services/api/ApiService";
+import { toast } from "react-toastify";
 import styles from "./CheckoutPage.module.scss";
 
 function parsePriceNumber(priceText) {
@@ -24,10 +28,12 @@ function formatMoney(value, currency) {
 
 export default function CheckoutPageClient() {
   const { data: session, status } = useSession();
+  const router = useRouter();
   const showPrice = status === "authenticated";
-  const { cartItems, cartSubtotalNumber, cartSubtotalText } = useCart();
+  const { cartItems, cartSubtotalNumber, cartSubtotalText, clearCart } = useCart();
   const user = session?.user ?? {};
   const [shipToDifferentAddress, setShipToDifferentAddress] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [billing, setBilling] = useState({
     firstName: "",
@@ -70,6 +76,47 @@ export default function CheckoutPageClient() {
     const total = (Number.isFinite(cartSubtotalNumber) ? cartSubtotalNumber : 0) + shippingNumber;
     return formatMoney(total, currency);
   }, [cartSubtotalNumber, currency, shippingNumber]);
+
+  async function submitOrder() {
+    if (isSubmitting) return;
+    if (status !== "authenticated") {
+      toast.error("Sifarişi tamamlamaq üçün daxil olun");
+      return;
+    }
+    if (!cartItems.length) return;
+
+    const payloads = cartItems.map((item) => {
+      const storageProductId = item?.storageProductId ?? item?.storage_product_id ?? null;
+      if (storageProductId == null) return null;
+
+      const quantity = Math.max(1, Number(item?.quantity ?? 1));
+      const unit = parsePriceNumber(item?.unitPrice) ?? parsePriceNumber(item?.unitPriceText) ?? 0;
+      const total = unit * quantity;
+
+      const storageProductIdNumber = Number(storageProductId);
+      return {
+        quantity,
+        storage_product_id: Number.isFinite(storageProductIdNumber) ? storageProductIdNumber : storageProductId,
+        total_price: Number.isFinite(total) ? total : 0,
+      };
+    });
+
+    if (payloads.some((x) => !x)) {
+      toast.error("Səbətdə storage_product_id tapılmadı");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await Promise.all(payloads.map((body) => ApiService.post(ORDER_POST_ROUTE, body)));
+      toast.success("Sifariş uğurla göndərildi");
+      clearCart();
+      router.push("/");
+    } catch {
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div className={styles.scope}>
@@ -316,7 +363,13 @@ export default function CheckoutPageClient() {
               </div>
 
               <div className="col-lg-6 col-md-6">
-                <form action="#" onSubmit={(e) => e.preventDefault()}>
+                <form
+                  action="#"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    submitOrder();
+                  }}
+                >
                   <h3>Your order</h3>
                   <div className="order_table table-responsive">
                     <table>
@@ -371,7 +424,7 @@ export default function CheckoutPageClient() {
                   {!showPrice ? <div className="mt-10">Login to see prices</div> : null}
                   <div className="payment_method">
                     <div className="order_button pt-15">
-                      <button type="submit" disabled={!cartItems.length}>
+                      <button type="submit" disabled={!cartItems.length || isSubmitting}>
                         Complete
                       </button>
                     </div>
