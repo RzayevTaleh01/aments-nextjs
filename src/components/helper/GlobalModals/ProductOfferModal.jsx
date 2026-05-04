@@ -67,22 +67,30 @@ export default function ProductOfferModal() {
   const totalPriceText = unitPrice != null ? formatPrice(unitPrice * quantity, currencySuffix) : unitPriceText;
 
   const storageProductId = offer?.row?.storageProductId ?? offer?.row?.storage_product_id ?? offer?.row?.id ?? null;
+  const productId = offer?.product?.id ?? offer?.product?.slug ?? offer?.product?.code ?? "";
+  const rowWarehouse = offer?.row?.warehouse ?? "";
+  const rowBrand = offer?.row?.brand ?? "";
+  const rowCode = offer?.row?.code ?? "";
+  const itemKey = storageProductId ? `storage-product:${String(storageProductId)}` : `${String(productId)}::${String(rowBrand)}::${String(rowCode)}::${String(rowWarehouse)}`;
 
   const maxSelectable = useMemo(() => {
     const stock = Math.max(0, coerceNumber(offer?.row?.qty, 0));
-    if (!storageProductId) return stock;
     const alreadyInCart = cartItems.reduce((sum, x) => {
-      if (String(x?.storageProductId ?? "") !== String(storageProductId)) return sum;
+      if (storageProductId) {
+        if (String(x?.storageProductId ?? "") !== String(storageProductId)) return sum;
+      } else {
+        if (String(x?.key ?? "") !== String(itemKey)) return sum;
+      }
       return sum + Math.max(0, coerceNumber(x?.quantity, 0));
     }, 0);
     return Math.max(0, stock - alreadyInCart);
-  }, [cartItems, offer, storageProductId]);
+  }, [cartItems, itemKey, offer, storageProductId]);
 
   useEffect(() => {
     if (!isOpen) return;
     setQuantity((q) => {
       const desired = Math.max(1, coerceNumber(q, 1));
-      if (maxSelectable <= 0) return desired;
+      if (maxSelectable <= 0) return 1;
       return Math.min(desired, maxSelectable);
     });
   }, [isOpen, maxSelectable]);
@@ -120,17 +128,18 @@ export default function ProductOfferModal() {
                 value={quantity}
                 onChange={(e) => {
                   const desired = Math.max(1, coerceNumber(e.target.value, 1));
-                  setQuantity(maxSelectable > 0 ? Math.min(desired, maxSelectable) : desired);
+                  setQuantity(maxSelectable > 0 ? Math.min(desired, maxSelectable) : 1);
                 }}
                 inputMode="numeric"
               />
               <button
                 type="button"
                 className={styles.qtyBtn}
+                disabled={maxSelectable === 0 || quantity >= maxSelectable}
                 onClick={() => {
                   setQuantity((q) => {
                     const next = q + 1;
-                    if (maxSelectable <= 0) return Math.max(1, next);
+                    if (maxSelectable <= 0) return 1;
                     return Math.min(Math.max(1, next), maxSelectable);
                   });
                 }}
@@ -165,12 +174,11 @@ export default function ProductOfferModal() {
               const product = offer?.product ?? null;
               const row = offer?.row ?? null;
 
-              const productId = product?.id ?? product?.slug ?? product?.code ?? "";
               const imageSrc = row?.img ?? product?.imageSrc ?? product?.image ?? "/assets/images/products_images/aments_products_image_1.jpg";
               const href = product?.href ?? (product?.slug ? `/product/${product.slug}` : "/product/default");
 
-              const itemKey = storageProductId ? `storage-product:${String(storageProductId)}` : `${String(productId)}::${String(row?.brand ?? "")}::${String(row?.code ?? "")}::${String(row?.warehouse ?? "")}`;
               const displayName = row?.name ?? product?.name ?? "";
+              const finalQuantity = maxSelectable > 0 ? Math.min(Math.max(1, quantity), maxSelectable) : 1;
 
               addToCart({
                 key: itemKey,
@@ -186,7 +194,7 @@ export default function ProductOfferModal() {
                 unitPrice: unitPrice ?? unitPriceText,
                 unitPriceText,
                 currency: currencySuffix,
-                quantity: maxSelectable > 0 ? Math.min(Math.max(1, quantity), maxSelectable) : 1,
+                quantity: finalQuantity,
                 note,
               });
 
@@ -201,7 +209,7 @@ export default function ProductOfferModal() {
                       name: displayName,
                       imageSrc,
                       href,
-                      quantity,
+                      quantity: finalQuantity,
                     },
                   },
                 })

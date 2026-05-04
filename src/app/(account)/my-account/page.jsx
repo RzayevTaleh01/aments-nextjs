@@ -22,7 +22,6 @@ export default async function Page() {
         title="My Account"
         items={[
           { label: "Home", href: "/" },
-          { label: "Shop", href: "/shop/grid/sidebar-left" },
           { label: "My Account" },
         ]}
       />
