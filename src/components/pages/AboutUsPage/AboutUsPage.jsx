@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
-import TestimonialSection from "@/components/sections/about/TestimonialSection/TestimonialSection";
+import TestimonialSection from "@/components/sections/about/TestimonialSection";
 import styles from "./AboutUsPage.module.scss";
 
 export default function AboutUsPage() {

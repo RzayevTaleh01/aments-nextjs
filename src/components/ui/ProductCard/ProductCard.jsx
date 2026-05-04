@@ -3,8 +3,7 @@ import Link from "next/link";
 import Icon from "@/components/ui/TemplateIcon";
 import "./ProductCard.module.scss";
 
-export default function ProductCard({ product, actionsVariant = "links", showPrice = true }) {
-  const useModalActions = actionsVariant === "modals";
+export default function ProductCard({ product, showPrice = true }) {
   const detailsHref = product?.href ?? (product?.slug ? `/product/${product.slug}` : "/product/default");
   const offersHref = `${detailsHref}#offers`;
   const brandName = product?.brand?.name ?? product?.brand ?? "";
@@ -23,23 +22,6 @@ export default function ProductCard({ product, actionsVariant = "links", showPri
               <Link href={offersHref} aria-label="View offers">
                 <Icon name="FaShoppingCart" />
               </Link>
-            </li>
-            <li>
-              {useModalActions ? (
-                <button
-                  type="button"
-                  aria-label="Quick view"
-                  onClick={() => {
-                    window.dispatchEvent(new CustomEvent("aments:quickview-modal", { detail: { product } }));
-                  }}
-                >
-                  <Icon name="FaEye" />
-                </button>
-              ) : (
-                <Link href={detailsHref}>
-                  <Icon name="FaEye" />
-                </Link>
-              )}
             </li>
           </ul>
         </div>

@@ -3,7 +3,7 @@
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import { products as allProducts } from "@/constants/products";
 import ProductCatalogList from "@/components/templates/ProductCatalogList";
-import ProductCatalogSidebar from "@/components/templates/ProductCatalogSidebar/ProductCatalogSidebar";
+import ProductCatalogSidebar from "@/components/templates/ProductCatalogSidebar";
 
 export default function ProductCatalogPage({
   title,

@@ -372,7 +372,7 @@ export default function CheckoutPageClient() {
                   <div className="payment_method">
                     <div className="order_button pt-15">
                       <button type="submit" disabled={!cartItems.length}>
-                        Proceed to PayPal
+                        Complete
                       </button>
                     </div>
                   </div>

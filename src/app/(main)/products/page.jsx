@@ -1,17 +1,19 @@
-import ProductCatalogPage from "@/components/pages/ProductCatalogPage/ProductCatalogPage";
-
+import ProductCatalogPage from "@/components/pages/ProductCatalogPage";
+import { products } from "@/constants/products";
 export const metadata = {
   title: "Products",
 };
 
-export default function Page() {
-  return (
-    <ProductCatalogPage
-      title="Product List Catalog"
-      breadcrumbLabel="Product List Catalog"
-      withSidebar
-      sidebarPosition="left"
-      defaultView="grid"
-    />
-  );
+export const dynamic = "force-dynamic";
+
+
+
+export default async function Page() {
+  return (<ProductCatalogPage
+    withSidebar
+    title="Product List Catalog"
+    sidebarPosition="left"
+    defaultView="grid"
+    products={products}
+  />);
 }

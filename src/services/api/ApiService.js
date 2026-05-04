@@ -22,39 +22,59 @@ function redirectToHome() {
   if (typeof window !== "undefined") window.location.assign("/");
 }
 
-const REQUEST_HEADER_AUTH_KEY = process.env.NEXT_PUBLIC_REQUEST_HEADER_AUTH_KEY;
-const REQUEST_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_ADMIN_BASE_URL;
+const REQUEST_HEADER_AUTH_KEY = process.env.NEXT_PUBLIC_REQUEST_HEADER_AUTH_KEY ?? "Authorization";
+const REQUEST_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL;
 const REQUEST_TIME_OUT = process.env.NEXT_PUBLIC_REQUEST_TIME_OUT;
-const REQUEST_TOKEN_TYPE = process.env.NEXT_PUBLIC_REQUEST_TOKEN_TYPE;
+const REQUEST_TOKEN_TYPE = process.env.NEXT_PUBLIC_REQUEST_TOKEN_TYPE ?? "Bearer";
 const REQUEST_NEXT_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_NEXT_ADMIN_BASE_URL;
 
 const ApiService = axios.create({
   timeout: Number(REQUEST_TIME_OUT ?? 30000),
-  baseURL: REQUEST_ADMIN_BASE_URL,
+  baseURL: REQUEST_BASE_URL,
 });
 
 let originalConfig = { url: "" };
 
-ApiService.interceptors.request.use(async (config) => {
-    let _config = { ...config };
+ApiService.interceptors.request.use(
+  async (config) => {
+    const _config = { ...config };
     _config.headers = _config.headers ?? {};
 
-    let session;
-    if (typeof window !== "undefined") {
-      const { getSession } = await import("next-auth/react");
-      session = await getSession();
-    }
+    const hasAuthHeader = Boolean(getHeaderValue(_config.headers, REQUEST_HEADER_AUTH_KEY));
+    if (hasAuthHeader) return _config;
 
-    if (REQUEST_HEADER_AUTH_KEY && !getHeaderValue(_config.headers, REQUEST_HEADER_AUTH_KEY)) {
-      if (session?.token?.accessToken) {
-        setHeaderIfMissing(_config.headers, REQUEST_HEADER_AUTH_KEY, `${REQUEST_TOKEN_TYPE} ${session?.token?.accessToken}`);
+    let accessToken;
+
+    try {
+      if (typeof window !== "undefined") {
+        const { getSession } = await import("next-auth/react");
+        const session = await getSession();
+        accessToken = session?.token?.accessToken;
+        adminAccessToken = session?.adminToken?.accessToken;
+      } else {
+        const { cookies } = await import("next/headers");
+        const { getToken } = await import("next-auth/jwt");
+
+        const cookieStore = cookies();
+        const cookieHeader = (cookieStore.getAll?.() ?? [])
+          .map((c) => `${c.name}=${c.value}`)
+          .join("; ");
+
+        const token = await getToken({
+          req: { headers: { cookie: cookieHeader } },
+          secret: process.env.NEXTAUTH_SECRET ?? process.env.NEXT_PUBLIC_REQUEST_NEXTAUTH_SECRET,
+        });
+
+        accessToken = token?.token?.accessToken;
+        adminAccessToken = token?.adminToken?.accessToken;
       }
+    } catch {
+      return _config;
     }
 
-    if (session?.adminToken?.accessToken) {
-      setHeaderIfMissing(_config.headers, "Authorization-Admin", `${REQUEST_TOKEN_TYPE} ${session?.adminToken?.accessToken}`);
+    if (accessToken) {
+      setHeaderIfMissing(_config.headers, REQUEST_HEADER_AUTH_KEY, `${REQUEST_TOKEN_TYPE} ${accessToken}`);
     }
-
     return _config;
   },
   (error) => Promise.reject(error)

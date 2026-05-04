@@ -8,8 +8,9 @@ import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
 
 export default function AddToCartModal() {
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
+  const showPrice = isAuthenticated;
   const { cartCount, cartSubtotalText } = useCart();
   const [lastItem, setLastItem] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -66,14 +67,16 @@ export default function AddToCartModal() {
                     Added to cart successfully!
                   </div>
                   {lastItem?.name ? <div className="mt-2">{lastItem.name}</div> : null}
-                  <div className="modal-add-cart-product-cart-buttons">
-                    <Link href="/cart" onClick={close}>
-                      View Cart
-                    </Link>
-                    <Link href="/checkout" onClick={close}>
-                      Checkout
-                    </Link>
-                  </div>
+                  {isAuthenticated ? (
+                    <div className="modal-add-cart-product-cart-buttons">
+                      <Link href="/cart" onClick={close}>
+                        View Cart
+                      </Link>
+                      <Link href="/checkout" onClick={close}>
+                        Checkout
+                      </Link>
+                    </div>
+                  ) : null}
                 </div>
               </div>
             </div>

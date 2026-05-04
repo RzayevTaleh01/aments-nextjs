@@ -3,8 +3,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useSession } from "next-auth/react";
-import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
-import ProductCard from "@/components/templates/ProductCard/ProductCard";
+import Icon from "@/components/ui/TemplateIcon";
+import ProductCard from "@/components/ui/ProductCard";
 import "./RelatedProductsCarousel.module.scss";
 
 export default function RelatedProductsCarousel({ products, prevRef, nextRef }) {

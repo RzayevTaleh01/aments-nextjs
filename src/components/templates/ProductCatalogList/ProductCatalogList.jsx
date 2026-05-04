@@ -3,8 +3,8 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import ProductCard from "@/components/templates/ProductCard/ProductCard";
-import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
+import ProductCard from "@/components/ui/ProductCard/ProductCard";
+import ProductListItem from "@/components/ui/ProductListItem/ProductListItem";
 import { cn } from "@/utils/cn";
 import styles from "./ProductCatalogList.module.scss";
 
@@ -154,7 +154,7 @@ export default function ProductCatalogList({
               </div>
 
               <div className="col-lg-9">
-                <div className="shop-sort-section" data-aos="fade-up" data-aos-delay="0">
+                <div className="shop-sort-section mb-4" data-aos="fade-up" data-aos-delay="0">
                   <div className="container">
                     <div className="row">
                       <div className="sort-box d-flex justify-content-between align-items-center flex-wrap">
@@ -180,7 +180,7 @@ export default function ProductCatalogList({
                             </li>
                           </ul>
                         </div>
-
+{/* 
                         <div className="sort-select-list">
                           <form action="#" onSubmit={(e) => e.preventDefault()}>
                             <fieldset>
@@ -194,7 +194,7 @@ export default function ProductCatalogList({
                               </select>
                             </fieldset>
                           </form>
-                        </div>
+                        </div> */}
 
                         <div className="page-amount">
                           <span>Showing {filteredProducts.length} results</span>
@@ -224,57 +224,7 @@ export default function ProductCatalogList({
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
                               {listProducts.map((p) => (
-                                <div key={p.id} className="col-12 mb-4">
-                                  <div className="product-list-single border-around">
-                                    <Link href={p.href} className="product-list-img-link">
-                                      <img src={p.imageSrc} alt="" className="img-fluid" />
-                                    </Link>
-                                    <div className="product-list-content">
-                                      <h5 className="product-list-link">
-                                        <Link href={p.href}>{p.name}</Link>
-                                      </h5>
-                                      {showPrice ? (
-                                        <span className="product-list-price">
-                                          {p.compareAt ? <del className="product-list-price-off">{p.compareAt}</del> : null} {p.price}
-                                        </span>
-                                      ) : null}
-                                      <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis ad, iure incidunt. Ab consequatur temporibus non
-                                        eveniet inventore doloremque necessitatibus sed, ducimus quisquam, ad asperiores
-                                      </p>
-                                      <div className="product-action-icon-link-list">
-                                        <ul>
-                                          <li>
-                                            <Link href="/wishlist">
-                                              <Icon name="FaHeart" />
-                                            </Link>
-                                          </li>
-                                          <li>
-                                            <Link href="/compare">
-                                              <Icon name="FaRetweet" />
-                                            </Link>
-                                          </li>
-                                          <li>
-                                            <button
-                                              type="button"
-                                              aria-label="Quick view"
-                                              onClick={() => {
-                                                window.dispatchEvent(new CustomEvent("aments:quickview-modal", { detail: { product: p } }));
-                                              }}
-                                            >
-                                              <Icon name="FaEye" />
-                                            </button>
-                                          </li>
-                                          <li>
-                                            <Link href={`${p.href}#offers`} aria-label="View offers">
-                                              <Icon name="FaShoppingCart" />
-                                            </Link>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+                                <ProductListItem key={p.id} product={p} showPrice={showPrice} />
                               ))}
                             </div>
                           </div>
@@ -388,57 +338,7 @@ export default function ProductCatalogList({
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
                               {listProducts.map((p) => (
-                                <div key={p.id} className="col-12 mb-4">
-                                  <div className="product-list-single border-around">
-                                    <Link href={p.href} className="product-list-img-link">
-                                      <img src={p.imageSrc} alt="" className="img-fluid" />
-                                    </Link>
-                                    <div className="product-list-content">
-                                      <h5 className="product-list-link">
-                                        <Link href={p.href}>{p.name}</Link>
-                                      </h5>
-                                      {showPrice ? (
-                                        <span className="product-list-price">
-                                          {p.compareAt ? <del className="product-list-price-off">{p.compareAt}</del> : null} {p.price}
-                                        </span>
-                                      ) : null}
-                                      <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis ad, iure incidunt. Ab consequatur temporibus non
-                                        eveniet inventore doloremque necessitatibus sed, ducimus quisquam, ad asperiores
-                                      </p>
-                                      <div className="product-action-icon-link-list">
-                                        <ul>
-                                          <li>
-                                            <Link href="/wishlist">
-                                              <Icon name="FaHeart" />
-                                            </Link>
-                                          </li>
-                                          <li>
-                                            <Link href="/compare">
-                                              <Icon name="FaRetweet" />
-                                            </Link>
-                                          </li>
-                                          <li>
-                                            <button
-                                              type="button"
-                                              aria-label="Quick view"
-                                              onClick={() => {
-                                                window.dispatchEvent(new CustomEvent("aments:quickview-modal", { detail: { product: p } }));
-                                              }}
-                                            >
-                                              <Icon name="FaEye" />
-                                            </button>
-                                          </li>
-                                          <li>
-                                            <Link href={`${p.href}#offers`} aria-label="View offers">
-                                              <Icon name="FaShoppingCart" />
-                                            </Link>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+                                <ProductListItem key={p.id} product={p} showPrice={showPrice} />
                               ))}
                             </div>
                           </div>

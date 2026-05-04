@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import Carousel from "@/components/ui/Carousel/Carousel";
-import ProductCard from "@/components/templates/ProductCard/ProductCard";
+import ProductCard from "@/components/ui/ProductCard/ProductCard";
 import { cn } from "@/utils/cn";
 import styles from "./ProductTabsSection.module.scss";
 

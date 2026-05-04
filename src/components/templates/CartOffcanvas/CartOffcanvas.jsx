@@ -3,16 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import OffcanvasPanel from "@/components/templates/OffcanvasPanel/OffcanvasPanel";
-import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
+import OffcanvasPanel from "@/components/templates/OffcanvasPanel";
+import Icon from "@/components/ui/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
 import { cn } from "@/utils/cn";
 import styles from "./CartOffcanvas.module.scss";
 
 export default function CartOffcanvas({ isOpen, onClose }) {
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
-  const { cartItems, cartSubtotalText, removeCartItem } = useCart();
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
+  const showPrice = isAuthenticated;
+   const { cartItems, cartSubtotalText, removeCartItem } = useCart();
 
   return (
     <OffcanvasPanel
@@ -73,18 +74,20 @@ export default function CartOffcanvas({ isOpen, onClose }) {
           <span className={cn(styles, "offcanvas-cart-total-price-text")}>Subtotal:</span>
           <span className={cn(styles, "offcanvas-cart-total-price-value")}>{showPrice ? cartSubtotalText : null}</span>
         </div>
-        <ul className={cn(styles, "offcanvas-cart-action-button")}>
-          <li className={cn(styles, "offcanvas-cart-action-button-list")}>
-            <Link href="/cart" className={cn(styles, "offcanvas-cart-action-button-link")} onClick={onClose}>
-              View Cart
-            </Link>
-          </li>
-          <li className={cn(styles, "offcanvas-cart-action-button-list")}>
-            <Link href="/checkout" className={cn(styles, "offcanvas-cart-action-button-link")} onClick={onClose}>
-              Checkout
-            </Link>
-          </li>
-        </ul>
+        {isAuthenticated ? (
+          <ul className={cn(styles, "offcanvas-cart-action-button")}>
+            <li className={cn(styles, "offcanvas-cart-action-button-list")}>
+              <Link href="/cart" className={cn(styles, "offcanvas-cart-action-button-link")} onClick={onClose}>
+                View Cart
+              </Link>
+            </li>
+            <li className={cn(styles, "offcanvas-cart-action-button-list")}>
+              <Link href="/checkout" className={cn(styles, "offcanvas-cart-action-button-link")} onClick={onClose}>
+                Checkout
+              </Link>
+            </li>
+          </ul>
+        ) : null}
       </div>
     </OffcanvasPanel>
   );
