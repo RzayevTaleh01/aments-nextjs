@@ -4,12 +4,12 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { toast } from "react-toastify";
-import { LoginPage } from "@/components/pages";
+import LoginPage from "@/components/pages/LoginPage/LoginPage";
 
 export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams?.get("callbackUrl") || "/my-account";
+  const callbackUrl = searchParams?.get("callbackUrl") || "/";
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

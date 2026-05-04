@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import styles from "./MyAccountPage.module.scss";
 import { cn } from "@/utils/cn";
 
@@ -28,6 +28,15 @@ function TabPane({ id, activeId, children }) {
 export default function MyAccountPageClient() {
   const [activeId, setActiveId] = useState("dashboard");
   const router = useRouter();
+  const { data: session } = useSession();
+  const user = session?.user ?? {};
+
+  const fullName = `${user?.first_name ?? ""} ${user?.last_name ?? ""}`.trim();
+  const displayName = fullName || user?.username || user?.email || "";
+
+  const billingAddressLine = [user?.street, user?.home_number, user?.home_office].filter(Boolean).join(" ");
+  const cityRegionLine = [user?.post_index, user?.city, user?.region].filter(Boolean).join(", ");
+  const countryLine = [user?.country].filter(Boolean).join("");
 
   return (
     <div className="account_dashboard">
@@ -44,11 +53,6 @@ export default function MyAccountPageClient() {
                 <li>
                   <TabLink id="orders" activeId={activeId} setActiveId={setActiveId}>
                     Orders
-                  </TabLink>
-                </li>
-                <li>
-                  <TabLink id="downloads" activeId={activeId} setActiveId={setActiveId}>
-                    Downloads
                   </TabLink>
                 </li>
                 <li>
@@ -140,46 +144,6 @@ export default function MyAccountPageClient() {
                 </div>
               </TabPane>
 
-              <TabPane id="downloads" activeId={activeId}>
-                <h4>Downloads</h4>
-                <div className="table_page table-responsive">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Product</th>
-                        <th>Downloads</th>
-                        <th>Expires</th>
-                        <th>Download</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Shopnovilla - Free Real Estate PSD Template</td>
-                        <td>May 10, 2022</td>
-                        <td>
-                          <span className="danger">Expired</span>
-                        </td>
-                        <td>
-                          <button type="button" className="view">
-                            Click Here To Download Your File
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Organic - ecommerce html template</td>
-                        <td>Sep 11, 2022</td>
-                        <td>Never</td>
-                        <td>
-                          <button type="button" className="view">
-                            Click Here To Download Your File
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </TabPane>
-
               <TabPane id="address" activeId={activeId}>
                 <p>The following addresses will be used on the checkout page by default.</p>
                 <h5 className="billing-address">Billing address</h5>
@@ -187,9 +151,35 @@ export default function MyAccountPageClient() {
                   Edit
                 </button>
                 <p>
-                  <strong>Bobby Jackson</strong>
+                  <strong>{displayName || " "}</strong>
                 </p>
-                <address>Address: Your address goes here.</address>
+                <address>
+                  {billingAddressLine ? (
+                    <>
+                      {billingAddressLine}
+                      <br />
+                    </>
+                  ) : null}
+                  {cityRegionLine ? (
+                    <>
+                      {cityRegionLine}
+                      <br />
+                    </>
+                  ) : null}
+                  {countryLine ? (
+                    <>
+                      {countryLine}
+                      <br />
+                    </>
+                  ) : null}
+                  {user?.phoneNumber || user?.phone ? (
+                    <>
+                      {user?.phoneNumber ?? user?.phone}
+                      <br />
+                    </>
+                  ) : null}
+                  {user?.email ? user.email : null}
+                </address>
               </TabPane>
 
               <TabPane id="account-details" activeId={activeId}>

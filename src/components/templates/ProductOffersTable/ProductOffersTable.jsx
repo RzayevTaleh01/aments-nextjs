@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { Fragment, useMemo, useState } from "react";
-import { Icon } from "@/components/ui";
+import { useSession } from "next-auth/react";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import styles from "./ProductOffersTable.module.scss";
 
 const defaultGroups = [
@@ -55,6 +56,8 @@ const defaultGroups = [
 ];
 
 export default function ProductOffersTable({ product, groups = defaultGroups }) {
+  const { status } = useSession();
+  const showPrice = status === "authenticated";
   const [pendingBrand, setPendingBrand] = useState("ALL");
   const [pendingQty, setPendingQty] = useState("ALL");
   const [selectedBrand, setSelectedBrand] = useState("ALL");
@@ -85,13 +88,13 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
   }, [groups, selectedBrand, selectedQty]);
 
   return (
-    <div className={`${styles.scope} wishlish-table-wrapper section-top-gap-100`}>
+    <div id="offers" className={`${styles.scope} wishlish-table-wrapper section-top-gap-100`}>
       <div className="container">
         <div className="row mb-30">
           <div className="col-lg-3 col-md-4 mb-10">
             <div className="default-form-box">
               <label>BRAND</label>
-              <select className="country_option nice-select wide" value={pendingBrand} onChange={(e) => setPendingBrand(e.target.value)}>
+              <select className="form-select" value={pendingBrand} onChange={(e) => setPendingBrand(e.target.value)}>
                 <option value="ALL">Hamısı</option>
                 {brands.map((b) => (
                   <option key={b} value={b}>
@@ -104,7 +107,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
           <div className="col-lg-3 col-md-4 mb-10">
             <div className="default-form-box">
               <label>MİQDAR SEÇİMİ</label>
-              <select className="country_option nice-select wide" value={pendingQty} onChange={(e) => setPendingQty(e.target.value)}>
+              <select className="form-select" value={pendingQty} onChange={(e) => setPendingQty(e.target.value)}>
                 <option value="ALL">Hamısı</option>
                 {[0, 1, 2, 3, 4, 5].map((n) => (
                   <option key={n} value={String(n)}>
@@ -156,9 +159,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                       </th>
                       <th className="product_stock">Anbar</th>
                       <th className="product_quantity">Ədəd</th>
-                      <th className="product_total">
-                        Qiymət
-                      </th>
+                      <th className="product_total">{showPrice ? "Qiymət" : null}</th>
                       <th className="product_addcart" />
                     </tr>
                   </thead>
@@ -188,12 +189,10 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                                 </button>
                               </td>
                               <td className="product_quantity">{r.qty}</td>
-                              <td className="product_total">{r.price}</td>
+                              <td className="product_total">{showPrice ? r.price : null}</td>
                               <td className="product_addcart">
                                 <button
                                   type="button"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#modalProductOffer"
                                   onClick={() => {
                                     window.dispatchEvent(
                                       new CustomEvent("aments:product-offer-modal", {

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, FreeMode, Mousewheel, Navigation, Thumbs } from "swiper/modules";
-import { Icon } from "@/components/ui";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { cn } from "@/utils/cn";
 import styles from "./ProductDetailsGallery.module.scss";
 

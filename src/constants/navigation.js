@@ -5,22 +5,12 @@ export const navigation = {
     { id: "register", label: "Register", href: "/register" },
     { id: "my-account", label: "My Account", href: "/my-account" },
     {
-      id: "settings",
-      label: "Setting",
-      href: "#",
-      children: [
-        { label: "Checkout", href: "/checkout" },
-        { label: "Shopping Cart", href: "/cart" },
-        { label: "Wishlist", href: "/wishlist" },
-      ],
-    },
-    {
       id: "language",
       label: "English",
       href: "#",
       children: [
-        { label: "English", href: "#", iconSrc: "/assets/images/icon/lang-en.png" },
-        { label: "Germany", href: "#", iconSrc: "/assets/images/icon/lang-gr.png" },
+        { label: "Eng", href: "#", iconSrc: "/assets/images/icon/lang-en.png" },
+        { label: "Az", href: "#", iconSrc: "/assets/images/icon/lang-gr.png" },
       ],
     },
   ],

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Breadcrumb, Icon } from "@/components/ui";
+import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import styles from "./ServicePage.module.scss";
 
 const services = [

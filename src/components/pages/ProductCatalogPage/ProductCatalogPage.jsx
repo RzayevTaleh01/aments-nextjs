@@ -1,9 +1,9 @@
 "use client";
 
-import { Breadcrumb } from "@/components/ui";
+import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import { products as allProducts } from "@/constants/products";
-import ShopSection from "@/components/sections/shop/ShopSection";
-import { ProductCatalogSidebar } from "@/components/templates";
+import ProductCatalogList from "@/components/templates/ProductCatalogList";
+import ProductCatalogSidebar from "@/components/templates/ProductCatalogSidebar/ProductCatalogSidebar";
 
 export default function ProductCatalogPage({
   title,
@@ -24,7 +24,7 @@ export default function ProductCatalogPage({
           { label: breadcrumbLabel },
         ]}
       />
-      <ShopSection
+      <ProductCatalogList
         products={products}
         withSidebar={withSidebar}
         sidebarPosition={sidebarPosition}

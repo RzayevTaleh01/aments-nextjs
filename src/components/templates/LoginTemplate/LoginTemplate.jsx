@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { cn } from "@/utils/cn";
 import styles from "./LoginTemplate.module.scss";
 
@@ -47,7 +48,12 @@ export default function LoginTemplate({
                   <button className="mb-20" type="submit" disabled={isSubmitting}>
                     login
                   </button>
-                 
+                  <p className="mb-0">
+                    Don&apos;t have an account?{" "}
+                    <Link className="text-danger" href="/register">
+                      Register
+                    </Link>
+                  </p>
                 </div>
               </form>
             </div>

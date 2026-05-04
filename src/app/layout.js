@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import Providers from "./providers";
 
@@ -15,8 +14,6 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/assets/images/favicon.ico" />
-        <link rel="stylesheet" href="/assets/css/vendor/vendor.min.css" />
-        <link rel="stylesheet" href="/assets/css/plugins/plugins.min.css" />
         <link rel="stylesheet" href="/assets/css/style.min.css" />
       </head>
       <body>

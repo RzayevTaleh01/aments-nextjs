@@ -1,6 +1,7 @@
 "use client";
 
-import { Carousel, Icon } from "@/components/ui";
+import Carousel from "@/components/ui/Carousel/Carousel";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import Image from "next/image";
 import { cn } from "@/utils/cn";
 import styles from "./TestimonialSection.module.scss";

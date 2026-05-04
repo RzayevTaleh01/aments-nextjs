@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { useSession } from "next-auth/react";
-import { OffcanvasPanel } from "@/components/templates";
-import { Icon } from "@/components/ui";
+import OffcanvasPanel from "@/components/templates/OffcanvasPanel/OffcanvasPanel";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
+import { useCart } from "@/context/ui-drawers-context";
 import { cn } from "@/utils/cn";
 import styles from "./MobileMenuOffcanvas.module.scss";
 
@@ -16,6 +17,7 @@ export default function MobileMenuOffcanvas({
   const [openByGroup, setOpenByGroup] = useState({});
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
+  const { cartCount } = useCart();
 
   const toggleGroup = useCallback((groupId, key) => {
     setOpenByGroup((prev) => ({
@@ -184,7 +186,7 @@ export default function MobileMenuOffcanvas({
             <li className={cn(styles, "mobile-action-icon-item")}>
               <Link href="/cart" className={cn(styles, "mobile-action-icon-link")} onClick={onClose}>
                 <Icon name="FaShoppingCart" />
-                <span className={cn(styles, "mobile-action-icon-item-count")}>3</span>
+                <span className={cn(styles, "mobile-action-icon-item-count")}>{cartCount}</span>
               </Link>
             </li>
           </ul>
@@ -324,7 +326,7 @@ export default function MobileMenuOffcanvas({
                     </button>
                     <ul className={cn(styles, "mobile-sub-menu")}>
                       <li>
-                        <Link href="/product/default" onClick={onClose}>
+                        <Link href="/product/kapot" onClick={onClose}>
                           Product Default
                         </Link>
                       </li>

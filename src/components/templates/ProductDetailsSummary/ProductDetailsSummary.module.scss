@@ -92,6 +92,15 @@
   display: inline;
 }
 
+:global(.product-description) {
+  line-height: 24px;
+  font-size: 14px;
+  color: #8a8a8a;
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top: 1px solid #eee;
+}
+
 :global(.product-details-variable .title) {
   font-weight: 600;
   text-transform: capitalize;

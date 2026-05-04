@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { cn } from "@/utils/cn";
 import styles from "./Register.module.scss";
 
@@ -209,6 +210,12 @@ export default function RegisterTemplate({
                     {isSubmitting ? "Submitting..." : "Register"}
                   </button>
                   {hasAnyError ? <small className="text-danger mt-10">Please check the highlighted fields.</small> : null}
+                  <p className="mb-0 mt-10">
+                    Already have an account?{" "}
+                    <Link className="text-danger" href="/login">
+                      Log in instead!
+                    </Link>
+                  </p>
                 </div>
               </form>
             </div>

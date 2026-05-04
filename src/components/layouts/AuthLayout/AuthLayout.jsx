@@ -1,4 +1,4 @@
-import { MainLayout } from "@/components/layouts";
+import MainLayout from "@/components/layouts/MainLayout/MainLayout";
 import styles from "./AuthLayout.module.scss";
 
 export default function AuthLayout({ children }) {

@@ -2,11 +2,15 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { Icon } from "@/components/ui";
-import { ProductCard } from "@/components/templates";
+import { useSession } from "next-auth/react";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
+import ProductCard from "@/components/templates/ProductCard/ProductCard";
 import "./RelatedProductsCarousel.module.scss";
 
 export default function RelatedProductsCarousel({ products, prevRef, nextRef }) {
+  const { status } = useSession();
+  const showPrice = status === "authenticated";
+
   return (
     <div className="section-top-gap-100">
       <div className="section-content-gap">
@@ -51,7 +55,7 @@ export default function RelatedProductsCarousel({ products, prevRef, nextRef }) 
                 >
                   {products.slice(0, 6).map((p) => (
                     <SwiperSlide key={p.id}>
-                      <ProductCard product={p} />
+                      <ProductCard product={p} showPrice={showPrice} />
                     </SwiperSlide>
                   ))}
                 </Swiper>

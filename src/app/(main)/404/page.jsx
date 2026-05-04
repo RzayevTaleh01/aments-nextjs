@@ -1,4 +1,4 @@
-import { NotFoundPage } from "@/components/pages";
+import NotFoundPage from "@/components/pages/NotFoundPage/NotFoundPage";
 
 export const metadata = {
   title: "404",

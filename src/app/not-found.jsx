@@ -1,11 +1,6 @@
-import { MainLayout } from "@/components/layouts";
-import { NotFoundPage } from "@/components/pages";
+import NotFoundPage from "@/components/pages/NotFoundPage";
 
 export default function NotFound() {
-  return (
-    <MainLayout>
-      <NotFoundPage />
-    </MainLayout>
-  );
+  return <NotFoundPage />;
 }
 

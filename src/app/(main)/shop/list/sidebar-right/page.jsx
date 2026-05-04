@@ -1,4 +1,4 @@
-import { ProductCatalogPage } from "@/components/pages";
+import ProductCatalogPage from "@/components/pages/ProductCatalogPage/ProductCatalogPage";
 
 export const metadata = {
   title: "Shop List Sidebar Right",

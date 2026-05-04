@@ -1,5 +1,5 @@
-import { Breadcrumb } from "@/components/ui";
-import { MyAccountPage } from "@/components/pages";
+import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
+import MyAccountPage from "@/components/pages/MyAccountPage/MyAccountPage";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";

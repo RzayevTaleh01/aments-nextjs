@@ -1,4 +1,4 @@
-import { ProductCatalogPage } from "@/components/pages";
+import ProductCatalogPage from "@/components/pages/ProductCatalogPage/ProductCatalogPage";
 
 export const metadata = {
   title: "Products",
@@ -11,8 +11,7 @@ export default function Page() {
       breadcrumbLabel="Product List Catalog"
       withSidebar
       sidebarPosition="left"
-      defaultView="list"
+      defaultView="grid"
     />
   );
 }
-
