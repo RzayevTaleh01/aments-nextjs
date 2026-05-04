@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
+import { Collapse } from "reactstrap";
 import { Breadcrumb } from "@/components/ui";
 import { useCart } from "@/context/ui-drawers-context";
 import styles from "./CheckoutPage.module.scss";
@@ -26,6 +27,7 @@ export default function CheckoutPageClient() {
   const showPrice = status === "authenticated";
   const { cartItems, cartSubtotalNumber, cartSubtotalText } = useCart();
   const user = session?.user ?? {};
+  const [shipToDifferentAddress, setShipToDifferentAddress] = useState(false);
 
   const [billing, setBilling] = useState({
     firstName: "",
@@ -199,8 +201,20 @@ export default function CheckoutPageClient() {
 
 
                     <div className="col-12 mb-20">
-                      <div id="anotherShipping" className="collapse" data-bs-parent="#anotherShipping">
-                        <div className="row">
+                      <div className="checkout_account">
+                        <label className="checkbox-default" htmlFor="shipDifferentAddress">
+                          <input
+                            type="checkbox"
+                            id="shipDifferentAddress"
+                            checked={shipToDifferentAddress}
+                            onChange={(e) => setShipToDifferentAddress(e.target.checked)}
+                          />
+                          <span>Ship to a different address?</span>
+                        </label>
+                      </div>
+
+                      <Collapse isOpen={shipToDifferentAddress}>
+                        <div id="anotherShipping" className="row">
                           <div className="col-lg-6 mb-20">
                             <div className="default-form-box">
                               <label>
@@ -288,7 +302,7 @@ export default function CheckoutPageClient() {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </Collapse>
                     </div>
 
                     <div className="col-12">

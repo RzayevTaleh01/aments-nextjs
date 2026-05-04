@@ -26,7 +26,13 @@ export default function ProductCard({ product, actionsVariant = "links", showPri
             </li>
             <li>
               {useModalActions ? (
-                <button type="button" data-bs-toggle="modal" data-bs-target="#modalQuickview" aria-label="Quick view">
+                <button
+                  type="button"
+                  aria-label="Quick view"
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent("aments:quickview-modal", { detail: { product } }));
+                  }}
+                >
                   <Icon name="FaEye" />
                 </button>
               ) : (

@@ -193,8 +193,6 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                               <td className="product_addcart">
                                 <button
                                   type="button"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#modalProductOffer"
                                   onClick={() => {
                                     window.dispatchEvent(
                                       new CustomEvent("aments:product-offer-modal", {

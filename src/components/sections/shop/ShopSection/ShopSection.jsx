@@ -255,7 +255,13 @@ export default function ShopSection({
                                             </Link>
                                           </li>
                                           <li>
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#modalQuickview" aria-label="Quick view">
+                                            <button
+                                              type="button"
+                                              aria-label="Quick view"
+                                              onClick={() => {
+                                                window.dispatchEvent(new CustomEvent("aments:quickview-modal", { detail: { product: p } }));
+                                              }}
+                                            >
                                               <Icon name="FaEye" />
                                             </button>
                                           </li>
@@ -413,7 +419,13 @@ export default function ShopSection({
                                             </Link>
                                           </li>
                                           <li>
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#modalQuickview" aria-label="Quick view">
+                                            <button
+                                              type="button"
+                                              aria-label="Quick view"
+                                              onClick={() => {
+                                                window.dispatchEvent(new CustomEvent("aments:quickview-modal", { detail: { product: p } }));
+                                              }}
+                                            >
                                               <Icon name="FaEye" />
                                             </button>
                                           </li>

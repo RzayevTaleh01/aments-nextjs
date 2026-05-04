@@ -10,7 +10,6 @@ import { UIDrawersProvider } from "@/context/ui-drawers-context";
 
 export default function Providers({ children }) {
   useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js");
     AOS.init({
       duration: 1000,
       easing: "ease-in-out",

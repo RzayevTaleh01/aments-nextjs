@@ -1,5 +1,6 @@
 "use client";
 
+import { Offcanvas } from "reactstrap";
 import { Icon } from "@/components/ui";
 
 export default function OffcanvasPanel({
@@ -15,15 +16,26 @@ export default function OffcanvasPanel({
   onClose,
   children,
 }) {
+  const direction = className?.includes("offcanvas-rightside") ? "end" : "start";
+
   return (
-    <div id={id} className={`${className}${isOpen ? ` ${openClassName}` : ""}`}>
+    <Offcanvas
+      id={id}
+      isOpen={isOpen}
+      toggle={onClose}
+      direction={direction}
+      backdrop
+      scrollable={false}
+      fade={false}
+      className={`${className}${isOpen ? ` ${openClassName}` : ""}`}
+    >
       <div className={headerClassName}>
         <button type="button" className={closeButtonClassName} onClick={onClose}>
           <Icon name={closeIconName} size={closeIconSize} className={closeIconClassName} />
         </button>
       </div>
       {children}
-    </div>
+    </Offcanvas>
   );
 }
 

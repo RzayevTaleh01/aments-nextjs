@@ -1,15 +1,14 @@
 import { HomePage } from "@/components/pages";
 import ApiService from "@/services/api/ApiService";
-
+import { STATISTICS_CATEGORY_POPULAR_ROUTE } from "@/configs/apiRoutes";
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Home",
 };
 
-export const dynamic = "force-dynamic";
-
 async function getPopularCategoriesForHome() {
   try {
-    const res = await ApiService.get("/statistics/category/popular");
+    const res = await ApiService.get(STATISTICS_CATEGORY_POPULAR_ROUTE);
     if (!res?.data?.data || !Array.isArray(res.data.data)) return null;
     return res.data.data;
   } catch {
