@@ -1,4 +1,4 @@
-import { CheckoutPage } from "@/components/pages";
+import CheckoutPage from "@/components/pages/CheckoutPage/CheckoutPage";
 
 export const metadata = {
   title: "Checkout",

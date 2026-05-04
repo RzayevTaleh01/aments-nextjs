@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Icon } from "@/components/ui";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import "./ProductCard.module.scss";
 
 export default function ProductCard({ product, actionsVariant = "links", showPrice = true }) {

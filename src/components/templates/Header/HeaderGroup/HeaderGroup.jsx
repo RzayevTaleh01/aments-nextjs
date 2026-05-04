@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { Icon } from "@/components/ui";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { cn } from "@/utils/cn";
 import { useCart } from "@/context/ui-drawers-context";
 import BottomHeader from "../BottomHeader";

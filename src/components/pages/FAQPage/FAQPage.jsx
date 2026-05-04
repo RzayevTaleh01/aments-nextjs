@@ -1,6 +1,6 @@
 "use client";
 
-import { Breadcrumb } from "@/components/ui";
+import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import styles from "./FAQPage.module.scss";
 
 export default function FAQPage() {

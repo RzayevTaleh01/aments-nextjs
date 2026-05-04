@@ -1,4 +1,4 @@
-import { Reveal } from "@/components/helper";
+import Reveal from "@/components/helper/Reveal/Reveal";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./BannerCard.module.scss";

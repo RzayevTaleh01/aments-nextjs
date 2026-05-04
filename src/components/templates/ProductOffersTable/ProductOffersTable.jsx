@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Fragment, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Icon } from "@/components/ui";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import styles from "./ProductOffersTable.module.scss";
 
 const defaultGroups = [

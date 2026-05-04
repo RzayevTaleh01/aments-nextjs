@@ -1,6 +1,6 @@
 "use client";
 
-import { Icon } from "@/components/ui";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import styles from "./ProductCatalogSidebar.module.scss";
 
 export default function ProductCatalogSidebar({

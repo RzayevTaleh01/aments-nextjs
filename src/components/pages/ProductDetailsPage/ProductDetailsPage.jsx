@@ -1,9 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Breadcrumb } from "@/components/ui";
+import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import { products } from "@/constants/products";
-import { ProductDetailsSummary, ProductDetailsTabs, RelatedProductsCarousel, ProductDetailsGallery, ProductOffersTable } from "@/components/templates";
+import ProductDetailsSummary from "@/components/templates/ProductDetailsSummary/ProductDetailsSummary";
+import ProductDetailsTabs from "@/components/templates/ProductDetailsTabs/ProductDetailsTabs";
+import RelatedProductsCarousel from "@/components/templates/RelatedProductsCarousel/RelatedProductsCarousel";
+import ProductDetailsGallery from "@/components/templates/ProductDetailsGallery/ProductDetailsGallery";
+import ProductOffersTable from "@/components/templates/ProductOffersTable/ProductOffersTable";
 import styles from "./ProductDetailsPage.module.scss";
 
 export default function ProductDetailsPage({ title, breadcrumbLabel, productId, productSlug, variant = "default" }) {

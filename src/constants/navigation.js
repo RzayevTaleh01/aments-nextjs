@@ -9,8 +9,8 @@ export const navigation = {
       label: "English",
       href: "#",
       children: [
-        { label: "English", href: "#", iconSrc: "/assets/images/icon/lang-en.png" },
-        { label: "Germany", href: "#", iconSrc: "/assets/images/icon/lang-gr.png" },
+        { label: "Eng", href: "#", iconSrc: "/assets/images/icon/lang-en.png" },
+        { label: "Az", href: "#", iconSrc: "/assets/images/icon/lang-gr.png" },
       ],
     },
   ],

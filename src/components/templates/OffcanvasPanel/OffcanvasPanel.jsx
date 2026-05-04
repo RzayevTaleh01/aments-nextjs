@@ -1,7 +1,7 @@
 "use client";
 
 import { Offcanvas } from "reactstrap";
-import { Icon } from "@/components/ui";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 
 export default function OffcanvasPanel({
   id,

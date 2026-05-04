@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Modal } from "reactstrap";
-import { Icon } from "@/components/ui";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
 import { toast } from "react-toastify";
 import styles from "./ProductOfferModal.module.scss";

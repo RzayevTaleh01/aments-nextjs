@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/utils/cn";
-import { Icon } from "@/components/ui";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import styles from "./BottomHeader.module.scss";
 
 function isMatchActive(isActive, activeMatch) {

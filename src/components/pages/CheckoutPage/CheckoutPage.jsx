@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Collapse } from "reactstrap";
-import { Breadcrumb } from "@/components/ui";
+import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import { useCart } from "@/context/ui-drawers-context";
 import styles from "./CheckoutPage.module.scss";
 

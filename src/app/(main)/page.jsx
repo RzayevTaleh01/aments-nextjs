@@ -1,4 +1,4 @@
-import { HomePage } from "@/components/pages";
+import HomePage from "@/components/pages/HomePage";
 import ApiService from "@/services/api/ApiService";
 import { STATISTICS_CATEGORY_POPULAR_ROUTE } from "@/configs/apiRoutes";
 export const dynamic = "force-dynamic";

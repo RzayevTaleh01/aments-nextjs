@@ -1,4 +1,4 @@
-import { ProductDetailsPage } from "@/components/pages";
+import ProductDetailsPage from "@/components/pages/ProductDetailsPage/ProductDetailsPage";
 import { products } from "@/constants/products";
 import { notFound } from "next/navigation";
 

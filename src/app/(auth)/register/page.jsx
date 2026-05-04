@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import validate from "validate.js";
 import { toast } from "react-toastify";
 import ApiService from "@/services/api/ApiService";
-import { RegisterPage } from "@/components/pages";
+import RegisterPage from "@/components/pages/RegisterPage/RegisterPage";
 
 const registerConstraints = {
   email: {

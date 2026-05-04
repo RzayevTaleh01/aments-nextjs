@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn";
-import { ProductCategorySingle } from "@/components/templates";
+import ProductCategorySingle from "@/components/templates/ProductCategorySingle/ProductCategorySingle";
 import styles from "./PopularCategoriesSection.module.scss";
 
 const FALLBACK_IMAGE_SRC = "/assets/images/categories_images/aments_categories_01.jpg";

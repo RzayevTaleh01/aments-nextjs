@@ -3,12 +3,12 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { ProductCard } from "@/components/templates";
-import { Icon } from "@/components/ui";
+import ProductCard from "@/components/templates/ProductCard/ProductCard";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { cn } from "@/utils/cn";
-import styles from "./ShopSection.module.scss";
+import styles from "./ProductCatalogList.module.scss";
 
-export default function ShopSection({
+export default function ProductCatalogList({
   products,
   withSidebar = false,
   sidebarPosition = "left",
@@ -212,8 +212,8 @@ export default function ShopSection({
                           <div className={cn(styles.tabPane, isGridDefault && styles.tabPaneActive)} id={gridLayoutId}>
                             <div className="row g-4">
                               {filteredProducts.map((p, idx) => (
-                                <div key={p.id} className="col-xl-4 col-sm-6 col-12">
-                                  <div data-aos="fade-up" data-aos-delay={String((idx % 3) * 200)}>
+                                <div key={p.id} className="col-xl-4 col-sm-6 col-12 d-flex">
+                                  <div data-aos="fade-up" data-aos-delay={String((idx % 3) * 100)} className="w-100">
                                     <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
                                   </div>
                                 </div>
@@ -224,7 +224,7 @@ export default function ShopSection({
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
                               {listProducts.map((p) => (
-                                <div key={p.id} className="col-12">
+                                <div key={p.id} className="col-12 mb-4">
                                   <div className="product-list-single border-around">
                                     <Link href={p.href} className="product-list-img-link">
                                       <img src={p.imageSrc} alt="" className="img-fluid" />
@@ -376,8 +376,8 @@ export default function ShopSection({
                           <div className={cn(styles.tabPane, isGridDefault && styles.tabPaneActive)} id="layout-4-grid">
                             <div className="row g-4">
                               {filteredProducts.map((p) => (
-                                <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12">
-                                  <div data-aos="fade-up">
+                                <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12 d-flex">
+                                  <div data-aos="fade-up" className="w-100">
                                     <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
                                   </div>
                                 </div>
@@ -388,7 +388,7 @@ export default function ShopSection({
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
                               {listProducts.map((p) => (
-                                <div key={p.id} className="col-12">
+                                <div key={p.id} className="col-12 mb-4">
                                   <div className="product-list-single border-around">
                                     <Link href={p.href} className="product-list-img-link">
                                       <img src={p.imageSrc} alt="" className="img-fluid" />

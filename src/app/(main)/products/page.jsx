@@ -1,4 +1,4 @@
-import { ProductCatalogPage } from "@/components/pages";
+import ProductCatalogPage from "@/components/pages/ProductCatalogPage/ProductCatalogPage";
 
 export const metadata = {
   title: "Products",
@@ -15,4 +15,3 @@ export default function Page() {
     />
   );
 }
-

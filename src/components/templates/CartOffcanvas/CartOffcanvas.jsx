@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { OffcanvasPanel } from "@/components/templates";
-import { Icon } from "@/components/ui";
+import OffcanvasPanel from "@/components/templates/OffcanvasPanel/OffcanvasPanel";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
 import { cn } from "@/utils/cn";
 import styles from "./CartOffcanvas.module.scss";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Carousel } from "@/components/ui";
+import Carousel from "@/components/ui/Carousel/Carousel";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/utils/cn";

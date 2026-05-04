@@ -1,4 +1,4 @@
-import { AboutUsPage } from "@/components/pages";
+import AboutUsPage from "@/components/pages/AboutUsPage/AboutUsPage";
 
 export const metadata = {
   title: "About Us",

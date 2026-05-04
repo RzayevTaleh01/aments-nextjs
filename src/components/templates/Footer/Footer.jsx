@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { navigation } from "@/constants/navigation";
-import { Icon } from "@/components/ui";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import styles from "./Footer.module.scss";
 import { cn } from "@/utils/cn";
 

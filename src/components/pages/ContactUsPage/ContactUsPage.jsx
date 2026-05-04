@@ -1,6 +1,7 @@
 "use client";
 
-import { Breadcrumb, Icon } from "@/components/ui";
+import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import styles from "./ContactUsPage.module.scss";
 
 export default function ContactUsPage() {

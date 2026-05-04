@@ -1,4 +1,4 @@
-import { ComparePage } from "@/components/pages";
+import ComparePage from "@/components/pages/ComparePage/ComparePage";
 
 export const metadata = {
   title: "Compare",

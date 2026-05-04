@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Carousel } from "@/components/ui";
-import { ProductCard } from "@/components/templates";
+import Carousel from "@/components/ui/Carousel/Carousel";
+import ProductCard from "@/components/templates/ProductCard/ProductCard";
 import { cn } from "@/utils/cn";
 import styles from "./ProductTabsSection.module.scss";
 

@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Breadcrumb, Icon } from "@/components/ui";
+import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
 import styles from "./CartPage.module.scss";
 

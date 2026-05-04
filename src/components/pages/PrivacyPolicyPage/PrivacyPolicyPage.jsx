@@ -1,4 +1,4 @@
-import { Breadcrumb } from "@/components/ui";
+import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import styles from "./PrivacyPolicyPage.module.scss";
 
 export default function PrivacyPolicyPage() {

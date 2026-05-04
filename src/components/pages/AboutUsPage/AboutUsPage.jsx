@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { Breadcrumb } from "@/components/ui";
-import { TestimonialSection } from "@/components/sections";
+import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
+import TestimonialSection from "@/components/sections/about/TestimonialSection/TestimonialSection";
 import styles from "./AboutUsPage.module.scss";
 
 export default function AboutUsPage() {
@@ -13,7 +13,7 @@ export default function AboutUsPage() {
           <div className="row">
             <div className="col-12">
               <div className="about-us-top-content text-center">
-                <h4>Welcome To Esther!</h4>
+                <h4>Store About</h4>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia minima consequuntur nulla voluptate sunt accusamus error dolores laboriosam facere, et saepe, velit incidunt doloremque ab eius. Explicabo magnam iure et.
                 </p>

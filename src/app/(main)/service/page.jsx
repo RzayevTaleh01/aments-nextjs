@@ -1,4 +1,4 @@
-import { ServicePage } from "@/components/pages";
+import ServicePage from "@/components/pages/ServicePage";
 
 export const metadata = {
   title: "Service",
