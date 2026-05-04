@@ -7,12 +7,20 @@ import ProductCatalogList from "@/components/templates/ProductCatalogList";
 import ProductCatalogSidebar from "@/components/templates/ProductCatalogSidebar";
 import ApiService from "@/services/api/ApiService";
 
+function toAssetUrl(src) {
+  if (!src) return src;
+  if (/^https?:\/\//i.test(src)) return src;
+  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL;
+  if (base && src.startsWith("/")) return `${base}${src}`;
+  return src;
+}
+
 function mapApiProductToUiProduct(p) {
   const slug = p?.slug;
   return {
     ...p,
-    imageSrc:"/assets/images/products_images/aments_products_image_1.jpg",
-    href: p?.href ?? (slug ? `/product/${p.id}` : ""),
+    imageSrc: toAssetUrl(p?.image) ?? "/assets/images/products_images/aments_products_image_1.jpg",
+    href: p?.href ?? (p?.id ? `/product/${p.id}` : slug ? `/product/${slug}` : "/product/default"),
   };
 }
 
