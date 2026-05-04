@@ -188,12 +188,7 @@ export default function MyAccountPageClient() {
                   <div className="login_form_container">
                     <div className={cn(styles.account_login_form, "account_login_form")}>
                       <form action="#" onSubmit={(e) => e.preventDefault()}>
-                        <p>
-                          Already have an account?{" "}
-                          <button type="button" className="p-0 border-0 bg-transparent">
-                            Log in instead!
-                          </button>
-                        </p>
+                        
                         <div className={cn(styles["input-radio"], "input-radio")}>
                           <span className="custom-radio">
                             <input type="radio" value="1" name="id_gender" /> Mr.

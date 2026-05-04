@@ -1,6 +1,6 @@
 "use client";
 
-import LoginTemplate from "@/components/templates/LoginTemplate/LoginTemplate";
+import LoginTemplate from "@/components/templates/LoginTemplate";
 
 export default function LoginPage(props) {
   return (
