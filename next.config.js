@@ -16,6 +16,7 @@ try {
 } catch {}
 
 const nextConfig = {
+  allowedDevOrigins: ["192.168.1.87"],
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: backendRemotePatterns,

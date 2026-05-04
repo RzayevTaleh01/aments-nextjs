@@ -1,19 +1,60 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import { products as allProducts } from "@/constants/products";
 import ProductCatalogList from "@/components/templates/ProductCatalogList";
 import ProductCatalogSidebar from "@/components/templates/ProductCatalogSidebar";
+import ApiService from "@/services/api/ApiService";
+
+function mapApiProductToUiProduct(p) {
+  const slug = p?.slug;
+  return {
+    ...p,
+    imageSrc:"/assets/images/products_images/aments_products_image_1.jpg",
+    href: p?.href ?? (slug ? `/product/${p.id}` : ""),
+  };
+}
 
 export default function ProductCatalogPage({
   title,
-  breadcrumbLabel,
+  breadcrumbLabel = title,
   withSidebar = false,
   sidebarPosition = "left",
   defaultView = "list",
+  products: productsProp,
+  productsApiRoute,
 }) {
-  const products = allProducts.slice(0, 8);
+  const [apiProducts, setApiProducts] = useState(null);
 
+  useEffect(() => {
+    if (!productsApiRoute) return;
+    let isActive = true;
+
+    (async () => {
+      try {
+        const res = await ApiService.get(productsApiRoute);
+        const products = res?.data?.data?.products;
+        const mapped = Array.isArray(products) ? products.map(mapApiProductToUiProduct) : [];
+        if (!isActive) return;
+        setApiProducts(mapped);
+      } catch {
+        if (!isActive) return;
+        setApiProducts([]);
+      }
+    })();
+
+    return () => {
+      isActive = false;
+    };
+  }, [productsApiRoute]);
+
+  const products = useMemo(() => {
+    if (Array.isArray(productsProp)) return productsProp;
+    if (productsApiRoute) return Array.isArray(apiProducts) ? apiProducts : [];
+    return allProducts.slice(0, 8);
+  }, [apiProducts, productsApiRoute, productsProp]);
+  
   return (
     <div>
       <Breadcrumb

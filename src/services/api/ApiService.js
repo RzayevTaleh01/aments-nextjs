@@ -54,7 +54,7 @@ ApiService.interceptors.request.use(
         const { cookies } = await import("next/headers");
         const { getToken } = await import("next-auth/jwt");
 
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
         const cookieHeader = (cookieStore.getAll?.() ?? [])
           .map((c) => `${c.name}=${c.value}`)
           .join("; ");
