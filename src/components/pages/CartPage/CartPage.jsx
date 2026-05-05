@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
+import useShowPrice from "@/hooks/use-show-price";
 import styles from "./CartPage.module.scss";
 
 function parsePriceNumber(priceText) {
@@ -24,8 +24,7 @@ function formatMoney(value, currency) {
 }
 
 export default function CartPage() {
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
+  const { showPrice } = useShowPrice();
   const { cartItems, cartSubtotalText, setCartItemQuantity, removeCartItem } = useCart();
 
   return (
@@ -89,7 +88,6 @@ export default function CartPage() {
                               <label>Quantity</label>{" "}
                               <input
                                 min="1"
-                                max="100"
                                 value={String(row.quantity ?? 1)}
                                 type="number"
                                 onChange={(e) => setCartItemQuantity(row.key, e.target.value)}

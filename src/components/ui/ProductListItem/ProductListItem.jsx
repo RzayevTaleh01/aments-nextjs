@@ -7,6 +7,7 @@ export default function ProductListItem({ product, showPrice = true }) {
   const href = product?.href;
   const imageSrc = product?.imageSrc ?? "/assets/images/products_images/aments_products_image_1.jpg";
   const title = product?.name;
+  const isSimilarOem = Boolean(product?.isSimilarOem);
 
   return (
     <div className="col-12 mb-4">
@@ -18,6 +19,7 @@ export default function ProductListItem({ product, showPrice = true }) {
           <h5 className="product-list-link">
             <Link href={href}>{title}</Link>
           </h5>
+          {isSimilarOem ? <span className="badge text-bg-danger mb-2">Oxşar OEM</span> : null}
           {showPrice ? (
             <span className="product-list-price">
               {product?.compareAt ? <del className="product-list-price-off">{product.compareAt}</del> : null} {product?.price}

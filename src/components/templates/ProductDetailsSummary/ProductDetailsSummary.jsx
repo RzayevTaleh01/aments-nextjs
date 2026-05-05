@@ -1,13 +1,12 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { cn } from "@/utils/cn";
+import useShowPrice from "@/hooks/use-show-price";
 import "./ProductDetailsSummary.module.scss";
 
 export default function ProductDetailsSummary({ product }) {
   if (!product) return null;
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
+  const { showPrice } = useShowPrice();
 
 
   const brandName = product?.brand?.name ?? product?.brand ?? "";
@@ -60,27 +59,26 @@ export default function ProductDetailsSummary({ product }) {
                 <span>{product.oem_code}</span>
               </div>
             ) : null}
+            {product?.similar_oem_codes ? (
+              <div className="mt-1 d-flex flex-wrap align-items-center gap-2">
+                <span className="badge rounded-pill text-bg-light border border-dark-subtle text-body-secondary">Similar OEM</span>
+                {String(product.similar_oem_codes)
+                  .split(",")
+                  .map((x) => x.trim())
+                  .filter(Boolean)
+                  .map((code) => (
+                    <span key={code} className="badge rounded-pill text-bg-warning">
+                      {code}
+                    </span>
+                  ))}
+              </div>
+            ) : null}
           </div>
         ) : null}
         <p className={cn("product-description")}>
           {product.description || ""}
         </p>
       </div>
-
-      {/*<div className="product-details-variable">*/}
-      {/*  <h4 className="title">Available Options</h4>*/}
-      {/*   <ProductColorOptions />*/}
-      {/*</div>*/}
-      {/*<div className="product-details-meta mb-20">*/}
-      {/*  <ul>*/}
-      {/*    <li>*/}
-      {/*      <Link href="/compare">*/}
-      {/*        <Icon name="FaRetweet" />*/}
-      {/*        Compare*/}
-      {/*      </Link>*/}
-      {/*    </li>*/}
-      {/*  </ul>*/}
-      {/*</div>*/}
     </div>
   );
 }

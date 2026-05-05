@@ -70,13 +70,13 @@ export default function AboutUsPage() {
         </div>
       </div>
 
-      <TestimonialSection
+      {/* <TestimonialSection
         items={[
           { id: "t1", img: "/assets/images/testimonial/testimonial-1.png", name: "Kathy Young", role: "CEO of SunPark" },
           { id: "t2", img: "/assets/images/testimonial/testimonial-2.jpg", name: "Kathy Young", role: "CEO of SunPark" },
           { id: "t3", img: "/assets/images/testimonial/testimonial-3.jpg", name: "Kathy Young", role: "CEO of SunPark" },
         ]}
-      />
+      /> */}
     </div>
   );
 }

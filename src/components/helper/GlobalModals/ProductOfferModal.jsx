@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
 import { Modal } from "reactstrap";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
 import { toast } from "react-toastify";
+import useShowPrice from "@/hooks/use-show-price";
 import styles from "./ProductOfferModal.module.scss";
 
 function coerceNumber(value, fallback) {
@@ -27,8 +27,7 @@ function formatPrice(priceNumber, currencySuffix) {
 }
 
 export default function ProductOfferModal() {
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
+  const { showPrice } = useShowPrice();
   const { addToCart } = useCart();
   const [offer, setOffer] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -66,6 +65,13 @@ export default function ProductOfferModal() {
   const unitPrice = parsePriceNumber(unitPriceText);
   const totalPriceText = unitPrice != null ? formatPrice(unitPrice * quantity, currencySuffix) : unitPriceText;
 
+  const storageProductId = offer?.row?.storageProductId ?? offer?.row?.storage_product_id ?? offer?.row?.id ?? null;
+  const productId = offer?.product?.id ?? offer?.product?.slug ?? offer?.product?.code ?? "";
+  const rowWarehouse = offer?.row?.warehouse ?? "";
+  const rowBrand = offer?.row?.brand ?? "";
+  const rowCode = offer?.row?.code ?? "";
+  const itemKey = storageProductId ? `storage-product:${String(storageProductId)}` : `${String(productId)}::${String(rowBrand)}::${String(rowCode)}::${String(rowWarehouse)}`;
+
   return (
     <Modal
       id="modalProductOffer"
@@ -97,10 +103,20 @@ export default function ProductOfferModal() {
               <input
                 className={styles.qtyInput}
                 value={quantity}
-                onChange={(e) => setQuantity(Math.max(1, coerceNumber(e.target.value, 1)))}
+                onChange={(e) => {
+                  const desired = Math.max(1, coerceNumber(e.target.value, 1));
+                  setQuantity(desired);
+                }}
                 inputMode="numeric"
               />
-              <button type="button" className={styles.qtyBtn} onClick={() => setQuantity((q) => q + 1)} aria-label="Artır">
+              <button
+                type="button"
+                className={styles.qtyBtn}
+                onClick={() => {
+                  setQuantity((q) => Math.max(1, coerceNumber(q, 1)) + 1);
+                }}
+                aria-label="Artır"
+              >
                 <Icon name="FaPlus" size={12} />
               </button>
             </div>
@@ -125,19 +141,20 @@ export default function ProductOfferModal() {
           <button
             type="button"
             className={styles.addButton}
+            disabled={!offer}
             onClick={() => {
               const product = offer?.product ?? null;
               const row = offer?.row ?? null;
 
-              const productId = product?.id ?? product?.slug ?? product?.code ?? "";
               const imageSrc = row?.img ?? product?.imageSrc ?? product?.image ?? "/assets/images/products_images/aments_products_image_1.jpg";
               const href = product?.href ?? (product?.slug ? `/product/${product.slug}` : "/product/default");
 
-              const itemKey = `${String(productId)}::${String(row?.brand ?? "")}::${String(row?.code ?? "")}::${String(row?.warehouse ?? "")}`;
               const displayName = row?.name ?? product?.name ?? "";
+              const finalQuantity = Math.max(1, coerceNumber(quantity, 1));
 
               addToCart({
                 key: itemKey,
+                storageProductId,
                 productId,
                 name: displayName,
                 brand: row?.brand ?? "",
@@ -148,7 +165,7 @@ export default function ProductOfferModal() {
                 unitPrice: unitPrice ?? unitPriceText,
                 unitPriceText,
                 currency: currencySuffix,
-                quantity,
+                quantity: finalQuantity,
                 note,
               });
 
@@ -163,7 +180,7 @@ export default function ProductOfferModal() {
                       name: displayName,
                       imageSrc,
                       href,
-                      quantity,
+                      quantity: finalQuantity,
                     },
                   },
                 })

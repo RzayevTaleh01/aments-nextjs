@@ -22,7 +22,7 @@ export default function Footer() {
                 <div className={styles["footer-logo"]}>
                   <Link href="/">
                     <img
-                      src="/assets/images/logo/logo.png"
+                      src="/assets/images/company_logo/company_logo_2.png"
                       alt="Aments"
                       className="img-fluid"
                     />

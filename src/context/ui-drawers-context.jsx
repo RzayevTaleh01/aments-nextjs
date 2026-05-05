@@ -24,6 +24,10 @@ function formatMoney(value, currency) {
   return currency ? `${text} ${currency}` : text;
 }
 
+function normalizeQuantity(desiredQuantity) {
+  return Math.max(1, coerceNumber(desiredQuantity, 1));
+}
+
 export function UIDrawersProvider({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -49,7 +53,7 @@ export function UIDrawersProvider({ children }) {
     const key = item.key ?? item.id ?? null;
     if (!key) return;
 
-    const quantity = Math.max(1, coerceNumber(item.quantity, 1));
+    const quantity = normalizeQuantity(item.quantity);
 
     setCartItems((prev) => {
       const existingIndex = prev.findIndex((x) => x?.key === key);
@@ -57,15 +61,25 @@ export function UIDrawersProvider({ children }) {
 
       const existing = prev[existingIndex];
       const next = [...prev];
-      next[existingIndex] = { ...existing, ...item, key, quantity: Math.max(1, coerceNumber(existing?.quantity, 1) + quantity) };
+      const desired = normalizeQuantity(coerceNumber(existing?.quantity, 1) + quantity);
+      next[existingIndex] = {
+        ...existing,
+        ...item,
+        key,
+        quantity: desired,
+      };
       return next;
     });
   }
 
   function setCartItemQuantity(key, quantity) {
     if (!key) return;
-    const qty = Math.max(1, coerceNumber(quantity, 1));
-    setCartItems((prev) => prev.map((x) => (x?.key === key ? { ...x, quantity: qty } : x)));
+    setCartItems((prev) =>
+      prev.map((x) => {
+        if (x?.key !== key) return x;
+        return { ...x, quantity: normalizeQuantity(quantity) };
+      })
+    );
   }
 
   function removeCartItem(key) {
@@ -134,4 +148,3 @@ export function useUIDrawers() {
 export function useCart() {
   return useUIDrawers();
 }
-

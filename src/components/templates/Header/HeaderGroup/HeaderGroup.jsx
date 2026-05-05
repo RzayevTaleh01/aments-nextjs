@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { cn } from "@/utils/cn";
@@ -32,6 +33,7 @@ export default function HeaderGroup({
   topHeaderData,
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
   const { cartCount } = useCart();
@@ -45,6 +47,13 @@ export default function HeaderGroup({
     if (isAuthenticated) return x?.id !== "login" && x?.id !== "register";
     return x?.id !== "my-account";
   });
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const qFromUrl = useMemo(() => String(searchParams?.get("q") ?? "").trim(), [searchParams]);
+
+  useEffect(() => {
+    setSearchQuery(qFromUrl);
+  }, [qFromUrl]);
 
   return (
     <header className={cn(styles, "header-section d-lg-block d-none")}>
@@ -113,21 +122,30 @@ export default function HeaderGroup({
             <div className={cn(styles, "col-3")}>
               <div className={cn(styles, "header-logo")}>
                 <Link href="/">
-                  <Image src="/assets/images/logo/logo.png" alt="" width={140} height={40} />
+                  <Image src="/assets/images/company_logo/company_logo_2.png" alt="" width={140} height={40} />
                 </Link>
               </div>
             </div>
             <div className={cn(styles, "col-6")}>
               <div className={cn(styles, "header-search")}>
-                <form action="#" method="post" onSubmit={(e) => e.preventDefault()}>
+                <form
+                  action="#"
+                  method="post"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const q = String(searchQuery || "").trim();
+                    router.push(q ? `/products?q=${encodeURIComponent(q)}` : "/products");
+                  }}
+                >
                   <div className={cn(styles, "header-search-box default-search-style d-flex")}>
                     <input
                       className={cn(styles, "default-search-style-input-box border-around border-right-none")}
                       type="search"
-                      placeholder="Search entire store here ..."
-                      required
+                      placeholder="OEM..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
                     />
-                    <button className={cn(styles, "default-search-style-input-btn")} type="submit">
+                    <button className={cn(styles, "default-search-style-input-btn")} type="submit" aria-label="Search">
                       <Icon name="FaSearch" size={16} />
                     </button>
                   </div>

@@ -9,13 +9,15 @@ export default function ProductCard({ product, showPrice = true }) {
   const brandName = product?.brand?.name ?? product?.brand ?? "";
   const markName = product?.mark?.name ?? product?.mark ?? "";
   const modelName = product?.model?.name ?? product?.model ?? "";
+  const isSimilarOem = Boolean(product?.isSimilarOem);
 
   return (
     <div className="product-default-single">
-      <div className="product-img-warp">
+      <div className="product-img-warp position-relative">
         <Link href={detailsHref}>
           <Image src={product.imageSrc} alt={product.name} width={300} height={300} className="product-default-img" />
         </Link>
+        {isSimilarOem ? <span className="badge text-bg-danger position-absolute top-0 start-0 m-2">Oxşar OEM</span> : null}
         <div className="product-action-icon-link">
           <ul>
             <li>

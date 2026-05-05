@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import OffcanvasPanel from "@/components/templates/OffcanvasPanel/OffcanvasPanel";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
@@ -14,10 +15,18 @@ export default function MobileMenuOffcanvas({
   isOpen,
   onClose,
 }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [openByGroup, setOpenByGroup] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
   const { cartCount } = useCart();
+  const qFromUrl = useMemo(() => String(searchParams?.get("q") ?? "").trim(), [searchParams]);
+
+  useEffect(() => {
+    setSearchQuery(qFromUrl);
+  }, [qFromUrl]);
 
   const toggleGroup = useCallback((groupId, key) => {
     setOpenByGroup((prev) => ({
@@ -152,13 +161,23 @@ export default function MobileMenuOffcanvas({
           </ul>
         </div>
         <div className={cn(styles, "mobile-menu-center")}>
-          <form action="#" method="post">
+          <form
+            action="#"
+            method="post"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const q = String(searchQuery || "").trim();
+              router.push(q ? `/products?q=${encodeURIComponent(q)}` : "/products");
+              onClose?.();
+            }}
+          >
             <div className={cn(styles, "header-search-box default-search-style d-flex")}>
               <input
                 className={cn(styles, "default-search-style-input-box border-around border-right-none")}
                 type="search"
-                placeholder="Search entire store here ..."
-                required
+                placeholder="OEM kod yazın..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button className={cn(styles, "default-search-style-input-btn")} type="submit">
                 <Icon name="FaSearch" size={16} />
