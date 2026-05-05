@@ -1,4 +1,34 @@
-.root {
+:global(.section-content-gap) {
+  margin-bottom: 50px;
+}
+
+:global(.section-title) {
+  font-size: 26px;
+  font-weight: 700;
+  position: relative;
+  margin-top: -7px;
+}
+
+@media (min-width: 768px) {
+  :global(.section-title) {
+    font-size: 30px;
+  }
+}
+
+:global(.section-title::after) {
+  position: absolute;
+  content: "";
+  width: 100px;
+  height: 2px;
+  background: #ea1c26;
+  left: 0;
+  bottom: -15px;
+}
+
+.scope {
+}
+
+.header {
 }
 
 .nav {
@@ -38,3 +68,4 @@
 .slider {
   position: relative;
 }
+

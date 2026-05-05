@@ -5,7 +5,6 @@ import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import { products } from "@/constants/products";
 import ProductDetailsSummary from "@/components/templates/ProductDetailsSummary/ProductDetailsSummary";
 import ProductDetailsTabs from "@/components/templates/ProductDetailsTabs/ProductDetailsTabs";
-import RelatedProductsCarousel from "@/components/templates/RelatedProductsCarousel/RelatedProductsCarousel";
 import ProductDetailsGallery from "@/components/templates/ProductDetailsGallery/ProductDetailsGallery";
 import ProductOffersTable from "@/components/templates/ProductOffersTable/ProductOffersTable";
 import { PRODUCT_DETAIL_API_ROUTE } from "@/configs/apiRoutes";
@@ -63,8 +62,6 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId, 
 
   const thumbPrevRef = useRef(null);
   const thumbNextRef = useRef(null);
-  const relatedPrevRef = useRef(null);
-  const relatedNextRef = useRef(null);
 
   useEffect(() => {
     if (!productApiId) return;
@@ -182,7 +179,6 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId, 
 
           <ProductOffersTable product={product} groups={offerGroups.length ? offerGroups : product?.offerGroups} />
           <ProductDetailsTabs activeTab={activeTab} onTabChange={setActiveTab} product={product} />
-          {/* <RelatedProductsCarousel products={products} prevRef={relatedPrevRef} nextRef={relatedNextRef} /> */}
         </>
       )}
     </div>
