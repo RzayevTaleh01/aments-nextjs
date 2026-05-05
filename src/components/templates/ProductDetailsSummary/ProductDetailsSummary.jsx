@@ -1,13 +1,12 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { cn } from "@/utils/cn";
+import useShowPrice from "@/hooks/use-show-price";
 import "./ProductDetailsSummary.module.scss";
 
 export default function ProductDetailsSummary({ product }) {
   if (!product) return null;
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
+  const { showPrice } = useShowPrice();
 
 
   const brandName = product?.brand?.name ?? product?.brand ?? "";
@@ -80,21 +79,6 @@ export default function ProductDetailsSummary({ product }) {
           {product.description || ""}
         </p>
       </div>
-
-      {/*<div className="product-details-variable">*/}
-      {/*  <h4 className="title">Available Options</h4>*/}
-      {/*   <ProductColorOptions />*/}
-      {/*</div>*/}
-      {/*<div className="product-details-meta mb-20">*/}
-      {/*  <ul>*/}
-      {/*    <li>*/}
-      {/*      <Link href="/compare">*/}
-      {/*        <Icon name="FaRetweet" />*/}
-      {/*        Compare*/}
-      {/*      </Link>*/}
-      {/*    </li>*/}
-      {/*  </ul>*/}
-      {/*</div>*/}
     </div>
   );
 }

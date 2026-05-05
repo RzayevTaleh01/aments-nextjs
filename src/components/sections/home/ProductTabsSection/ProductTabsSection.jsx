@@ -1,17 +1,16 @@
 "use client";
 
 import { useRef } from "react";
-import { useSession } from "next-auth/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import Icon from "@/components/ui/TemplateIcon";
 import ProductCard from "@/components/ui/ProductCard/ProductCard";
+import useShowPrice from "@/hooks/use-show-price";
 import { cn } from "@/utils/cn";
 import styles from "./ProductTabsSection.module.scss";
 
 export default function ProductTabsSection({ title, products }) {
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
+  const { showPrice } = useShowPrice();
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 

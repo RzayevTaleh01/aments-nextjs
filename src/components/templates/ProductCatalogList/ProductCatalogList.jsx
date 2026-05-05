@@ -2,10 +2,10 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import ProductCard from "@/components/ui/ProductCard/ProductCard";
 import ProductListItem from "@/components/ui/ProductListItem/ProductListItem";
 import { cn } from "@/utils/cn";
+import useShowPrice from "@/hooks/use-show-price";
 import styles from "./ProductCatalogList.module.scss";
 
 export default function ProductCatalogList({
@@ -19,8 +19,7 @@ export default function ProductCatalogList({
   pagination,
   onPageChange,
 }) {
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
+  const { showPrice } = useShowPrice();
   const rowClass = sidebarPosition === "right" ? "row flex-column-reverse flex-lg-row-reverse" : "row flex-column-reverse flex-lg-row";
   const [activeView, setActiveView] = useState(defaultView);
   const [searchInput, setSearchInput] = useState("");

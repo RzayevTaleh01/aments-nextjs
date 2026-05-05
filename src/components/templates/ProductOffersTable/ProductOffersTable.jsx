@@ -2,15 +2,14 @@
 
 import Image from "next/image";
 import { Fragment, useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
+import useShowPrice from "@/hooks/use-show-price";
 import styles from "./ProductOffersTable.module.scss";
 
 const defaultGroups = [];
 
 export default function ProductOffersTable({ product, groups = defaultGroups }) {
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
+  const { showPrice } = useShowPrice();
   const [pendingBrand, setPendingBrand] = useState("ALL");
   const [selectedBrand, setSelectedBrand] = useState("ALL");
 

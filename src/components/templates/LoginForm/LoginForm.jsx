@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { cn } from "@/utils/cn";
-import styles from "./LoginTemplate.module.scss";
+import styles from "./LoginForm.module.scss";
 
-export default function LoginTemplate({
+export default function LoginForm({ 
   username,
   password,
   isSubmitting,

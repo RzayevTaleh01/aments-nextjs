@@ -2,14 +2,13 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { useSession } from "next-auth/react";
 import Icon from "@/components/ui/TemplateIcon";
 import ProductCard from "@/components/ui/ProductCard";
+import useShowPrice from "@/hooks/use-show-price";
 import "./RelatedProductsCarousel.module.scss";
 
 export default function RelatedProductsCarousel({ products, prevRef, nextRef }) {
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
+  const { showPrice } = useShowPrice();
 
   return (
     <div className="section-top-gap-100">

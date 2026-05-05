@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
 import { Modal } from "reactstrap";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
 import { toast } from "react-toastify";
+import useShowPrice from "@/hooks/use-show-price";
 import styles from "./ProductOfferModal.module.scss";
 
 function coerceNumber(value, fallback) {
@@ -27,8 +27,7 @@ function formatPrice(priceNumber, currencySuffix) {
 }
 
 export default function ProductOfferModal() {
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
+  const { showPrice } = useShowPrice();
   const { addToCart } = useCart();
   const [offer, setOffer] = useState(null);
   const [quantity, setQuantity] = useState(1);
