@@ -182,8 +182,7 @@ export default function HeaderGroup({
                           type="button"
                           className={cn(styles, "profile-logout")}
                           onClick={async () => {
-                            const callbackUrl = `${process.env.NEXT_PUBLIC_REQUEST_NEXT_ADMIN_BASE_URL ?? ""}/`;
-                            await signOut({ redirect: false, callbackUrl });
+                            await signOut({ redirect: false });
                             router.push("/");
                           }}
                         >

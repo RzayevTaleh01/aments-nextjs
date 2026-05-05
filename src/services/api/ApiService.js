@@ -26,7 +26,6 @@ const REQUEST_HEADER_AUTH_KEY = process.env.NEXT_PUBLIC_REQUEST_HEADER_AUTH_KEY 
 const REQUEST_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL;
 const REQUEST_TIME_OUT = process.env.NEXT_PUBLIC_REQUEST_TIME_OUT;
 const REQUEST_TOKEN_TYPE = process.env.NEXT_PUBLIC_REQUEST_TOKEN_TYPE ?? "Bearer";
-const REQUEST_NEXT_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_NEXT_ADMIN_BASE_URL;
 
 const ApiService = axios.create({
   timeout: Number(REQUEST_TIME_OUT ?? 30000),
@@ -91,7 +90,6 @@ ApiService.interceptors.response.use(
           const { signOut } = await import("next-auth/react");
           await signOut({
             redirect: false,
-            callbackUrl: `${REQUEST_NEXT_ADMIN_BASE_URL ?? ""}/`,
           });
           redirectToHome();
         }
