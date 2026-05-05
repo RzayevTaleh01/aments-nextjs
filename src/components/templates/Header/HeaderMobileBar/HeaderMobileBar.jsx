@@ -15,7 +15,7 @@ export default function HeaderMobileBar({ onOffcanvasToggle }) {
               <div className={cn(styles, "mobile-header--left")}>
                 <Link href="/" className={cn(styles, "mobile-logo-link")}>
                   <Image
-                    src="/assets/images/logo/logo.png"
+                    src="/assets/images/company_logo/company_logo_2.png"
                     alt=""
                     className={cn(styles, "mobile-logo-img")}
                     width={140}

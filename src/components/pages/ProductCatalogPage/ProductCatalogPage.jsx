@@ -8,14 +8,6 @@ import ProductCatalogList from "@/components/templates/ProductCatalogList";
 import ProductCatalogSidebar from "@/components/templates/ProductCatalogSidebar";
 import ApiService from "@/services/api/ApiService";
 
-function toAssetUrl(src) {
-  if (!src) return src;
-  if (/^https?:\/\//i.test(src)) return src;
-  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL;
-  if (base && src.startsWith("/")) return `${base}${src}`;
-  return src;
-}
-
 function mapApiProductToUiProduct(p) {
   const slug = p?.slug;
   const firstStorageProduct = Array.isArray(p?.storageProducts) ? (p.storageProducts.find((sp) => sp?.price != null) ?? p.storageProducts[0]) : null;
@@ -23,7 +15,7 @@ function mapApiProductToUiProduct(p) {
   const price = typeof priceValue === "string" || typeof priceValue === "number" ? `${priceValue} AZN` : "";
   return {
     ...p,
-    imageSrc: toAssetUrl(p?.image) ?? "/assets/images/products_images/aments_products_image_1.jpg",
+    imageSrc: "/assets/images/products_images/aments_products_image_1.jpg",
     href: p?.href ?? (p?.id ? `/product/${p.id}` : slug ? `/product/${slug}` : "/product/default"),
     price,
   };

@@ -122,7 +122,7 @@ export default function HeaderGroup({
             <div className={cn(styles, "col-3")}>
               <div className={cn(styles, "header-logo")}>
                 <Link href="/">
-                  <Image src="/assets/images/logo/logo.png" alt="" width={140} height={40} />
+                  <Image src="/assets/images/company_logo/company_logo_2.png" alt="" width={140} height={40} />
                 </Link>
               </div>
             </div>
