@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { cn } from "@/utils/cn";
-import styles from "./Register.module.scss";
+import styles from "./RegisterForm.module.scss";
 
 export default function RegisterTemplate({
   form,

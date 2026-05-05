@@ -29,7 +29,7 @@ function formatPrice(priceNumber, currencySuffix) {
 export default function ProductOfferModal() {
   const { status } = useSession();
   const showPrice = status === "authenticated";
-  const { addToCart, cartItems } = useCart();
+  const { addToCart } = useCart();
   const [offer, setOffer] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [note, setNote] = useState("");
@@ -73,28 +73,6 @@ export default function ProductOfferModal() {
   const rowCode = offer?.row?.code ?? "";
   const itemKey = storageProductId ? `storage-product:${String(storageProductId)}` : `${String(productId)}::${String(rowBrand)}::${String(rowCode)}::${String(rowWarehouse)}`;
 
-  const maxSelectable = useMemo(() => {
-    const stock = Math.max(0, coerceNumber(offer?.row?.qty, 0));
-    const alreadyInCart = cartItems.reduce((sum, x) => {
-      if (storageProductId) {
-        if (String(x?.storageProductId ?? "") !== String(storageProductId)) return sum;
-      } else {
-        if (String(x?.key ?? "") !== String(itemKey)) return sum;
-      }
-      return sum + Math.max(0, coerceNumber(x?.quantity, 0));
-    }, 0);
-    return Math.max(0, stock - alreadyInCart);
-  }, [cartItems, itemKey, offer, storageProductId]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    setQuantity((q) => {
-      const desired = Math.max(1, coerceNumber(q, 1));
-      if (maxSelectable <= 0) return 1;
-      return Math.min(desired, maxSelectable);
-    });
-  }, [isOpen, maxSelectable]);
-
   return (
     <Modal
       id="modalProductOffer"
@@ -128,20 +106,15 @@ export default function ProductOfferModal() {
                 value={quantity}
                 onChange={(e) => {
                   const desired = Math.max(1, coerceNumber(e.target.value, 1));
-                  setQuantity(maxSelectable > 0 ? Math.min(desired, maxSelectable) : 1);
+                  setQuantity(desired);
                 }}
                 inputMode="numeric"
               />
               <button
                 type="button"
                 className={styles.qtyBtn}
-                disabled={maxSelectable === 0 || quantity >= maxSelectable}
                 onClick={() => {
-                  setQuantity((q) => {
-                    const next = q + 1;
-                    if (maxSelectable <= 0) return 1;
-                    return Math.min(Math.max(1, next), maxSelectable);
-                  });
+                  setQuantity((q) => Math.max(1, coerceNumber(q, 1)) + 1);
                 }}
                 aria-label="Artır"
               >
@@ -169,7 +142,7 @@ export default function ProductOfferModal() {
           <button
             type="button"
             className={styles.addButton}
-            disabled={maxSelectable === 0}
+            disabled={!offer}
             onClick={() => {
               const product = offer?.product ?? null;
               const row = offer?.row ?? null;
@@ -178,12 +151,11 @@ export default function ProductOfferModal() {
               const href = product?.href ?? (product?.slug ? `/product/${product.slug}` : "/product/default");
 
               const displayName = row?.name ?? product?.name ?? "";
-              const finalQuantity = maxSelectable > 0 ? Math.min(Math.max(1, quantity), maxSelectable) : 1;
+              const finalQuantity = Math.max(1, coerceNumber(quantity, 1));
 
               addToCart({
                 key: itemKey,
                 storageProductId,
-                maxQuantity: Math.max(0, coerceNumber(row?.qty, 0)),
                 productId,
                 name: displayName,
                 brand: row?.brand ?? "",

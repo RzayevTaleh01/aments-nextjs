@@ -6,62 +6,13 @@ import { useSession } from "next-auth/react";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import styles from "./ProductOffersTable.module.scss";
 
-const defaultGroups = [
-  {
-    title: "Axtarılan kod",
-    rows: [
-      {
-        img: "/assets/images/products_images/aments_products_image_1.jpg",
-        brand: "HYUNDAI",
-        code: "3730033013",
-        name: "DİNAMO",
-        warehouse: "Xırdalan",
-        qty: 1,
-        price: "139.35 AZN",
-      },
-      {
-        img: "/assets/images/products_images/aments_products_image_1.jpg",
-        brand: "HYUNDAI",
-        code: "3730033013",
-        name: "DİNAMO",
-        warehouse: "Babək",
-        qty: 3,
-        price: "139.35 AZN",
-      },
-    ],
-  },
-  {
-    title: "Əvəzləyici",
-    rows: [
-      {
-        img: "/assets/images/products_images/aments_products_image_2.jpg",
-        brand: "MANDO",
-        code: "BN3730033013",
-        name: "DİNAMO",
-        warehouse: "Babək",
-        qty: 0,
-        price: "188.96 AZN",
-      },
-      {
-        img: "/assets/images/products_images/aments_products_image_2.jpg",
-        brand: "MANDO",
-        code: "BN3730033013",
-        name: "DİNAMO",
-        warehouse: "Xırdalan",
-        qty: 1,
-        price: "188.96 AZN",
-      },
-    ],
-  },
-];
+const defaultGroups = [];
 
 export default function ProductOffersTable({ product, groups = defaultGroups }) {
   const { status } = useSession();
   const showPrice = status === "authenticated";
   const [pendingBrand, setPendingBrand] = useState("ALL");
-  const [pendingQty, setPendingQty] = useState("ALL");
   const [selectedBrand, setSelectedBrand] = useState("ALL");
-  const [selectedQty, setSelectedQty] = useState("ALL");
 
   const brands = useMemo(() => {
     const list = [];
@@ -74,23 +25,21 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
   }, [groups]);
 
   const filteredGroups = useMemo(() => {
-    const qtyValue = selectedQty === "ALL" ? null : Number(selectedQty);
     return groups
       .map((g) => ({
         ...g,
         rows: g.rows.filter((r) => {
           const brandOk = selectedBrand === "ALL" || r.brand === selectedBrand;
-          const qtyOk = qtyValue == null || r.qty === qtyValue;
-          return brandOk && qtyOk;
+          return brandOk;
         }),
       }))
       .filter((g) => g.rows.length > 0);
-  }, [groups, selectedBrand, selectedQty]);
+  }, [groups, selectedBrand]);
 
   return (
     <div id="offers" className={`${styles.scope} wishlish-table-wrapper section-top-gap-100`}>
       <div className="container">
-        <div className="row mb-30">
+        <div className="row justify-content-between mb-30">
           <div className="col-lg-3 col-md-4 mb-10">
             <div className="default-form-box">
               <label>BRAND</label>
@@ -104,19 +53,6 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
               </select>
             </div>
           </div>
-          <div className="col-lg-3 col-md-4 mb-10">
-            <div className="default-form-box">
-              <label>MİQDAR SEÇİMİ</label>
-              <select className="form-select" value={pendingQty} onChange={(e) => setPendingQty(e.target.value)}>
-                <option value="ALL">Hamısı</option>
-                {[0, 1, 2, 3, 4, 5].map((n) => (
-                  <option key={n} value={String(n)}>
-                    {n}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
           <div className="col-lg-6 col-md-4 mb-10 d-flex align-items-end">
             <div className="d-flex gap-2 w-100">
               <button
@@ -125,7 +61,6 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedBrand(pendingBrand);
-                  setSelectedQty(pendingQty);
                 }}
               >
                 Axtar
@@ -136,9 +71,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                 onClick={(e) => {
                   e.preventDefault();
                   setPendingBrand("ALL");
-                  setPendingQty("ALL");
                   setSelectedBrand("ALL");
-                  setSelectedQty("ALL");
                 }}
               >
                 Sıfırla
@@ -158,7 +91,6 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                         Detal
                       </th>
                       <th className="product_stock">Anbar</th>
-                      <th className="product_quantity">Ədəd</th>
                       <th className="product_total">{showPrice ? "Qiymət" : null}</th>
                       <th className="product_addcart" />
                     </tr>
@@ -167,7 +99,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                     {filteredGroups.map((g) => (
                       <Fragment key={g.title}>
                         <tr>
-                          <td colSpan={6} className="text-start fw-bold">
+                          <td colSpan={5} className="text-start fw-bold">
                             {g.title}
                           </td>
                         </tr>
@@ -188,7 +120,6 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                                   {r.warehouse}
                                 </button>
                               </td>
-                              <td className="product_quantity">{r.qty}</td>
                               <td className="product_total">{showPrice ? r.price : null}</td>
                               <td className="product_addcart">
                                 <button
@@ -211,7 +142,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                     ))}
                     {filteredGroups.length === 0 ? (
                       <tr>
-                        <td colSpan={6}>Nəticə tapılmadı</td>
+                        <td colSpan={5}>Nəticə tapılmadı</td>
                       </tr>
                     ) : null}
                   </tbody>

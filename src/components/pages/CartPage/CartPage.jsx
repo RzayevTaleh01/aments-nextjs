@@ -63,8 +63,6 @@ export default function CartPage() {
                             const qty = Number(row.quantity ?? 1);
                             const total = unit * (Number.isFinite(qty) ? qty : 1);
                             const totalText = formatMoney(total, row.currency ?? "");
-                            const maxQtyRaw = Number(row.maxQuantity ?? row.stockQuantity ?? row.qty ?? row.stock ?? 100);
-                            const maxQty = Number.isFinite(maxQtyRaw) && maxQtyRaw > 0 ? maxQtyRaw : 100;
 
                             return (
                           <tr key={row.key}>
@@ -91,7 +89,6 @@ export default function CartPage() {
                               <label>Quantity</label>{" "}
                               <input
                                 min="1"
-                                max={String(maxQty)}
                                 value={String(row.quantity ?? 1)}
                                 type="number"
                                 onChange={(e) => setCartItemQuantity(row.key, e.target.value)}

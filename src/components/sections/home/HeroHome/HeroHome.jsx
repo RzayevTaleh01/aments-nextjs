@@ -4,7 +4,7 @@ import Carousel from "@/components/ui/Carousel/Carousel";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/utils/cn";
-import styles from "./HeroHome1.module.scss";
+import styles from "./HeroHome.module.scss";
 
 export default function HeroHome1({ slides }) {
   return (

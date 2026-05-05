@@ -24,19 +24,8 @@ function formatMoney(value, currency) {
   return currency ? `${text} ${currency}` : text;
 }
 
-function getItemMaxQuantity(item) {
-  const candidates = [item?.maxQuantity, item?.stockQuantity, item?.qty, item?.stock];
-  for (const c of candidates) {
-    const n = Number(c);
-    if (Number.isFinite(n) && n >= 0) return n;
-  }
-  return null;
-}
-
-function clampQuantity(desiredQuantity, maxQuantity) {
-  const base = Math.max(1, coerceNumber(desiredQuantity, 1));
-  if (!Number.isFinite(maxQuantity) || maxQuantity == null) return base;
-  return Math.min(base, Math.max(0, maxQuantity));
+function normalizeQuantity(desiredQuantity) {
+  return Math.max(1, coerceNumber(desiredQuantity, 1));
 }
 
 export function UIDrawersProvider({ children }) {
@@ -64,28 +53,20 @@ export function UIDrawersProvider({ children }) {
     const key = item.key ?? item.id ?? null;
     if (!key) return;
 
-    const maxQuantity = getItemMaxQuantity(item);
-    if (maxQuantity === 0) return;
-
-    const quantity = clampQuantity(item.quantity, maxQuantity);
+    const quantity = normalizeQuantity(item.quantity);
 
     setCartItems((prev) => {
       const existingIndex = prev.findIndex((x) => x?.key === key);
-      if (existingIndex === -1) return [...prev, { ...item, key, quantity, maxQuantity: maxQuantity ?? item?.maxQuantity }];
+      if (existingIndex === -1) return [...prev, { ...item, key, quantity }];
 
       const existing = prev[existingIndex];
-      const existingMaxQuantity = getItemMaxQuantity(existing);
-      const nextMaxQuantity = maxQuantity ?? existingMaxQuantity;
-      if (nextMaxQuantity === 0) return prev.filter((x) => x?.key !== key);
-
       const next = [...prev];
-      const desired = Math.max(1, coerceNumber(existing?.quantity, 1) + quantity);
+      const desired = normalizeQuantity(coerceNumber(existing?.quantity, 1) + quantity);
       next[existingIndex] = {
         ...existing,
         ...item,
         key,
-        quantity: clampQuantity(desired, nextMaxQuantity),
-        maxQuantity: nextMaxQuantity ?? item?.maxQuantity ?? existing?.maxQuantity,
+        quantity: desired,
       };
       return next;
     });
@@ -96,9 +77,7 @@ export function UIDrawersProvider({ children }) {
     setCartItems((prev) =>
       prev.map((x) => {
         if (x?.key !== key) return x;
-        const maxQuantity = getItemMaxQuantity(x);
-        if (maxQuantity === 0) return x;
-        return { ...x, quantity: clampQuantity(quantity, maxQuantity), maxQuantity: maxQuantity ?? x?.maxQuantity };
+        return { ...x, quantity: normalizeQuantity(quantity) };
       })
     );
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import RegisterTemplate from "@/components/templates/RegisterTemplate/Register";
+import RegisterTemplate from "@/components/templates/RegisterForm/RegisterForm";
 
 export default function RegisterPage(props) {
   return (
