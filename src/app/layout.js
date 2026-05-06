@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/assets/images/favicon.ico" />
         <link rel="stylesheet" href="/assets/css/style.min.css" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>
