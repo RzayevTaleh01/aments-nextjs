@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@/components/ui/Form/Form.module.scss";
 import Providers from "./providers";
 
 export const metadata = {

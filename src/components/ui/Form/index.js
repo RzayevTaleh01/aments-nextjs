@@ -1,17 +1,17 @@
-import SgCheckbox from "@/components/ui/Form/Checkbox";
-import SgCheckboxGroup from "@/components/ui/Form/CheckboxGroup";
-import SgFormGroup from "@/components/ui/Form/FormGroup";
-import SgRadio from "@/components/ui/Form/Radio";
-import SgSwitch from "@/components/ui/Form/Switch";
-import SgInput from "@/components/ui/Form/Input";
-import SgFile from "@/components/ui/Form/File";
+import Checkbox from "@/components/ui/Form/Checkbox";
+import CheckboxGroup from "@/components/ui/Form/CheckboxGroup";
+import FormGroup from "@/components/ui/Form/FormGroup";
+import Radio from "@/components/ui/Form/Radio";
+import Switch from "@/components/ui/Form/Switch";
+import Input from "@/components/ui/Form/Input";
+import File from "@/components/ui/Form/File";
 
 export {
-    SgCheckbox,
-    SgCheckboxGroup,
-    SgFormGroup,
-    SgRadio,
-    SgSwitch,
-    SgInput,
-    SgFile
-}
+  Checkbox,
+  CheckboxGroup,
+  FormGroup,
+  Radio,
+  Switch,
+  Input,
+  File,
+};

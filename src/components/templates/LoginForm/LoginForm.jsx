@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { cn } from "@/utils/cn";
 import styles from "./LoginForm.module.scss";
+import { Input } from "@/components/ui/Form";
 
 export default function LoginForm({ 
   username,
@@ -20,30 +21,25 @@ export default function LoginForm({
             <div className={cn(styles.account_form, "account_form")}>
               <h3>login</h3>
               <form action="#" method="POST" onSubmit={onSubmit}>
-                <div className="default-form-box mb-20">
-                  <label>
-                    Username <span>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={onUsernameChange}
-                    autoComplete="username"
-                    required
-                  />
-                </div>
-                <div className="default-form-box mb-20">
-                  <label>
-                    Passwords <span>*</span>
-                  </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={onPasswordChange}
-                    autoComplete="current-password"
-                    required
-                  />
-                </div>
+                <Input
+                  className="mb-20"
+                  name="username"
+                  label="Username"
+                  required
+                  value={username}
+                  onChange={onUsernameChange}
+                  autoComplete="username"
+                />
+                <Input
+                  className="mb-20"
+                  name="password"
+                  label="Password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={onPasswordChange}
+                  autoComplete="current-password"
+                />
                 <div className={cn(styles.login_submit, "login_submit")}>
                   <button className="mb-20" type="submit" disabled={isSubmitting}>
                     login

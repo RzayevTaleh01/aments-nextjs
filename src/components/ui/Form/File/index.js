@@ -1,3 +1,3 @@
-import SgFile from "@/admin/components/ui/Form/File/File";
+import File from "@/components/ui/Form/File/File";
 
-export default SgFile;
+export default File;

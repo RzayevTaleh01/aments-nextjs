@@ -1,3 +1,3 @@
-import SgFormGroup from "@/components/ui/Form/FormGroup/FormGroup";
+import FormGroup from "@/components/ui/Form/FormGroup/FormGroup";
 
-export default SgFormGroup;
+export default FormGroup;

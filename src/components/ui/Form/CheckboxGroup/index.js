@@ -1,3 +1,3 @@
-import SgCheckboxGroup from "@/components/ui/Form/CheckboxGroup/CheckboxGroup";
+import CheckboxGroup from "@/components/ui/Form/CheckboxGroup/CheckboxGroup";
 
-export default SgCheckboxGroup;
+export default CheckboxGroup;

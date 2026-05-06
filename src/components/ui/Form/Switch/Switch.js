@@ -1,67 +1,70 @@
-import styles from "@/components/ui/Form/Form.module.css"
+"use client";
 
-export default function SgSwitch(props) {
-    const {label, name, data_key, id, required, readonly, disabled, value, color, size, checked, loading, isInvalid, reverse, onChange} = props
+import { useId } from "react";
+import { cn } from "@/utils/cn";
 
-    const handleChange = (e) => {
-        if (disabled || readonly || loading) {
-            e.preventDefault()
-            return
-        }
-        (onChange)?.(e)
+export default function Switch(props) {
+  const {
+    id,
+    name,
+    label,
+    required,
+    readonly,
+    disabled,
+    value,
+    checked,
+    loading,
+    isInvalid,
+    invalidMessage,
+    reverse,
+    className,
+    onChange,
+    data_key,
+    ...rest
+  } = props;
+
+  const autoId = useId();
+  const inputId = id ?? `${name || "switch"}-${autoId}`;
+
+  const handleChange = (e) => {
+    if (disabled || readonly || loading) {
+      e.preventDefault();
+      return;
     }
+    onChange?.(e);
+  };
 
-    const getColor = () => {
-        let classes = ''
-
-        switch (color) {
-            case 'minor':
-                classes = styles['label--switch--minor']
-                break
-            case 'major':
-                classes = styles['label--switch--major']
-                break
-
-            default:
-                classes = ''
-                break
-        }
-
-        return classes
-    }
-
-    const getSize = () => {
-        let classes = ''
-
-        switch (size) {
-            case 'sm':
-                classes = styles['label--switch--sm']
-                break
-
-            case 'md':
-                classes = styles['label--switch--md']
-                break
-
-            case 'lg':
-                classes = styles['label--switch--lg']
-                break
-
-            default:
-                classes = ''
-                break
-        }
-
-        return classes
-    }
-
-    return (
-        <>
-            <div className={[styles['input-container'], getColor()].join(' ').trim()}>
-                <div className={[styles["input-wrapper"], styles["input-wrapper--checkbox"], isInvalid && styles['input-wrapper--error'], reverse && styles['input-wrapper--reverse']].join(' ').trim()}>
-                    <input data-key={data_key} className={styles["checkbox"]} type="checkbox" name={name} id={id} onChange={handleChange} disabled={disabled} value={value} readOnly={readonly} required={required} checked={checked} />
-                    <label className={[styles["label"], styles["label--switch"], getColor(), getSize()].join(' ').trim()} htmlFor={id}>{label}</label>
-                </div>
-            </div>
-        </>
-    )
+  return (
+    <div
+      className={cn(
+        "form-check",
+        "form-switch",
+        reverse && "form-check-reverse",
+        className
+      )}
+    >
+      <input
+        id={inputId}
+        name={name}
+        className={cn("form-check-input", isInvalid && "is-invalid")}
+        type="checkbox"
+        onChange={handleChange}
+        disabled={disabled || loading}
+        value={value}
+        readOnly={readonly}
+        required={required}
+        checked={checked}
+        data-key={data_key}
+        {...rest}
+      />
+      {label ? (
+        <label className="form-check-label" htmlFor={inputId}>
+          {label} {required ? <span>*</span> : null}
+        </label>
+      ) : null}
+      {isInvalid ? (
+        <small className="text-danger d-block">{invalidMessage ?? "Required"}</small>
+      ) : null}
+    </div>
+  );
 }

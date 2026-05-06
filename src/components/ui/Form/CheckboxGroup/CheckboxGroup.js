@@ -1,19 +1,14 @@
-import styles from "@/components/ui/Form/Form.module.css"
+"use client";
 
-export default function SgCheckboxGroup(props) {
-    const {children, label, className} = props
+import { cn } from "@/utils/cn";
 
-    return (
-        <>
-            <div className={[styles['checkbox-group'], className].join(' ').trim()}>
-                {label ?
-                    <label className={styles['label']}>{label}</label>
-                    : ''
-                }
-                <div className={styles['checkbox-group--checkboxes']}>
-                    {children}
-                </div>
-            </div>
-        </>
-    )
+export default function CheckboxGroup(props) {
+  const { children, label, className } = props;
+
+  return (
+    <div className={cn(className)}>
+      {label ? <div className="mb-2 fw-semibold">{label}</div> : null}
+      <div className="d-flex flex-column gap-2">{children}</div>
+    </div>
+  );
 }

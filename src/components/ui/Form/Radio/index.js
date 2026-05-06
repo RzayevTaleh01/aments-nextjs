@@ -1,3 +1,3 @@
-import SgRadio from "@/components/ui/Form/Radio/Radio";
+import Radio from "@/components/ui/Form/Radio/Radio";
 
-export default SgRadio;
+export default Radio;

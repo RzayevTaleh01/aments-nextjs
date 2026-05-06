@@ -1,3 +1,3 @@
-import SgCheckbox from "@/components/ui/Form/Checkbox/Checkbox";
+import Checkbox from "@/components/ui/Form/Checkbox/Checkbox";
 
-export default SgCheckbox;
+export default Checkbox;

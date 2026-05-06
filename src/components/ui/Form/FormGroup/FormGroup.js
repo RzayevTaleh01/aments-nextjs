@@ -1,29 +1,19 @@
-import styles from "@/components/ui/Form/Form.module.css"
+"use client";
 
-export default function SgFormGroup(props) {
-    const {children, className, full, align} = props
+import { cn } from "@/utils/cn";
 
-    const getAlign = () => {
-        let classes = ''
+export default function FormGroup(props) {
+  const { children, className, full, align } = props;
 
-        switch (align) {
-            case 'end':
-                classes = styles['form-group--align-end']
-                break
-
-            default:
-                classes = ''
-                break
-        }
-
-        return classes
-    }
-
-    return (
-        <>
-            <div className={[styles['form-group'], className, getAlign(), full ? styles['form-group--full'] : ''].join(' ').trim()}>
-                {children}
-            </div>
-        </>
-    )
+  return (
+    <div
+      className={cn(
+        className,
+        align === "end" && "d-flex align-items-end",
+        full && "h-100"
+      )}
+    >
+      {children}
+    </div>
+  );
 }

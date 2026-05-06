@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { cn } from "@/utils/cn";
 import styles from "./RegisterForm.module.scss";
+import { Checkbox, Input } from "@/components/ui/Form";
 
 export default function RegisterTemplate({
   form,
@@ -28,71 +29,94 @@ export default function RegisterTemplate({
                 <div className="row">
                   <div className="col-lg-6 mb-30">
                     <h5 className="mb-20">Registration Details</h5>
-                    <div className="default-form-box mb-20">
-                      <label>
-                        Email <span>*</span>
-                      </label>
-                      <input name="email" type="email" value={safeForm.email ?? ""} onChange={handleChange} />
-                      {safeErrors.email ? <small className="text-danger">Required</small> : null}
-                    </div>
+                    <Input
+                      className="mb-20"
+                      name="email"
+                      type="email"
+                      label="Email"
+                      required
+                      value={safeForm.email ?? ""}
+                      onChange={handleChange}
+                      isInvalid={Boolean(safeErrors.email)}
+                      invalidMessage="Required"
+                    />
 
-                    <div className="default-form-box mb-20">
-                      <label>
-                        Username <span>*</span>
-                      </label>
-                      <input name="username" type="text" value={safeForm.username ?? ""} onChange={handleChange} />
-                      {safeErrors.username ? <small className="text-danger">Required</small> : null}
-                    </div>
+                    <Input
+                      className="mb-20"
+                      name="username"
+                      type="text"
+                      label="Username"
+                      required
+                      value={safeForm.username ?? ""}
+                      onChange={handleChange}
+                      isInvalid={Boolean(safeErrors.username)}
+                      invalidMessage="Required"
+                    />
 
-                    <div className="default-form-box mb-20">
-                      <label>
-                        Password <span>*</span>
-                      </label>
-                      <input name="password" type="password" value={safeForm.password ?? ""} onChange={handleChange} />
-                      {safeErrors.password ? <small className="text-danger">Required</small> : null}
-                    </div>
+                    <Input
+                      className="mb-20"
+                      name="password"
+                      type="password"
+                      label="Password"
+                      required
+                      value={safeForm.password ?? ""}
+                      onChange={handleChange}
+                      isInvalid={Boolean(safeErrors.password)}
+                      invalidMessage="Required"
+                    />
 
-                    <div className="default-form-box mb-20">
-                      <label>
-                        Confirm Password <span>*</span>
-                      </label>
-                      <input name="passwordConfirm" type="password" value={safeForm.passwordConfirm ?? ""} onChange={handleChange} />
-                      {safeErrors.passwordConfirm ? <small className="text-danger">Required</small> : null}
-                    </div>
+                    <Input
+                      className="mb-20"
+                      name="passwordConfirm"
+                      type="password"
+                      label="Confirm Password"
+                      required
+                      value={safeForm.passwordConfirm ?? ""}
+                      onChange={handleChange}
+                      isInvalid={Boolean(safeErrors.passwordConfirm)}
+                      invalidMessage="Required"
+                    />
                   </div>
 
                   <div className="col-lg-6 mb-30">
                     <h5 className="mb-20">Contact Information</h5>
-                    <div className="default-form-box mb-20">
-                      <label>
-                        First Name <span>*</span>
-                      </label>
-                      <input name="first_name" type="text" value={safeForm.first_name ?? ""} onChange={handleChange} />
-                      {safeErrors.first_name ? <small className="text-danger">Required</small> : null}
-                    </div>
+                    <Input
+                      className="mb-20"
+                      name="first_name"
+                      type="text"
+                      label="First Name"
+                      required
+                      value={safeForm.first_name ?? ""}
+                      onChange={handleChange}
+                      isInvalid={Boolean(safeErrors.first_name)}
+                      invalidMessage="Required"
+                    />
 
-                    <div className="default-form-box mb-20">
-                      <label>
-                        Last Name <span>*</span>
-                      </label>
-                      <input name="last_name" type="text" value={safeForm.last_name ?? ""} onChange={handleChange} />
-                      {safeErrors.last_name ? <small className="text-danger">Required</small> : null}
-                    </div>
+                    <Input
+                      className="mb-20"
+                      name="last_name"
+                      type="text"
+                      label="Last Name"
+                      required
+                      value={safeForm.last_name ?? ""}
+                      onChange={handleChange}
+                      isInvalid={Boolean(safeErrors.last_name)}
+                      invalidMessage="Required"
+                    />
 
-                    <div className="default-form-box mb-20">
-                      <label>
-                        Phone Number <span>*</span>
-                      </label>
-                      <input
-                        name="phoneNumber"
-                        type="text"
-                        inputMode="tel"
-                        value={safeForm.phoneNumber ?? ""}
-                        onChange={handleChange}
-                        placeholder="994..."
-                      />
-                      {safeErrors.phoneNumber ? <small className="text-danger">Required</small> : null}
-                    </div>
+                    <Input
+                      className="mb-20"
+                      name="phoneNumber"
+                      type="text"
+                      inputMode="tel"
+                      label="Phone Number"
+                      required
+                      value={safeForm.phoneNumber ?? ""}
+                      onChange={handleChange}
+                      placeholder="994..."
+                      isInvalid={Boolean(safeErrors.phoneNumber)}
+                      invalidMessage="Required"
+                    />
                   </div>
                 </div>
 
@@ -100,115 +124,128 @@ export default function RegisterTemplate({
                   <h5 className="mb-20">Shipping Address</h5>
                   <div className="row">
                     <div className="col-md-6 mb-20">
-                      <div className="default-form-box">
-                        <label>
-                          Postal Code <span>*</span>
-                        </label>
-                        <input name="post_index" type="text" value={safeForm.post_index ?? ""} onChange={handleChange} />
-                        {safeErrors.post_index ? <small className="text-danger">Required</small> : null}
-                      </div>
+                      <Input
+                        name="post_index"
+                        type="text"
+                        label="Postal Code"
+                        required
+                        value={safeForm.post_index ?? ""}
+                        onChange={handleChange}
+                        isInvalid={Boolean(safeErrors.post_index)}
+                        invalidMessage="Required"
+                      />
                     </div>
 
                     <div className="col-md-6 mb-20">
-                      <div className="default-form-box">
-                        <label>
-                          Country <span>*</span>
-                        </label>
-                        <input name="country" type="text" value={safeForm.country ?? ""} onChange={handleChange} />
-                        {safeErrors.country ? <small className="text-danger">Required</small> : null}
-                      </div>
+                      <Input
+                        name="country"
+                        type="text"
+                        label="Country"
+                        required
+                        value={safeForm.country ?? ""}
+                        onChange={handleChange}
+                        isInvalid={Boolean(safeErrors.country)}
+                        invalidMessage="Required"
+                      />
                     </div>
 
                     <div className="col-md-6 mb-20">
-                      <div className="default-form-box">
-                        <label>
-                          Region/State <span>*</span>
-                        </label>
-                        <input name="region" type="text" value={safeForm.region ?? ""} onChange={handleChange} />
-                        {safeErrors.region ? <small className="text-danger">Required</small> : null}
-                      </div>
+                      <Input
+                        name="region"
+                        type="text"
+                        label="Region/State"
+                        required
+                        value={safeForm.region ?? ""}
+                        onChange={handleChange}
+                        isInvalid={Boolean(safeErrors.region)}
+                        invalidMessage="Required"
+                      />
                     </div>
 
                     <div className="col-md-6 mb-20">
-                      <div className="default-form-box">
-                        <label>
-                          City <span>*</span>
-                        </label>
-                        <input name="city" type="text" value={safeForm.city ?? ""} onChange={handleChange} />
-                        {safeErrors.city ? <small className="text-danger">Required</small> : null}
-                      </div>
+                      <Input
+                        name="city"
+                        type="text"
+                        label="City"
+                        required
+                        value={safeForm.city ?? ""}
+                        onChange={handleChange}
+                        isInvalid={Boolean(safeErrors.city)}
+                        invalidMessage="Required"
+                      />
                     </div>
 
                     <div className="col-md-6 mb-20">
-                      <div className="default-form-box">
-                        <label>
-                          Street <span>*</span>
-                        </label>
-                        <input name="street" type="text" value={safeForm.street ?? ""} onChange={handleChange} />
-                        {safeErrors.street ? <small className="text-danger">Required</small> : null}
-                      </div>
+                      <Input
+                        name="street"
+                        type="text"
+                        label="Street"
+                        required
+                        value={safeForm.street ?? ""}
+                        onChange={handleChange}
+                        isInvalid={Boolean(safeErrors.street)}
+                        invalidMessage="Required"
+                      />
                     </div>
 
                     <div className="col-md-6 mb-20">
-                      <div className="default-form-box">
-                        <label>
-                          House Number <span>*</span>
-                        </label>
-                        <input name="home_number" type="text" value={safeForm.home_number ?? ""} onChange={handleChange} />
-                        {safeErrors.home_number ? <small className="text-danger">Required</small> : null}
-                      </div>
+                      <Input
+                        name="home_number"
+                        type="text"
+                        label="House Number"
+                        required
+                        value={safeForm.home_number ?? ""}
+                        onChange={handleChange}
+                        isInvalid={Boolean(safeErrors.home_number)}
+                        invalidMessage="Required"
+                      />
                     </div>
 
                     <div className="col-md-6 mb-20">
-                      <div className="default-form-box">
-                        <label>
-                          Apartment/Office <span>*</span>
-                        </label>
-                        <input
-                          name="home_office"
-                          type="text"
-                          value={safeForm.home_office ?? ""}
-                          onChange={handleChange}
-                          placeholder="Apartment / Office"
-                        />
-                        {safeErrors.home_office ? <small className="text-danger">Required</small> : null}
-                      </div>
+                      <Input
+                        name="home_office"
+                        type="text"
+                        label="Apartment/Office"
+                        required
+                        value={safeForm.home_office ?? ""}
+                        onChange={handleChange}
+                        placeholder="Apartment / Office"
+                        isInvalid={Boolean(safeErrors.home_office)}
+                        invalidMessage="Required"
+                      />
                     </div>
                   </div>
                 </div>
 
                 <div className="mb-30">
-                  <div className="form-check mb-10">
-                    <input
-                      id="acceptTerms"
-                      name="acceptTerms"
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      checked={Boolean(safeForm.acceptTerms)}
-                      onChange={handleChange}
-                    />
-                    <label className="form-check-label" htmlFor="acceptTerms">
-                      I have read and agree to the Terms and Conditions <span>*</span>
-                    </label>
-                    {safeErrors.acceptTerms ? <small className="text-danger d-block">Required</small> : null}
-                  </div>
+                  <Checkbox
+                    className="mb-10"
+                    id="acceptTerms"
+                    name="acceptTerms"
+                    label={
+                      <>
+                        I have read and agree to the Terms and Conditions <span>*</span>
+                      </>
+                    }
+                    checked={Boolean(safeForm.acceptTerms)}
+                    onChange={handleChange}
+                    isInvalid={Boolean(safeErrors.acceptTerms)}
+                    invalidMessage="Required"
+                  />
 
-                  <div className="form-check">
-                    <input
-                      id="acceptPrivacy"
-                      name="acceptPrivacy"
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      checked={Boolean(safeForm.acceptPrivacy)}
-                      onChange={handleChange}
-                    />
-                    <label className="form-check-label" htmlFor="acceptPrivacy">
-                      I agree to the processing of my personal data and accept the policy <span>*</span>
-                    </label>
-                    {safeErrors.acceptPrivacy ? <small className="text-danger d-block">Required</small> : null}
-                  </div>
+                  <Checkbox
+                    id="acceptPrivacy"
+                    name="acceptPrivacy"
+                    label={
+                      <>
+                        I agree to the processing of my personal data and accept the policy <span>*</span>
+                      </>
+                    }
+                    checked={Boolean(safeForm.acceptPrivacy)}
+                    onChange={handleChange}
+                    isInvalid={Boolean(safeErrors.acceptPrivacy)}
+                    invalidMessage="Required"
+                  />
                 </div>
 
                 <div className={cn(styles.login_submit, "login_submit")}>

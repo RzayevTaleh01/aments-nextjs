@@ -5,8 +5,8 @@ import useShowPrice from "@/hooks/use-show-price";
 import "./ProductDetailsSummary.module.scss";
 
 export default function ProductDetailsSummary({ product }) {
-  if (!product) return null;
   const { showPrice } = useShowPrice();
+  if (!product) return null;
 
 
   const brandName = product?.brand?.name ?? product?.brand ?? "";

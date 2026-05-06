@@ -1,3 +1,3 @@
-import SgSwitch from "@/components/ui/Form/Switch/Switch";
+import Switch from "@/components/ui/Form/Switch/Switch";
 
-export default SgSwitch;
+export default Switch;

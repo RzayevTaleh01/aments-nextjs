@@ -1,3 +1,3 @@
-import SgInput from "@/components/ui/Form/Input/Input";
+import Input from "@/components/ui/Form/Input/Input";
 
-export default SgInput;
+export default Input;

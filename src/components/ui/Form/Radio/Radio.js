@@ -1,24 +1,62 @@
-import styles from "@/components/ui/Form/Form.module.css";
+"use client";
 
-export default function SgRadio(props) {
-    const {label, name, id, required, className, readonly, data_key, data_variant, size, data_index, disabled, value, checked, loading, isInvalid, onChange = () => {}} = props
+import { useId } from "react";
+import { cn } from "@/utils/cn";
 
-    const handleChange = (e) => {
-        if (disabled || readonly || loading) {
-            e.preventDefault()
-            return
-        }
-        (onChange)?.(e)
+export default function Radio(props) {
+  const {
+    id,
+    name,
+    label,
+    required,
+    readonly,
+    disabled,
+    value,
+    checked,
+    loading,
+    isInvalid,
+    invalidMessage,
+    className,
+    onChange,
+    data_key,
+    ...rest
+  } = props;
+
+  const autoId = useId();
+  const inputId = id ?? `${name || "radio"}-${autoId}`;
+
+  const handleChange = (e) => {
+    if (disabled || readonly || loading) {
+      e.preventDefault();
+      return;
     }
+    onChange?.(e);
+  };
 
-    return (
-        <>
-            <div className={[styles['input-container']].join(' ').trim()}>
-                <div className={[styles["input-wrapper"], className, styles["input-wrapper--checkbox"], isInvalid && styles['input-wrapper--error']].join(' ').trim()}>
-                    <input className={styles["radio"]} type="radio" data-key={data_key} data-index={data_index} name={name} id={id} onChange={handleChange} disabled={disabled} value={value} readOnly={readonly} required={required} checked={checked} data-variant={data_variant} />
-                    <label className={[styles["label"], styles["label--checkbox"]].join(' ').trim()} htmlFor={id}>{label}</label>
-                </div>
-            </div>
-        </>
-    )
+  return (
+    <div className={cn("form-check", className)}>
+      <input
+        id={inputId}
+        name={name}
+        className={cn("form-check-input", isInvalid && "is-invalid")}
+        type="radio"
+        onChange={handleChange}
+        disabled={disabled || loading}
+        value={value}
+        readOnly={readonly}
+        required={required}
+        checked={checked}
+        data-key={data_key}
+        {...rest}
+      />
+      {label ? (
+        <label className="form-check-label" htmlFor={inputId}>
+          {label} {required ? <span>*</span> : null}
+        </label>
+      ) : null}
+      {isInvalid ? (
+        <small className="text-danger d-block">{invalidMessage ?? "Required"}</small>
+      ) : null}
+    </div>
+  );
 }
