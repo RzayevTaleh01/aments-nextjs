@@ -2,68 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import validate from "validate.js";
-import { toast } from "react-toastify";
 import ApiService from "@/services/api/ApiService";
 import RegisterPage from "@/components/pages/RegisterPage/RegisterPage";
-
-const registerConstraints = {
-  email: {
-    presence: { allowEmpty: false, message: "^Email is required" },
-    email: { message: "^Invalid email format" },
-  },
-  username: {
-    presence: { allowEmpty: false, message: "^Username is required" },
-    length: { minimum: 3, maximum: 32, tooShort: "^Username must be at least 3 characters", tooLong: "^Username must be at most 32 characters" },
-    format: { pattern: "^[a-zA-Z0-9_]+$", message: "^Username can contain only letters, numbers, and _" },
-  },
-  password: {
-    presence: { allowEmpty: false, message: "^Password is required" },
-    length: { minimum: 6, tooShort: "^Password must be at least 6 characters" },
-  },
-  passwordConfirm: {
-    presence: { allowEmpty: false, message: "^Please confirm your password" },
-    equality: { attribute: "password", message: "^Passwords do not match" },
-  },
-  first_name: {
-    presence: { allowEmpty: false, message: "^First name is required" },
-  },
-  last_name: {
-    presence: { allowEmpty: false, message: "^Last name is required" },
-  },
-  phoneNumber: {
-    presence: { allowEmpty: false, message: "^Phone number is required" },
-    format: { pattern: "^\\d{7,15}$", message: "^Phone number must contain only digits (7-15 digits)" },
-  },
-  post_index: {
-    presence: { allowEmpty: false, message: "^Postal code is required" },
-    format: { pattern: "^\\d{3,10}$", message: "^Postal code must contain only digits" },
-  },
-  country: {
-    presence: { allowEmpty: false, message: "^Country is required" },
-  },
-  region: {
-    presence: { allowEmpty: false, message: "^Region/State is required" },
-  },
-  city: {
-    presence: { allowEmpty: false, message: "^City is required" },
-  },
-  street: {
-    presence: { allowEmpty: false, message: "^Street is required" },
-  },
-  home_number: {
-    presence: { allowEmpty: false, message: "^House number is required" },
-  },
-  home_office: {
-    presence: { allowEmpty: false, message: "^Apartment/Office is required" },
-  },
-  acceptTerms: {
-    inclusion: { within: [true], message: "^You must accept the Terms and Conditions" },
-  },
-  acceptPrivacy: {
-    inclusion: { within: [true], message: "^You must consent to personal data processing" },
-  },
-};
+import { changeData } from "@/utils/changeData";
+import { validate } from "@/utils/validate";
+import { validationConstraints } from "./validationConstraints";
 
 export default function Page() {
   const router = useRouter();
@@ -92,22 +35,8 @@ export default function Page() {
 
   const hasAnyError = useMemo(() => Object.keys(fieldErrors || {}).length > 0, [fieldErrors]);
 
-  function setField(name, value) {
-    setForm((prev) => ({ ...prev, [name]: value }));
-    setFieldErrors((prev) => {
-      if (!prev?.[name]) return prev;
-      const { [name]: _removed, ...rest } = prev;
-      return rest;
-    });
-  }
-
-  function normalizeValidateErrors(validateErrors) {
-    if (!validateErrors) return {};
-    const normalized = {};
-    for (const [key, messages] of Object.entries(validateErrors)) {
-      if (Array.isArray(messages) && messages[0]) normalized[key] = messages[0];
-    }
-    return normalized;
+  function handleChange(e) {
+    changeData(e, form, setForm, fieldErrors, setFieldErrors);
   }
 
   async function postRegister(payload) {
@@ -126,12 +55,9 @@ export default function Page() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const validateErrors = validate(form, registerConstraints, { fullMessages: false });
-    if (validateErrors) {
-      const normalized = normalizeValidateErrors(validateErrors);
-      setFieldErrors(normalized);
-      const firstMessage = Object.values(normalized)[0];
-      if (firstMessage) toast.error(firstMessage);
+    const errors = validate(form, "register", validationConstraints);
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
       return;
     }
 
@@ -155,11 +81,8 @@ export default function Page() {
 
       await postRegister(payload);
 
-      toast.success("Registration completed successfully");
       router.push("/login");
-    } catch (error) {
-      const message = error?.response?.data?.message || error?.message || "An error occurred during registration";
-      toast.error(message);
+    } catch {
     } finally {
       setIsSubmitting(false);
     }
@@ -171,7 +94,7 @@ export default function Page() {
       fieldErrors={fieldErrors}
       isSubmitting={isSubmitting}
       hasAnyError={hasAnyError}
-      onFieldChange={setField}
+      onChange={handleChange}
       onSubmit={handleSubmit}
     />
   );

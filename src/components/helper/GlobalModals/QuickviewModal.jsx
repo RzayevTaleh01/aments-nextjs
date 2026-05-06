@@ -119,18 +119,6 @@ export default function QuickviewModal() {
                 <div className="product-details-meta mb-20">
                   <ul>
                     <li>
-                      <Link href="/wishlist">
-                        <Icon name="FaHeart" />
-                        Add to wishlist
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/compare">
-                        <Icon name="FaRetweet" />
-                        Compare
-                      </Link>
-                    </li>
-                    <li>
                       <Link href={`/product/${firstSlug}#offers`} onClick={close}>
                         <Icon name="FaShoppingCart" />
                         Add To Cart

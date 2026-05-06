@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
-import TestimonialSection from "@/components/sections/about/TestimonialSection";
 import styles from "./AboutUsPage.module.scss";
 
 export default function AboutUsPage() {
@@ -69,14 +68,6 @@ export default function AboutUsPage() {
           </div>
         </div>
       </div>
-
-      {/* <TestimonialSection
-        items={[
-          { id: "t1", img: "/assets/images/testimonial/testimonial-1.png", name: "Kathy Young", role: "CEO of SunPark" },
-          { id: "t2", img: "/assets/images/testimonial/testimonial-2.jpg", name: "Kathy Young", role: "CEO of SunPark" },
-          { id: "t3", img: "/assets/images/testimonial/testimonial-3.jpg", name: "Kathy Young", role: "CEO of SunPark" },
-        ]}
-      /> */}
     </div>
   );
 }

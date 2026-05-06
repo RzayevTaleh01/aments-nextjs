@@ -9,12 +9,12 @@ export default function RegisterTemplate({
   fieldErrors,
   isSubmitting,
   hasAnyError,
-  onFieldChange,
+  onChange,
   onSubmit,
 }) {
   const safeForm = form ?? {};
   const safeErrors = fieldErrors ?? {};
-  const setField = onFieldChange ?? (() => {});
+  const handleChange = onChange ?? (() => {});
   const handleSubmit = onSubmit ?? ((e) => e?.preventDefault?.());
 
   return (
@@ -32,32 +32,32 @@ export default function RegisterTemplate({
                       <label>
                         Email <span>*</span>
                       </label>
-                      <input type="email" value={safeForm.email ?? ""} onChange={(e) => setField("email", e.target.value)} />
-                      {safeErrors.email ? <small className="text-danger">{safeErrors.email}</small> : null}
+                      <input name="email" type="email" value={safeForm.email ?? ""} onChange={handleChange} />
+                      {safeErrors.email ? <small className="text-danger">Required</small> : null}
                     </div>
 
                     <div className="default-form-box mb-20">
                       <label>
                         Username <span>*</span>
                       </label>
-                      <input type="text" value={safeForm.username ?? ""} onChange={(e) => setField("username", e.target.value)} />
-                      {safeErrors.username ? <small className="text-danger">{safeErrors.username}</small> : null}
+                      <input name="username" type="text" value={safeForm.username ?? ""} onChange={handleChange} />
+                      {safeErrors.username ? <small className="text-danger">Required</small> : null}
                     </div>
 
                     <div className="default-form-box mb-20">
                       <label>
                         Password <span>*</span>
                       </label>
-                      <input type="password" value={safeForm.password ?? ""} onChange={(e) => setField("password", e.target.value)} />
-                      {safeErrors.password ? <small className="text-danger">{safeErrors.password}</small> : null}
+                      <input name="password" type="password" value={safeForm.password ?? ""} onChange={handleChange} />
+                      {safeErrors.password ? <small className="text-danger">Required</small> : null}
                     </div>
 
                     <div className="default-form-box mb-20">
                       <label>
                         Confirm Password <span>*</span>
                       </label>
-                      <input type="password" value={safeForm.passwordConfirm ?? ""} onChange={(e) => setField("passwordConfirm", e.target.value)} />
-                      {safeErrors.passwordConfirm ? <small className="text-danger">{safeErrors.passwordConfirm}</small> : null}
+                      <input name="passwordConfirm" type="password" value={safeForm.passwordConfirm ?? ""} onChange={handleChange} />
+                      {safeErrors.passwordConfirm ? <small className="text-danger">Required</small> : null}
                     </div>
                   </div>
 
@@ -67,16 +67,16 @@ export default function RegisterTemplate({
                       <label>
                         First Name <span>*</span>
                       </label>
-                      <input type="text" value={safeForm.first_name ?? ""} onChange={(e) => setField("first_name", e.target.value)} />
-                      {safeErrors.first_name ? <small className="text-danger">{safeErrors.first_name}</small> : null}
+                      <input name="first_name" type="text" value={safeForm.first_name ?? ""} onChange={handleChange} />
+                      {safeErrors.first_name ? <small className="text-danger">Required</small> : null}
                     </div>
 
                     <div className="default-form-box mb-20">
                       <label>
                         Last Name <span>*</span>
                       </label>
-                      <input type="text" value={safeForm.last_name ?? ""} onChange={(e) => setField("last_name", e.target.value)} />
-                      {safeErrors.last_name ? <small className="text-danger">{safeErrors.last_name}</small> : null}
+                      <input name="last_name" type="text" value={safeForm.last_name ?? ""} onChange={handleChange} />
+                      {safeErrors.last_name ? <small className="text-danger">Required</small> : null}
                     </div>
 
                     <div className="default-form-box mb-20">
@@ -84,13 +84,14 @@ export default function RegisterTemplate({
                         Phone Number <span>*</span>
                       </label>
                       <input
+                        name="phoneNumber"
                         type="text"
                         inputMode="tel"
                         value={safeForm.phoneNumber ?? ""}
-                        onChange={(e) => setField("phoneNumber", e.target.value)}
+                        onChange={handleChange}
                         placeholder="994..."
                       />
-                      {safeErrors.phoneNumber ? <small className="text-danger">{safeErrors.phoneNumber}</small> : null}
+                      {safeErrors.phoneNumber ? <small className="text-danger">Required</small> : null}
                     </div>
                   </div>
                 </div>
@@ -103,8 +104,8 @@ export default function RegisterTemplate({
                         <label>
                           Postal Code <span>*</span>
                         </label>
-                        <input type="text" value={safeForm.post_index ?? ""} onChange={(e) => setField("post_index", e.target.value)} />
-                        {safeErrors.post_index ? <small className="text-danger">{safeErrors.post_index}</small> : null}
+                        <input name="post_index" type="text" value={safeForm.post_index ?? ""} onChange={handleChange} />
+                        {safeErrors.post_index ? <small className="text-danger">Required</small> : null}
                       </div>
                     </div>
 
@@ -113,8 +114,8 @@ export default function RegisterTemplate({
                         <label>
                           Country <span>*</span>
                         </label>
-                        <input type="text" value={safeForm.country ?? ""} onChange={(e) => setField("country", e.target.value)} />
-                        {safeErrors.country ? <small className="text-danger">{safeErrors.country}</small> : null}
+                        <input name="country" type="text" value={safeForm.country ?? ""} onChange={handleChange} />
+                        {safeErrors.country ? <small className="text-danger">Required</small> : null}
                       </div>
                     </div>
 
@@ -123,8 +124,8 @@ export default function RegisterTemplate({
                         <label>
                           Region/State <span>*</span>
                         </label>
-                        <input type="text" value={safeForm.region ?? ""} onChange={(e) => setField("region", e.target.value)} />
-                        {safeErrors.region ? <small className="text-danger">{safeErrors.region}</small> : null}
+                        <input name="region" type="text" value={safeForm.region ?? ""} onChange={handleChange} />
+                        {safeErrors.region ? <small className="text-danger">Required</small> : null}
                       </div>
                     </div>
 
@@ -133,8 +134,8 @@ export default function RegisterTemplate({
                         <label>
                           City <span>*</span>
                         </label>
-                        <input type="text" value={safeForm.city ?? ""} onChange={(e) => setField("city", e.target.value)} />
-                        {safeErrors.city ? <small className="text-danger">{safeErrors.city}</small> : null}
+                        <input name="city" type="text" value={safeForm.city ?? ""} onChange={handleChange} />
+                        {safeErrors.city ? <small className="text-danger">Required</small> : null}
                       </div>
                     </div>
 
@@ -143,8 +144,8 @@ export default function RegisterTemplate({
                         <label>
                           Street <span>*</span>
                         </label>
-                        <input type="text" value={safeForm.street ?? ""} onChange={(e) => setField("street", e.target.value)} />
-                        {safeErrors.street ? <small className="text-danger">{safeErrors.street}</small> : null}
+                        <input name="street" type="text" value={safeForm.street ?? ""} onChange={handleChange} />
+                        {safeErrors.street ? <small className="text-danger">Required</small> : null}
                       </div>
                     </div>
 
@@ -153,8 +154,8 @@ export default function RegisterTemplate({
                         <label>
                           House Number <span>*</span>
                         </label>
-                        <input type="text" value={safeForm.home_number ?? ""} onChange={(e) => setField("home_number", e.target.value)} />
-                        {safeErrors.home_number ? <small className="text-danger">{safeErrors.home_number}</small> : null}
+                        <input name="home_number" type="text" value={safeForm.home_number ?? ""} onChange={handleChange} />
+                        {safeErrors.home_number ? <small className="text-danger">Required</small> : null}
                       </div>
                     </div>
 
@@ -164,12 +165,13 @@ export default function RegisterTemplate({
                           Apartment/Office <span>*</span>
                         </label>
                         <input
+                          name="home_office"
                           type="text"
                           value={safeForm.home_office ?? ""}
-                          onChange={(e) => setField("home_office", e.target.value)}
+                          onChange={handleChange}
                           placeholder="Apartment / Office"
                         />
-                        {safeErrors.home_office ? <small className="text-danger">{safeErrors.home_office}</small> : null}
+                        {safeErrors.home_office ? <small className="text-danger">Required</small> : null}
                       </div>
                     </div>
                   </div>
@@ -179,29 +181,33 @@ export default function RegisterTemplate({
                   <div className="form-check mb-10">
                     <input
                       id="acceptTerms"
+                      name="acceptTerms"
                       className="form-check-input"
                       type="checkbox"
+                      value=""
                       checked={Boolean(safeForm.acceptTerms)}
-                      onChange={(e) => setField("acceptTerms", e.target.checked)}
+                      onChange={handleChange}
                     />
                     <label className="form-check-label" htmlFor="acceptTerms">
                       I have read and agree to the Terms and Conditions <span>*</span>
                     </label>
-                    {safeErrors.acceptTerms ? <small className="text-danger d-block">{safeErrors.acceptTerms}</small> : null}
+                    {safeErrors.acceptTerms ? <small className="text-danger d-block">Required</small> : null}
                   </div>
 
                   <div className="form-check">
                     <input
                       id="acceptPrivacy"
+                      name="acceptPrivacy"
                       className="form-check-input"
                       type="checkbox"
+                      value=""
                       checked={Boolean(safeForm.acceptPrivacy)}
-                      onChange={(e) => setField("acceptPrivacy", e.target.checked)}
+                      onChange={handleChange}
                     />
                     <label className="form-check-label" htmlFor="acceptPrivacy">
                       I agree to the processing of my personal data and accept the policy <span>*</span>
                     </label>
-                    {safeErrors.acceptPrivacy ? <small className="text-danger d-block">{safeErrors.acceptPrivacy}</small> : null}
+                    {safeErrors.acceptPrivacy ? <small className="text-danger d-block">Required</small> : null}
                   </div>
                 </div>
 
