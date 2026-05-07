@@ -1,0 +1,28 @@
+.questionAssistant {
+    padding: 18px;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
+    display: inline-flex;
+    flex-direction: column;
+    gap: 22px;
+    position: sticky;
+    top: 0;
+    border-radius: 5px;
+}
+.questionAssistant-item {}
+
+@media (max-width: 992px) {
+    .questionAssistant {
+        border: 1px solid #E5E5E5;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        flex-direction: row;
+        position: fixed;
+        bottom: 0;
+        top: unset;
+        left: 0;
+        width: 100%;
+        z-index: 11;
+        justify-content: space-between;
+    }
+}

@@ -1,0 +1,109 @@
+.sg--badge {
+  color: #3B3B3B;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  word-wrap: break-word;
+  padding: 4px 12px;
+  border-radius: 16px;
+  background-color: #F2F4F7;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 6px;
+}
+.sg--badge--sm {
+  padding: 2px 8px;
+  font-size: 12px;
+  line-height: 18px;
+}
+.sg--badge--md {
+  padding: 2px 10px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.sg--badge--lg {
+  padding: 4px 12px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.sg--badge--dot::before {
+  width: 6px;
+  height: 6px;
+  display: flex;
+  background-color: currentColor;
+}
+.sg--badge--icon {
+  padding-left: 2px;
+}
+.sg--badge--icon::before {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "sg-icons" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #CECECE;
+  line-height: 16px;
+  font-size: 16px;
+}
+.sg--badge--gray {
+  color: var(--gray-700, #344054);
+  background-color: var(--gray-100, #F2F4F7);
+}
+.sg--badge--primary {
+  color: var(--primary-700, #0681BE);
+  background-color: var(--primary-50, #E1EDF6);
+}
+.sg--badge--error {
+  color: var(--error-700, #B42318);
+  background-color: var(--error-50, #FEF3F2);
+}
+.sg--badge--warning {
+  color: var(--warning-700, #B54708);
+  background-color: var(--warning-50, #FFFAEB);
+}
+.sg--badge--success {
+  color: var(--success-700, #344054);
+  background-color: var(--success-50, #ECFDF3);
+}
+.sg--badge--blue-gray {
+  color: var(--blue-gray-700, #363F72);
+  background-color: var(--blue-gray-50, #F8F9FC);
+}
+.sg--badge--blue-light {
+  color: var(--blue-light-700, #026AA2);
+  background-color: var(--blue-light-50, #F0F9FF);
+}
+.sg--badge--blue {
+  color: var(--blue-700, #175CD3);
+  background-color: var(--blue-50, #EFF8FF);
+}
+.sg--badge--indigo {
+  color: var(--indigo-700, #3538CD);
+  background-color: var(--indigo-50, #EEF4FF);
+}
+.sg--badge--purple {
+  color: var(--purple-700, #5925DC);
+  background-color: var(--purple-50, #F4F3FF);
+}
+.sg--badge--pink {
+  color: var(--pink-700, #C11574);
+  background-color: var(--pink-50, #FDF2FA);
+}
+.sg--badge--ros {
+  color: var(--ros-700, #C01048);
+  background-color: var(--ros-50, #FFF1F3);
+}
+.sg--badge--orange {
+  color: var(--orange-700, #C4320A);
+  background-color: var(--orange-50, #FFF6ED);
+}
+
+/*# sourceMappingURL=Badge.module.css.map */

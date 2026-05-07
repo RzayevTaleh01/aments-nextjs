@@ -1,0 +1,166 @@
+.sg--template--sidebar {
+    width: 72px;
+    height: 100%;
+    min-height: 100dvh;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: 24px;
+    background: var(--primary-700, #0681BE);
+
+    &--open {
+        width: 280px;
+    }
+    &-head {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex: 0 0 auto;
+
+        &-logo {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
+            position: relative;
+
+            &::after {
+                content: 'ADMIN PANEL';
+                font-size: 10px;
+                font-weight: 700;
+                line-height: 18px;
+                letter-spacing: 0.5px;
+                text-align: center;
+                text-underline-position: from-font;
+                text-decoration-skip-ink: none;
+                color: #1B1B1B;
+
+                position: absolute;
+                top: calc(100% - 5px);
+                right: 0;
+                padding: 0 5px;
+                border-radius: 29px;
+                background-color: #D2D4FF;
+            }
+
+            &--image {
+                border-radius: 10px;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid var(--gray-300, #D0D5DD);
+                background-color: var(--white, #FFFFFF);
+                color: var(--primary-700, #0681BE);
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+            &--header {
+                color: var(--white, #FFFFFF);
+                font-size: 10px;
+                font-weight: 700;
+                display: none;
+
+                .sg--template--sidebar--open & {
+                    display: unset;
+                }
+            }
+
+            &--realImage {
+                height: 40px;
+            }
+        }
+
+        &--toggle {
+            color: var(--white, #FFFFFF);
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+            padding: 2px;
+        }
+    }
+
+    &-body {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-top: 32px;
+        flex: 1 0 auto;
+
+        &-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            &-item {
+                &--link {
+                    display: flex !important;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 12px !important;
+                    padding: 12px 4px;
+                    border-radius: 6px;
+                    color: var(--gray-100, #F2F4F7) !important;
+
+                    .sg--template--sidebar--open & {
+                        padding: 8px 4px;
+                        justify-content: unset;
+                    }
+
+                    &.active {
+                        background: var(--primary-600, #00ACED);
+                    }
+                    &.active > &-icon {
+                        color: var(--gray-100, #F2F4F7);
+                    }
+
+                    &:hover {
+                        background: var(--primary-500, #70C0F2);
+                    }
+                    &:hover > &-icon {
+                        color: var(--gray-100, #A4D3F5);
+                    }
+
+                    &-icon {
+                        color: var(--primary-300, #A4D3F5);
+                        font-size: 16px;
+                        line-height: 1;
+                        text-transform: uppercase;
+                        width: 16px;
+                        height: 16px;
+                    }
+                    &-name {
+                        color: var(--gray-100, #F2F4F7);
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: 24px;
+                        display: none;
+
+                        .sg--template--sidebar--open & {
+                            display: unset;
+                        }
+                    }
+
+                    &::after {
+                        margin-left: auto !important;
+                    }
+                }
+
+                &--sub {
+                    padding-top: 4px;
+                    padding-left: 24px;
+                }
+            }
+        }
+    }
+}

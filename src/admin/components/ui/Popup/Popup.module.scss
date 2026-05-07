@@ -1,0 +1,30 @@
+/* MODAL START */
+.modal-header {
+    border: none !important;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    padding-right: 20px;
+}
+.modal-title {
+    color: #0B0B0B;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 30px;
+    line-height: 36px; /* 180% */
+}
+
+
+
+@media (max-width: 992px) {
+    .modal-title {
+        font-size: 20px;
+        line-height: 32px;
+        color: #313131;
+    }
+}
+
+/* MODAL END */

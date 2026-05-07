@@ -1,0 +1,52 @@
+.filePreview {}
+
+.filePreview-media {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.filePreview-media-content {
+    width: calc(100% - 30px);
+}
+.filePreview-media-content--img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.filePreview-media-operation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+}
+
+.filePreview-file {
+    margin-bottom: 16px;
+    background-color: #F3F3F3;
+    padding: 8px 12px;
+    //display: flex;
+    flex-direction: row;
+    gap: 16px;
+    border-radius: 50px;
+    display: none !important;
+}
+.filePreview-file--name {
+    color: #303030;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.filePreview-file-operation {
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    gap: 16px;
+}
+.filePreview-file-operation-item {
+    font-size: 9px;
+}
+.filePreview-file-operation-item .button::before {
+    font-size: 12px;
+}

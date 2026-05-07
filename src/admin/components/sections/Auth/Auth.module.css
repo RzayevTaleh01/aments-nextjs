@@ -1,0 +1,52 @@
+.sg--section--auth-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+.sg--section--auth-head-logo {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+.sg--section--auth-head-logo--image {
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--gray-300, #D0D5DD);
+  color: var(--white, #FFFFFF);
+  background-color: var(--primary-700, #0681BE);
+  font-size: 18px;
+  font-weight: 700;
+}
+.sg--section--auth-head-logo--header {
+  color: var(--primary-700, #0681BE);
+  font-size: 20px;
+  font-weight: 700;
+}
+.sg--section--auth-head--header {
+  color: var(--gray-900, #101828);
+  text-align: center;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 38px; /* 126.667% */
+}
+.sg--section--auth-head--description {
+  color: var(--gray-500, #667085);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+
+/*# sourceMappingURL=Auth.module.css.map */

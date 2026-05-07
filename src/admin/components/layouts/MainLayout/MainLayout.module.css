@@ -1,0 +1,18 @@
+.sg--layouts--main {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--primary-700, #0681BE);
+}
+.sg--layouts--main-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.sg--layouts--main-container-content {
+  padding: 32px;
+  border-radius: 40px 0 0 0;
+  background-color: var(--white, #FFFFFF);
+  height: 100%;
+}
+
+/*# sourceMappingURL=MainLayout.module.css.map */
