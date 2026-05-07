@@ -3,8 +3,28 @@ import Link from "next/link";
 import {SgCollapse} from "@/admin/components/ui/Collapse";
 import SgIcon from "@/admin/components/ui/Icon";
 import {SgDropdown} from "@/admin/components/ui/Dropdown";
-import {hasPermission} from "@/utils/permissions";
 import {useSession} from "next-auth/react";
+
+function hasPermission(permissions, permissionKey) {
+    if (!permissionKey) return true;
+    if (!permissions) return true;
+    if (Array.isArray(permissions)) {
+        if (permissions.includes(permissionKey)) return true;
+        return permissions.some((p) => p?.name === permissionKey || p?.key === permissionKey || p?.permission === permissionKey);
+    }
+    if (typeof permissions === 'object') {
+        return Boolean(permissions[permissionKey]);
+    }
+    return false;
+}
+
+function resolveAdminPath(path, external) {
+    if (!path) return '/admin';
+    if (external || /^https?:\/\//.test(path)) return path;
+    if (path.startsWith('/admin')) return path;
+    if (path === '/') return '/admin';
+    return `/admin${path}`;
+}
 
 export default function SgSideBarMenuItem(props) {
     const { item, isOpen } = props;
@@ -34,15 +54,19 @@ export default function SgSideBarMenuItem(props) {
                                             </div>
                                         </>
                                     }
-                                    list={(item?.children || []).map((el, i) => {
-                                        return {
-                                            name: <Link href={item.path}
-                                                        target={el?.external ? '_blank' : '_self'}
-                                                        key={`main__${i}`}
-                                                        className={[].join(' ').trim()}>{el?.name}</Link>,
-                                            disabled: false
-                                        }
-                                    })}
+                                    list={(item?.children || []).map((el, i) => ({
+                                        name: (
+                                            <Link
+                                                href={resolveAdminPath(el?.path, el?.external)}
+                                                target={el?.external ? '_blank' : '_self'}
+                                                key={`main__${i}`}
+                                                className={[].join(' ').trim()}
+                                            >
+                                                {el?.name}
+                                            </Link>
+                                        ),
+                                        disabled: false
+                                    }))}
                                 />
                                 :
                                 <SgCollapse
@@ -65,7 +89,7 @@ export default function SgSideBarMenuItem(props) {
                                             {(item.children || []).map((el, index) =>
                                                 <SgSideBarMenuItem
                                                     key={index}
-                                                    item={{...el, path: el?.external ? el?.path : `/content/idareedici${el.path}`}}
+                                                    item={{...el, path: resolveAdminPath(el?.path, el?.external)}}
                                                 />
                                             )}
                                         </div>
@@ -75,7 +99,7 @@ export default function SgSideBarMenuItem(props) {
                         </>
                         :
                         (!(item?.permission && !hasPermission(session?.permissions, item?.permission)) ?
-                                <Link href={item.path} target={item?.external ? '_blank' : '_self'} className={[styles['sg--template--sidebar-body-menu-item--link']].join(' ').trim()}>
+                                <Link href={resolveAdminPath(item?.path, item?.external)} target={item?.external ? '_blank' : '_self'} className={[styles['sg--template--sidebar-body-menu-item--link']].join(' ').trim()}>
                                     <div className={[styles['sg--template--sidebar-body-menu-item--link-icon']].join(' ').trim()}>
                                         {item.icon ? item.icon : <SgIcon icon='menu' />}
                                     </div>

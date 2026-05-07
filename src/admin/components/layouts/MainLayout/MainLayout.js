@@ -1,11 +1,33 @@
+"use client";
+
 import { SgTemplateSidebar } from "@/admin/components/templates/Sidebar";
 import { SgTemplateHeader } from "@/admin/components/templates/Header";
-import {signOut, useSession} from "next-auth/react";
-import {useRouter} from "next/router";
-import {useState} from "react";
+import { useSession } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import styles from "@/admin/components/layouts/MainLayout/MainLayout.module.scss";
-import {usePermissions} from "@/hooks/usePermissions";
-import SgLoading from "@/components/ui/Loading";
+
+function hasPermission(permissions, permissionKey) {
+    if (!permissionKey) return true;
+    if (!permissions) return true;
+    if (Array.isArray(permissions)) {
+        if (permissions.includes(permissionKey)) return true;
+        return permissions.some((p) => p?.name === permissionKey || p?.key === permissionKey || p?.permission === permissionKey);
+    }
+    if (typeof permissions === 'object') {
+        return Boolean(permissions[permissionKey]);
+    }
+    return false;
+}
+
+function isAdminRole(user) {
+    const role = user?.role ?? user?.roleId ?? user?.role_id ?? user?.user_role;
+    if (role === 1 || role === "1") return true;
+    if (role && typeof role === "object") {
+        return role?.id === 1 || role?.value === 1 || role?.key === 1;
+    }
+    return false;
+}
 
 
 export default function MainLayout(props) {
@@ -13,38 +35,49 @@ export default function MainLayout(props) {
     const { data: session, status } = useSession();
     const [sidebar, setSidebar] = useState(true)
     const router = useRouter();
-    const REQUEST_NEXT_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_NEXT_ADMIN_BASE_URL;
-    const { hasPermission } = usePermissions();
+    const pathname = usePathname();
 
     function handleToggleSidebar() {
         setSidebar(!sidebar)
     }
 
+    const loginUrl = useMemo(() => {
+        const callbackUrl = encodeURIComponent(pathname || "/admin");
+        return `/login?callbackUrl=${callbackUrl}`;
+    }, [pathname]);
+
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.replace(loginUrl);
+        }
+    }, [status, router, loginUrl]);
+
+    useEffect(() => {
+        if (status !== "authenticated") return;
+        if (isAdminRole(session?.user)) return;
+
+        router.replace("/404");
+    }, [status, session?.user, router]);
+
+    useEffect(() => {
+        if (status !== "authenticated") return;
+        if (!permission) return;
+        if (!session?.permissions) return;
+        if (hasPermission(session?.permissions, permission)) return;
+
+        router.replace("/404");
+    }, [status, permission, session?.permissions, hasPermission, router]);
+
     if (status === "loading") {
         return (
             <>
-                <SgLoading />
             </>
         )
     }
     else if (status !== "authenticated") {
-        router.push('/content/idareedici/sign-in')
+        return null;
     }
     else {
-        if (session?.user?.type?.name !== 'admin' && !session?.adminToken?.accessToken) {
-            signOut({
-                redirect: false,
-                callbackUrl: `${REQUEST_NEXT_ADMIN_BASE_URL}/content/idareedici/sign-in`
-            }).then(async () => {
-                await router.push('/content/idareedici/sign-in')
-            })
-            return null;
-        }
-        if ((session?.user?.type?.name === 'admin' && !session?.adminToken?.accessToken) && permission && !hasPermission(session?.permissions, permission)) {
-
-            router.push("/content/idareedici/errors/403");
-            return null;
-        }
         return (
             <>
                 <div className={[styles['sg--layouts--main']].join(' ').trim()}>

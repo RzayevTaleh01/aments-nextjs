@@ -1,33 +1,31 @@
-/**
- * @names "SG-ICON" Component;
- * @project video.edu.az
- * @company Edumedia LLC
- * @repository https://github.com/alimahmudlu/video.edu.az-nextjs
- * @lead Ali Mahmudlu;
- * @author Ali Mahmudlu;
- * @email alimahmudlu@gmail.com
- *
- * @props {string} icon.
- * @props {string} size.
- *
- * @import import { SgIcon } from "@/admin/components/ui/Icon";
- * @component <SgIcon
- *                 icon="arrow-right"
- *                 size="26"
- *             />
- */
-
+import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 
 export default function SgIcon(props) {
     const { icon, size } = props;
 
-    const getIcon = () => {
-        return `sg-admin-icon-${icon}`
-    }
+    const map = {
+        home: "FaHome",
+        "menu-2": "FaBars",
+        menu: "FaBars",
+        type: "FaRegFileAlt",
+        list: "FaList",
+        plus: "FaPlus",
+        user: "FaUser",
+        users: "FaUsers",
+        search: "FaSearch",
+        close: "FaTimes",
+        edit: "FaEdit",
+        trash: "FaTrash",
+        "arrow-right": "FaArrowRight",
+        "arrow-left": "FaArrowLeft",
+        "arrow-up": "FaArrowUp",
+        "arrow-down": "FaArrowDown",
+        "chevron-down": "FaChevronDown",
+        "chevron-up": "FaChevronUp",
+    };
 
-    return (
-        <>
-            {icon ? <i style={{fontSize: size ?? 'initial'}} className={['sg-admin-icon', getIcon()].join(' ').trim()}></i> : ''}
-        </>
-    )
+    const mappedName = map[String(icon || "").trim()] || "FaRegCircle";
+    const normalizedSize = typeof size === "string" ? Number(size) : size;
+
+    return icon ? <Icon name={mappedName} size={Number.isFinite(normalizedSize) ? normalizedSize : 18} /> : null;
 }

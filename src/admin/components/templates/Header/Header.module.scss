@@ -5,6 +5,14 @@
     align-items: center;
     gap: 16px;
 
+    &-actions {
+        margin-left: auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+    }
+
     &-toggle {
         color: var(--white, #FFFFFF);
         font-size: 20px;

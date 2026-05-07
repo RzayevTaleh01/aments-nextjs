@@ -1,5 +1,6 @@
 import styles from '@/admin/components/ui/Button/Button.module.scss';
 import Link from "next/link";
+import SgIcon from "@/admin/components/ui/Icon/Icon";
 
 export default function SgButton (props) {
     const {children, size, color, variant, block, align, icon, onlyIcon, reverse, squared, withOutBlock, className, disabled, loading, close, active, onClick, padding, weight, decoration, type = 'button', isLinked = false, to = '#', ...rest} = props;
@@ -111,8 +112,23 @@ export default function SgButton (props) {
         return classes.join(' ')
     }
 
-    const getButtonIcon = () => {
-        return `sg-admin-icon-${icon}`
+    const getIconSize = () => {
+        switch (size) {
+            case 'xs':
+                return 14
+            case 'sm':
+                return 16
+            case 'md':
+                return 18
+            case 'lg':
+                return 20
+            case 'xl':
+                return 22
+            case '2xl':
+                return 24
+            default:
+                return 18
+        }
     }
 
     const handleClick = (e) => {
@@ -127,9 +143,10 @@ export default function SgButton (props) {
         return (
             <Link href={to}
                   {...rest}
-                  className={[styles['sg--button'], getButtonSize(), getButtonVariant(), getButtonColor(), getButtonAttr(), getButtonIcon(), className].join(' ').trim()}
+                  className={[styles['sg--button'], getButtonSize(), getButtonVariant(), getButtonColor(), getButtonAttr(), className].join(' ').trim()}
                   onClick={handleClick}
             >
+                {icon ? <SgIcon icon={icon} size={getIconSize()} /> : null}
                 {children}
             </Link>
         )
@@ -137,10 +154,11 @@ export default function SgButton (props) {
     return (
         <button
             {...rest}
-            className={[styles['sg--button'], getButtonSize(), getButtonVariant(), getButtonColor(), getButtonAttr(), getButtonIcon(), className].join(' ').trim()} type={type}
+            className={[styles['sg--button'], getButtonSize(), getButtonVariant(), getButtonColor(), getButtonAttr(), className].join(' ').trim()} type={type}
             disabled={disabled}
             onClick={handleClick}
         >
+            {icon ? <SgIcon icon={icon} size={getIconSize()} /> : null}
             {children}
         </button>
     )

@@ -38,10 +38,6 @@ export default function SgTemplateUserDropdown(props) {
                     // {
                     //     type: 'divider'
                     // },
-                    {
-                        name: <div className='d-flex gap-2 align-items-center'><SgIcon icon='log-out' /><span>Çıxış</span></div>,
-                        onClick: signOut
-                    },
                 ]}
             />
         </>

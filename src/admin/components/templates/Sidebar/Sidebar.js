@@ -3,7 +3,7 @@ import Link from "next/link";
 import {sidebarPrimaryMenu, sidebarSecondaryMenu} from "@/admin/configs/sidebarMenu";
 import SgSideBarMenuItem from "@/admin/components/templates/Sidebar/SideBarMenuItem";
 import Image from "next/image";
-import Logo from "@/assets/images/logo2_w.svg";
+import Logo from "@/assets/images/company_logo/company_logo_2.png";
 
 export default function SgTemplateSidebar(props) {
     const { isOpen } = props;
@@ -12,8 +12,8 @@ export default function SgTemplateSidebar(props) {
         <>
             <div className={[styles['sg--template--sidebar'], isOpen ? styles['sg--template--sidebar--open'] : ''].join(' ').trim()}>
                 <div className={[styles['sg--template--sidebar-head']].join(' ').trim()}>
-                    <Link href='/content/idareedici' className={[styles['sg--template--sidebar-head-logo']].join(' ').trim()}>
-                        <Image width='1000' height='1000'
+                    <Link href='/admin' className={[styles['sg--template--sidebar-head-logo']].join(' ').trim()}>
+                        <Image
                                className={[styles['sg--template--sidebar-head-logo--realImage']].join(' ').trim()}
                                src={Logo}
                                alt={'Rəqəmsal məktəb yazılı loqo şəkli'}
@@ -37,7 +37,7 @@ export default function SgTemplateSidebar(props) {
                             <SgSideBarMenuItem
                                 isOpen={isOpen}
                                 key={index}
-                                item={{...item, path: item?.external ? item.path : `/content/idareedici${item.path}`}}
+                                item={item}
                                 index={index}
                             />
                         )}
@@ -46,7 +46,7 @@ export default function SgTemplateSidebar(props) {
                         {(sidebarSecondaryMenu || []).map((item, index) =>
                             <SgSideBarMenuItem
                                 key={index}
-                                item={{...item, path: `/content/idareedici${item.path}`}}
+                                item={item}
                                 index={index}
                             />
                         )}

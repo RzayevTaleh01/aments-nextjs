@@ -1,5 +1,6 @@
 import "./globals.css";
 import "@/components/ui/Form/Form.module.scss";
+import "@/assets/css/style.min.css";
 import Providers from "./providers";
 
 export const metadata = {
@@ -15,7 +16,6 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/assets/images/favicon.ico" />
-        <link rel="stylesheet" href="/assets/css/style.min.css" />
       </head>
       <body suppressHydrationWarning>
         <Providers>{children}</Providers>

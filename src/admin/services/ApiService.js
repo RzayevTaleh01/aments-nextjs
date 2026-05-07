@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {getSession, signOut} from "next-auth/react";
 import { toast } from 'react-toastify';
-import {router} from "next/client";
 
 const REQUEST_HEADER_AUTH_KEY = process.env.NEXT_PUBLIC_REQUEST_HEADER_AUTH_KEY;
 const REQUEST_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_ADMIN_BASE_URL;
@@ -83,11 +82,10 @@ ApiService.interceptors.response.use(
             //             callbackUrl: `${REQUEST_NEXT_ADMIN_BASE_URL}/content/idareedici`
             //         });
             //         return Promise.reject(_error);
+                const callbackUrl = encodeURIComponent("/admin");
+                const signOutUrl = `${REQUEST_NEXT_ADMIN_BASE_URL || ""}/login?callbackUrl=${callbackUrl}`;
                 await signOut({
-                    redirect: false,
-                    callbackUrl: `${REQUEST_NEXT_ADMIN_BASE_URL}/content/idareedici`
-                }).then(resp => {
-                    router.push('/')
+                    callbackUrl: signOutUrl,
                 });
                 return Promise.reject(error);
             //     }

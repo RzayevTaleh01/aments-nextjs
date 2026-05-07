@@ -1,6 +1,6 @@
 import styles from '@/components/ui/Form/Form.module.scss';
 import React, {useState} from "react";
-import FilePreview from "@/components/templates/FilePreview";
+import FilePreview from "@/admin/components/templates/FilePreview";
 
 export default function SgFile(props) {
     const {label, name, externalRef, id, required, placeholder, readonly, accepts, disabled, value, loading, isInvalid, onChange, onRemove, color, data_key, multiple, fileManager = undefined} = props

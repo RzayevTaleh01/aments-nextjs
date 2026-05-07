@@ -19,20 +19,8 @@
     user-select: none;
 
     &::before {
-        /* use !important to prevent issues with browser extensions that change fonts */
-        font-family: 'sg-admin-icons' !important;
-        speak: never;
-        font-style: normal;
-        font-weight: normal;
-        font-variant: normal;
-        text-transform: none;
-        line-height: 1;
-        display: flex;
-
-        /* Better Font Rendering =========== */
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        font-size: 20px;
+        display: none;
+        content: none;
     }
     &:not(:disabled, .sg--button--disabled) {
         cursor: pointer;

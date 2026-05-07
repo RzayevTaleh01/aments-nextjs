@@ -1,24 +1,16 @@
+"use client";
+
 import styles from '@/admin/components/templates/Header/Header.module.scss';
 import SgIcon from "@/admin/components/ui/Icon";
 import Link from "next/link";
 import {SgTemplateUserDropdown} from "@/admin/components/templates/UserDropdown";
+import { SgButton } from "@/admin/components/ui/Button";
 import {useSession,signOut} from "next-auth/react";
-import {useRouter} from "next/router";
 const REQUEST_NEXT_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_NEXT_ADMIN_BASE_URL;
 
 export default function SgTemplateHeader(props) {
     const { layout, handleToggleSidebar } = props;
     const { data: session } = useSession();
-    const router = useRouter();
-
-    async function handleSignOut() {
-        await signOut({
-            redirect: false,
-            callbackUrl: `${REQUEST_NEXT_ADMIN_BASE_URL}/content/idareedici`
-        }).then(async () => {
-            await router.push('/')
-        });
-    }
 
     return (
         <>
@@ -37,16 +29,20 @@ export default function SgTemplateHeader(props) {
                         </div>
                     </Link>
                 }
-                <SgTemplateUserDropdown
-                    user={{
-                        id: session?.user?.id,
-                        name: session?.user?.name,
-                        surname: session?.user?.surname,
-                        email: session?.user?.email,
-                        avatar: null
-                    }}
-                    signOut={handleSignOut}
-                />
+                <div className={styles['sg--template--header-actions']}>
+                    <SgButton type='link' to='/' color='secondary-outline' size='sm' icon='arrow-left'>
+                        Sayta qayıt
+                    </SgButton>
+                    <SgTemplateUserDropdown
+                        user={{
+                            id: session?.user?.id,
+                            name: session?.user?.name,
+                            surname: session?.user?.surname,
+                            email: session?.user?.email,
+                            avatar: null
+                        }}
+                    />
+                </div>
             </div>
         </>
     )

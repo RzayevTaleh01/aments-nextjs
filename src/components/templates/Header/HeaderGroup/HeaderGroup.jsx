@@ -25,6 +25,15 @@ function buildInitials(displayName) {
   return `${first}${last}`.toUpperCase() || "U";
 }
 
+function isAdminRole(user) {
+  const role = user?.role ?? user?.roleId ?? user?.role_id ?? user?.user_role;
+  if (role === 1 || role === "1") return true;
+  if (role && typeof role === "object") {
+    return role?.id === 1 || role?.value === 1 || role?.key === 1;
+  }
+  return false;
+}
+
 export default function HeaderGroup({
   isSticky,
   isActive,
@@ -42,11 +51,30 @@ export default function HeaderGroup({
   const initials = buildInitials(displayName);
 
   const topLinks = topHeaderData?.links ?? [];
-  const filteredTopLinks = topLinks.filter((x) => {
-    if (!x) return false;
-    if (isAuthenticated) return x?.id !== "login" && x?.id !== "register";
-    return x?.id !== "my-account";
-  });
+  const filteredTopLinks = useMemo(() => {
+    return topLinks.filter((x) => {
+      if (!x) return false;
+      if (isAuthenticated) return x?.id !== "login" && x?.id !== "register";
+      return x?.id !== "my-account";
+    });
+  }, [topLinks, isAuthenticated]);
+
+  const topLinksWithAdminPanel = useMemo(() => {
+    const canSeeAdminPanel = isAuthenticated && isAdminRole(session?.user);
+    if (!canSeeAdminPanel) return filteredTopLinks;
+
+    const adminItem = { id: "admin-panel", label: "Admin Panel", href: "/admin" };
+    if (filteredTopLinks.some((x) => x?.id === adminItem.id || x?.href === adminItem.href)) return filteredTopLinks;
+
+    const myAccountIndex = filteredTopLinks.findIndex((x) => x?.id === "my-account");
+    if (myAccountIndex === -1) return [...filteredTopLinks, adminItem];
+
+    return [
+      ...filteredTopLinks.slice(0, myAccountIndex + 1),
+      adminItem,
+      ...filteredTopLinks.slice(myAccountIndex + 1),
+    ];
+  }, [filteredTopLinks, isAuthenticated, session?.user]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const qFromUrl = useMemo(() => String(searchParams?.get("q") ?? "").trim(), [searchParams]);
@@ -68,7 +96,7 @@ export default function HeaderGroup({
             <div className={cn(styles, "col-6")}>
               <div className={cn(styles, "header-top--right")}>
                 <ul className={cn(styles, "header-user-menu")}>
-                  {filteredTopLinks.map((item) => {
+                  {topLinksWithAdminPanel.map((item) => {
                     const hasDropdown = Array.isArray(item.children) && item.children.length > 0;
                     const parentHref = item.href && item.href !== "#" ? item.href : "/";
                     const itemKey = item.id ?? item.href ?? item.label;
