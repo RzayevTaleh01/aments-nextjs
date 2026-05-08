@@ -1,9 +1,14 @@
 .sg--template--header {
-    padding: 24px 16px;
+    padding: 12px 20px;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 16px;
+    background: var(--admin-header-bg, #ffffff);
+    border-bottom: 1px solid var(--admin-border, #eaecf0);
+    position: sticky;
+    top: 0;
+    z-index: 30;
 
     &-actions {
         margin-left: auto;
@@ -14,7 +19,7 @@
     }
 
     &-toggle {
-        color: var(--white, #FFFFFF);
+        color: var(--gray-700, #344054);
         font-size: 20px;
         font-weight: 700;
         line-height: 1;
@@ -41,13 +46,13 @@
             justify-content: center;
             border: 1px solid var(--gray-300, #D0D5DD);
             background-color: var(--white, #FFFFFF);
-            color: var(--primary-700, #0681BE);
+            color: var(--primary-700, #c5141c);
             font-size: 18px;
             font-weight: 700;
         }
 
         &--header {
-            color: var(--white, #FFFFFF);
+            color: var(--gray-900, #101828);
             font-size: 20px;
             font-weight: 700;
         }

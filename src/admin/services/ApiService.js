@@ -3,7 +3,10 @@ import {getSession, signOut} from "next-auth/react";
 import { toast } from 'react-toastify';
 
 const REQUEST_HEADER_AUTH_KEY = process.env.NEXT_PUBLIC_REQUEST_HEADER_AUTH_KEY;
+const ADMIN_API_BASE_URL = process.env.NEXT_PUBLIC_ADMIN_API;
+const ADMIN_API_SERVER_BASE_URL = process.env.ADMIN_API;
 const REQUEST_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_ADMIN_BASE_URL;
+const REQUEST_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL;
 const REQUEST_TIME_OUT = process.env.NEXT_PUBLIC_REQUEST_TIME_OUT;
 const REQUEST_TOKEN_TYPE = process.env.NEXT_PUBLIC_REQUEST_TOKEN_TYPE;
 const REQUEST_NEXT_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_NEXT_ADMIN_BASE_URL;
@@ -11,7 +14,7 @@ const REQUEST_NEXT_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_NEXT_ADMIN_B
 
 const ApiService = axios.create({
     timeout: REQUEST_TIME_OUT,
-    baseURL: REQUEST_ADMIN_BASE_URL,
+    baseURL: ADMIN_API_BASE_URL || ADMIN_API_SERVER_BASE_URL || REQUEST_ADMIN_BASE_URL || REQUEST_BASE_URL,
 });
 let originalConfig = {url: ''};
 

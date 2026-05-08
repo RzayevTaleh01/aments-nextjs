@@ -26,7 +26,7 @@ export default function SgDashboardItem(props) {
 			</div>
 			{(list || []).length > 0 ?
 				<div className={[styles["sg--dashboardItem-body"]].join(' ').trim()}>
-					<SgButtonGroup>
+					<SgButtonGroup gap={true}>
 						{(list || []).map((item, index) => {
 							return (
 								<SgButton

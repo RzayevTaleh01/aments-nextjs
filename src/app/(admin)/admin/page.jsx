@@ -1,48 +1,37 @@
 "use client";
 
 import { MainLayout } from "@/admin/components/layouts";
-import DashboardItem from "@/admin/components/ui/DashboardItem";
-import { sidebarPrimaryMenu } from "@/admin/configs/sidebarMenu";
-import { useSession } from "next-auth/react";
-
-function hasPermission(permissions, permissionKey) {
-  if (!permissionKey) return true;
-  if (!permissions) return true;
-  if (Array.isArray(permissions)) {
-    if (permissions.includes(permissionKey)) return true;
-    return permissions.some((p) => p?.name === permissionKey || p?.key === permissionKey || p?.permission === permissionKey);
-  }
-  if (typeof permissions === "object") {
-    return Boolean(permissions[permissionKey]);
-  }
-  return false;
-}
+import StatCard from "@/admin/components/ui/StatCard/StatCard";
 
 export default function Page() {
-  const { data: session } = useSession();
-
   return (
     <MainLayout>
       <div className="row gap-y-[16px]">
-        {(sidebarPrimaryMenu || [])
-          .filter((el) => el.dashboard && !(el?.permission && !hasPermission(session?.permissions, el?.permission)))
-          .map((item, index) => (
-            <div key={index} className="col-lg-4">
-              <DashboardItem
-                header={item?.name}
-                description={item?.description}
-                path={item?.external ? item?.path : `/admin${item.path === "/" ? "" : item.path}`}
-                list={(item?.children || [])
-                  .filter((el) => !(el?.permission && !hasPermission(session?.permissions, el?.permission)))
-                  .map((el, i) => ({
-                    name: el?.name,
-                    path: el?.external ? el?.path : `/admin${el.path === "/" ? "" : el.path}`,
-                    key: i,
-                  }))}
-                length={0}
-              />
-            </div>
-          ))}
+        <div className="col-xl-3 col-lg-4 col-md-6">
+          <StatCard label="Aktiv ziyarətçi sayı" value="3" iconName="FaRegClock" />
+        </div>
+        <div className="col-xl-3 col-lg-4 col-md-6">
+          <StatCard label="Ümumi ziyarətçi sayı" value="29760" iconName="FaChartLine" />
+        </div>
+        <div className="col-xl-3 col-lg-4 col-md-6">
+          <StatCard label="Gündəlik ziyarətçi sayı" value="203" iconName="FaPaperPlane" />
+        </div>
+        <div className="col-xl-3 col-lg-4 col-md-6">
+          <StatCard label="Aylıq ziyarətçi sayı" value="1577" iconName="FaRegCalendarAlt" />
+        </div>
+
+        <div className="col-xl-3 col-lg-4 col-md-6">
+          <StatCard label="Ümumi xəbər sayı" value="76" iconName="FaWaveSquare" />
+        </div>
+        <div className="col-xl-3 col-lg-4 col-md-6">
+          <StatCard label="Gələn məktublar" value="1415" iconName="FaInbox" />
+        </div>
+        <div className="col-xl-3 col-lg-4 col-md-6">
+          <StatCard label="Qeydiyyat sayı" value="478" iconName="FaUserPlus" />
+        </div>
+        <div className="col-xl-3 col-lg-4 col-md-6">
+          <StatCard label="Aktiv istifadəçi sayı" value="3" iconName="FaUsers" />
+        </div>
       </div>
     </MainLayout>
   );

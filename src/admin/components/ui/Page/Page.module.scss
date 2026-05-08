@@ -1,8 +1,11 @@
 /* pageS START */
 .pages {
     &:not(.pages--inner) {
-        border-radius: 5px;
-        background-color: #FFFFFF;
+        padding: 20px;
+        border-radius: var(--admin-radius-lg, 18px);
+        background-color: var(--white, #ffffff);
+        border: 1px solid var(--admin-border, #eaecf0);
+        box-shadow: var(--admin-shadow-sm, 0 1px 2px rgba(16, 24, 40, 0.06));
         //box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
         /*overflow-x: hidden;*/
     }
@@ -12,7 +15,7 @@
     &--block {
         display: flex;
         flex-direction: column;
-        gap: 42px;
+        gap: 24px;
 
         &-icon {
             text-align: center;
@@ -29,27 +32,27 @@
             align-items: center;
             gap: 12px;
 
-            padding-bottom: 16px;
+            padding-bottom: 12px;
             border-bottom: 1px solid var(--gray-200, #EAECF0);
 
             &--header {
                 font-style: normal;
                 font-weight: 700;
-                font-size: 30px;
-                line-height: 40px;
-                color: #241A04;
-                text-transform: uppercase;
+                font-size: 18px;
+                line-height: 24px;
+                color: var(--gray-900, #101828);
             }
 
             &.pages--block-head--header--main {
-                color: #8B7736;
+                color: var(--gray-900, #101828);
             }
 
             &--description {
                 font-style: normal;
                 font-weight: 400;
-                font-size: 18px;
-                color: #4B4545;
+                font-size: 13px;
+                line-height: 18px;
+                color: var(--gray-600, #475467);
             }
 
             &-filter {
@@ -196,7 +199,7 @@
 
 @media (max-width: 992px) {
     .pages:not(.pages--inner) {
-        padding: 12px;
+        padding: 16px;
     }
     .pages--block-head {
         flex-direction: column;

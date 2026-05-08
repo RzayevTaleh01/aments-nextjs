@@ -1,16 +1,22 @@
 .sg--template--sidebar {
     width: 72px;
-    height: 100%;
+    height: 100dvh;
     min-height: 100dvh;
-    padding: 24px 16px;
+    padding: 16px 12px;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
     gap: 24px;
-    background: var(--primary-700, #0681BE);
+    background: var(--admin-sidebar-bg, #ffffff);
+    border-right: 1px solid var(--admin-border, #eaecf0);
+    transition: width 0.2s ease;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    overflow: hidden;
 
     &--open {
-        width: 280px;
+        width: 264px;
     }
     &-head {
         display: flex;
@@ -37,14 +43,14 @@
                 text-align: center;
                 text-underline-position: from-font;
                 text-decoration-skip-ink: none;
-                color: #1B1B1B;
+                color: var(--primary-900, #7f0d12);
 
                 position: absolute;
                 top: calc(100% - 5px);
                 right: 0;
                 padding: 0 5px;
                 border-radius: 29px;
-                background-color: #D2D4FF;
+                background-color: var(--primary-100, #ffe4e6);
             }
 
             &--image {
@@ -57,13 +63,13 @@
                 justify-content: center;
                 border: 1px solid var(--gray-300, #D0D5DD);
                 background-color: var(--white, #FFFFFF);
-                color: var(--primary-700, #0681BE);
+                color: var(--primary-700, #c5141c);
                 font-size: 18px;
                 font-weight: 700;
             }
 
             &--header {
-                color: var(--white, #FFFFFF);
+                color: var(--gray-700, #344054);
                 font-size: 10px;
                 font-weight: 700;
                 display: none;
@@ -79,7 +85,7 @@
         }
 
         &--toggle {
-            color: var(--white, #FFFFFF);
+            color: var(--gray-700, #344054);
             font-size: 20px;
             font-weight: 700;
             line-height: 1;
@@ -91,9 +97,24 @@
     &-body {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        padding-top: 32px;
-        flex: 1 0 auto;
+            gap: 10px;
+            padding-top: 20px;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: var(--gray-300, #D0D5DD);
+            border-radius: 999px;
+        }
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
         &-menu {
             display: flex;
@@ -107,48 +128,59 @@
                     align-items: center;
                     justify-content: center;
                     gap: 12px !important;
-                    padding: 12px 4px;
-                    border-radius: 6px;
-                    color: var(--gray-100, #F2F4F7) !important;
+                    padding: 10px 8px;
+                    border-radius: 10px;
+                    color: var(--gray-700, #344054) !important;
+                    position: relative;
+                    width: 100%;
+                    padding-right: 12px;
 
                     .sg--template--sidebar--open & {
-                        padding: 8px 4px;
+                        padding: 10px 10px;
                         justify-content: unset;
                     }
 
                     &.active {
-                        background: var(--primary-600, #00ACED);
+                        background: var(--primary-50, #fff1f2);
                     }
                     &.active > &-icon {
-                        color: var(--gray-100, #F2F4F7);
+                        color: var(--primary-700, #c5141c);
                     }
 
                     &:hover {
-                        background: var(--primary-500, #70C0F2);
+                        background: var(--primary-50, #fff1f2);
                     }
                     &:hover > &-icon {
-                        color: var(--gray-100, #A4D3F5);
+                        color: var(--primary-700, #c5141c);
                     }
 
                     &-icon {
-                        color: var(--primary-300, #A4D3F5);
+                        color: var(--gray-500, #667085);
                         font-size: 16px;
                         line-height: 1;
                         text-transform: uppercase;
                         width: 16px;
                         height: 16px;
+                        flex: 0 0 auto;
                     }
                     &-name {
-                        color: var(--gray-100, #F2F4F7);
+                        color: var(--gray-700, #344054);
                         font-size: 16px;
                         font-style: normal;
                         font-weight: 500;
                         line-height: 24px;
                         display: none;
+                        flex: 1 1 auto;
+                        min-width: 0;
 
                         .sg--template--sidebar--open & {
                             display: unset;
                         }
+                    }
+
+                    > svg {
+                        margin-left: auto;
+                        flex: 0 0 auto;
                     }
 
                     &::after {

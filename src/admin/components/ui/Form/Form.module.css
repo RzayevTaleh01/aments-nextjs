@@ -92,6 +92,10 @@
   border: 1px solid var(--gray-300, #D0D5DD);
   border-radius: 8px;
 }
+.input-wrapper:not(.input-wrapper--checkbox, .input-wrapper--radio, .input-wrapper--switch, .input-wrapper--file):focus-within {
+  border-color: var(--primary-600, #ea1c26);
+  box-shadow: 0 0 0 0.25rem rgba(234, 28, 38, 0.12);
+}
 .input-wrapper.disabled, .input-wrapper.read-only {
   background-color: #E2E2E2;
   /*border-width: 0 0 1px 0;*/

@@ -508,7 +508,11 @@ export default function SgInput(props) {
                 onFocus: () => setOnFocus(true),
                 onBlur: () => setOnFocus(false)
             }}
-            value={value ? moment(value).format(dateFormat) : ''}
+            value={(() => {
+                if (!value && value !== 0) return '';
+                const m = moment(value);
+                return m.isValid() ? m : '';
+            })()}
             type={getInputType()}
             isValidDate={validDate}
         />

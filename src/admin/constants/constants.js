@@ -53,6 +53,12 @@ const StaticCategoryCreateFormValidation = {
         presence: true,
     }
 }
+const ProductCreateFormValidation = {
+    name: {
+        presence: true,
+        length: { minimum: 2 }
+    }
+}
 const FaqCreateFormValidation = {
     question: {
         presence: true,
@@ -234,6 +240,11 @@ export const validationConstraints = (data, type) => {
     if (type === 'usefulLinkCreate') {
         return {
             ...UsefullLinkCreateFormValidation,
+        };
+    }
+    if (type === 'productCreate') {
+        return {
+            ...ProductCreateFormValidation,
         };
     }
     if (type === 'videoCategoryCreate') {

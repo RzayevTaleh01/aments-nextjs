@@ -38,7 +38,9 @@ import SgTableSkeletonLoading from "@/admin/components/ui/Loading/Skeleton/Table
 
 
 export default function SgTable(props) {
-    const {onClick, tableData, serverSide = true} = props;
+    const {onClick, tableData, serverSide = true , data_key: dataKeyProp, reloadKey} = props;
+    const data_key = dataKeyProp ?? tableData?.data_key ?? 'data';
+    
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
     const [data, setData] = useState([]);
@@ -52,7 +54,7 @@ export default function SgTable(props) {
                 break;
 
             case ('next'):
-                setPage(page < data?.pageCount ? page + 1 : page)
+                setPage(page < (data?.last_page || 1) ? page + 1 : page)
                 break;
 
             default:
@@ -129,7 +131,14 @@ export default function SgTable(props) {
                 headers: tableData?.headers || {}
             }).then(el => {
                 if (serverSide) {
-                    setData({...el.data.data, last_page: Math.ceil(el.data.data?.total / perPage) });
+                    const payload = el?.data?.data || {};
+                    const meta = payload?.meta || {};
+                    const explicitLastPage = payload?.last_page ?? meta?.totalPages;
+                    const total = payload?.total ?? meta?.total;
+                    const calcLastPage = total ? Math.ceil(total / perPage) : 1;
+                    const last_page = Number(explicitLastPage ?? calcLastPage) || 1;
+
+                    setData({...payload, last_page});
                 }
                 else {
                     setData({data: el.data.data});
@@ -145,11 +154,14 @@ export default function SgTable(props) {
             setLoading(false)
             setData({data: tableData?.customData})
         }
-    }, [page, tableData.filters, perPage]);
+    }, [page, tableData.filters, perPage, reloadKey]);
 
     useEffect(() => {
         setPage(1)
     }, [tableData.filters]);
+
+    console.log(data);
+    
 
     return (
         <>
@@ -176,8 +188,8 @@ export default function SgTable(props) {
                                     columns={(tableData?.data || []).filter(el => !el.hidden).length}
                                 />
                                 :
-                                (data.data || []).length > 0 ?
-                                    (data.data || []).map((item, itemIndex) =>
+                                (data[data_key] || []).length > 0 ?
+                                    (data[data_key] || []).map((item, itemIndex) =>
                                         <tr key={itemIndex}
                                             onMouseEnter={() => handleHover(itemIndex)}
                                             onClick={(e) => handleClick(e, item, itemIndex)}
@@ -218,20 +230,21 @@ export default function SgTable(props) {
                 <div className={[styles["table-area-footer"], 'mt-[30px]'].join(' ').trim()}>
                     {/*{serverSide ?*/}
                     {/*    <>*/}
-                    {data.last_page > 1 ?
+                    {(data?.last_page || 1) > 1 ?
                         <SgPagination
-                            pageCount={data.last_page}
+                            pageCount={data?.last_page || 1}
                             page={page}
                             onClick={changePage}
                         />
                         : null
                     }
                             <SgFormGroup
-                                className={'mb-0'}
+                                noMargin={true}
                             >
                                 <SgInput
                                     label='Element sayı'
                                     variant='select'
+                                    size='small'
                                     inline={true}
                                     labelHidden={true}
                                     onChange={changePerPage}

@@ -3,7 +3,7 @@ import Link from "next/link";
 import SgIcon from "@/admin/components/ui/Icon/Icon";
 
 export default function SgButton (props) {
-    const {children, size, color, variant, block, align, icon, onlyIcon, reverse, squared, withOutBlock, className, disabled, loading, close, active, onClick, padding, weight, decoration, type = 'button', isLinked = false, to = '#', ...rest} = props;
+    const {children, size, color, variant, block, align, icon, onlyIcon, reverse, squared, withOutBlock, minimal, className, disabled, loading, close, active, onClick, padding, weight, decoration, type = 'button', isLinked = false, to = '#', ...rest} = props;
 
     const getButtonSize = () => {
         switch (size) {
@@ -98,6 +98,9 @@ export default function SgButton (props) {
             else {
                 classes.push(styles[`sg--button--withOutBlock:${withOutBlock}`])
             }
+        }
+        if (minimal) {
+            classes.push(styles['sg--button--minimal'])
         }
         if (loading) {
             classes.push(styles['sg--button--loading'])
