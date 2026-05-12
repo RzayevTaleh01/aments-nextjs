@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ApiService from "@/admin/services/ApiService";
-import SgPagination from "@/admin/components/ui/Pagination";
-import {SgFormGroup, SgInput} from "@/admin/components/ui/Form";
 import styles from "@/admin/components/ui/Table/Table.module.scss";
 import SgTableSkeletonLoading from "@/admin/components/ui/Loading/Skeleton/TableSkeleton/TableSkeletonLoading";
+import DataTable from "react-data-table-component";
 
 /**
  * <SgTable
@@ -38,79 +37,109 @@ import SgTableSkeletonLoading from "@/admin/components/ui/Loading/Skeleton/Table
 
 
 export default function SgTable(props) {
-    const {onClick, tableData, serverSide = true , data_key: dataKeyProp, reloadKey} = props;
-    const data_key = dataKeyProp ?? tableData?.data_key ?? 'data';
-    
+    const { onClick, tableData, serverSide = true, data_key: dataKeyProp, reloadKey } = props;
+    const data_key = dataKeyProp ?? tableData?.data_key ?? "data";
+
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
     const [data, setData] = useState([]);
-    const [hoverItemIndex, setHoverItemIndex] = useState('');
     const [loading, setLoading] = useState(true);
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
-    function changePage(type) {
-        switch (type) {
-            case ('prev'):
-                setPage(page > 1 ? page - 1 : page)
-                break;
+    const columns = useMemo(() => {
+        return (tableData?.data || [])
+            .filter((col) => !col.hidden)
+            .map((col) => {
+                const isActionLike = col.key === "actions" || col.hoverable || col.ignoreRowClick;
+                return {
+                    name: col.name || col.key || "",
+                    sortable: Boolean(col.sortable),
+                    cell: (row, index) => (col.cell ? col.cell(row, row?.[col.key], index) : (row?.[col.key] ?? "-")),
+                    ignoreRowClick: Boolean(col.ignoreRowClick ?? isActionLike),
+                    allowOverflow: Boolean(col.allowOverflow ?? isActionLike),
+                    button: Boolean(col.button ?? isActionLike),
+                };
+            });
+    }, [tableData?.data]);
 
-            case ('next'):
-                setPage(page < (data?.last_page || 1) ? page + 1 : page)
-                break;
+    const rows = useMemo(() => {
+        return data?.[data_key] || data?.data || [];
+    }, [data, data_key]);
 
-            default:
-                setPage(type)
+    const filtersKey = useMemo(() => {
+        try {
+            return JSON.stringify(tableData?.filters || {});
+        } catch {
+            return "";
         }
+    }, [tableData?.filters]);
+
+    const totalRows = useMemo(() => {
+        const meta = data?.meta || {};
+        return (
+            Number(data?.total ?? meta?.total ?? meta?.totalItems ?? meta?.totalCount) ||
+            Number(rows?.length || 0)
+        );
+    }, [data, rows]);
+
+    const customStyles = useMemo(() => {
+        const headTransform = tableData?.headTransform || "uppercase";
+        const textTransform =
+            headTransform === "lowercase" ? "lowercase" : headTransform === "capitalize" ? "capitalize" : "uppercase";
+
+        return {
+            table: {
+                style: {
+                    width: "100%",
+                },
+            },
+            headCells: {
+                style: {
+                    color: "#374151",
+                    fontSize: "14px",
+                    fontWeight: 700,
+                    padding: "12px 16px",
+                    backgroundColor: "#F3F4F6",
+                    borderBottom: "1px solid #E5E7EB",
+                    textTransform,
+                },
+            },
+            cells: {
+                style: {
+                    color: "#4B5563",
+                    fontSize: "12px",
+                    fontWeight: 400,
+                    padding: "12px 16px",
+                    borderBottom: "1px solid #E5E7EB",
+                },
+            },
+            rows: {
+                stripedStyle: {
+                    backgroundColor: "#F9FAFB",
+                },
+                highlightOnHoverStyle: {
+                    backgroundColor: "#EEF2F7",
+                    cursor: onClick ? "pointer" : "default",
+                },
+            },
+            pagination: {
+                style: {
+                    borderTop: "1px solid #E5E7EB",
+                    padding: "12px 16px",
+                },
+            },
+        };
+    }, [tableData?.headTransform, onClick]);
+
+    function handleRowClick(row, e) {
+        if (!onClick) return;
+        const index = Array.isArray(rows) ? rows.findIndex((r) => r === row) : -1;
+        onClick(e, row, index);
     }
 
-    function changePerPage(e) {
-        setPerPage(e.target.value)
-    }
-
-    function getTableAttributes() {
-        let classes = {}
-
-        switch (tableData.headColor) {
-            case ('main'):
-                classes.headColor = 'color-main';
-                break;
-
-            case ('minor'):
-                classes.headColor = 'color-minor';
-                break;
-
-            default:
-                classes.headColor = 'color-main';
-                break;
-        }
-
-        switch (tableData.headTransform) {
-            case ('uppercase'):
-                classes.headTransform = 'text-uppercase';
-                break;
-
-            case ('lowercase'):
-                classes.headTransform = 'text-lowercase';
-                break;
-
-            case ('capitalize'):
-                classes.headTransform = 'text-capitalize';
-                break;
-
-            default:
-                classes.headTransform = 'text-uppercase';
-                break;
-        }
-
-        return Object.keys(classes).map(el => classes[el]).join(' ').trim()
-    }
-
-    function handleClick(e, row, index) {
-        (onClick)?.(e, row, index)
-    }
-
-    function handleHover(index) {
-        // setHoverItemIndex(index)
-    }
+    const requestFilters = useMemo(() => {
+        return tableData?.filters || {};
+    }, [filtersKey, tableData?.filters]);
 
     useEffect(() => {
         if (!tableData?.customData) {
@@ -121,24 +150,18 @@ export default function SgTable(props) {
                 params: {
                     page: page,
                     items: perPage,
-                    ...tableData.filters
+                    ...requestFilters
                 },
                 data: {
                     page: page,
                     items: perPage,
-                    ...tableData.filters
+                    ...requestFilters
                 },
                 headers: tableData?.headers || {}
             }).then(el => {
                 if (serverSide) {
                     const payload = el?.data?.data || {};
-                    const meta = payload?.meta || {};
-                    const explicitLastPage = payload?.last_page ?? meta?.totalPages;
-                    const total = payload?.total ?? meta?.total;
-                    const calcLastPage = total ? Math.ceil(total / perPage) : 1;
-                    const last_page = Number(explicitLastPage ?? calcLastPage) || 1;
-
-                    setData({...payload, last_page});
+                    setData({ ...payload });
                 }
                 else {
                     setData({data: el.data.data});
@@ -154,124 +177,53 @@ export default function SgTable(props) {
             setLoading(false)
             setData({data: tableData?.customData})
         }
-    }, [page, tableData.filters, perPage, reloadKey]);
+    }, [page, perPage, reloadKey, requestFilters, serverSide, tableData?.api, tableData?.apiMethod, tableData?.customData, tableData?.headers]);
 
     useEffect(() => {
-        setPage(1)
-    }, [tableData.filters]);
-
-    console.log(data);
+        setPage(1);
+        setResetPaginationToggle((v) => !v);
+    }, [filtersKey]);
     
 
     return (
         <>
-            <div className={[styles["table-area"]].join(' ').trim()}>
-                <div className={[styles["table-area-content"]].join(' ').trim()}>
-                    <div className="table-responsive">
-                        <table className={[styles["table"]].join(' ').trim()}>
-                            <thead>
-                            <tr>
-                                {(tableData?.data || []).filter(el => !el.hidden).map((el, index) =>
-                                    <th key={index} className={[getTableAttributes(), el.hoverable ? styles['table--hoverable-th'] : '', el.desktopHidden ? styles['table-cell-lg-hidden'] : '', el.mobileHidden ? styles['table-cell-hidden'] : ''].join(' ').trim()}>
-                                        <div className={[styles["table-group"]].join(' ').trim()}>
-                                            {el.name || el.key || ''}
-                                        </div>
-                                    </th>
-                                )}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {loading ?
-                                <SgTableSkeletonLoading
-                                    full={false}
-                                    rows={3}
-                                    columns={(tableData?.data || []).filter(el => !el.hidden).length}
-                                />
-                                :
-                                (data[data_key] || []).length > 0 ?
-                                    (data[data_key] || []).map((item, itemIndex) =>
-                                        <tr key={itemIndex}
-                                            onMouseEnter={() => handleHover(itemIndex)}
-                                            onClick={(e) => handleClick(e, item, itemIndex)}
-                                            className={[Number(hoverItemIndex) === Number(itemIndex) ? styles['hover'] : ''].join(' ').trim()}
-                                        >
-                                            {(tableData?.data || []).filter(el => !el.hidden).map((el, index) => {
-                                                if (el.hoverable) {
-                                                    return (
-                                                        <td key={index} className={[el.hoverable ? styles['table--hoverable-td'] : '', el.desktopHidden ? styles['table-cell-lg-hidden'] : '', el.mobileHidden ? styles['table-cell-hidden'] : ''].join(' ').trim()}>
-                                                            <div className={[styles['table--hoverable-td-content']].join(' ').trim()}>
-                                                                {el.cell(item, item[el.key], itemIndex)}
-                                                            </div>
-                                                        </td>
-                                                    )
-                                                }
-                                                return (
-                                                    <td key={index} className={[el.desktopHidden ? styles['table-cell-lg-hidden'] : '', el.mobileHidden ? styles['table-cell-hidden'] : ''].join(' ').trim()}>
-                                                        {el.cell(item, item[el.key], itemIndex)}
-                                                    </td>
-                                                )
-                                            })}
-                                        </tr>
-                                    )
-                                    :
-                                    <>
-                                        <tr></tr>
-                                        <tr>
-                                            <td colSpan={(tableData?.data || []).filter(el => !el.hidden).length}>
-                                                Məlumat tapılmadı!
-                                            </td>
-                                        </tr>
-                                    </>
-                            }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div className={[styles["table-area-footer"], 'mt-[30px]'].join(' ').trim()}>
-                    {/*{serverSide ?*/}
-                    {/*    <>*/}
-                    {(data?.last_page || 1) > 1 ?
-                        <SgPagination
-                            pageCount={data?.last_page || 1}
-                            page={page}
-                            onClick={changePage}
-                        />
-                        : null
-                    }
-                            <SgFormGroup
-                                noMargin={true}
-                            >
-                                <SgInput
-                                    label='Element sayı'
-                                    variant='select'
-                                    size='small'
-                                    inline={true}
-                                    labelHidden={true}
-                                    onChange={changePerPage}
-                                    value={perPage}
-                                    options={[
-                                        {
-                                            name: '10',
-                                            id: 10
-                                        },
-                                        {
-                                            name: '20',
-                                            id: 20
-                                        },
-                                        {
-                                            name: '50',
-                                            id: 50
-                                        },
-                                        {
-                                            name: '100',
-                                            id: 100
-                                        }
-                                    ]}
-                                />
-                            </SgFormGroup>
-                        {/*</>*/}
-                        {/*: ""*/}
-                    {/*}*/}
+            <div className={[styles["table-area"]].join(" ").trim()}>
+                <div className={[styles["table-area-content"]].join(" ").trim()}>
+                    <DataTable
+                        columns={columns}
+                        data={rows}
+                        customStyles={customStyles}
+                        striped={true}
+                        highlightOnHover={true}
+                        pointerOnHover={Boolean(onClick)}
+                        onRowClicked={handleRowClick}
+                        responsive={true}
+                        progressPending={loading}
+                        progressComponent={
+                            <SgTableSkeletonLoading
+                                full={true}
+                                rows={5}
+                                columns={Math.max(columns.length, 1)}
+                            />
+                        }
+                        noDataComponent={<div className="p-4">Məlumat tapılmadı!</div>}
+                        pagination={true}
+                        paginationServer={Boolean(serverSide && !tableData?.customData)}
+                        paginationTotalRows={totalRows}
+                        paginationPerPage={perPage}
+                        paginationRowsPerPageOptions={[10, 20, 50, 100]}
+                        paginationResetDefaultPage={resetPaginationToggle}
+                        paginationComponentOptions={{
+                            rowsPerPageText: "Element sayı",
+                            rangeSeparatorText: "/",
+                        }}
+                        onChangePage={(nextPage) => setPage(nextPage)}
+                        onChangeRowsPerPage={(nextPerPage) => {
+                            setPerPage(nextPerPage);
+                            setPage(1);
+                            setResetPaginationToggle((v) => !v);
+                        }}
+                    />
                 </div>
             </div>
         </>
