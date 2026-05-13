@@ -109,6 +109,16 @@
 .input-wrapper--bgTransparent:not(.input-wrapper--checkbox, .input-wrapper--radio, .input-wrapper--switch, .input-wrapper--file) {
   background-color: transparent;
 }
+.input-wrapper--editor:not(.input-wrapper--checkbox, .input-wrapper--radio, .input-wrapper--switch, .input-wrapper--file) {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+}
+.input-wrapper--editor:not(.input-wrapper--checkbox, .input-wrapper--radio, .input-wrapper--switch, .input-wrapper--file):focus-within {
+  border-color: transparent;
+  box-shadow: none;
+}
 .input--light .input-wrapper:not(.input--light .input-wrapper--checkbox, .input--light .input-wrapper--radio, .input--light .input-wrapper--switch, .input--light .input-wrapper--file) {
   background-color: #F8F8F8;
   border-color: #F8F8F8;

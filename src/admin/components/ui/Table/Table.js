@@ -56,8 +56,6 @@ export default function SgTable(props) {
                     sortable: Boolean(col.sortable),
                     cell: (row, index) => (col.cell ? col.cell(row, row?.[col.key], index) : (row?.[col.key] ?? "-")),
                     ignoreRowClick: Boolean(col.ignoreRowClick ?? isActionLike),
-                    allowOverflow: Boolean(col.allowOverflow ?? isActionLike),
-                    button: Boolean(col.button ?? isActionLike),
                 };
             });
     }, [tableData?.data]);

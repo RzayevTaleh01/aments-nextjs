@@ -1,4 +1,4 @@
-import styles from '@/components/ui/Form/Form.module.scss';
+import styles from '@/admin/components/ui/Form/Form.module.css';
 import React, {useState} from "react";
 import FilePreview from "@/admin/components/templates/FilePreview";
 
@@ -6,6 +6,7 @@ export default function SgFile(props) {
     const {label, name, externalRef, id, required, placeholder, readonly, accepts, disabled, value, loading, isInvalid, onChange, onRemove, color, data_key, multiple, fileManager = undefined} = props
 
     const [fileManagerModal, setFileManagerModal] = useState(false);
+    const [editIndex, setEditIndex] = useState(null);
     const inputRef = React.createRef(externalRef ? externalRef : null);
 
     function toggleFileManagerModal() {
@@ -17,30 +18,53 @@ export default function SgFile(props) {
             e.preventDefault()
             return
         }
+        e.editIndex = editIndex;
         (onChange)?.(e)
-
+        
+        setEditIndex(null);
         inputRef.current.value = "";
     }
 
-    const handleRemove = (e) => {
+    const handleRemove = (eOrIndex) => {
         if (disabled || readonly || loading) {
-            e.preventDefault()
+            if (eOrIndex?.preventDefault) eOrIndex.preventDefault()
             return
         }
         inputRef.current.value = "";
-        (onRemove)?.({
-            target: {
-                id: id,
-                name: name,
-                value: "",
-                dataset: {
-                    key: data_key
+        if (typeof eOrIndex === 'number') {
+            (onRemove)?.({
+                target: {
+                    id: id,
+                    name: name,
+                    value: value,
+                    dataset: {
+                        key: data_key
+                    }
+                },
+                removeIndex: eOrIndex
+            })
+        }
+        else {
+            (onRemove)?.({
+                target: {
+                    id: id,
+                    name: name,
+                    value: "",
+                    dataset: {
+                        key: data_key
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 
     const handleAdd = (e) => {
+        setEditIndex(null);
+        inputRef.current.click();
+    }
+
+    const handleEdit = (index) => {
+        setEditIndex(index);
         inputRef.current.click();
     }
 
@@ -71,6 +95,7 @@ export default function SgFile(props) {
                 data={value}
                 handleRemoveFile={handleRemove}
                 handleAddFile={handleAdd}
+                handleEditFile={handleEdit}
                 // preview={true}
             />
         </div>

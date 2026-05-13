@@ -379,8 +379,9 @@ export default function SgInput(props) {
         window.addEventListener('mousedown',closeOpenMenus)
     }
 
-    const filteredOptions = options.filter((a) =>
-        a.name.toString().toLowerCase().startsWith(filter.toLowerCase())
+    const filterLower = String(filter || '').toLowerCase();
+    const filteredOptions = (options || []).filter((a) =>
+        String(a?.name ?? '').toLowerCase().startsWith(filterLower)
     );
 
     const handleTogglePassword = () => {
@@ -420,7 +421,7 @@ export default function SgInput(props) {
                     )
                 }
                 }
-                className="w-full h-[70%] mt-10 bg-white"
+                className=""
             />
         </div>
     )
@@ -556,7 +557,7 @@ export default function SgInput(props) {
     )
 
     const renderAffixInput = (
-        <div className={[styles['input-wrapper'], onFocus ? styles['input-wrapper--focus'] : '', wrapperClassName, disabled && styles['disabled'], readonly && styles['read-only']].join(' ').trim()} {...rest}>
+        <div className={[styles['input-wrapper'], variant === 'editor' ? styles['input-wrapper--editor'] : '', onFocus ? styles['input-wrapper--focus'] : '', wrapperClassName, disabled && styles['disabled'], readonly && styles['read-only']].join(' ').trim()} {...rest}>
             {prefix ? <div className={[styles['input-suffix'], styles['input-suffix-start'], getPrefixType()].join(' ').trim()}>{prefix}</div> : null}
             {floatingInput}
             {suffix ? <div className={[styles['input-suffix'], styles['input-suffix-end'], getSuffixType()].join(' ').trim()}>{suffix}</div> : null}

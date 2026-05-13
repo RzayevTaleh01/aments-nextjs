@@ -53,10 +53,33 @@ const StaticCategoryCreateFormValidation = {
         presence: true,
     }
 }
+export const CONTENT_LANGUAGES = {
+    AZ: "az",
+    EN: "en",
+    RU: "ru",
+};
+
+export const CONTENT_LANGUAGE_OPTIONS = [
+    { id: CONTENT_LANGUAGES.AZ, name: "Az" },
+    { id: CONTENT_LANGUAGES.EN, name: "En" },
+    { id: CONTENT_LANGUAGES.RU, name: "Rus" },
+];
 const ProductCreateFormValidation = {
-    name: {
+    name_az: {
         presence: true,
         length: { minimum: 2 }
+    },
+    brandId: {
+        presence: true,
+    },
+    markId: {
+        presence: true,
+    },
+    modelId: {
+        presence: true,
+    },
+    categoryId: {
+        presence: true,
     }
 }
 const FaqCreateFormValidation = {

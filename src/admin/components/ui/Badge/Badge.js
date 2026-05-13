@@ -22,7 +22,7 @@
 import styles from '@/admin/components/ui/Badge/Badge.module.scss'
 
 export default function SgBadge(props){
-    const {icon, dot, header, onClick} = props
+    const {icon, dot, header, onClick, className} = props
 
     const getBadgeIcon = () => {
         return icon ? `sg-${icon}` : ''
@@ -30,7 +30,7 @@ export default function SgBadge(props){
 
     return (
         <>
-            <div onClick={onClick} className={[styles['sg--badge'] , getBadgeIcon(), icon ? styles['sg--badge--icon'] : '', dot ? styles['sg--badge--dot'] : ''].join(' ').trim()}>
+            <div onClick={onClick} className={[styles['sg--badge'] , getBadgeIcon(), icon ? styles['sg--badge--icon'] : '', dot ? styles['sg--badge--dot'] : '', className].join(' ').trim()}>
                 {header}
             </div>
         </>

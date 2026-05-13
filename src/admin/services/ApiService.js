@@ -96,7 +96,7 @@ ApiService.interceptors.response.use(
             else {
 
                 toast(
-                    <>
+                    <div>
                         {error.response.data.message || error.response.statusText}
                         <br/>
                         <ul>
@@ -104,7 +104,7 @@ ApiService.interceptors.response.use(
                                 <li key={index} style={{fontSize: '0.75em'}}>{index + 1}. {item.message}</li>
                             )}
                         </ul>
-                    </>,
+                    </div>,
                     {
                         position: "top-right",
                         autoClose: 5000,

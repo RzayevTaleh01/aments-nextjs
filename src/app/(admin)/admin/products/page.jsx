@@ -8,12 +8,24 @@ import { SgButton } from "@/admin/components/ui/Button";
 import SgButtonGroup from "@/admin/components/ui/ButtonGroup/ButtonGroup";
 import ApiService from "@/admin/services/ApiService";
 import { SgInput } from "@/admin/components/ui/Form";
+import { SgBadge } from "@/admin/components/ui/Badge";
 import { useEffect, useMemo, useState } from "react";
 
-function pick(row, keys) {
+function toText(value) {
+  if (value === undefined || value === null) return "";
+  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
+  if (typeof value === "object") {
+    const v = value?.name ?? value?.title ?? value?.label ?? value?.slug ?? value?.code ?? value?.id;
+    return v === undefined || v === null ? "" : String(v);
+  }
+  return String(value);
+}
+
+function pickText(row, keys) {
   for (const key of keys) {
-    const value = row?.[key];
-    if (value !== undefined && value !== null && String(value).trim() !== "") return value;
+    const raw = row?.[key];
+    const value = toText(raw);
+    if (value.trim() !== "") return value;
   }
   return "-";
 }
@@ -97,25 +109,35 @@ export default function Page() {
                   key: "id",
                   name: "ID",
                   hidden: false,
-                  cell: (_, value) => <>{value ?? "-"}</>,
+                  cell: (row) => <>{pickText(row, ["id"])}</>,
                 },
                 {
                   key: "name",
-                  name: "Məhsul",
+                  name: "Məhsulun adı",
                   hidden: false,
-                  cell: (row) => <>{pick(row, ["name", "title", "product_name", "productTitle"])}</>,
+                  cell: (row) => <>{pickText(row, ["name", "title", "product_name", "productTitle"])}</>,
                 },
                 {
-                  key: "price",
-                  name: "Qiymət",
+                  key: "code",
+                  name: "Kod",
                   hidden: false,
-                  cell: (row) => <>{pick(row, ["price", "sale_price", "amount"])}</>,
+                  cell: (row) => <>{pickText(row, ["code", "product_code"])}</>,
                 },
                 {
-                  key: "created_at",
-                  name: "Tarix",
+                  key: "category",
+                  name: "Kategoriya",
                   hidden: false,
-                  cell: (row) => <>{pick(row, ["created_at", "createdAt", "date"])}</>,
+                  cell: (row) => <>{pickText(row, ["categoryName", "category_name", "category", "categoryTitle", "category_title"])}</>,
+                },
+                {
+                  key: "status",
+                  name: "Status",
+                  hidden: false,
+                  cell: (row) => {
+                    const raw = row?.isActivated ?? row?.is_active ?? row?.status;
+                    const active = String(raw) === "1" || String(raw).toLowerCase() === "active" || raw === true;
+                    return <SgBadge header={active ? "Aktiv" : "Passiv"} className={`${active ? "sg--badge--success" : "sg--badge--error"} sg--badge--sm`} />;
+                  },
                 },
                 {
                   key: "actions",
@@ -124,7 +146,7 @@ export default function Page() {
                   hoverable: false,
                   cell: (row) => (
                     <SgButtonGroup gap={true}>
-                      <SgButton type="link" to={`/admin/products/edit/${row?.id}`} size="sm" color="secondary-outline" icon="edit" onlyIcon={true} minimal={true} />
+                      <SgButton type="link" to={`/admin/products/edit/${row?.id}`} size="sm" color="secondary-outline" icon="pen" onlyIcon={true} minimal={true} />
                       <SgButton size="sm" color="error-outline" icon="trash" onlyIcon={true} minimal={true} onClick={() => handleDelete(row)} />
                     </SgButtonGroup>
                   ),

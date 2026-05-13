@@ -15,6 +15,8 @@ export default function SgIcon(props) {
         search: "FaSearch",
         close: "FaTimes",
         edit: "FaEdit",
+        "edit-2": "FaPen",
+        "edit-3": "FaPencilAlt",
         pen: "FaPen",
         trash: "FaTrash",
         "chevrons-left": "FaAngleDoubleLeft",
