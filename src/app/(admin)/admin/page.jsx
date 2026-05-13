@@ -8,29 +8,29 @@ export default function Page() {
     <MainLayout>
       <div className="row gap-y-[16px]">
         <div className="col-xl-3 col-lg-4 col-md-6">
-          <StatCard label="Aktiv ziyarətçi sayı" value="3" iconName="FaRegClock" />
+          <StatCard label="Məhsul sayı" value="0" iconName="FaShoppingCart" />
         </div>
         <div className="col-xl-3 col-lg-4 col-md-6">
-          <StatCard label="Ümumi ziyarətçi sayı" value="29760" iconName="FaChartLine" />
+          <StatCard label="Sifariş sayı" value="0" iconName="FaShoppingBag" />
         </div>
         <div className="col-xl-3 col-lg-4 col-md-6">
-          <StatCard label="Gündəlik ziyarətçi sayı" value="203" iconName="FaPaperPlane" />
+          <StatCard label="Kateqoriya sayı" value="0" iconName="FaTags" />
         </div>
         <div className="col-xl-3 col-lg-4 col-md-6">
-          <StatCard label="Aylıq ziyarətçi sayı" value="1577" iconName="FaRegCalendarAlt" />
+          <StatCard label="Brend sayı" value="0" iconName="FaAward" />
         </div>
 
         <div className="col-xl-3 col-lg-4 col-md-6">
-          <StatCard label="Ümumi xəbər sayı" value="76" iconName="FaWaveSquare" />
+          <StatCard label="Marka sayı" value="0" iconName="FaBookmark" />
         </div>
         <div className="col-xl-3 col-lg-4 col-md-6">
-          <StatCard label="Gələn məktublar" value="1415" iconName="FaInbox" />
+          <StatCard label="Model sayı" value="0" iconName="FaLayerGroup" />
         </div>
         <div className="col-xl-3 col-lg-4 col-md-6">
-          <StatCard label="Qeydiyyat sayı" value="478" iconName="FaUserPlus" />
+          <StatCard label="Anbar sayı" value="0" iconName="FaWarehouse" />
         </div>
         <div className="col-xl-3 col-lg-4 col-md-6">
-          <StatCard label="Aktiv istifadəçi sayı" value="3" iconName="FaUsers" />
+          <StatCard label="POS sifariş sayı" value="0" iconName="FaCashRegister" />
         </div>
       </div>
     </MainLayout>

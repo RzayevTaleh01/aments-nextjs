@@ -87,7 +87,7 @@ export default function FilePreview(props) {
                         </div>
                     )
                 })}
-                {!preview ? (
+                {(!preview && typeof handleAddFile === 'function') ? (
                     <button type='button' className='filePreview-addMore' onClick={handleAddFile}>
                         +
                     </button>

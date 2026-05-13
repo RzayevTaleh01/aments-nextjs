@@ -47,3 +47,36 @@ export const GET_PRODUCT_BY_ID_ROUTE = '/product'
 export const EDIT_PRODUCT_BY_ID_ROUTE = '/product'
 export const DELETE_PRODUCT_BY_ID_ROUTE = '/product'
 
+export const GET_STORAGES_ROUTE = '/stroage'
+export const CREATE_STORAGE_ROUTE = '/stroage'
+export const GET_STORAGE_BY_ID_ROUTE = '/stroage'
+export const EDIT_STORAGE_BY_ID_ROUTE = '/stroage'
+export const DELETE_STORAGE_BY_ID_ROUTE = '/stroage'
+
+export const GET_CATEGORIES_ROUTE = '/category'
+export const CREATE_CATEGORY_ROUTE = '/category'
+export const GET_CATEGORY_BY_ID_ROUTE = '/category'
+export const EDIT_CATEGORY_BY_ID_ROUTE = '/category'
+export const DELETE_CATEGORY_BY_ID_ROUTE = '/category'
+
+export const GET_BRANDS_ROUTE = '/brand'
+export const CREATE_BRAND_ROUTE = '/brand'
+export const GET_BRAND_BY_ID_ROUTE = '/brand'
+export const EDIT_BRAND_BY_ID_ROUTE = '/brand'
+export const DELETE_BRAND_BY_ID_ROUTE = '/brand'
+
+export const GET_MARKS_ROUTE = '/mark'
+export const CREATE_MARK_ROUTE = '/mark'
+export const GET_MARK_BY_ID_ROUTE = '/mark'
+export const EDIT_MARK_BY_ID_ROUTE = '/mark'
+export const DELETE_MARK_BY_ID_ROUTE = '/mark'
+
+export const GET_MODELS_ROUTE = '/model'
+export const CREATE_MODEL_ROUTE = '/model'
+export const GET_MODEL_BY_ID_ROUTE = '/model'
+export const EDIT_MODEL_BY_ID_ROUTE = '/model'
+export const DELETE_MODEL_BY_ID_ROUTE = '/model'
+
+export const GET_ORDERS_ROUTE = '/order'
+export const DELETE_ORDER_BY_ID_ROUTE = '/order'
+

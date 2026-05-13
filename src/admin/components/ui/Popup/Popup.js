@@ -45,12 +45,12 @@ export default function SgPopup(props) {
                     <h1 className={styles['modal-title']} id={[id, 'Label'].join('')}>{header}</h1>
                     {description && <p className={styles['modal-description']}>{description}</p>}
                     <button type="button"
-                            className='btn-close'
+                            className={styles['modal-close']}
                             onClick={() => toggleModalFN()}
                             data-bs-dismiss="modal"
                             aria-label="Close"
                     >
-                        <SgIcon icon='x' />
+                        <SgIcon icon='close' />
                     </button>
                 </div>
                 <div className={styles['modal-body']}>

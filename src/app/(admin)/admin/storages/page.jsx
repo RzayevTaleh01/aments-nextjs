@@ -3,14 +3,13 @@
 import { MainLayout } from "@/admin/components/layouts";
 import { SgPage, SgPageBody, SgPageHead } from "@/admin/components/ui/Page";
 import SgTable from "@/admin/components/ui/Table";
-import { DELETE_PRODUCT_BY_ID_ROUTE, GET_PRODUCTS_ROUTE } from "@/admin/configs/apiRoutes";
+import { DELETE_STORAGE_BY_ID_ROUTE, GET_STORAGES_ROUTE } from "@/admin/configs/apiRoutes";
 import { SgButton } from "@/admin/components/ui/Button";
+import { SgBadge } from "@/admin/components/ui/Badge";
 import SgButtonGroup from "@/admin/components/ui/ButtonGroup/ButtonGroup";
 import ApiService from "@/admin/services/ApiService";
-import { SgInput } from "@/admin/components/ui/Form";
-import { SgBadge } from "@/admin/components/ui/Badge";
 import { SgPopup } from "@/admin/components/ui/Popup";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 
 function toText(value) {
   if (value === undefined || value === null) return "";
@@ -33,27 +32,8 @@ function pickText(row, keys) {
 
 export default function Page() {
   const [reloadKey, setReloadKey] = useState(0);
-  const [searchText, setSearchText] = useState("");
-  const [debouncedSearchText, setDebouncedSearchText] = useState("");
-  const [status, setStatus] = useState("");
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-
-  useEffect(() => {
-    const id = setTimeout(() => {
-      setDebouncedSearchText(searchText);
-    }, 400);
-
-    return () => clearTimeout(id);
-  }, [searchText]);
-
-  const tableFilters = useMemo(() => {
-    const next = {};
-    const trimmedSearch = String(debouncedSearchText || "").trim();
-    if (trimmedSearch) next.search = trimmedSearch;
-    if (status) next.status = status;
-    return next;
-  }, [debouncedSearchText, status]);
 
   function openDeleteModal(row) {
     setSelectedRow(row || null);
@@ -67,8 +47,7 @@ export default function Page() {
       setSelectedRow(null);
       return;
     }
-
-    ApiService.delete(`${DELETE_PRODUCT_BY_ID_ROUTE}/${id}`)
+    ApiService.delete(`${DELETE_STORAGE_BY_ID_ROUTE}/${id}`)
       .then(() => {
         setConfirmOpen(false);
         setSelectedRow(null);
@@ -80,40 +59,14 @@ export default function Page() {
   return (
     <MainLayout>
       <SgPage>
-        <SgPageHead header="Məhsullar" description="Məhsulların siyahısı." filter={true}>
-          <div className="d-flex gap-2 flex-wrap align-items-center">
-            <div style={{ width: 200 }}>
-              <SgInput
-                variant="select"
-                size="small"
-                labelHidden={true}
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                options={[
-                  { id: "active", name: "Aktiv" },
-                  { id: "passive", name: "Deaktiv" },
-                ]}
-              />
-            </div>
-            <div style={{ width: 260 }}>
-              <SgInput
-                size="small"
-                labelHidden={true}
-                type="text"
-                placeholder="Axtar..."
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-              />
-            </div>
-            <SgButton type="link" to="/admin/products/create" color="primary" size="md" icon="plus">
-              Əlavə et
-            </SgButton>
-
-          </div>
+        <SgPageHead header="Anbarlar" description="Anbarların siyahısı." filter={true}>
+          <SgButton type="link" to="/admin/storages/create" color="primary" size="md" icon="plus">
+            Əlavə et
+          </SgButton>
         </SgPageHead>
         <SgPageBody>
           <SgTable
-            data_key="products"
+            data_key="data"
             reloadKey={reloadKey}
             tableData={{
               data: [
@@ -125,30 +78,29 @@ export default function Page() {
                 },
                 {
                   key: "name",
-                  name: "Məhsulun adı",
+                  name: "Anbarın adı",
                   hidden: false,
-                  cell: (row) => <>{pickText(row, ["name", "title", "product_name", "productTitle"])}</>,
+                  cell: (row) => <>{pickText(row, ["name"])}</>,
                 },
                 {
-                  key: "code",
-                  name: "Kod",
+                  key: "address",
+                  name: "Ünvan",
                   hidden: false,
-                  cell: (row) => <>{pickText(row, ["code", "product_code"])}</>,
+                  cell: (row) => <>{pickText(row, ["address"])}</>,
                 },
                 {
-                  key: "category",
-                  name: "Kategoriya",
-                  hidden: false,
-                  cell: (row) => <>{pickText(row, ["categoryName", "category_name", "category", "categoryTitle", "category_title"])}</>,
-                },
-                {
-                  key: "status",
+                  key: "isActivated",
                   name: "Status",
                   hidden: false,
                   cell: (row) => {
                     const raw = row?.isActivated ?? row?.is_active ?? row?.status;
                     const active = String(raw) === "1" || String(raw).toLowerCase() === "active" || raw === true;
-                    return <SgBadge header={active ? "Aktiv" : "Passiv"} className={`${active ? "sg--badge--success" : "sg--badge--error"} sg--badge--sm`} />;
+                    return (
+                      <SgBadge
+                        header={active ? "Aktiv" : "Passiv"}
+                        className={`${active ? "sg--badge--success" : "sg--badge--error"} sg--badge--sm`}
+                      />
+                    );
                   },
                 },
                 {
@@ -158,19 +110,18 @@ export default function Page() {
                   hoverable: false,
                   cell: (row) => (
                     <SgButtonGroup gap={true}>
-                      <SgButton type="link" to={`/admin/products/edit/${row?.id}`} size="sm" color="secondary-outline" icon="pen" onlyIcon={true} minimal={true} />
+                      <SgButton type="link" to={`/admin/storages/edit/${row?.id}`} size="sm" color="secondary-outline" icon="pen" onlyIcon={true} minimal={true} />
                       <SgButton size="sm" color="error-outline" icon="trash" onlyIcon={true} minimal={true} onClick={() => openDeleteModal(row)} />
                     </SgButtonGroup>
                   ),
                 },
               ],
-              api: GET_PRODUCTS_ROUTE,
-              filters: tableFilters,
+              api: GET_STORAGES_ROUTE,
             }}
           />
           <SgPopup
-            header="Məhsulu sil"
-            description={`Bu məhsulu silmək istəyirsiniz? (ID: ${selectedRow?.id ?? "-"})`}
+            header="Anbarı sil"
+            description={`Bu anbarı silmək istəyirsiniz? (ID: ${selectedRow?.id ?? "-"})`}
             setToggleModal={setConfirmOpen}
             toggleModal={confirmOpen}
             size="md"

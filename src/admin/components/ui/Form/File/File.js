@@ -92,9 +92,9 @@ export default function SgFile(props) {
                 </label>
             </div>
             <FilePreview
-                data={value}
+                data={Array.isArray(value) ? value : (value ? [value] : [])}
                 handleRemoveFile={handleRemove}
-                handleAddFile={handleAdd}
+                handleAddFile={multiple ? handleAdd : undefined}
                 handleEditFile={handleEdit}
                 // preview={true}
             />

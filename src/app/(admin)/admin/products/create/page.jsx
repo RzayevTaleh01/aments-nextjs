@@ -76,7 +76,7 @@ export default function Page() {
         safeGetFirst(["/brand", "/brand/"]),
         safeGetFirst(["/mark", "/mark/"]),
         safeGetFirst(["/model", "/model/"]),
-        safeGetFirst(["/category", "/category/", "/product/category", "/product/category/"]),
+        safeGetFirst(["/category", "/category/", "/category", "/category/", "/product/category", "/product/category/"]),
       ]);
 
       if (!isActive) return;

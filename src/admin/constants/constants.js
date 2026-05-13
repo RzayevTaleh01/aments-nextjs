@@ -64,6 +64,39 @@ export const CONTENT_LANGUAGE_OPTIONS = [
     { id: CONTENT_LANGUAGES.EN, name: "En" },
     { id: CONTENT_LANGUAGES.RU, name: "Rus" },
 ];
+const StorageCreateFormValidation = {
+    name_az: {
+        presence: true,
+        length: { minimum: 2 }
+    }
+}
+const CategoryCreateFormValidation = {
+    name_az: {
+        presence: true,
+        length: { minimum: 2 }
+    }
+}
+const BrandCreateFormValidation = {
+    name_az: {
+        presence: true,
+        length: { minimum: 2 }
+    }
+}
+const MarkCreateFormValidation = {
+    name_az: {
+        presence: true,
+        length: { minimum: 2 }
+    }
+}
+const ModelCreateFormValidation = {
+    name_az: {
+        presence: true,
+        length: { minimum: 2 }
+    },
+    markId: {
+        presence: true,
+    }
+}
 const ProductCreateFormValidation = {
     name_az: {
         presence: true,
@@ -268,6 +301,31 @@ export const validationConstraints = (data, type) => {
     if (type === 'productCreate') {
         return {
             ...ProductCreateFormValidation,
+        };
+    }
+    if (type === 'storageCreate') {
+        return {
+            ...StorageCreateFormValidation,
+        };
+    }
+    if (type === 'categoryCreate') {
+        return {
+            ...CategoryCreateFormValidation,
+        };
+    }
+    if (type === 'brandCreate') {
+        return {
+            ...BrandCreateFormValidation,
+        };
+    }
+    if (type === 'markCreate') {
+        return {
+            ...MarkCreateFormValidation,
+        };
+    }
+    if (type === 'modelCreate') {
+        return {
+            ...ModelCreateFormValidation,
         };
     }
     if (type === 'videoCategoryCreate') {

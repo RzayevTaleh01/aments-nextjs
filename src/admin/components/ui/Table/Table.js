@@ -158,8 +158,12 @@ export default function SgTable(props) {
                 headers: tableData?.headers || {}
             }).then(el => {
                 if (serverSide) {
-                    const payload = el?.data?.data || {};
-                    setData({ ...payload });
+                    const payload = el?.data?.data ?? {};
+                    if (Array.isArray(payload)) {
+                        setData({ data: payload });
+                    } else {
+                        setData({ ...payload });
+                    }
                 }
                 else {
                     setData({data: el.data.data});
