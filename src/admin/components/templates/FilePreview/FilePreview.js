@@ -9,14 +9,24 @@ const REQUEST_BACKEND_URL = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL;
 export default function FilePreview(props) {
     const {data, handleRemoveFile, handleAddFile, preview = false, fileNameStatus = true} = props;
     const baseUrl = (REQUEST_STORAGE_URL || REQUEST_BACKEND_URL || "").replace(/\/api\/?$/, "");
+    const rawData = String(data || "").trim();
+    const isDataUrl = rawData.startsWith("data:");
     const fileUrl = (() => {
-        const raw = String(data || '').trim();
-        if (!raw) return '';
-        if (raw.startsWith('http://') || raw.startsWith('https://') || raw.startsWith('data:')) return raw;
-        if (raw.startsWith('/')) return baseUrl ? `${baseUrl}${raw}` : raw;
-        return `${baseUrl}${GET_FILE_ROUTE}/${raw}`;
+        if (!rawData) return '';
+        if (rawData.startsWith('http://') || rawData.startsWith('https://') || isDataUrl) return rawData;
+        if (rawData.startsWith('/')) return baseUrl ? `${baseUrl}${rawData}` : rawData;
+        return `${baseUrl}${GET_FILE_ROUTE}/${rawData}`;
     })();
-    const ext = String(data || '').split('?')[0].split('#')[0].split('.').pop()?.toLowerCase();
+    const ext = (() => {
+        if (!rawData) return "";
+        if (isDataUrl) {
+            const mime = rawData.slice(5).split(";")[0];
+            const maybeExt = (mime || "").split("/")[1];
+            return String(maybeExt || "").toLowerCase();
+        }
+        return String(rawData).split('?')[0].split('#')[0].split('.').pop()?.toLowerCase();
+    })();
+    const displayName = isDataUrl ? "image-base64" : data;
     return (
         data ?
             <div className='row'>
@@ -36,7 +46,7 @@ export default function FilePreview(props) {
                     <div className='filePreview-file'>
                         {fileNameStatus ?
                             <a href={fileUrl} target='_blank' className='filePreview-file--name'>
-                                {data}
+                                {displayName}
                             </a>
                             : null
                         }

@@ -11,13 +11,12 @@ import { validate } from "@/admin/utils/validate";
 import { validationConstraints } from "@/admin/constants/constants";
 import ApiService from "@/admin/services/ApiService";
 import { CREATE_PRODUCT_ROUTE } from "@/admin/configs/apiRoutes";
-import { callBackChangeDataFile } from "@/admin/utils/changeDataFile";
+import { getBase64 } from "@/admin/utils/getBase64";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [data, setData] = useState({});
   const [valueErrors, setValueErrors] = useState({});
-  const [filesProgress, setFilesProgress] = useState(null);
   const router = useRouter();
 
   function handleChange(e) {
@@ -25,7 +24,22 @@ export default function Page() {
   }
 
   function handleFileChange(e) {
-    callBackChangeDataFile(e, data, setData, valueErrors, setValueErrors, null, filesProgress, setFilesProgress);
+    const file = e?.target?.files?.[0];
+    if (!file) return;
+    const fieldName = (e?.target?.name || e?.target?.id || "").split("--")[0];
+
+    getBase64(file, (result64) => {
+      setData((prev) => ({
+        ...prev,
+        [fieldName]: result64?.result || "",
+      }));
+      setValueErrors((prev) => {
+        if (!prev || typeof prev !== "object") return prev;
+        const next = { ...prev };
+        delete next[fieldName];
+        return next;
+      });
+    });
   }
 
   function handleSubmit(e) {
