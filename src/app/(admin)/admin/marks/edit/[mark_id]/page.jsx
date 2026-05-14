@@ -37,7 +37,7 @@ export default function Page() {
       name: String(data.name || ""),
     };
 
-    ApiService.put(`${EDIT_MARK_BY_ID_ROUTE}/${markId}`, { data: payload })
+    ApiService.put(`${EDIT_MARK_BY_ID_ROUTE}/${markId}`, { ...payload })
       .then(() => {
         router.push("/admin/marks");
       })

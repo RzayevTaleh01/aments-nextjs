@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import ProductCard from "@/components/ui/ProductCard/ProductCard";
 import ProductListItem from "@/components/ui/ProductListItem/ProductListItem";
@@ -18,6 +18,14 @@ export default function ProductCatalogList({
   emptyMessage,
   pagination,
   onPageChange,
+  onApplyFilters,
+  onResetFilters,
+  initialSearchValue = "",
+  initialCategoryValue = "",
+  initialBrandValue = "",
+  initialMarkValue = "",
+  initialModelValue = "",
+  enableClientSearch = true,
 }) {
   const { showPrice } = useShowPrice();
   const rowClass = sidebarPosition === "right" ? "row flex-column-reverse flex-lg-row-reverse" : "row flex-column-reverse flex-lg-row";
@@ -33,11 +41,22 @@ export default function ProductCatalogList({
     () => (withSidebar ? (sidebarPosition === "right" ? "layout-3-grid" : "layout-3-grid") : "layout-4-grid"),
     [withSidebar, sidebarPosition],
   );
+
+  useEffect(() => {
+    setSearchInput(String(initialSearchValue || ""));
+    setSearchQuery(enableClientSearch ? String(initialSearchValue || "") : "");
+    setCategory(String(initialCategoryValue || ""));
+    setBrand(String(initialBrandValue || ""));
+    setMark(String(initialMarkValue || ""));
+    setModel(String(initialModelValue || ""));
+  }, [enableClientSearch, initialBrandValue, initialCategoryValue, initialMarkValue, initialModelValue, initialSearchValue]);
+
   const filteredProducts = useMemo(() => {
+    if (!enableClientSearch) return products;
     const query = searchQuery.trim().toLowerCase();
     if (!query) return products;
     return products.filter((p) => (p?.name ?? "").toLowerCase().includes(query));
-  }, [products, searchQuery]);
+  }, [enableClientSearch, products, searchQuery]);
   const hasResults = filteredProducts.length > 0;
   const listProducts = useMemo(() => {
     return filteredProducts;
@@ -60,6 +79,16 @@ export default function ProductCatalogList({
   }, [page, shouldShowPagination, totalPages]);
 
   function applyFilters() {
+    if (typeof onApplyFilters === "function") {
+      onApplyFilters({
+        q: String(searchInput || "").trim(),
+        categoryId: category,
+        brandId: brand,
+        markId: mark,
+        modelId: model,
+      });
+      return;
+    }
     setSearchQuery(searchInput);
   }
 
@@ -70,6 +99,7 @@ export default function ProductCatalogList({
     setBrand("");
     setMark("");
     setModel("");
+    if (typeof onResetFilters === "function") onResetFilters();
   }
 
   const sidebarApi = {

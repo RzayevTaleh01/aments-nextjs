@@ -15,6 +15,7 @@ export default function ProductCatalogSidebar({
   onMarkChange,
   modelValue,
   onModelChange,
+  modelDisabled = false,
   onSearch,
   onClear,
   categoryOptions = [{ label: "Category", value: "" }],
@@ -67,7 +68,7 @@ export default function ProductCatalogSidebar({
       </div>
 
       <div className={styles.field}>
-        <select className={`form-select ${styles.control}`} value={modelValue} onChange={onModelChange}>
+        <select className={`form-select ${styles.control}`} value={modelValue} onChange={onModelChange} disabled={modelDisabled}>
           {modelOptions.map((o) => (
             <option key={o.value || o.label} value={o.value}>
               {o.label}

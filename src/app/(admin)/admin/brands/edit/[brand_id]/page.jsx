@@ -54,7 +54,7 @@ export default function Page() {
       image: String(data.image || ""),
     };
 
-    ApiService.put(`${EDIT_BRAND_BY_ID_ROUTE}/${brandId}`, { data: payload })
+    ApiService.put(`${EDIT_BRAND_BY_ID_ROUTE}/${brandId}`, { ...payload })
       .then(() => {
         router.push("/admin/brands");
       })

@@ -14,9 +14,10 @@ import styles from "./ProductDetailsPage.module.scss";
 function toAssetUrl(src) {
   if (!src) return src;
   if (/^https?:\/\//i.test(src)) return src;
-  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL;
-  if (base && src.startsWith("/")) return `${base}${src}`;
-  return src;
+  const base = String(process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "").replace(/\/+$/, "");
+  if (!base) return src;
+  if (src.startsWith("/")) return `${base}${src}`;
+  return `${base}/${src}`;
 }
 
 function mapApiProductToUiProduct(p) {
