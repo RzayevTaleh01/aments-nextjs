@@ -8,6 +8,9 @@ import { signOut, useSession } from "next-auth/react";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { cn } from "@/utils/cn";
 import { useCart } from "@/context/ui-drawers-context";
+import { useLanguage } from "@/context/language-context";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 import BottomHeader from "../BottomHeader";
 import styles from "./HeaderGroup.module.scss";
 
@@ -46,9 +49,29 @@ export default function HeaderGroup({
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
   const { cartCount } = useCart();
+  const { lang, setLang } = useLanguage();
+  const { staticContent } = useInitial();
 
   const displayName = buildDisplayName(session?.user);
   const initials = buildInitials(displayName);
+
+  const langLabel = useMemo(() => {
+    const map = {
+      en: "English",
+      az: "Azərbaycan",
+      ru: "Русский",
+    };
+    return map[String(lang || "").toLowerCase()] ?? map.en;
+  }, [lang]);
+
+  const langOptions = useMemo(
+    () => [
+      { id: "en", label: "English", value: "en" },
+      { id: "az", label: "Azərbaycan", value: "az" },
+      { id: "ru", label: "Русский", value: "ru" },
+    ],
+    []
+  );
 
   const topLinks = topHeaderData?.links ?? [];
   const filteredTopLinks = useMemo(() => {
@@ -90,7 +113,12 @@ export default function HeaderGroup({
           <div className={cn(styles, "row d-flex justify-content-between align-items-center")}>
             <div className={cn(styles, "col-6")}>
               <div className={cn(styles, "header-top--left")}>
-                <span>{topHeaderData?.welcomeText ?? "Welcome to our store!"}</span>
+                <span>
+                  {HelperTranslate({
+                    defaultText: topHeaderData?.welcomeText ?? "Welcome to our store!",
+                    translateText: staticContent?.header__topWelcomeText,
+                  })}
+                </span>
               </div>
             </div>
             <div className={cn(styles, "col-6")}>
@@ -100,12 +128,17 @@ export default function HeaderGroup({
                     const hasDropdown = Array.isArray(item.children) && item.children.length > 0;
                     const parentHref = item.href && item.href !== "#" ? item.href : "/";
                     const itemKey = item.id ?? item.href ?? item.label;
+                    const isLanguageItem = item?.id === "language";
 
-                    if (!hasDropdown) {
+                    if (!hasDropdown && !isLanguageItem) {
                       return (
                         <li key={itemKey}>
                           <Link href={parentHref}>
-                            {item.iconName ? <Icon name={item.iconName} size={14} /> : null} {item.label}
+                            {item.iconName ? <Icon name={item.iconName} size={14} /> : null}{" "}
+                            {HelperTranslate({
+                              defaultText: item.label,
+                              translateText: staticContent?.[`header__topLink__${String(item?.id ?? "").trim()}`],
+                            })}
                           </Link>
                         </li>
                       );
@@ -113,13 +146,33 @@ export default function HeaderGroup({
 
                     return (
                       <li key={itemKey} className={cn(styles, "has-user-dropdown")}>
-                        <Link href={parentHref}>
-                          {item.label} <Icon name="FaAngleDown" size={14} />
+                        <Link
+                          href={parentHref}
+                          onClick={(e) => {
+                            if (!isLanguageItem) return;
+                            e.preventDefault();
+                          }}
+                        >
+                          {isLanguageItem
+                            ? langLabel
+                            : HelperTranslate({
+                                defaultText: item.label,
+                                translateText: staticContent?.[`header__topLink__${String(item?.id ?? "").trim()}`],
+                              })}{" "}
+                          <Icon name="FaAngleDown" size={14} />
                         </Link>
                         <ul className={cn(styles, "user-sub-menu")}>
-                          {item.children.map((child) => (
+                          {(isLanguageItem ? langOptions : item.children).map((child) => (
                             <li key={`${itemKey}-${child.id ?? child.label ?? child.href}`}>
-                              <Link href={child.href && child.href !== "#" ? child.href : "/"}>
+                              <Link
+                                href={child.href && child.href !== "#" ? child.href : "/"}
+                                onClick={(e) => {
+                                  if (!isLanguageItem) return;
+                                  e.preventDefault();
+                                  setLang(child.value);
+                                  window.location.reload();
+                                }}
+                              >
                                 {child.iconSrc ? (
                                   <Image
                                     className={cn(styles, "user-sub-menu-in-icon")}
@@ -169,7 +222,7 @@ export default function HeaderGroup({
                     <input
                       className={cn(styles, "default-search-style-input-box border-around border-right-none")}
                       type="search"
-                      placeholder="OEM..."
+                      placeholder={HelperTranslate({ defaultText: "OEM...", translateText: staticContent?.header__searchPlaceholder })}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -214,7 +267,7 @@ export default function HeaderGroup({
                             router.push("/");
                           }}
                         >
-                          Logout
+                          {HelperTranslate({ defaultText: "Logout", translateText: staticContent?.header__logout })}
                         </button>
                       </li>
                     </ul>

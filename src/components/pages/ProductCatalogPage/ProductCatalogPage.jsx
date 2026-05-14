@@ -8,6 +8,8 @@ import ProductCatalogList from "@/components/templates/ProductCatalogList";
 import ProductCatalogSidebar from "@/components/templates/ProductCatalogSidebar";
 import { BRANDS_ROUTE, CATEGORIES_ROUTE, MARKS_ROUTE, MODELS_BY_MARK_ROUTE } from "@/configs/apiRoutes";
 import ApiService from "@/services/api/ApiService";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 
 function pickFirstString(values) {
   for (const v of values) {
@@ -68,6 +70,7 @@ export default function ProductCatalogPage({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { staticContent } = useInitial();
   const [apiProducts, setApiProducts] = useState(null);
   const [apiSimilarProducts, setApiSimilarProducts] = useState([]);
   const [, setApiSimilarTotal] = useState(null);
@@ -140,16 +143,25 @@ export default function ProductCatalogPage({
         const brands = extractArray(brandData, ["brands", "brand"]);
         const marks = extractArray(markData, ["marks", "mark"]);
 
-        setCategoryOptions(toOptions(categories, "Kateqoriya"));
-        setBrandOptions(toOptions(brands, "Brend"));
-        setMarkOptions(toOptions(marks, "Marka"));
-        setModelOptions([{ label: "Model", value: "" }]);
+        setCategoryOptions(
+          toOptions(
+            categories,
+            HelperTranslate({ defaultText: "Kateqoriya", translateText: staticContent?.catalog__categoryPlaceholder })
+          )
+        );
+        setBrandOptions(
+          toOptions(brands, HelperTranslate({ defaultText: "Brend", translateText: staticContent?.catalog__brandPlaceholder }))
+        );
+        setMarkOptions(
+          toOptions(marks, HelperTranslate({ defaultText: "Marka", translateText: staticContent?.catalog__markPlaceholder }))
+        );
+        setModelOptions([{ label: HelperTranslate({ defaultText: "Model", translateText: staticContent?.catalog__modelPlaceholder }), value: "" }]);
       } catch {
         if (!isActive) return;
-        setCategoryOptions([{ label: "Kateqoriya", value: "" }]);
-        setBrandOptions([{ label: "Brend", value: "" }]);
-        setMarkOptions([{ label: "Marka", value: "" }]);
-        setModelOptions([{ label: "Model", value: "" }]);
+        setCategoryOptions([{ label: HelperTranslate({ defaultText: "Kateqoriya", translateText: staticContent?.catalog__categoryPlaceholder }), value: "" }]);
+        setBrandOptions([{ label: HelperTranslate({ defaultText: "Brend", translateText: staticContent?.catalog__brandPlaceholder }), value: "" }]);
+        setMarkOptions([{ label: HelperTranslate({ defaultText: "Marka", translateText: staticContent?.catalog__markPlaceholder }), value: "" }]);
+        setModelOptions([{ label: HelperTranslate({ defaultText: "Model", translateText: staticContent?.catalog__modelPlaceholder }), value: "" }]);
       }
     })();
 
@@ -165,32 +177,34 @@ export default function ProductCatalogPage({
   async function fetchModelsForMark(nextMarkId, { signal, preferKeepExisting = false } = {}) {
     const rawMarkId = String(nextMarkId || "").trim();
     if (!rawMarkId) {
-      setModelOptions([{ label: "Model", value: "" }]);
+      setModelOptions([{ label: HelperTranslate({ defaultText: "Model", translateText: staticContent?.catalog__modelPlaceholder }), value: "" }]);
       return;
     }
 
-    if (!preferKeepExisting) setModelOptions([{ label: "Yüklənir...", value: "" }]);
+    if (!preferKeepExisting) {
+      setModelOptions([{ label: HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading }), value: "" }]);
+    }
 
     try {
       const res = await ApiService.get(buildModelsByMarkRoute(rawMarkId), signal ? { signal } : undefined);
       const payload = res?.data;
 
       const list = Array.isArray(payload?.data) ? payload.data : Array.isArray(payload) ? payload : [];
-      const options = [{ label: "Model", value: "" }].concat(
+      const options = [{ label: HelperTranslate({ defaultText: "Model", translateText: staticContent?.catalog__modelPlaceholder }), value: "" }].concat(
         list
           .filter((x) => x?.id != null && (x?.name != null || x?.title != null))
           .map((x) => ({ label: x?.name ?? x?.title, value: String(x.id) })),
       );
       setModelOptions(options);
     } catch {
-      setModelOptions([{ label: "Model", value: "" }]);
+      setModelOptions([{ label: HelperTranslate({ defaultText: "Model", translateText: staticContent?.catalog__modelPlaceholder }), value: "" }]);
     }
   }
 
   useEffect(() => {
     const rawMarkId = String(markId || "").trim();
     if (!rawMarkId) {
-      setModelOptions([{ label: "Model", value: "" }]);
+      setModelOptions([{ label: HelperTranslate({ defaultText: "Model", translateText: staticContent?.catalog__modelPlaceholder }), value: "" }]);
       return;
     }
 
@@ -330,8 +344,8 @@ export default function ProductCatalogPage({
       <Breadcrumb
         title={title}
         items={[
-          { label: "Home", href: "/" },
-          { label: "Product List", href: "/products" },
+          { label: "Home", labelKey: "breadcrumb__home", href: "/" },
+          { label: "Product List", labelKey: "breadcrumb__products", href: "/products" },
           { label: breadcrumbLabel },
         ]}
       />
@@ -339,13 +353,23 @@ export default function ProductCatalogPage({
         <div className="container mb-5">
           <div className="alert alert-light border d-flex align-items-center justify-content-between mb-0">
             <div>
-              <span className="fw-bold">OEM:</span> {normalizedQ}
+              <span className="fw-bold">
+                {HelperTranslate({ defaultText: "OEM:", translateText: staticContent?.catalog__oemLabel })}
+              </span>{" "}
+              {normalizedQ}
             </div>
-            {isLoading ? <span className="text-muted">Yüklənir...</span> : null}
+            {isLoading ? (
+              <span className="text-muted">
+                {HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
+              </span>
+            ) : null}
           </div>
           {isShowingSimilarAsFallback && !isLoading ? (
             <div className="alert alert-light border border-top-0 rounded-top-0 mt-2">
-              Uyğun məhsul tapılmadı, oxşar OEM nəticələri göstərilir.
+              {HelperTranslate({
+                defaultText: "Uyğun məhsul tapılmadı, oxşar OEM nəticələri göstərilir.",
+                translateText: staticContent?.catalog__similarFallbackMessage,
+              })}
             </div>
           ) : null}
         </div>
@@ -356,7 +380,11 @@ export default function ProductCatalogPage({
         sidebarPosition={sidebarPosition}
         defaultView={defaultView}
         showPagination={!isShowingSimilarAsFallback}
-        emptyMessage={showSearchInfo ? "Məhsul tapılmadı" : undefined}
+        emptyMessage={
+          showSearchInfo
+            ? HelperTranslate({ defaultText: "Məhsul tapılmadı", translateText: staticContent?.catalog__emptyMessage })
+            : undefined
+        }
         pagination={pagination}
         enableClientSearch={!productsApiRoute}
         initialSearchValue={normalizedQ}
@@ -380,7 +408,7 @@ export default function ProductCatalogPage({
           withSidebar
             ? ({ searchInput, setSearchInput, category, setCategory, brand, setBrand, mark, setMark, model, setModel, applyFilters, resetFilters }) => (
                 <ProductCatalogSidebar
-                  title="Filter"
+                  title={HelperTranslate({ defaultText: "Filter", translateText: staticContent?.catalog__filterTitle })}
                   searchValue={searchInput}
                   onSearchChange={(e) => setSearchInput(e.target.value)}
                   categoryValue={category}
@@ -400,7 +428,7 @@ export default function ProductCatalogPage({
                   onSearch={applyFilters}
                   onClear={() => {
                     resetFilters();
-                    setModelOptions([{ label: "Model", value: "" }]);
+                    setModelOptions([{ label: HelperTranslate({ defaultText: "Model", translateText: staticContent?.catalog__modelPlaceholder }), value: "" }]);
                   }}
                   categoryOptions={categoryOptions}
                   brandOptions={brandOptions}

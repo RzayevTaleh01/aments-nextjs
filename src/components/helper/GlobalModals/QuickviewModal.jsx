@@ -29,8 +29,8 @@ export default function QuickviewModal() {
       setProduct(e?.detail?.product ?? null);
       setIsOpen(true);
     }
-    window.addEventListener("aments:quickview-modal", onOpen);
-    return () => window.removeEventListener("aments:quickview-modal", onOpen);
+    window.addEventListener("oem:quickview-modal", onOpen);
+    return () => window.removeEventListener("oem:quickview-modal", onOpen);
   }, []);
 
   return (

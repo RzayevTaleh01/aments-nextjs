@@ -4,12 +4,15 @@ import Image from "next/image";
 import { Fragment, useMemo, useState } from "react";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import useShowPrice from "@/hooks/use-show-price";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 import styles from "./ProductOffersTable.module.scss";
 
 const defaultGroups = [];
 
 export default function ProductOffersTable({ product, groups = defaultGroups }) {
   const { showPrice } = useShowPrice();
+  const { staticContent } = useInitial();
   const [pendingBrand, setPendingBrand] = useState("ALL");
   const [selectedBrand, setSelectedBrand] = useState("ALL");
   const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
@@ -42,9 +45,11 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
         <div className="row justify-content-between mb-30">
           <div className="col-lg-3 col-md-4 mb-10">
             <div className="default-form-box">
-              <label>BRAND</label>
+              <label>{HelperTranslate({ defaultText: "BRAND", translateText: staticContent?.offers__brandLabel })}</label>
               <select className="form-select" value={pendingBrand} onChange={(e) => setPendingBrand(e.target.value)}>
-                <option value="ALL">Hamısı</option>
+                <option value="ALL">
+                  {HelperTranslate({ defaultText: "Hamısı", translateText: staticContent?.offers__all })}
+                </option>
                 {brands.map((b) => (
                   <option key={b} value={b}>
                     {b}
@@ -63,7 +68,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                   setSelectedBrand(pendingBrand);
                 }}
               >
-                Axtar
+                {HelperTranslate({ defaultText: "Axtar", translateText: staticContent?.offers__search })}
               </button>
               <button
                 type="button"
@@ -74,7 +79,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                   setSelectedBrand("ALL");
                 }}
               >
-                Sıfırla
+                {HelperTranslate({ defaultText: "Sıfırla", translateText: staticContent?.offers__reset })}
               </button>
             </div>
           </div>
@@ -88,10 +93,14 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                   <thead>
                     <tr>
                       <th className="product_name" colSpan={2}>
-                        Detal
+                        {HelperTranslate({ defaultText: "Detal", translateText: staticContent?.offers__detail })}
                       </th>
-                      <th className="product_stock">Anbar</th>
-                      <th className="product_total">{showPrice ? "Qiymət" : null}</th>
+                      <th className="product_stock">
+                        {HelperTranslate({ defaultText: "Anbar", translateText: staticContent?.offers__warehouse })}
+                      </th>
+                      <th className="product_total">
+                        {showPrice ? HelperTranslate({ defaultText: "Qiymət", translateText: staticContent?.offers__price }) : null}
+                      </th>
                       <th className="product_addcart" />
                     </tr>
                   </thead>
@@ -128,13 +137,14 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                                   type="button"
                                   onClick={() => {
                                     window.dispatchEvent(
-                                      new CustomEvent("aments:product-offer-modal", {
+                                      new CustomEvent("oem:product-offer-modal", {
                                         detail: { row: r, product },
                                       })
                                     );
                                   }}
                                 >
-                                  <Icon name="FaShoppingCart" size={16} /> ƏLAVƏ ET
+                                  <Icon name="FaShoppingCart" size={16} />{" "}
+                                  {HelperTranslate({ defaultText: "ƏLAVƏ ET", translateText: staticContent?.offers__add })}
                                 </button>
                               </td>
                             </tr>
@@ -144,7 +154,9 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                     ))}
                     {filteredGroups.length === 0 ? (
                       <tr>
-                        <td colSpan={5}>Nəticə tapılmadı</td>
+                        <td colSpan={5}>
+                          {HelperTranslate({ defaultText: "Nəticə tapılmadı", translateText: staticContent?.common__noResults })}
+                        </td>
                       </tr>
                     ) : null}
                   </tbody>

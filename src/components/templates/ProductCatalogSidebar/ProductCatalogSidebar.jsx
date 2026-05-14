@@ -2,6 +2,8 @@
 
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import styles from "./ProductCatalogSidebar.module.scss";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 
 export default function ProductCatalogSidebar({
   title = "Filter",
@@ -23,6 +25,7 @@ export default function ProductCatalogSidebar({
   markOptions = [{ label: "Marka", value: "" }],
   modelOptions = [{ label: "Model", value: "" }],
 }) {
+  const { staticContent } = useInitial();
   return (
     <div className={styles.root}>
       <h6 className={styles.title}>{title}</h6>
@@ -33,7 +36,7 @@ export default function ProductCatalogSidebar({
           type="text"
           value={searchValue}
           onChange={onSearchChange}
-          placeholder="Axtarış"
+          placeholder={HelperTranslate({ defaultText: "Axtarış", translateText: staticContent?.catalog__searchPlaceholder })}
         />
       </div>
 
@@ -79,10 +82,11 @@ export default function ProductCatalogSidebar({
 
       <div className={styles.actions}>
         <button type="button" className={styles.searchButton} onClick={onSearch}>
-          Axtar
+          {HelperTranslate({ defaultText: "Axtar", translateText: staticContent?.catalog__searchButton })}
         </button>
         <button type="button" className={styles.clearButton} onClick={onClear}>
-          <Icon name="FaSyncAlt" size={14} /> Təmizlə
+          <Icon name="FaSyncAlt" size={14} />{" "}
+          {HelperTranslate({ defaultText: "Təmizlə", translateText: staticContent?.catalog__clearButton })}
         </button>
       </div>
     </div>

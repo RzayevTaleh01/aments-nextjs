@@ -10,6 +10,8 @@ import ProductOffersTable from "@/components/templates/ProductOffersTable/Produc
 import { PRODUCT_DETAIL_API_ROUTE } from "@/configs/apiRoutes";
 import ApiService from "@/services/api/ApiService";
 import styles from "./ProductDetailsPage.module.scss";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 
 function mapApiProductToUiProduct(p) {
   const firstStorageProduct = Array.isArray(p?.storageProducts) ? (p.storageProducts.find((sp) => sp?.price != null) ?? p.storageProducts[0]) : null;
@@ -46,6 +48,7 @@ function buildOfferGroupsFromApiProduct(p) {
 }
 
 export default function ProductDetailsPage({ title, breadcrumbLabel, productId, productSlug, productApiId, variant = "default" }) {
+  const { staticContent } = useInitial();
   const [apiProduct, setApiProduct] = useState(null);
   const [apiFailed, setApiFailed] = useState(false);
   const [activeTab, setActiveTab] = useState("description");
@@ -131,16 +134,20 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId, 
   return (
     <div className={styles.scope}>
       {productApiId && apiFailed ? (
-        <div className="container py-5">Məhsul tapılmadı</div>
+        <div className="container py-5">
+          {HelperTranslate({ defaultText: "Məhsul tapılmadı", translateText: staticContent?.productDetailsPage__notFound })}
+        </div>
       ) : isLoading || !product ? (
-        <div className="container py-5">Yüklənir...</div>
+        <div className="container py-5">
+          {HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
+        </div>
       ) : (
         <>
           <Breadcrumb
             title={product.name || title}
             items={[
-              { label: "Home", href: "/" },
-              { label: "Products", href: "/products" },
+              { label: "Home", labelKey: "breadcrumb__home", href: "/" },
+              { label: "Products", labelKey: "breadcrumb__products", href: "/products" },
               { label: product.name },
             ]}
           />

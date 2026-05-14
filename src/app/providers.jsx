@@ -7,6 +7,8 @@ import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UIDrawersProvider } from "@/context/ui-drawers-context";
+import { LanguageProvider } from "@/context/language-context";
+import { StaticContentProvider } from "@/context/static-content-context";
 
 export default function Providers({ children }) {
   useEffect(() => {
@@ -20,10 +22,14 @@ export default function Providers({ children }) {
 
   return (
     <SessionProvider>
-      <UIDrawersProvider>
-        {children}
-        <ToastContainer position="top-right" autoClose={5000} closeOnClick pauseOnHover newestOnTop />
-      </UIDrawersProvider>
+      <LanguageProvider>
+        <StaticContentProvider>
+          <UIDrawersProvider>
+            {children}
+            <ToastContainer position="top-right" autoClose={5000} closeOnClick pauseOnHover newestOnTop />
+          </UIDrawersProvider>
+        </StaticContentProvider>
+      </LanguageProvider>
     </SessionProvider>
   );
 }

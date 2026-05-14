@@ -6,6 +6,46 @@ function getHeaderValue(headers, key) {
   return headers[key] ?? headers[key?.toLowerCase()];
 }
 
+function normalizeLang(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return "en";
+  const base = raw.split("-")[0]?.toLowerCase();
+  return base || "en";
+}
+
+function getClientCookieValue(name) {
+  try {
+    const cookie = String(document?.cookie ?? "");
+    if (!cookie) return null;
+    const parts = cookie.split(";").map((p) => p.trim());
+    const match = parts.find((p) => p.startsWith(`${name}=`));
+    if (!match) return null;
+    return decodeURIComponent(match.slice(name.length + 1));
+  } catch {
+    return null;
+  }
+}
+
+async function resolveRequestLang() {
+  try {
+    if (typeof window !== "undefined") {
+      try {
+        const rawLocal = window?.localStorage?.getItem("oem_lang");
+        if (rawLocal) return normalizeLang(rawLocal);
+      } catch {}
+      const rawCookie = getClientCookieValue("oem_lang");
+      if (rawCookie) return normalizeLang(rawCookie);
+      return "en";
+    }
+
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+    return normalizeLang(cookieStore.get("oem_lang")?.value);
+  } catch {
+    return "en";
+  }
+}
+
 function setHeaderValue(headers, key, value) {
   if (!headers) return;
   if (typeof headers.set === "function") headers.set(key, value);
@@ -38,6 +78,15 @@ ApiService.interceptors.request.use(
   async (config) => {
     const _config = { ...config };
     _config.headers = _config.headers ?? {};
+
+    const lang = await resolveRequestLang();
+    const hasLangInUrl = typeof _config.url === "string" && /(^|[?&])lang=/.test(_config.url);
+    if (typeof _config.params?.get === "function") {
+      if (!_config.params.has("lang") && !hasLangInUrl) _config.params.set("lang", lang);
+    } else {
+      const hasParamsLang = _config.params && typeof _config.params === "object" && "lang" in _config.params;
+      if (!hasParamsLang && !hasLangInUrl) _config.params = { ...(_config.params ?? {}), lang };
+    }
 
     const hasAuthHeader = Boolean(getHeaderValue(_config.headers, REQUEST_HEADER_AUTH_KEY));
     if (hasAuthHeader) return _config;

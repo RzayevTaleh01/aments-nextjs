@@ -36,7 +36,7 @@ export function UIDrawersProvider({ children }) {
 
   useEffect(() => {
     try {
-      const raw = window.localStorage.getItem("aments:cart");
+      const raw = window.localStorage.getItem("oem_cart");
       const parsed = raw ? JSON.parse(raw) : null;
       if (Array.isArray(parsed)) setCartItems(parsed);
     } catch {}
@@ -44,7 +44,7 @@ export function UIDrawersProvider({ children }) {
 
   useEffect(() => {
     try {
-      window.localStorage.setItem("aments:cart", JSON.stringify(cartItems));
+      window.localStorage.setItem("oem_cart", JSON.stringify(cartItems));
     } catch {}
   }, [cartItems]);
 

@@ -2,8 +2,11 @@
 
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import styles from "./FAQPage.module.scss";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 
 export default function FAQPage() {
+  const { staticContent } = useInitial();
   const faqs = [
     {
       id: "item-1",
@@ -40,16 +43,29 @@ export default function FAQPage() {
 
   return (
     <div className={styles.scope}>
-      <Breadcrumb title="FAQ" items={[{ label: "Home", href: "/" }, { label: "FAQ" }]} />
+      <Breadcrumb
+        title="FAQ"
+        titleKey="faq__breadcrumbTitle"
+        items={[{ label: "Home", labelKey: "breadcrumb__home", href: "/" }, { label: "FAQ" }]}
+      />
 
       <div className="faq-section">
         <div className="container">
           <div className="row">
             <div className="col-12">
               <div className="faq-content">
-                <h5>Below are frequently asked questions, you may find the answer for yourself</h5>
+                <h5>
+                  {HelperTranslate({
+                    defaultText: "Below are frequently asked questions, you may find the answer for yourself",
+                    translateText: staticContent?.faq__headline,
+                  })}
+                </h5>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id erat sagittis, faucibus metus malesuada, eleifend turpis. Mauris semper augue id nisl aliquet, a porta lectus mattis. Nulla at tortor augue. In eget enim diam. Donec gravida tortor sem, ac fermentum nibh rutrum sit amet. Nulla convallis mauris vitae congue consequat. Donec interdum nunc purus, vitae vulputate arcu fringilla quis. Vivamus iaculis euismod dui.
+                  {HelperTranslate({
+                    defaultText:
+                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id erat sagittis, faucibus metus malesuada, eleifend turpis. Mauris semper augue id nisl aliquet, a porta lectus mattis. Nulla at tortor augue. In eget enim diam. Donec gravida tortor sem, ac fermentum nibh rutrum sit amet. Nulla convallis mauris vitae congue consequat. Donec interdum nunc purus, vitae vulputate arcu fringilla quis. Vivamus iaculis euismod dui.",
+                    translateText: staticContent?.faq__intro,
+                  })}
                 </p>
               </div>
             </div>
