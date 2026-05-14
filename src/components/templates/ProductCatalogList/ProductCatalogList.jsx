@@ -321,7 +321,7 @@ export default function ProductCatalogList({
           ) : (
             <div className="row flex-column-reverse flex-lg-row">
               <div className="col-lg-12">
-                <div className="shop-sort-section" data-aos="fade-up" data-aos-delay="0">
+                <div className="shop-sort-section">
                   <div className="container">
                     <div className="row">
                       <div className="sort-box d-flex justify-content-between align-items-center flex-wrap">
@@ -348,21 +348,6 @@ export default function ProductCatalogList({
                           </ul>
                         </div>
 
-                        <div className="sort-select-list">
-                          <form action="#" onSubmit={(e) => e.preventDefault()}>
-                            <fieldset>
-                              <select className="form-select" name="speed" id="speed" defaultValue="Sort by newness">
-                                <option>Sort by average rating</option>
-                                <option>Sort by popularity</option>
-                                <option>Sort by newness</option>
-                                <option>Sort by price: low to high</option>
-                                <option>Sort by price: high to low</option>
-                                <option>Product Name: Z</option>
-                              </select>
-                            </fieldset>
-                          </form>
-                        </div>
-
                         <div className="page-amount">
                           <span>Showing {filteredProducts.length} results</span>
                         </div>
@@ -371,7 +356,7 @@ export default function ProductCatalogList({
                   </div>
                 </div>
 
-                <div className="sort-product-tab-wrapper">
+                <div className="mt-5 sort-product-tab-wrapper">
                   <div className="container">
                     <div className="row">
                       <div className="col-12">
@@ -381,7 +366,7 @@ export default function ProductCatalogList({
                               {hasResults ? (
                                 filteredProducts.map((p) => (
                                   <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12 d-flex">
-                                    <div data-aos="fade-up" className="w-100">
+                                    <div className="w-100">
                                       <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
                                     </div>
                                   </div>

@@ -44,6 +44,7 @@ export const navigation = {
     // },
     { id: "about-us", label: "About Us", href: "/about-us", activeMatch: "/about-us" },
     { id: "products", label: "Products", href: "/products", activeMatch: "/products" },
+    { id: "brands", label: "Brands", href: "/brands", activeMatch: "/brands" },
     { id: "contact-us", label: "Contact Us", href: "/contact-us", activeMatch: "/contact-us" },
   ],
   // megaMenu: {
