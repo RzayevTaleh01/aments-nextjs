@@ -15,10 +15,13 @@ export default function SgPopup(props) {
     const getModalSize = () => {
         switch (size) {
             case 'xs':
-                return 'xs'
+                return 'sm'
+
+            case 'sm':
+                return 'sm'
 
             case 'md':
-                return 'md'
+                return ''
 
             case 'lg':
                 return 'lg'

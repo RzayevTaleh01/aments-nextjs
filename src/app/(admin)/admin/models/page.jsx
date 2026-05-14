@@ -120,7 +120,7 @@ export default function Page() {
             description={`Bu modeli silmək istəyirsiniz? (ID: ${selectedRow?.id ?? "-"})`}
             setToggleModal={setConfirmOpen}
             toggleModal={confirmOpen}
-            size="md"
+            size="sm"
           >
             <SgButtonGroup gap={true}>
               <SgButton color="error" size="sm" onClick={handleDeleteConfirmed}>
