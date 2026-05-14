@@ -7,6 +7,8 @@ import Icon from "@/components/ui/TemplateIcon";
 import ProductCard from "@/components/ui/ProductCard";
 import useShowPrice from "@/hooks/use-show-price";
 import { cn } from "@/utils/cn";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 import styles from "./ProductsCarousel.module.scss";
 
 export default function ProductsCarousel({
@@ -24,6 +26,7 @@ export default function ProductsCarousel({
   },
 }) {
   const { showPrice } = useShowPrice();
+  const { staticContent } = useInitial();
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
@@ -36,13 +39,26 @@ export default function ProductsCarousel({
           <div className="row">
             <div className={cn("section-content d-flex justify-content-between align-items-md-center align-items-start flex-md-row flex-column", styles.header)}>
               <h3 className="section-title" >
-                {title}
+                {HelperTranslate({
+                  defaultText: title,
+                  translateText: title === "Products" ? staticContent?.home__productsSectionTitle : undefined,
+                })}
               </h3>
               <div className={styles.nav}>
-                <button ref={prevRef} type="button" className={styles.navButton} aria-label="Previous products">
+                <button
+                  ref={prevRef}
+                  type="button"
+                  className={styles.navButton}
+                  aria-label={HelperTranslate({ defaultText: "Previous products", translateText: staticContent?.carousel__previous })}
+                >
                   <Icon name="FaChevronLeft" size={16} />
                 </button>
-                <button ref={nextRef} type="button" className={styles.navButton} aria-label="Next products">
+                <button
+                  ref={nextRef}
+                  type="button"
+                  className={styles.navButton}
+                  aria-label={HelperTranslate({ defaultText: "Next products", translateText: staticContent?.carousel__next })}
+                >
                   <Icon name="FaChevronRight" size={16} />
                 </button>
               </div>
