@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import Icon from "@/components/ui/TemplateIcon";
 
@@ -8,12 +9,14 @@ export default function ProductListItem({ product, showPrice = true }) {
   const imageSrc = product?.imageSrc ?? "/assets/images/products_images/aments_products_image_1.jpg";
   const title = product?.name;
   const isSimilarOem = Boolean(product?.isSimilarOem);
+  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
+  const resolvedSrc = String(imageSrc || "").startsWith("/uploads") ? `${base}${imageSrc}` : imageSrc;
 
   return (
     <div className="col-12 mb-4">
       <div className="product-list-single border-around">
         <Link href={href} className="product-list-img-link">
-          <img src={imageSrc} alt="" className="img-fluid" />
+          <Image src={resolvedSrc} alt="" width={300} height={300} className="img-fluid" />
         </Link>
         <div className="product-list-content">
           <h5 className="product-list-link">

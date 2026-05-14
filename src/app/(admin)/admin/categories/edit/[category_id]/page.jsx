@@ -60,7 +60,7 @@ export default function Page() {
       translations,
     };
 
-    ApiService.put(`${EDIT_CATEGORY_BY_ID_ROUTE}/${categoryId}`, { data: payload })
+    ApiService.put(`${EDIT_CATEGORY_BY_ID_ROUTE}/${categoryId}`, { ...payload })
       .then(() => {
         router.push("/admin/categories");
       })

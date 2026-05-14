@@ -9,23 +9,6 @@ import ProductCatalogSidebar from "@/components/templates/ProductCatalogSidebar"
 import { BRANDS_ROUTE, CATEGORIES_ROUTE, MARKS_ROUTE, MODELS_BY_MARK_ROUTE } from "@/configs/apiRoutes";
 import ApiService from "@/services/api/ApiService";
 
-function toAssetUrl(raw) {
-  if (!raw) return "";
-  const src =
-    typeof raw === "string"
-      ? raw
-      : typeof raw === "object"
-        ? raw?.url ?? raw?.image ?? raw?.path ?? raw?.src ?? ""
-        : String(raw);
-  const v = String(src || "").trim();
-  if (!v) return "";
-  if (/^https?:\/\//i.test(v) || v.startsWith("data:")) return v;
-  const base = String(process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "").replace(/\/+$/, "");
-  if (!base) return v;
-  if (v.startsWith("/")) return `${base}${v}`;
-  return `${base}/${v}`;
-}
-
 function pickFirstString(values) {
   for (const v of values) {
     if (typeof v === "string" && v.trim()) return v.trim();
@@ -38,6 +21,12 @@ function extractApiImage(product) {
 
   const direct = pickFirstString([product.image, product.thumbnail, product.photo, product.img, product.imageUrl, product.image_url]);
   if (direct) return direct;
+
+  const directObj = [product.image, product.thumbnail, product.photo, product.img, product.imageUrl, product.image_url].find((v) => v && typeof v === "object");
+  if (directObj && typeof directObj === "object") {
+    const nested = pickFirstString([directObj.url, directObj.image, directObj.path, directObj.src, directObj.file]);
+    if (nested) return nested;
+  }
 
   const images = product.images;
   if (typeof images === "string" && images.trim()) return images.trim();
@@ -59,10 +48,9 @@ function mapApiProductToUiProduct(p) {
   const priceValue = firstStorageProduct?.price;
   const price = typeof priceValue === "string" || typeof priceValue === "number" ? `${priceValue} AZN` : "";
   const apiImage = extractApiImage(p);
-  const imageSrc = toAssetUrl(apiImage);
   return {
     ...p,
-    imageSrc,
+    imageSrc: apiImage,
     href: p?.href ?? (p?.id ? `/product/${p.id}` : slug ? `/product/${slug}` : "/product/default"),
     price,
   };

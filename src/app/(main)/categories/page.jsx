@@ -8,23 +8,6 @@ import ApiService from "@/services/api/ApiService";
 
 const FALLBACK_IMAGE_SRC = "/assets/images/categories_images/aments_categories_01.jpg";
 
-function toAssetUrl(raw) {
-  if (!raw) return "";
-  const src =
-    typeof raw === "string"
-      ? raw
-      : typeof raw === "object"
-        ? raw?.url ?? raw?.image ?? raw?.path ?? raw?.src ?? ""
-        : String(raw);
-  const v = String(src || "").trim();
-  if (!v) return "";
-  if (/^https?:\/\//i.test(v) || v.startsWith("data:")) return v;
-  const base = String(process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "").replace(/\/+$/, "");
-  if (!base) return v;
-  if (v.startsWith("/")) return `${base}${v}`;
-  return `${base}/${v}`;
-}
-
 function extractArray(payload, preferredKeys = []) {
   if (Array.isArray(payload)) return payload;
   if (!payload || typeof payload !== "object") return [];
@@ -69,7 +52,7 @@ export default function Page() {
             ...cat,
             id: cat?.id,
             title: cat?.title ?? cat?.name ?? "",
-            imageSrc: toAssetUrl(cat?.image ?? cat?.icon ?? cat?.photo ?? cat?.thumbnail) || FALLBACK_IMAGE_SRC,
+            imageSrc: cat?.image ?? cat?.icon ?? cat?.photo ?? cat?.thumbnail ?? FALLBACK_IMAGE_SRC,
             items: cat?.items ?? buildCategoryItemsLabel(cat),
           }))
           .filter((x) => x?.id != null && x?.title);
@@ -129,4 +112,3 @@ export default function Page() {
     </div>
   );
 }
-

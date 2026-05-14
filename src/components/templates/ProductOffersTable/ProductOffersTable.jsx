@@ -12,6 +12,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
   const { showPrice } = useShowPrice();
   const [pendingBrand, setPendingBrand] = useState("ALL");
   const [selectedBrand, setSelectedBrand] = useState("ALL");
+  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
 
   const brands = useMemo(() => {
     const list = [];
@@ -104,10 +105,12 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                         </tr>
                         {g.rows.map((r) => {
                           const displayName = r.name || product?.name || "Məhsul";
+                          const rawImg = r.img || "";
+                          const resolvedImg = String(rawImg || "").startsWith("/uploads") ? `${base}${rawImg}` : rawImg;
                           return (
                             <tr key={`${g.title}-${r.brand}-${r.code}-${r.warehouse}-${r.qty}-${r.price}`}>
                               <td className="product_thumb">
-                                <Image src={r.img} alt={displayName} width={120} height={120} />
+                                <Image src={resolvedImg} alt={displayName} width={120} height={120} />
                               </td>
                               <td className="product_name text-start">
                                 <div className="fw-bold">{r.brand}</div>

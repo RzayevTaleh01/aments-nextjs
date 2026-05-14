@@ -19,6 +19,8 @@ export default function ProductDetailsGallery({
   variant = "gallery-right",
 }) {
   const isGalleryLeft = variant === "gallery-left";
+  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
+  const prefix = (src) => (String(src || "").startsWith("/uploads") ? `${base}${src}` : src);
 
   return (
     <div className={styles.root}>
@@ -58,7 +60,7 @@ export default function ProductDetailsGallery({
               {galleryThumbImages.map((src, idx) => (
                 <SwiperSlide key={`${src}-${idx}`}>
                   <div className={styles.thumbItem} aria-current={idx === activeImageIndex ? "true" : undefined}>
-                    <Image src={src} alt="" width={140} height={140} className={styles.thumbImage} />
+                    <Image src={prefix(src)} alt="" width={140} height={140} className={styles.thumbImage} />
                   </div>
                 </SwiperSlide>
               ))}
@@ -73,10 +75,10 @@ export default function ProductDetailsGallery({
               onSlideChange={(swiper) => onActiveImageIndexChange(swiper.realIndex)}
               thumbs={{ swiper: safeThumbsSwiper }}
             >
-              {galleryLargeImages.map((src) => (
-                <SwiperSlide key={src}>
+              {galleryLargeImages.map((src, idx) => (
+                <SwiperSlide key={`${src}-${idx}`}>
                   <div className={styles.largeSlider}>
-                    <Image src={src} alt="" width={570} height={570} className={styles.largeImage} />
+                    <Image src={prefix(src)} alt="" width={570} height={570} className={styles.largeImage} />
                   </div>
                 </SwiperSlide>
               ))}
@@ -93,10 +95,10 @@ export default function ProductDetailsGallery({
               onSlideChange={(swiper) => onActiveImageIndexChange(swiper.realIndex)}
               thumbs={{ swiper: safeThumbsSwiper }}
             >
-              {galleryLargeImages.map((src) => (
-                <SwiperSlide key={src}>
+              {galleryLargeImages.map((src, idx) => (
+                <SwiperSlide key={`${src}-${idx}`}>
                   <div className={styles.largeSlider}>
-                    <Image src={src} alt="" width={570} height={570} className={styles.largeImage} />
+                    <Image src={prefix(src)} alt="" width={570} height={570} className={styles.largeImage} />
                   </div>
                 </SwiperSlide>
               ))}
@@ -138,7 +140,7 @@ export default function ProductDetailsGallery({
               {galleryThumbImages.map((src, idx) => (
                 <SwiperSlide key={`${src}-${idx}`}>
                   <div className={styles.thumbItem} aria-current={idx === activeImageIndex ? "true" : undefined}>
-                    <Image src={src} alt="" width={140} height={140} className={styles.thumbImage} />
+                    <Image src={prefix(src)} alt="" width={140} height={140} className={styles.thumbImage} />
                   </div>
                 </SwiperSlide>
               ))}

@@ -7,13 +7,9 @@ export const metadata = {
 };
 
 async function getPopularCategoriesForHome() {
-  try {
     const res = await ApiService.get(STATISTICS_CATEGORY_POPULAR_ROUTE);
     if (!res?.data?.data || !Array.isArray(res.data.data)) return null;
     return res.data.data;
-  } catch {
-    return null;
-  }
 }
 
 export default async function Page() {

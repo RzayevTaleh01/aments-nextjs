@@ -8,23 +8,6 @@ import ApiService from "@/services/api/ApiService";
 
 const FALLBACK_IMAGE_SRC = "/assets/images/products_images/aments_products_image_1.jpg";
 
-function toAssetUrl(raw) {
-  if (!raw) return "";
-  const src =
-    typeof raw === "string"
-      ? raw
-      : typeof raw === "object"
-        ? raw?.url ?? raw?.image ?? raw?.path ?? raw?.src ?? ""
-        : String(raw);
-  const v = String(src || "").trim();
-  if (!v) return "";
-  if (/^https?:\/\//i.test(v) || v.startsWith("data:")) return v;
-  const base = String(process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "").replace(/\/+$/, "");
-  if (!base) return v;
-  if (v.startsWith("/")) return `${base}${v}`;
-  return `${base}/${v}`;
-}
-
 function extractArray(payload, preferredKeys = []) {
   if (Array.isArray(payload)) return payload;
   if (!payload || typeof payload !== "object") return [];
@@ -61,7 +44,7 @@ export default function Page() {
             ...b,
             id: b?.id,
             name: b?.name ?? b?.title ?? "",
-            imageSrc: toAssetUrl(b?.image ?? b?.logo ?? b?.icon ?? "") || FALLBACK_IMAGE_SRC,
+            imageSrc: b?.image ?? b?.logo ?? b?.icon ?? FALLBACK_IMAGE_SRC,
           }))
           .filter((x) => x?.id != null && x?.name);
 

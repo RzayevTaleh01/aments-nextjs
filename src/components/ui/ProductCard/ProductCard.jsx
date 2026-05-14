@@ -10,12 +10,15 @@ export default function ProductCard({ product, showPrice = true }) {
   const markName = product?.mark?.name ?? product?.mark ?? "";
   const modelName = product?.model?.name ?? product?.model ?? "";
   const isSimilarOem = Boolean(product?.isSimilarOem);
+  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
+  const rawImageSrc = product?.imageSrc ?? product?.image ?? "/assets/images/products_images/aments_products_image_1.jpg";
+  const resolvedSrc = String(rawImageSrc || "").startsWith("/uploads") ? `${base}${rawImageSrc}` : rawImageSrc;
 
   return (
     <div className="product-default-single">
       <div className="product-img-warp position-relative">
         <Link href={detailsHref}>
-          <Image src={product.imageSrc} alt={product.name} width={300} height={300} className="product-default-img" />
+          <Image src={resolvedSrc} alt={product?.name || "Product"} width={300} height={300} className="product-default-img" />
         </Link>
         {isSimilarOem ? <span className="badge text-bg-danger position-absolute top-0 start-0 m-2">Oxşar OEM</span> : null}
         <div className="product-action-icon-link">

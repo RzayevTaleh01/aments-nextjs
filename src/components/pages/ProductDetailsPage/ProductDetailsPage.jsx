@@ -11,22 +11,13 @@ import { PRODUCT_DETAIL_API_ROUTE } from "@/configs/apiRoutes";
 import ApiService from "@/services/api/ApiService";
 import styles from "./ProductDetailsPage.module.scss";
 
-function toAssetUrl(src) {
-  if (!src) return src;
-  if (/^https?:\/\//i.test(src)) return src;
-  const base = String(process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "").replace(/\/+$/, "");
-  if (!base) return src;
-  if (src.startsWith("/")) return `${base}${src}`;
-  return `${base}/${src}`;
-}
-
 function mapApiProductToUiProduct(p) {
   const firstStorageProduct = Array.isArray(p?.storageProducts) ? (p.storageProducts.find((sp) => sp?.price != null) ?? p.storageProducts[0]) : null;
   const priceValue = firstStorageProduct?.price;
   const price = typeof priceValue === "string" || typeof priceValue === "number" ? `${priceValue} AZN` : "";
   return {
     ...p,
-    imageSrc: toAssetUrl(p?.image) ?? "/assets/images/products_images/aments_products_image_1.jpg",
+    imageSrc: p?.image || "/assets/images/products_images/aments_products_image_1.jpg",
     price,
   };
 }
@@ -117,7 +108,7 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId, 
     const list = [];
     if (product?.imageSrc) list.push(product.imageSrc);
     for (const img of product?.images ?? []) {
-      const src = toAssetUrl(img?.image);
+      const src = img?.image;
       if (src) list.push(src);
     }
     if (list.length > 0) return list;

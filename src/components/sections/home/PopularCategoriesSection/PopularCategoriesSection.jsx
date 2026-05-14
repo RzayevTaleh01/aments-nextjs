@@ -35,7 +35,7 @@ export default function PopularCategoriesSection({ categories = [] }) {
               const orderCount = Number(cat?.order_count ?? 0);
               const items = cat?.items ?? `(${Number.isFinite(orderCount) ? orderCount : 0} Items)`;
               const href = cat?.href ?? `/products?categoryId=${encodeURIComponent(String(cat?.id ?? ""))}`;
-              const imageSrc = cat?.imageSrc ?? FALLBACK_IMAGE_SRC;
+              const imageSrc = cat?.imageSrc;
 
               return (
                 <div key={String(id)} className="col-lg-3 col-md-4 col-sm-6 col-12">

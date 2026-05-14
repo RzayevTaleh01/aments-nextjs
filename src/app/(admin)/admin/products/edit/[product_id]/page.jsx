@@ -212,7 +212,7 @@ export default function Page() {
       });
       delete payload.image;
 
-      ApiService.put(`${EDIT_PRODUCT_BY_ID_ROUTE}/${productId}`, { data: payload })
+      ApiService.put(`${EDIT_PRODUCT_BY_ID_ROUTE}/${productId}`, { ...payload })
         .then(() => {
           router.push("/admin/products");
         })
