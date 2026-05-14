@@ -9,6 +9,7 @@ import SgButtonGroup from "@/admin/components/ui/ButtonGroup/ButtonGroup";
 import ApiService from "@/admin/services/ApiService";
 import { SgPopup } from "@/admin/components/ui/Popup";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function toText(value) {
   if (value === undefined || value === null) return "";
@@ -56,6 +57,7 @@ export default function Page() {
     }
     ApiService.delete(`${DELETE_MODEL_BY_ID_ROUTE}/${id}`)
       .then(() => {
+        toast.success("Uğurla silindi");
         setConfirmOpen(false);
         setSelectedRow(null);
         setReloadKey((v) => v + 1);

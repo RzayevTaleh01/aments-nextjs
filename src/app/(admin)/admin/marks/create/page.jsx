@@ -4,39 +4,23 @@ import { MainLayout } from "@/admin/components/layouts";
 import { SgPage, SgPageBody, SgPageFooter, SgPageHead } from "@/admin/components/ui/Page";
 import { SgButton } from "@/admin/components/ui/Button";
 import { useState } from "react";
-import { SgFile, SgFormGroup, SgInput } from "@/admin/components/ui/Form";
+import { SgFormGroup, SgInput } from "@/admin/components/ui/Form";
 import { changeData } from "@/admin/utils/changeData";
 import SgButtonGroup from "@/admin/components/ui/ButtonGroup/ButtonGroup";
 import { validate } from "@/admin/utils/validate";
-import { CONTENT_LANGUAGE_OPTIONS, CONTENT_LANGUAGES, validationConstraints } from "@/admin/constants/constants";
+import { validationConstraints } from "@/admin/constants/constants";
 import ApiService from "@/admin/services/ApiService";
 import { CREATE_MARK_ROUTE } from "@/admin/configs/apiRoutes";
 import { useRouter } from "next/navigation";
-import { getBase64 } from "@/admin/utils/getBase64";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [data, setData] = useState({});
   const [valueErrors, setValueErrors] = useState({});
-  const [activeLang, setActiveLang] = useState(CONTENT_LANGUAGES.AZ);
   const router = useRouter();
 
   function handleChange(e) {
     changeData(e, data, setData, valueErrors, setValueErrors);
-  }
-
-  async function handleImageChange(e) {
-    const file = (e?.target?.files || [])[0];
-    if (!file) return;
-
-    const dataUrl = await new Promise((resolve) => {
-      getBase64(file, (result64) => resolve(String(result64?.result || "")));
-    });
-
-    setData((prev) => ({ ...prev, image: dataUrl }));
-  }
-
-  function handleImageRemove() {
-    setData((prev) => ({ ...prev, image: "" }));
   }
 
   function handleSubmit(e) {
@@ -48,18 +32,13 @@ export default function Page() {
       return;
     }
 
-    const translations = CONTENT_LANGUAGE_OPTIONS.map((l) => ({
-      languageCode: l.id,
-      name: data[`name_${l.id}`] || "",
-    })).filter((t) => t.name);
-
     const payload = {
-      image: String(data.image || ""),
-      translations,
+      name: String(data.name || ""),
     };
 
     ApiService.post(`${CREATE_MARK_ROUTE}`, payload)
       .then(() => {
+        toast.success("Uğurla əlavə edildi");
         router.push("/admin/marks");
       })
       .catch(() => {});
@@ -76,39 +55,15 @@ export default function Page() {
         <SgPageBody>
           <div className={["row"].join(" ").trim()}>
             <div className="col-lg-12">
-              <div style={{ marginBottom: 16 }}>
-                <SgButtonGroup gap={true} className="mt-2">
-                  {CONTENT_LANGUAGE_OPTIONS.map((lang) => (
-                    <SgButton key={lang.id} color={activeLang === lang.id ? "primary" : "secondary-outline"} onClick={() => setActiveLang(lang.id)} type="button">
-                      {lang.name}
-                    </SgButton>
-                  ))}
-                </SgButtonGroup>
-              </div>
-
               <SgFormGroup>
                 <SgInput
-                  name={`name_${activeLang}`}
-                  id={`name_${activeLang}`}
+                  name="name"
+                  id="name"
                   placeholder="Marka adı"
-                  label={`Marka adı (${activeLang.toUpperCase()})`}
-                  value={data[`name_${activeLang}`] || ""}
+                  label="Marka adı"
+                  value={data.name || ""}
                   onChange={handleChange}
-                  isInvalid={valueErrors[`name_${activeLang}`]}
-                />
-              </SgFormGroup>
-
-              <SgFormGroup>
-                <SgFile
-                  accepts="image/jpeg, image/png, image/jpg, image/webp"
-                  label="Şəkil"
-                  multiple={false}
-                  onChange={handleImageChange}
-                  onRemove={handleImageRemove}
-                  value={data.image}
-                  id="image"
-                  name="image"
-                  isInvalid={valueErrors.image}
+                  isInvalid={valueErrors.name}
                 />
               </SgFormGroup>
             </div>

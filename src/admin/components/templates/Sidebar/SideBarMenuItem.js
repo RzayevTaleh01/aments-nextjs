@@ -64,7 +64,8 @@ export default function SgSideBarMenuItem(props) {
                                     key={0}
                                     direction={'right'}
                                     className={[].join(' ').trim()}
-                                    itemClassName={[].join(' ').trim()}
+                                    menuClassName={styles['sg--template--sidebar-body-menu-item--dropdown-menu']}
+                                    itemClassName={styles['sg--template--sidebar-body-menu-item--dropdown-item']}
                                     toggleClassName={[styles['sg--template--sidebar-body-menu-item--link'], isActive ? 'active' : ''].join(' ').trim()}
                                     caret={false}
                                     toggleHeader={
@@ -83,7 +84,10 @@ export default function SgSideBarMenuItem(props) {
                                                 href={resolveAdminPath(el?.path, el?.external)}
                                                 target={el?.external ? '_blank' : '_self'}
                                                 key={`main__${i}`}
-                                                className={[].join(' ').trim()}
+                                                className={[
+                                                    styles['sg--template--sidebar-body-menu-item--dropdown-link'],
+                                                    isActivePath(resolveAdminPath(el?.path, el?.external)) ? 'active' : ''
+                                                ].join(' ').trim()}
                                             >
                                                 {el?.name}
                                             </Link>
@@ -95,6 +99,8 @@ export default function SgSideBarMenuItem(props) {
                                 <SgCollapse
                                     className={styles['sg--template--sidebar-body-menu-item']}
                                     toggleClassName={[styles['sg--template--sidebar-body-menu-item--link'], isActive ? 'active' : ''].join(' ').trim()}
+                                    defaultOpen={isActive}
+                                    openOn={isActive}
                                     toggleHeader={
                                         <>
                                             <div className={[styles['sg--template--sidebar-body-menu-item--link-icon']].join(' ').trim()}>

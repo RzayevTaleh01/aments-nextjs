@@ -12,6 +12,7 @@ import { CONTENT_LANGUAGE_OPTIONS, CONTENT_LANGUAGES, validationConstraints } fr
 import ApiService from "@/admin/services/ApiService";
 import { CREATE_STORAGE_ROUTE } from "@/admin/configs/apiRoutes";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [data, setData] = useState({});
@@ -46,6 +47,7 @@ export default function Page() {
 
     ApiService.post(`${CREATE_STORAGE_ROUTE}`, payload)
       .then(() => {
+        toast.success("Uğurla əlavə edildi");
         router.push("/admin/storages");
       })
       .catch(() => {});

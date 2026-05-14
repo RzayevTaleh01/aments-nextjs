@@ -29,3 +29,9 @@
   --bs-gutter-x: 1.25rem;
   --bs-gutter-y: 1.25rem;
 }
+
+.modal-dialog.modal-sm {
+  max-width: 420px !important;
+  min-width: 0 !important;
+  width: auto !important;
+}

@@ -11,6 +11,7 @@ import { SgInput } from "@/admin/components/ui/Form";
 import { SgBadge } from "@/admin/components/ui/Badge";
 import { SgPopup } from "@/admin/components/ui/Popup";
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 
 function toText(value) {
   if (value === undefined || value === null) return "";
@@ -70,6 +71,7 @@ export default function Page() {
 
     ApiService.delete(`${DELETE_PRODUCT_BY_ID_ROUTE}/${id}`)
       .then(() => {
+        toast.success("Uğurla silindi");
         setConfirmOpen(false);
         setSelectedRow(null);
         setReloadKey((v) => v + 1);

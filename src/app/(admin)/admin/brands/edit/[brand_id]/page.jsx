@@ -8,7 +8,7 @@ import { SgFile, SgFormGroup, SgInput } from "@/admin/components/ui/Form";
 import { changeData } from "@/admin/utils/changeData";
 import SgButtonGroup from "@/admin/components/ui/ButtonGroup/ButtonGroup";
 import { validate } from "@/admin/utils/validate";
-import { CONTENT_LANGUAGE_OPTIONS, CONTENT_LANGUAGES, validationConstraints } from "@/admin/constants/constants";
+import { validationConstraints } from "@/admin/constants/constants";
 import ApiService from "@/admin/services/ApiService";
 import { EDIT_BRAND_BY_ID_ROUTE, GET_BRAND_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
 import { useParams, useRouter } from "next/navigation";
@@ -17,7 +17,6 @@ import { getBase64 } from "@/admin/utils/getBase64";
 export default function Page() {
   const [data, setData] = useState({});
   const [valueErrors, setValueErrors] = useState({});
-  const [activeLang, setActiveLang] = useState(CONTENT_LANGUAGES.AZ);
   const router = useRouter();
   const params = useParams();
   const brandId = params?.brand_id;
@@ -50,14 +49,9 @@ export default function Page() {
       return;
     }
 
-    const translations = CONTENT_LANGUAGE_OPTIONS.map((l) => ({
-      languageCode: l.id,
-      name: data[`name_${l.id}`] || "",
-    })).filter((t) => t.name);
-
     const payload = {
+      name: String(data.name || ""),
       image: String(data.image || ""),
-      translations,
     };
 
     ApiService.put(`${EDIT_BRAND_BY_ID_ROUTE}/${brandId}`, { data: payload })
@@ -73,18 +67,11 @@ export default function Page() {
       .then((resp) => {
         const payload = resp?.data?.data ?? {};
         const brand = payload?.brand ?? payload;
-        const next = { ...(brand || {}) };
-
-        const translations = Array.isArray(brand?.translations) ? brand.translations : [];
-        CONTENT_LANGUAGE_OPTIONS.forEach((l) => {
-          const hit = translations.find((t) => String(t?.languageCode || "").toLowerCase() === String(l.id).toLowerCase());
-          if (hit) {
-            next[`name_${l.id}`] = hit?.name ?? "";
-          }
-        });
-
-        if (!next[`name_${CONTENT_LANGUAGES.AZ}`]) next[`name_${CONTENT_LANGUAGES.AZ}`] = brand?.name ?? "";
-        if (!next.image) next.image = brand?.image ?? "";
+        const next = {
+          ...(brand || {}),
+          name: brand?.name ?? "",
+          image: brand?.image ?? "",
+        };
 
         setData(next);
       })
@@ -102,25 +89,15 @@ export default function Page() {
         <SgPageBody>
           <div className={["row"].join(" ").trim()}>
             <div className="col-lg-12">
-              <div style={{ marginBottom: 16 }}>
-                <SgButtonGroup gap={true} className="mt-2">
-                  {CONTENT_LANGUAGE_OPTIONS.map((lang) => (
-                    <SgButton key={lang.id} color={activeLang === lang.id ? "primary" : "secondary-outline"} onClick={() => setActiveLang(lang.id)} type="button">
-                      {lang.name}
-                    </SgButton>
-                  ))}
-                </SgButtonGroup>
-              </div>
-
               <SgFormGroup>
                 <SgInput
-                  name={`name_${activeLang}`}
-                  id={`name_${activeLang}`}
+                  name="name"
+                  id="name"
                   placeholder="Brend adı"
-                  label={`Brend adı (${activeLang.toUpperCase()})`}
-                  value={data[`name_${activeLang}`] || ""}
+                  label="Brend adı"
+                  value={data.name || ""}
                   onChange={handleChange}
-                  isInvalid={valueErrors[`name_${activeLang}`]}
+                  isInvalid={valueErrors.name}
                 />
               </SgFormGroup>
 

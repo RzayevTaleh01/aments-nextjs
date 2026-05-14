@@ -77,19 +77,19 @@ const CategoryCreateFormValidation = {
     }
 }
 const BrandCreateFormValidation = {
-    name_az: {
+    name: {
         presence: true,
         length: { minimum: 2 }
     }
 }
 const MarkCreateFormValidation = {
-    name_az: {
+    name: {
         presence: true,
         length: { minimum: 2 }
     }
 }
 const ModelCreateFormValidation = {
-    name_az: {
+    name: {
         presence: true,
         length: { minimum: 2 }
     },

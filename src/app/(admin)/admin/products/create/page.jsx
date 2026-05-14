@@ -14,6 +14,7 @@ import { CREATE_PRODUCT_ROUTE } from "@/admin/configs/apiRoutes";
 import { getBase64 } from "@/admin/utils/getBase64";
 import { useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [data, setData] = useState({});
@@ -204,6 +205,7 @@ export default function Page() {
 
       ApiService.post(`${CREATE_PRODUCT_ROUTE}`, payload)
         .then(() => {
+          toast.success("Uğurla əlavə edildi");
           router.push("/admin/products");
         })
         .catch((error) => {

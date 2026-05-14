@@ -13,6 +13,7 @@ import ApiService from "@/admin/services/ApiService";
 import { CREATE_CATEGORY_ROUTE } from "@/admin/configs/apiRoutes";
 import { useRouter } from "next/navigation";
 import { getBase64 } from "@/admin/utils/getBase64";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [data, setData] = useState({});
@@ -60,6 +61,7 @@ export default function Page() {
 
     ApiService.post(`${CREATE_CATEGORY_ROUTE}`, payload)
       .then(() => {
+        toast.success("Uğurla əlavə edildi");
         router.push("/admin/categories");
       })
       .catch(() => {});

@@ -8,7 +8,7 @@ import { SgFile, SgFormGroup, SgInput } from "@/admin/components/ui/Form";
 import { changeData } from "@/admin/utils/changeData";
 import SgButtonGroup from "@/admin/components/ui/ButtonGroup/ButtonGroup";
 import { validate } from "@/admin/utils/validate";
-import { CONTENT_LANGUAGE_OPTIONS, CONTENT_LANGUAGES, validationConstraints } from "@/admin/constants/constants";
+import { validationConstraints } from "@/admin/constants/constants";
 import ApiService from "@/admin/services/ApiService";
 import { EDIT_MODEL_BY_ID_ROUTE, GET_MARKS_ROUTE, GET_MODEL_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
 import { useParams, useRouter } from "next/navigation";
@@ -25,7 +25,6 @@ function normalizeListResponse(resp) {
 export default function Page() {
   const [data, setData] = useState({});
   const [valueErrors, setValueErrors] = useState({});
-  const [activeLang, setActiveLang] = useState(CONTENT_LANGUAGES.AZ);
   const [marks, setMarks] = useState([]);
   const router = useRouter();
   const params = useParams();
@@ -59,15 +58,10 @@ export default function Page() {
       return;
     }
 
-    const translations = CONTENT_LANGUAGE_OPTIONS.map((l) => ({
-      languageCode: l.id,
-      name: data[`name_${l.id}`] || "",
-    })).filter((t) => t.name);
-
     const payload = {
       markId: data.markId ?? "",
+      name: String(data.name || ""),
       image: String(data.image || ""),
-      translations,
     };
 
     ApiService.put(`${EDIT_MODEL_BY_ID_ROUTE}/${modelId}`, { data: payload })
@@ -95,20 +89,12 @@ export default function Page() {
       .then((resp) => {
         const payload = resp?.data?.data ?? {};
         const model = payload?.model ?? payload;
-        const next = { ...(model || {}) };
-
-        const translations = Array.isArray(model?.translations) ? model.translations : [];
-        CONTENT_LANGUAGE_OPTIONS.forEach((l) => {
-          const hit = translations.find((t) => String(t?.languageCode || "").toLowerCase() === String(l.id).toLowerCase());
-          if (hit) {
-            next[`name_${l.id}`] = hit?.name ?? "";
-          }
-        });
-
-        if (!next[`name_${CONTENT_LANGUAGES.AZ}`]) next[`name_${CONTENT_LANGUAGES.AZ}`] = model?.name ?? "";
-        if (!next.image) next.image = model?.image ?? "";
-
-        if (!next.markId) next.markId = model?.markId ?? model?.mark_id ?? model?.mark?.id ?? "";
+        const next = {
+          ...(model || {}),
+          name: model?.name ?? "",
+          image: model?.image ?? "",
+          markId: model?.markId ?? model?.mark_id ?? model?.mark?.id ?? "",
+        };
 
         setData(next);
       })
@@ -126,16 +112,6 @@ export default function Page() {
         <SgPageBody>
           <div className={["row"].join(" ").trim()}>
             <div className="col-lg-12">
-              <div style={{ marginBottom: 16 }}>
-                <SgButtonGroup gap={true} className="mt-2">
-                  {CONTENT_LANGUAGE_OPTIONS.map((lang) => (
-                    <SgButton key={lang.id} color={activeLang === lang.id ? "primary" : "secondary-outline"} onClick={() => setActiveLang(lang.id)} type="button">
-                      {lang.name}
-                    </SgButton>
-                  ))}
-                </SgButtonGroup>
-              </div>
-
               <div className="row">
                 <div className="col-lg-6">
                   <SgFormGroup>
@@ -157,13 +133,13 @@ export default function Page() {
 
               <SgFormGroup>
                 <SgInput
-                  name={`name_${activeLang}`}
-                  id={`name_${activeLang}`}
+                  name="name"
+                  id="name"
                   placeholder="Model adı"
-                  label={`Model adı (${activeLang.toUpperCase()})`}
-                  value={data[`name_${activeLang}`] || ""}
+                  label="Model adı"
+                  value={data.name || ""}
                   onChange={handleChange}
-                  isInvalid={valueErrors[`name_${activeLang}`]}
+                  isInvalid={valueErrors.name}
                 />
               </SgFormGroup>
 

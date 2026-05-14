@@ -192,6 +192,40 @@
                     padding-top: 4px;
                     padding-left: 24px;
                 }
+
+                &--dropdown-menu {
+                    min-width: 220px;
+                    border: 1px solid var(--admin-border, #eaecf0);
+                    border-radius: 12px;
+                    padding: 6px;
+                    box-shadow: var(--admin-shadow-md, 0 8px 24px rgba(16, 24, 40, 0.08));
+                }
+
+                &--dropdown-item {
+                    padding: 0;
+                    border-radius: 10px;
+                    overflow: hidden;
+                }
+
+                &--dropdown-link {
+                    display: block;
+                    padding: 10px 12px;
+                    color: var(--gray-700, #344054);
+                    text-decoration: none;
+                    border-radius: 10px;
+
+                    &:hover {
+                        background: var(--primary-50, #fff1f2);
+                        color: var(--gray-700, #344054);
+                        text-decoration: none;
+                    }
+
+                    &.active {
+                        background: var(--primary-50, #fff1f2);
+                        color: var(--primary-700, #c5141c);
+                        font-weight: 600;
+                    }
+                }
             }
         }
     }
