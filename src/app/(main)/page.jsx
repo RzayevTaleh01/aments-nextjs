@@ -14,5 +14,6 @@ async function getPopularCategoriesForHome() {
 
 export default async function Page() {
   const popularCategoriesApi = await getPopularCategoriesForHome();
+    console.log(popularCategoriesApi)
   return <HomePage popularCategories={popularCategoriesApi} />;
 }

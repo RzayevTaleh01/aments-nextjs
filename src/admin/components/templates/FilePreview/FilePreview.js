@@ -32,7 +32,8 @@ export default function FilePreview(props) {
         if (!v) return '';
         if (v.startsWith('http://') || v.startsWith('https://') || v.startsWith('data:')) return v;
         if (v.startsWith('/')) return baseUrl ? `${baseUrl}${v}` : v;
-        return `${baseUrl}${GET_FILE_ROUTE}/${v}`;
+        if (v.includes('/')) return baseUrl ? `${baseUrl}/${v}` : v;
+        return baseUrl ? `${baseUrl}${GET_FILE_ROUTE}/${v}` : `${GET_FILE_ROUTE}/${v}`;
     }
 
     function getExt(raw) {
@@ -58,7 +59,6 @@ export default function FilePreview(props) {
                     const ext = getExt(raw);
                     const isImage = Boolean(fileUrl) && (['png', 'jpg', 'jpeg', 'svg', 'gif', 'webp'].includes(ext) || !ext || String(fileUrl).startsWith('data:image/'));
                     const isData = String(fileUrl || '').startsWith('data:');
-                    const isRemote = String(fileUrl || '').startsWith('http://') || String(fileUrl || '').startsWith('https://');
 
                     if (!isImage) return null;
 
@@ -71,7 +71,7 @@ export default function FilePreview(props) {
                                     alt={'image preview'}
                                     src={fileUrl}
                                     className='filePreview-thumbImg'
-                                    unoptimized={isData || isRemote}
+                                    unoptimized={isData}
                                 />
                             </a>
                             {!preview ? (
@@ -107,7 +107,6 @@ export default function FilePreview(props) {
                     const ext = getExt(raw);
                     const displayName = raw.startsWith("data:") ? `image-${index + 1}` : raw;
                     const isData = String(fileUrl || '').startsWith('data:');
-                    const isRemote = String(fileUrl || '').startsWith('http://') || String(fileUrl || '').startsWith('https://');
 
                     return (
                         <div className='col-lg-6' key={`${displayName}-${index}`}>
@@ -121,7 +120,7 @@ export default function FilePreview(props) {
                                                 alt={'image preview'}
                                                 src={fileUrl}
                                                 className='filePreview-media-content--img'
-                                                unoptimized={isData || isRemote}
+                                                unoptimized={isData}
                                             />
                                         </SgRatio>
                                     :

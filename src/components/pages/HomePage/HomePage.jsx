@@ -87,7 +87,6 @@ export default function HomePage({ popularCategories }) {
       isActive = false;
     };
   }, []);
-
   return (
     <>
       <HeroHome slides={home1HeroSlides} />
