@@ -11,6 +11,7 @@ import { LanguageProvider } from "@/context/language-context";
 import { StaticContentProvider } from "@/context/static-content-context";
 import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
+import UiLoader from "@/components/ui/Loader/Loader";
 
 const LANG_SWITCH_LOADER_UNTIL_KEY = "oem_lang_loader_until";
 
@@ -67,41 +68,7 @@ function LanguageSwitchLoader() {
 
   if (!isVisible) return null;
 
-  return (
-    <>
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          background: "rgba(255,255,255,0.75)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: 99999,
-        }}
-      >
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-          <div className="oem-lang-loader-spinner" />
-          <div style={{ fontSize: 14, color: "#333", fontWeight: 600 }}>{label}</div>
-        </div>
-      </div>
-      <style jsx global>{`
-        .oem-lang-loader-spinner {
-          width: 44px;
-          height: 44px;
-          border: 4px solid rgba(0, 0, 0, 0.15);
-          border-top-color: rgba(0, 0, 0, 0.65);
-          border-radius: 50%;
-          animation: oemLangLoaderSpin 0.9s linear infinite;
-        }
-        @keyframes oemLangLoaderSpin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
-    </>
-  );
+  return <UiLoader fullscreen={true} label={label} />;
 }
 
 export default function Providers({ children }) {

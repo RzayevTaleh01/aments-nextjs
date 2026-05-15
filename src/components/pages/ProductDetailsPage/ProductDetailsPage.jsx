@@ -12,6 +12,7 @@ import ApiService from "@/services/api/ApiService";
 import styles from "./ProductDetailsPage.module.scss";
 import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
+import UiLoader from "@/components/ui/Loader/Loader";
 
 function mapApiProductToUiProduct(p) {
   const firstStorageProduct = Array.isArray(p?.storageProducts) ? (p.storageProducts.find((sp) => sp?.price != null) ?? p.storageProducts[0]) : null;
@@ -138,9 +139,10 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId, 
           {HelperTranslate({ defaultText: "Məhsul tapılmadı", translateText: staticContent?.productDetailsPage__notFound })}
         </div>
       ) : isLoading || !product ? (
-        <div className="container py-5">
-          {HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
-        </div>
+        <UiLoader
+          fullscreen={true}
+          label={HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
+        />
       ) : (
         <>
           <Breadcrumb
@@ -175,9 +177,7 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId, 
               </div>
             </div>
           </div>
-
           <ProductOffersTable product={product} groups={offerGroups.length ? offerGroups : product?.offerGroups} />
-          <ProductDetailsTabs activeTab={activeTab} onTabChange={setActiveTab} product={product} />
         </>
       )}
     </div>
