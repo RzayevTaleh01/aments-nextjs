@@ -13,25 +13,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import TableFilter from "@/admin/components/ui/TableFilter/TableFilter";
 import { FaPen, FaPlus, FaTrash } from "react-icons/fa";
-
-function toText(value) {
-  if (value === undefined || value === null) return "";
-  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
-  if (typeof value === "object") {
-    const v = value?.name ?? value?.title ?? value?.label ?? value?.slug ?? value?.code ?? value?.id;
-    return v === undefined || v === null ? "" : String(v);
-  }
-  return String(value);
-}
-
-function pickText(row, keys) {
-  for (const key of keys) {
-    const raw = row?.[key];
-    const value = toText(raw);
-    if (value.trim() !== "") return value;
-  }
-  return "-";
-}
+import { pickText } from "@/admin/utils/text";
 
 export default function Page() {
   const [reloadKey, setReloadKey] = useState(0);
