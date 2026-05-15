@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "Aments",
+  name: "OEM",
   description: "Car Accessories Shop",
   url: "https://example.com",
   email: "info@yourdomain.com",
