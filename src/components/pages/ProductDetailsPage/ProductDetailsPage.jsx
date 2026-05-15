@@ -141,7 +141,6 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId, 
       ) : isLoading || !product ? (
         <UiLoader
           fullscreen={true}
-          label={HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
         />
       ) : (
         <>

@@ -85,7 +85,6 @@ export default function Page() {
       <UiLoader
         fullscreen={true}
         visible={isLoading}
-        label={HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
       />
       <Breadcrumb title="Categories" items={[{ label: "Home", href: "/" }, { label: "Categories" }]} />
 
