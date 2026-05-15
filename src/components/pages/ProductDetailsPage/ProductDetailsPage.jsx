@@ -19,7 +19,7 @@ function mapApiProductToUiProduct(p) {
   const price = typeof priceValue === "string" || typeof priceValue === "number" ? `${priceValue} AZN` : "";
   return {
     ...p,
-    imageSrc: p?.image || "/assets/images/products_images/aments_products_image_1.jpg",
+    imageSrc: p?.image,
     price,
   };
 }
@@ -32,7 +32,7 @@ function buildOfferGroupsFromApiProduct(p) {
   const rows = (p?.storageProducts ?? []).map((sp) => {
     const storageProductId = sp?.id ?? sp?.storageProductId ?? sp?.storage_product_id ?? sp?.storage_product?.id ?? null;
     return {
-    img: p?.imageSrc ?? "/assets/images/products_images/aments_products_image_1.jpg",
+    img: p?.imageSrc,
     brand: p?.brand?.name ?? p?.brand ?? "",
     code: p?.code ?? p?.oem_code ?? "",
     name: p?.name ?? "",
