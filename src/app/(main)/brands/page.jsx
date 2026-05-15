@@ -84,6 +84,7 @@ export default function Page() {
         withSidebar={false}
         defaultView="grid"
         showPagination={false}
+        showCartIcon={false}
         emptyMessage={isLoading ? "Yüklənir..." : "Brend tapılmadı"}
         enableClientSearch={false}
       />

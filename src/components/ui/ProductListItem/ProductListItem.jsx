@@ -6,7 +6,7 @@ import Icon from "@/components/ui/TemplateIcon";
 import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
 
-export default function ProductListItem({ product, showPrice = true }) {
+export default function ProductListItem({ product, showPrice = true, showCartIcon = true }) {
   const { staticContent } = useInitial();
   const href = product?.href;
   const imageSrc = product?.imageSrc ?? "/assets/images/products_images/aments_products_image_1.jpg";
@@ -42,18 +42,20 @@ export default function ProductListItem({ product, showPrice = true }) {
               translateText: staticContent?.product__listDescriptionMock,
             })}
           </p>
-          <div className="product-action-icon-link-list">
-            <ul>
-              <li>
-                <Link
-                  href={`${href}#offers`}
-                  aria-label={HelperTranslate({ defaultText: "View offers", translateText: staticContent?.product__viewOffersAria })}
-                >
-                  <Icon name="FaShoppingCart" />
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {showCartIcon ? (
+            <div className="product-action-icon-link-list">
+              <ul>
+                <li>
+                  <Link
+                    href={`${href}#offers`}
+                    aria-label={HelperTranslate({ defaultText: "View offers", translateText: staticContent?.product__viewOffersAria })}
+                  >
+                    <Icon name="FaShoppingCart" />
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

@@ -131,7 +131,12 @@ export default function MobileMenuOffcanvas({
                         e.preventDefault();
                         setLang(opt.value);
                         onClose?.();
-                        window.location.reload();
+                        const until = Date.now() + 900;
+                        try {
+                          window.localStorage?.setItem("oem_lang_loader_until", String(until));
+                        } catch {}
+                        window.dispatchEvent(new CustomEvent("oem:lang-loader", { detail: { until } }));
+                        window.setTimeout(() => window.location.reload(), 50);
                       }}
                     >
                       {opt.iconSrc ? (

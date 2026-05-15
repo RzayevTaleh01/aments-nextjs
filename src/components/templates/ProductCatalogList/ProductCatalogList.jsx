@@ -17,6 +17,7 @@ export default function ProductCatalogList({
   defaultView = "list",
   renderSidebar,
   showPagination = true,
+  showCartIcon = true,
   emptyMessage,
   pagination,
   onPageChange,
@@ -287,7 +288,7 @@ export default function ProductCatalogList({
                                 filteredProducts.map((p, idx) => (
                                   <div key={p.id} className="col-xl-4 col-sm-6 col-12 d-flex">
                                     <div className="w-100">
-                                      <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
+                                      <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} showCartIcon={showCartIcon} />
                                     </div>
                                   </div>
                                 ))
@@ -308,7 +309,7 @@ export default function ProductCatalogList({
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
                               {hasResults ? (
-                                listProducts.map((p) => <ProductListItem key={p.id} product={p} showPrice={showPrice} />)
+                                listProducts.map((p) => <ProductListItem key={p.id} product={p} showPrice={showPrice} showCartIcon={showCartIcon} />)
                               ) : (
                                 <div className="col-12">
                                   <div className="alert alert-light border mb-0">
@@ -409,7 +410,7 @@ export default function ProductCatalogList({
                                 filteredProducts.map((p) => (
                                   <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12 d-flex">
                                     <div className="w-100">
-                                      <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
+                                      <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} showCartIcon={showCartIcon} />
                                     </div>
                                   </div>
                                 ))
@@ -430,7 +431,7 @@ export default function ProductCatalogList({
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
                               {hasResults ? (
-                                listProducts.map((p) => <ProductListItem key={p.id} product={p} showPrice={showPrice} />)
+                                listProducts.map((p) => <ProductListItem key={p.id} product={p} showPrice={showPrice} showCartIcon={showCartIcon} />)
                               ) : (
                                 <div className="col-12">
                                   <div className="alert alert-light border mb-0">

@@ -7,7 +7,7 @@ import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
 import "./ProductCard.module.scss";
 
-export default function ProductCard({ product, showPrice = true }) {
+export default function ProductCard({ product, showPrice = true, showCartIcon = true }) {
   const { staticContent } = useInitial();
   const detailsHref = product?.href ?? (product?.slug ? `/product/${product.slug}` : "/product/default");
   const offersHref = `${detailsHref}#offers`;
@@ -36,18 +36,20 @@ export default function ProductCard({ product, showPrice = true }) {
             {HelperTranslate({ defaultText: "Oxşar OEM", translateText: staticContent?.product__similarBadge })}
           </span>
         ) : null}
-        <div className="product-action-icon-link">
-          <ul>
-            <li>
-              <Link
-                href={offersHref}
-                aria-label={HelperTranslate({ defaultText: "View offers", translateText: staticContent?.product__viewOffersAria })}
-              >
-                <Icon name="FaShoppingCart" />
-              </Link>
-            </li>
-          </ul>
-        </div>
+        {showCartIcon ? (
+          <div className="product-action-icon-link">
+            <ul>
+              <li>
+                <Link
+                  href={offersHref}
+                  aria-label={HelperTranslate({ defaultText: "View offers", translateText: staticContent?.product__viewOffersAria })}
+                >
+                  <Icon name="FaShoppingCart" />
+                </Link>
+              </li>
+            </ul>
+          </div>
+        ) : null}
       </div>
       <div className="product-default-content">
         <h6 className="product-default-link">
