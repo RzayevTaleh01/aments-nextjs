@@ -11,6 +11,7 @@ import ApiService from "@/admin/services/ApiService";
 import { SgPopup } from "@/admin/components/ui/Popup";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import TableFilter from "@/admin/components/ui/TableFilter/TableFilter";
 
 function toText(value) {
   if (value === undefined || value === null) return "";
@@ -33,6 +34,7 @@ function pickText(row, keys) {
 
 export default function Page() {
   const [reloadKey, setReloadKey] = useState(0);
+  const [tableFilters, setTableFilters] = useState({});
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
@@ -67,6 +69,43 @@ export default function Page() {
           </SgButton>
         </SgPageHead>
         <SgPageBody>
+          <TableFilter
+            fields={[
+              {
+                key: "search",
+                kind: "input",
+                width: 260,
+                debounceMs: 400,
+                filterKey: "search",
+                inputProps: {
+                  size: "small",
+                  labelHidden: true,
+                  type: "text",
+                  placeholder: "Ada görə axtar...",
+                },
+                normalize: (v) => String(v || "").trim(),
+              },
+              {
+                key: "status",
+                kind: "select",
+                width: 200,
+                filterKey: "status",
+                defaultValue: "all",
+                selectProps: {
+                  variant: "select",
+                  size: "small",
+                  labelHidden: true,
+                  placeholder: "Status",
+                },
+                options: [
+                  { id: "all", name: "Status seç" },
+                  { id: "1", name: "Aktiv" },
+                  { id: "2", name: "Deaktiv" },
+                ],
+              },
+            ]}
+            onChange={(payload) => setTableFilters(payload?.filters || {})}
+          />
           <SgTable
             data_key="data"
             reloadKey={reloadKey}
@@ -119,6 +158,7 @@ export default function Page() {
                 },
               ],
               api: GET_STORAGES_ROUTE,
+              filters: tableFilters,
             }}
           />
           <SgPopup

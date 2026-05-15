@@ -35,6 +35,7 @@ export default function SgIcon(props) {
         "arrow-down": "FaArrowDown",
         "chevron-down": "FaChevronDown",
         "chevron-up": "FaChevronUp",
+        sync: "FaSyncAlt",
     };
 
     const mappedName = map[String(icon || "").trim()] || "FaRegCircle";

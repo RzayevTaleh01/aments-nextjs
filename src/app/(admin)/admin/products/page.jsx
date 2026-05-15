@@ -3,15 +3,15 @@
 import { MainLayout } from "@/admin/components/layouts";
 import { SgPage, SgPageBody, SgPageHead } from "@/admin/components/ui/Page";
 import SgTable from "@/admin/components/ui/Table";
-import { DELETE_PRODUCT_BY_ID_ROUTE, GET_PRODUCTS_ROUTE } from "@/admin/configs/apiRoutes";
+import { DELETE_PRODUCT_BY_ID_ROUTE, GET_CATEGORIES_ROUTE, GET_PRODUCTS_ROUTE } from "@/admin/configs/apiRoutes";
 import { SgButton } from "@/admin/components/ui/Button";
 import SgButtonGroup from "@/admin/components/ui/ButtonGroup/ButtonGroup";
 import ApiService from "@/admin/services/ApiService";
-import { SgInput } from "@/admin/components/ui/Form";
 import { SgBadge } from "@/admin/components/ui/Badge";
 import { SgPopup } from "@/admin/components/ui/Popup";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
+import TableFilter from "@/admin/components/ui/TableFilter/TableFilter";
 
 function toText(value) {
   if (value === undefined || value === null) return "";
@@ -34,27 +34,9 @@ function pickText(row, keys) {
 
 export default function Page() {
   const [reloadKey, setReloadKey] = useState(0);
-  const [searchText, setSearchText] = useState("");
-  const [debouncedSearchText, setDebouncedSearchText] = useState("");
-  const [status, setStatus] = useState("");
+  const [tableFilters, setTableFilters] = useState({});
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-
-  useEffect(() => {
-    const id = setTimeout(() => {
-      setDebouncedSearchText(searchText);
-    }, 400);
-
-    return () => clearTimeout(id);
-  }, [searchText]);
-
-  const tableFilters = useMemo(() => {
-    const next = {};
-    const trimmedSearch = String(debouncedSearchText || "").trim();
-    if (trimmedSearch) next.search = trimmedSearch;
-    if (status) next.status = status;
-    return next;
-  }, [debouncedSearchText, status]);
 
   function openDeleteModal(row) {
     setSelectedRow(row || null);
@@ -82,38 +64,71 @@ export default function Page() {
   return (
     <MainLayout>
       <SgPage>
-        <SgPageHead header="Məhsullar" description="Məhsulların siyahısı." filter={true}>
-          <div className="d-flex gap-2 flex-wrap align-items-center">
-            <div style={{ width: 200 }}>
-              <SgInput
-                variant="select"
-                size="small"
-                labelHidden={true}
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                options={[
+        <SgPageHead header="Məhsullar" description="Məhsulların siyahısı." filter={true} />
+        <SgPageBody>
+          <TableFilter
+            fields={[
+              {
+                key: "search",
+                kind: "input",
+                width: 260,
+                debounceMs: 400,
+                filterKey: "q",
+                inputProps: {
+                  size: "small",
+                  labelHidden: true,
+                  type: "text",
+                  placeholder: "Ada görə axtar...",
+                },
+                normalize: (v) => String(v || "").trim(),
+              },
+              {
+                key: "categoryId",
+                kind: "select",
+                width: 220,
+                filterKey: "categoryId",
+                defaultValue: "all",
+                selectProps: {
+                  variant: "select",
+                  size: "small",
+                  labelHidden: true,
+                  placeholder: "Kateqoriya",
+                },
+                options: {
+                  type: "api",
+                  api: GET_CATEGORIES_ROUTE,
+                  includeAll: true,
+                  allValue: "all",
+                  allLabel: "Kateqoriya seç",
+                },
+              },
+              {
+                key: "status",
+                kind: "select",
+                width: 200,
+                filterKey: "status",
+                defaultValue: "all",
+                selectProps: {
+                  variant: "select",
+                  size: "small",
+                  labelHidden: true,
+                  placeholder: "Status",
+                },
+                options: [
+                  { id: "all", name: "Status seç" },
                   { id: "active", name: "Aktiv" },
                   { id: "passive", name: "Deaktiv" },
-                ]}
-              />
-            </div>
-            <div style={{ width: 260 }}>
-              <SgInput
-                size="small"
-                labelHidden={true}
-                type="text"
-                placeholder="Axtar..."
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-              />
-            </div>
+                ],
+              },
+            ]}
+            onChange={(payload) => {
+              setTableFilters(payload?.filters || {});
+            }}
+          >
             <SgButton type="link" to="/admin/products/create" color="primary" size="md" icon="plus">
               Əlavə et
             </SgButton>
-
-          </div>
-        </SgPageHead>
-        <SgPageBody>
+          </TableFilter>
           <SgTable
             data_key="products"
             reloadKey={reloadKey}
