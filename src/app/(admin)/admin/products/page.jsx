@@ -12,7 +12,7 @@ import { SgPopup } from "@/admin/components/ui/Popup";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import TableFilter from "@/admin/components/ui/TableFilter/TableFilter";
-import { FaPen, FaPlus, FaTrash } from "react-icons/fa";
+import { FaEye, FaPen, FaPlus, FaTrash } from "react-icons/fa";
 import { pickText } from "@/admin/utils/text";
 
 export default function Page() {
@@ -155,6 +155,17 @@ export default function Page() {
                   hoverable: false,
                   cell: (row) => (
                     <SgButtonGroup gap={true}>
+                      <SgButton
+                        type="link"
+                        to={`/product/${row?.id}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        size="sm"
+                        color="secondary-outline"
+                        icon={FaEye}
+                        onlyIcon={true}
+                        minimal={true}
+                      />
                       <SgButton type="link" to={`/admin/products/edit/${row?.id}`} size="sm" color="secondary-outline" icon={FaPen} onlyIcon={true} minimal={true} />
                       <SgButton size="sm" color="error-outline" icon={FaTrash} onlyIcon={true} minimal={true} onClick={() => openDeleteModal(row)} />
                     </SgButtonGroup>

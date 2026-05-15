@@ -345,7 +345,6 @@ export default function ProductCatalogPage({
       <UiLoader
         fullscreen={true}
         visible={isLoading}
-        label={HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
       />
       <Breadcrumb
         title={title}

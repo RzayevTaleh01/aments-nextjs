@@ -3,6 +3,13 @@
     flex-direction: row;
     background-color: var(--admin-page-bg, #f5f7fb);
 
+    &-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(16, 24, 40, 0.45);
+        z-index: 50;
+    }
+
     &-container {
         flex: 1 1 auto;
         min-width: 0;

@@ -12,7 +12,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { FaPen, FaPlus, FaTrash } from "react-icons/fa";
 import TableFilter from "@/admin/components/ui/TableFilter/TableFilter";
-import { pickText } from "@/admin/utils/text";
+import { pickText, toText } from "@/admin/utils/text";
 
 export default function Page() {
   const [reloadKey, setReloadKey] = useState(0);
