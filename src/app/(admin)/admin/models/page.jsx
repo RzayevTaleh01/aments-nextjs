@@ -83,7 +83,6 @@ export default function Page() {
                 key: "search",
                 kind: "input",
                 width: 260,
-                debounceMs: 400,
                 filterKey: "search",
                 inputProps: {
                   size: "small",

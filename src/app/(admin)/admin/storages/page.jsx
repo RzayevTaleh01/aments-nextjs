@@ -76,21 +76,17 @@ export default function Page() {
                 key: "search",
                 kind: "input",
                 width: 260,
-                debounceMs: 400,
-                filterKey: "search",
                 inputProps: {
                   size: "small",
                   labelHidden: true,
                   type: "text",
                   placeholder: "Ada görə axtar...",
                 },
-                normalize: (v) => String(v || "").trim(),
               },
               {
                 key: "status",
                 kind: "select",
                 width: 200,
-                filterKey: "status",
                 defaultValue: "all",
                 selectProps: {
                   variant: "select",

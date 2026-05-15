@@ -83,7 +83,8 @@ export default function TableFilter({ fields, value, onChange, children }) {
     for (const f of safeFields) {
       const k = f?.key;
       if (!k) continue;
-      const ms = Number(f?.debounceMs ?? 0);
+      const type = f?.type ?? f?.kind ?? "input";
+      const ms = Number(f?.debounceMs ?? (type === "input" ? 400 : 0));
       if (!Number.isFinite(ms) || ms <= 0) {
         setDebouncedValues((prev) => (prev[k] === localValues[k] ? prev : { ...prev, [k]: localValues[k] }));
         continue;
@@ -144,9 +145,9 @@ export default function TableFilter({ fields, value, onChange, children }) {
       if (!k) continue;
       const filterKey = f?.filterKey ?? k;
       if (!filterKey) continue;
-      const ms = Number(f?.debounceMs ?? 0);
-      const raw = Number.isFinite(ms) && ms > 0 ? debouncedValues[k] : localValues[k];
       const type = f?.type ?? f?.kind ?? "input";
+      const ms = Number(f?.debounceMs ?? (type === "input" ? 400 : 0));
+      const raw = Number.isFinite(ms) && ms > 0 ? debouncedValues[k] : localValues[k];
       const defaultValue = f?.defaultValue;
 
       if (type === "select") {

@@ -65,7 +65,11 @@ export default function Page() {
   return (
     <MainLayout>
       <SgPage>
-        <SgPageHead header="Məhsullar" description="Məhsulların siyahısı." filter={true} />
+        <SgPageHead header="Məhsullar" description="Məhsulların siyahısı." filter={true} >
+            <SgButton type="link" to="/admin/products/create" color="primary" size="md" icon={FaPlus}>
+              Əlavə et
+            </SgButton>
+          </SgPageHead>
         <SgPageBody>
           <TableFilter
             fields={[
@@ -73,7 +77,6 @@ export default function Page() {
                 key: "search",
                 kind: "input",
                 width: 260,
-                debounceMs: 400,
                 filterKey: "q",
                 inputProps: {
                   size: "small",
@@ -81,13 +84,11 @@ export default function Page() {
                   type: "text",
                   placeholder: "Ada görə axtar...",
                 },
-                normalize: (v) => String(v || "").trim(),
               },
               {
                 key: "categoryId",
                 kind: "select",
                 width: 220,
-                filterKey: "categoryId",
                 defaultValue: "all",
                 selectProps: {
                   variant: "select",
@@ -107,7 +108,6 @@ export default function Page() {
                 key: "status",
                 kind: "select",
                 width: 200,
-                filterKey: "status",
                 defaultValue: "all",
                 selectProps: {
                   variant: "select",
@@ -126,9 +126,6 @@ export default function Page() {
               setTableFilters(payload?.filters || {});
             }}
           >
-            <SgButton type="link" to="/admin/products/create" color="primary" size="md" icon={FaPlus}>
-              Əlavə et
-            </SgButton>
           </TableFilter>
           <SgTable
             data_key="products"
