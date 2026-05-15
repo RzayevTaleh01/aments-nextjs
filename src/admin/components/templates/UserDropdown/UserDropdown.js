@@ -1,7 +1,7 @@
 import styles from "@/admin/components/templates/UserDropdown/UserDropdown.module.scss";
-import SgIcon from "@/admin/components/ui/Icon";
 import Link from "next/link";
 import {SgDropdown} from "@/admin/components/ui/Dropdown";
+import { FaUser } from "react-icons/fa";
 
 export default function SgTemplateUserDropdown(props) {
     const { user = {}, signOut } = props;
@@ -17,7 +17,7 @@ export default function SgTemplateUserDropdown(props) {
                             {avatar ?
                                 ''
                                 :
-                                <SgIcon icon='user' />
+                                <FaUser />
                             }
                         </div>
                         <div className={styles['sg--template--userDropdown-user-content']}>

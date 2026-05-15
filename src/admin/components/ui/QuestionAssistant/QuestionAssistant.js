@@ -1,6 +1,7 @@
 import {SgButton} from "@/admin/components/ui/Button";
 import SgTooltip from "../Tooltip";
 import styles from "@/admin/components/ui/QuestionAssistant/QuestionAssistant.module.scss";
+import { FaInfoCircle, FaPlus, FaUpload } from "react-icons/fa";
 
 export default function QuestionAssistant(props) {
     const {selectedQuestion, handleNewQuestion, handleAddFile, inputFileRef, handleAddFileClick, handleAddInfoThisQuestion} = props;
@@ -14,7 +15,7 @@ export default function QuestionAssistant(props) {
                     >
                         <SgButton
                             onlyIcon={true}
-                            icon='plus'
+                            icon={FaPlus}
                             withOutBlock={true}
                             padding={0}
                             size='big'
@@ -31,7 +32,7 @@ export default function QuestionAssistant(props) {
                     >
                         <SgButton
                             onlyIcon={true}
-                            icon='upload'
+                            icon={FaUpload}
                             withOutBlock={true}
                             padding={0}
                             size='big'
@@ -48,7 +49,7 @@ export default function QuestionAssistant(props) {
                     >
                         <SgButton
                             onlyIcon={true}
-                            icon='info'
+                            icon={FaInfoCircle}
                             withOutBlock={true}
                             padding={0}
                             size='big'

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { SgButton } from "@/admin/components/ui/Button";
 import { SgInput } from "@/admin/components/ui/Form";
 import ApiService from "@/admin/services/ApiService";
+import { FaSyncAlt } from "react-icons/fa";
 
 function normalizeListResponse(resp) {
   const payload = resp?.data?.data ?? resp?.data ?? null;
@@ -230,7 +231,7 @@ export default function TableFilter({ fields, value, onChange, children }) {
             </div>
           );
         })}
-        <SgButton type="button" size="lg" color="error-outline" icon="sync" onClick={handleReset}>
+        <SgButton type="button" size="lg" color="error-outline" icon={FaSyncAlt} onClick={handleReset}>
           Sıfırla
         </SgButton>
       </div>

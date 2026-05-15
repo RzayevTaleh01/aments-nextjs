@@ -1,16 +1,27 @@
-import SgIcon from "@/admin/components/ui/Icon";
+import {
+    FaAward,
+    FaBookmark,
+    FaDatabase,
+    FaHome,
+    FaLayerGroup,
+    FaList,
+    FaPlus,
+    FaShoppingBag,
+    FaShoppingCart,
+    FaTag,
+} from "react-icons/fa";
 
 export const sidebarPrimaryMenu = [
     {
         name: "Dashboard",
         path: "/",
-        icon: <SgIcon icon='home' />,
+        icon: <FaHome />,
         dashboard: false,
     },
     {
         name: "Məhsullar",
         path: "/",
-        icon: <SgIcon icon='shopping-cart' />,
+        icon: <FaShoppingCart />,
         dashboard: false,
         permission: 'topicsIndex',
         children: [
@@ -18,21 +29,21 @@ export const sidebarPrimaryMenu = [
                 name: "Məhsul siyahısı",
                 path: "/products",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='list' />,
+                icon: <FaList />,
             }
             ,
             {
                 name: "Məhsul əlavə et",
                 path: "/products/create",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='plus' />,
+                icon: <FaPlus />,
             }
         ]
     },
     {
         name: "Sifarişlər",
         path: "/",
-        icon: <SgIcon icon='shopping-bag' />,
+        icon: <FaShoppingBag />,
         dashboard: false,
         permission: 'topicsIndex',
         children: [
@@ -40,14 +51,14 @@ export const sidebarPrimaryMenu = [
                 name: "Sifariş siyahısı",
                 path: "/orders",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='list' />,
+                icon: <FaList />,
             }
         ]
     },
     {
         name: "Anbarlar",
         path: "/",
-        icon: <SgIcon icon='database' />,
+        icon: <FaDatabase />,
         dashboard: false,
         permission: 'topicsIndex',
         children: [
@@ -55,20 +66,20 @@ export const sidebarPrimaryMenu = [
                 name: "Anbar siyahısı",
                 path: "/storages",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='list' />,
+                icon: <FaList />,
             },
             {
                 name: "Anbar əlavə et",
                 path: "/storages/create",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='plus' />,
+                icon: <FaPlus />,
             }
         ]
     },
     {
         name: "Kateqoriyalar",
         path: "/",
-        icon: <SgIcon icon='tag' />,
+        icon: <FaTag />,
         dashboard: false,
         permission: 'topicsIndex',
         children: [
@@ -76,20 +87,20 @@ export const sidebarPrimaryMenu = [
                 name: "Kateqoriya siyahısı",
                 path: "/categories",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='list' />,
+                icon: <FaList />,
             },
             {
                 name: "Kateqoriya əlavə et",
                 path: "/categories/create",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='plus' />,
+                icon: <FaPlus />,
             }
         ]
     },
     {
         name: "Brendlər",
         path: "/",
-        icon: <SgIcon icon='award' />,
+        icon: <FaAward />,
         dashboard: false,
         permission: 'topicsIndex',
         children: [
@@ -97,20 +108,20 @@ export const sidebarPrimaryMenu = [
                 name: "Brend siyahısı",
                 path: "/brands",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='list' />,
+                icon: <FaList />,
             },
             {
                 name: "Brend əlavə et",
                 path: "/brands/create",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='plus' />,
+                icon: <FaPlus />,
             }
         ]
     },
     {
         name: "Markalar",
         path: "/",
-        icon: <SgIcon icon='bookmark' />,
+        icon: <FaBookmark />,
         dashboard: false,
         permission: 'topicsIndex',
         children: [
@@ -118,20 +129,20 @@ export const sidebarPrimaryMenu = [
                 name: "Marka siyahısı",
                 path: "/marks",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='list' />,
+                icon: <FaList />,
             },
             {
                 name: "Marka əlavə et",
                 path: "/marks/create",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='plus' />,
+                icon: <FaPlus />,
             }
         ]
     },
     {
         name: "Modellər",
         path: "/",
-        icon: <SgIcon icon='layers' />,
+        icon: <FaLayerGroup />,
         dashboard: false,
         permission: 'topicsIndex',
         children: [
@@ -139,13 +150,13 @@ export const sidebarPrimaryMenu = [
                 name: "Model siyahısı",
                 path: "/models",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='list' />,
+                icon: <FaList />,
             },
             {
                 name: "Model əlavə et",
                 path: "/models/create",
                 permission: 'topicsIndex',
-                icon: <SgIcon icon='plus' />,
+                icon: <FaPlus />,
             }
         ]
     },

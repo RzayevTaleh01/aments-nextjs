@@ -12,6 +12,7 @@ import { SgPopup } from "@/admin/components/ui/Popup";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import TableFilter from "@/admin/components/ui/TableFilter/TableFilter";
+import { FaPen, FaPlus, FaTrash } from "react-icons/fa";
 
 function toText(value) {
   if (value === undefined || value === null) return "";
@@ -64,7 +65,7 @@ export default function Page() {
     <MainLayout>
       <SgPage>
         <SgPageHead header="Anbarlar" description="Anbarların siyahısı." filter={true}>
-          <SgButton type="link" to="/admin/storages/create" color="primary" size="md" icon="plus">
+          <SgButton type="link" to="/admin/storages/create" color="primary" size="md" icon={FaPlus}>
             Əlavə et
           </SgButton>
         </SgPageHead>
@@ -151,8 +152,8 @@ export default function Page() {
                   hoverable: false,
                   cell: (row) => (
                     <SgButtonGroup gap={true}>
-                      <SgButton type="link" to={`/admin/storages/edit/${row?.id}`} size="sm" color="secondary-outline" icon="pen" onlyIcon={true} minimal={true} />
-                      <SgButton size="sm" color="error-outline" icon="trash" onlyIcon={true} minimal={true} onClick={() => openDeleteModal(row)} />
+                      <SgButton type="link" to={`/admin/storages/edit/${row?.id}`} size="sm" color="secondary-outline" icon={FaPen} onlyIcon={true} minimal={true} />
+                      <SgButton size="sm" color="error-outline" icon={FaTrash} onlyIcon={true} minimal={true} onClick={() => openDeleteModal(row)} />
                     </SgButtonGroup>
                   ),
                 },

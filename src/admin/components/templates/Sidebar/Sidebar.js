@@ -28,7 +28,7 @@ export default function SgTemplateSidebar(props) {
                     {/*<div onClick={handleToggleSidebar}
                          className={[styles['sg--template--sidebar-head--toggle']].join(' ').trim()}
                     >
-                        <SgIcon icon='menu-2' />
+                        <SgIcon icon="FaBars" />
                     </div>*/}
                 </div>
                 <div className={[styles['sg--template--sidebar-body']].join(' ').trim()}>

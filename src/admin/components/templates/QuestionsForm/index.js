@@ -1,7 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import {Section} from "@/components/ui/Section";
 import {changeData} from "@/admin/utils/changeData";
-import SgIcon from "@/admin/components/ui/Icon";
 import {addRow} from "@/admin/utils/addRow";
 import {removeRow} from "@/admin/utils/removeRow";
 import {findMaxID} from "@/admin/utils/findMaxId";
@@ -14,6 +13,16 @@ import {globalValidate} from "@/admin/utils/validate";
 import {callBackChangeDataFile, changeDataFile} from "@/admin/utils/changeDataFile";
 import {arrayMoveImmutable} from "array-move";
 import SortableList from "./SortableList";
+import {
+    FaAlignLeft,
+    FaChevronCircleDown,
+    FaFont,
+    FaRegCalendarAlt,
+    FaRegCheckSquare,
+    FaRegClock,
+    FaRegDotCircle,
+    FaUpload,
+} from "react-icons/fa";
 
 
 
@@ -53,7 +62,7 @@ export default function QuestionsForm(props) {
         {
             name:
                 <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
-                    <SgIcon icon='short_text' />
+                    <FaFont />
                     <span>Qısa tekst</span>
                 </div>,
             value: 4,
@@ -62,7 +71,7 @@ export default function QuestionsForm(props) {
         {
             name:
                 <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
-                    <SgIcon icon='long_text' />
+                    <FaAlignLeft />
                     <span>Uzun tekst</span>
                 </div>,
             value: 5,
@@ -71,7 +80,7 @@ export default function QuestionsForm(props) {
         {
             name:
                 <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
-                    <SgIcon icon='radio' />
+                    <FaRegDotCircle />
                     <span>Bullet point</span>
                 </div>,
             value: 1,
@@ -80,7 +89,7 @@ export default function QuestionsForm(props) {
         {
             name:
                 <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
-                    <SgIcon icon='checkbox' />
+                    <FaRegCheckSquare />
                     <span>Checkbox</span>
                 </div>,
             value: 2,
@@ -89,7 +98,7 @@ export default function QuestionsForm(props) {
         {
             name:
                 <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
-                    <SgIcon icon='chevron_down_circle_outline' />
+                    <FaChevronCircleDown />
                     <span>Dropdown</span>
                 </div>,
             value: 3,
@@ -98,7 +107,7 @@ export default function QuestionsForm(props) {
         {
             name:
                 <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
-                    <SgIcon icon='date' />
+                    <FaRegCalendarAlt />
                     <span>Tarix</span>
                 </div>,
             value: 'date',
@@ -107,7 +116,7 @@ export default function QuestionsForm(props) {
         {
             name:
                 <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
-                    <SgIcon icon='time' />
+                    <FaRegClock />
                     <span>Saat</span>
                 </div>,
             value: 'time',
@@ -116,7 +125,7 @@ export default function QuestionsForm(props) {
         {
             name:
                 <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
-                    <SgIcon icon='upload' />
+                    <FaUpload />
                     <span>File yükləmək</span>
                 </div>,
             value: 'file',

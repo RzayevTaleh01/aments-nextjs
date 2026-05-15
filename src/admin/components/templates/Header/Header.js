@@ -1,11 +1,11 @@
 "use client";
 
 import styles from '@/admin/components/templates/Header/Header.module.scss';
-import SgIcon from "@/admin/components/ui/Icon";
 import Link from "next/link";
 import {SgTemplateUserDropdown} from "@/admin/components/templates/UserDropdown";
 import { SgButton } from "@/admin/components/ui/Button";
 import {useSession,signOut} from "next-auth/react";
+import { FaArrowLeft, FaBars } from "react-icons/fa";
 const REQUEST_NEXT_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_NEXT_ADMIN_BASE_URL;
 
 export default function SgTemplateHeader(props) {
@@ -17,7 +17,7 @@ export default function SgTemplateHeader(props) {
             <div className={styles['sg--template--header']}>
                 {layout !== 'workspace' ?
                     <div className={styles['sg--template--header-toggle']} onClick={handleToggleSidebar}>
-                        <SgIcon icon='menu-2' />
+                        <FaBars />
                     </div>
                     :
                     <Link href='/' className={[styles['sg--template--header-logo']].join(' ').trim()}>
@@ -30,7 +30,7 @@ export default function SgTemplateHeader(props) {
                     </Link>
                 }
                 <div className={styles['sg--template--header-actions']}>
-                    <SgButton type='link' to='/' color='secondary-outline' size='sm' icon='arrow-left'>
+                    <SgButton type='link' to='/' color='secondary-outline' size='sm' icon={FaArrowLeft}>
                         Sayta qayıt
                     </SgButton>
                     <SgTemplateUserDropdown

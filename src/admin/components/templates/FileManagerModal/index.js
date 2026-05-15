@@ -12,7 +12,7 @@ import {changeData} from "@/admin/utils/changeData";
 import {value} from "lodash/seq";
 import Fancybox from "@/components/templates/Fancybox/Fancybox";
 import Image from "next/image";
-import SgIcon from "@/admin/components/ui/Icon";
+import { FaRegFileAlt } from "react-icons/fa";
 
 
 export default function SgTemplateFileManagerModal(props) {
@@ -156,10 +156,7 @@ export default function SgTemplateFileManagerModal(props) {
 																		fontSize: '14px'
 																	}}
 																>
-																	<SgIcon
-																		size='52px'
-																		icon='file-text'
-																	/>
+																	<FaRegFileAlt size={52} />
 																	{file.extension}
 																</span>
 														)

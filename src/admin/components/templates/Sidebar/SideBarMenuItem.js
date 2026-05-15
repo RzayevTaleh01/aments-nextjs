@@ -1,10 +1,10 @@
 import styles from "@/admin/components/templates/Sidebar/Sidebar.module.scss";
 import Link from "next/link";
 import {SgCollapse} from "@/admin/components/ui/Collapse";
-import SgIcon from "@/admin/components/ui/Icon";
 import {SgDropdown} from "@/admin/components/ui/Dropdown";
 import {useSession} from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { FaBars } from "react-icons/fa";
 
 function hasPermission(permissions, permissionKey) {
     if (!permissionKey) return true;
@@ -71,7 +71,7 @@ export default function SgSideBarMenuItem(props) {
                                     toggleHeader={
                                         <>
                                             <div className={[styles['sg--template--sidebar-body-menu-item--link-icon']].join(' ').trim()}>
-                                                {item.icon ? item.icon : <SgIcon icon='menu' />}
+                                                {item.icon ? item.icon : <FaBars />}
                                             </div>
                                             <div className={[styles['sg--template--sidebar-body-menu-item--link-name']].join(' ').trim()}>
                                                 {item.name}
@@ -105,7 +105,7 @@ export default function SgSideBarMenuItem(props) {
                                         <>
                                             <div className={[styles['sg--template--sidebar-body-menu-item--link-icon']].join(' ').trim()}>
                                                 {/*{item.icon ? item.icon : (item.name || '').substring(0, 2)}*/}
-                                                {item.icon ? item.icon : <SgIcon icon='menu' />}
+                                                {item.icon ? item.icon : <FaBars />}
                                             </div>
                                             <div className={[styles['sg--template--sidebar-body-menu-item--link-name']].join(' ').trim()}>
                                                 {item.name}
@@ -134,7 +134,7 @@ export default function SgSideBarMenuItem(props) {
                                     className={[styles['sg--template--sidebar-body-menu-item--link'], isActive ? 'active' : ''].join(' ').trim()}
                                 >
                                     <div className={[styles['sg--template--sidebar-body-menu-item--link-icon']].join(' ').trim()}>
-                                        {item.icon ? item.icon : <SgIcon icon='menu' />}
+                                        {item.icon ? item.icon : <FaBars />}
                                     </div>
                                     <div className={[styles['sg--template--sidebar-body-menu-item--link-name']].join(' ').trim()}>
                                         {item.name}

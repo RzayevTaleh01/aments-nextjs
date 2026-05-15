@@ -1,11 +1,11 @@
 import {sortableHandle} from "react-sortable-hoc";
-import SgIcon from "@/admin/components/ui/Icon";
 import {SgButton} from "@/admin/components/ui/Button";
 import styles from "@/admin/components/templates/Sortable/Sortable.module.scss";
+import { FaBars } from "react-icons/fa";
 
 export const DragHandle = sortableHandle(({index, handleRemove}) => (
     <div className={[styles['sg--widgetItem--key']].join(' ').trim()}>
-        <SgIcon icon='menu' size={20} />
+        <FaBars size={20} />
         {index + 1}
         <SgButton
             className='ms-auto'

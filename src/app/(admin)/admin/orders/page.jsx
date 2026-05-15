@@ -10,6 +10,7 @@ import { SgPopup } from "@/admin/components/ui/Popup";
 import { useState } from "react";
 import { SgButton } from "@/admin/components/ui/Button";
 import { toast } from "react-toastify";
+import { FaTrash } from "react-icons/fa";
 
 function toText(value) {
   if (value === undefined || value === null) return "";
@@ -112,7 +113,7 @@ export default function Page() {
                   hoverable: false,
                   cell: (row) => (
                     <SgButtonGroup gap={true}>
-                      <SgButton size="sm" color="error-outline" icon="trash" onlyIcon={true} minimal={true} onClick={() => openDeleteModal(row)} />
+                      <SgButton size="sm" color="error-outline" icon={FaTrash} onlyIcon={true} minimal={true} onClick={() => openDeleteModal(row)} />
                     </SgButtonGroup>
                   ),
                 },
