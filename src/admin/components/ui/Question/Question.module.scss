@@ -1,0 +1,129 @@
+.questions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.question {
+    padding: 16px 32px;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
+    position: relative;
+    border: 1px solid #FFFFFF;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    user-select: none;
+}
+
+.question.current::before {
+    content: '';
+    height: calc(100% + 2px);
+    width: 9px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: var(--primary-700, #0681BE);
+    position: absolute;
+    left: -1px;
+    top: -1px;
+}
+.question.selected {
+    border-color: var(--primary-700, #0681BE);
+}
+.question.dragging {
+    border-color: var(--primary-700, #0681BE);
+}
+.unSelected.question {
+    background-color: #F8F8F8;
+}
+
+
+.question_head {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+/*.question_head::after {
+    !* use !important to prevent issues with browser extensions that change fonts *!
+    font-family: 'sg-admin-icons' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    !* Better Font Rendering =========== *!
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\e912";
+    color: #B1B1B1;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+}*/
+.question_head--header {
+    color: #B1B1B1;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.question_head--left {
+    flex: 1 0
+}
+.question_head--center {
+    font-size: 22px;
+    padding: 0 6px;
+    color: #B1B1B1;
+    flex: 0 0;
+}
+.question_head--right {
+    flex: 1 0
+}
+
+
+
+.question_footer {
+    border-top: 1px solid #EEEEEE;
+    padding: 12px 0 3px;
+    margin-top: 34px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 15px;
+}
+.question_footer_item {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+.question_footer_item:not(:first-child)::before {
+    content: '';
+    display: block;
+    width: 1px;
+    background-color: #EEEEEE;
+}
+
+.question--overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 8;
+}
+
+@media (max-width: 992px) {
+    .question {
+        padding: 16px 12px;
+    }
+}

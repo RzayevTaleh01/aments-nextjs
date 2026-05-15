@@ -6,10 +6,13 @@ import { cn } from "@/utils/cn";
 import styles from "./ProductCategorySingle.module.scss";
 
 export default function ProductCategorySingle({ href, imageSrc, title, items, className }) {
+  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
+  const resolvedSrc = String(imageSrc || "").startsWith("/uploads") ? `${base}${imageSrc}` : imageSrc;
+
   return (
     <Link href={href} className={cn(styles, "product-catagory-single", className)}>
       <div className={cn(styles, "product-catagory-img")}>
-        <Image src={imageSrc} alt={title} width={300} height={300} />
+        <Image src={resolvedSrc} alt={title} width={300} height={300} />
       </div>
       <div className={cn(styles, "product-catagory-content")}>
         <h5 className={cn(styles, "product-catagory-title")}>{title}</h5>

@@ -1,11 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import ProductCard from "@/components/ui/ProductCard/ProductCard";
 import ProductListItem from "@/components/ui/ProductListItem/ProductListItem";
 import { cn } from "@/utils/cn";
 import useShowPrice from "@/hooks/use-show-price";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 import styles from "./ProductCatalogList.module.scss";
 
 export default function ProductCatalogList({
@@ -15,11 +17,21 @@ export default function ProductCatalogList({
   defaultView = "list",
   renderSidebar,
   showPagination = true,
+  showCartIcon = true,
   emptyMessage,
   pagination,
   onPageChange,
+  onApplyFilters,
+  onResetFilters,
+  initialSearchValue = "",
+  initialCategoryValue = "",
+  initialBrandValue = "",
+  initialMarkValue = "",
+  initialModelValue = "",
+  enableClientSearch = true,
 }) {
   const { showPrice } = useShowPrice();
+  const { staticContent } = useInitial();
   const rowClass = sidebarPosition === "right" ? "row flex-column-reverse flex-lg-row-reverse" : "row flex-column-reverse flex-lg-row";
   const [activeView, setActiveView] = useState(defaultView);
   const [searchInput, setSearchInput] = useState("");
@@ -33,11 +45,22 @@ export default function ProductCatalogList({
     () => (withSidebar ? (sidebarPosition === "right" ? "layout-3-grid" : "layout-3-grid") : "layout-4-grid"),
     [withSidebar, sidebarPosition],
   );
+
+  useEffect(() => {
+    setSearchInput(String(initialSearchValue || ""));
+    setSearchQuery(enableClientSearch ? String(initialSearchValue || "") : "");
+    setCategory(String(initialCategoryValue || ""));
+    setBrand(String(initialBrandValue || ""));
+    setMark(String(initialMarkValue || ""));
+    setModel(String(initialModelValue || ""));
+  }, [enableClientSearch, initialBrandValue, initialCategoryValue, initialMarkValue, initialModelValue, initialSearchValue]);
+
   const filteredProducts = useMemo(() => {
+    if (!enableClientSearch) return products;
     const query = searchQuery.trim().toLowerCase();
     if (!query) return products;
     return products.filter((p) => (p?.name ?? "").toLowerCase().includes(query));
-  }, [products, searchQuery]);
+  }, [enableClientSearch, products, searchQuery]);
   const hasResults = filteredProducts.length > 0;
   const listProducts = useMemo(() => {
     return filteredProducts;
@@ -60,6 +83,16 @@ export default function ProductCatalogList({
   }, [page, shouldShowPagination, totalPages]);
 
   function applyFilters() {
+    if (typeof onApplyFilters === "function") {
+      onApplyFilters({
+        q: String(searchInput || "").trim(),
+        categoryId: category,
+        brandId: brand,
+        markId: mark,
+        modelId: model,
+      });
+      return;
+    }
     setSearchQuery(searchInput);
   }
 
@@ -70,6 +103,7 @@ export default function ProductCatalogList({
     setBrand("");
     setMark("");
     setModel("");
+    if (typeof onResetFilters === "function") onResetFilters();
   }
 
   const sidebarApi = {
@@ -101,7 +135,9 @@ export default function ProductCatalogList({
                   ) : (
                     <>
                       <div className={styles.sidebarSingleWidget}>
-                        <h6 className={styles.sidebarTitle}>Search</h6>
+                        <h6 className={styles.sidebarTitle}>
+                          {HelperTranslate({ defaultText: "Search", translateText: staticContent?.catalogList__searchTitle })}
+                        </h6>
                         <div className="sidebar-content">
                           <form
                             className="d-flex gap-2"
@@ -115,17 +151,22 @@ export default function ProductCatalogList({
                               type="text"
                               value={searchInput}
                               onChange={(e) => setSearchInput(e.target.value)}
-                              placeholder="Ada görə axtar"
+                              placeholder={HelperTranslate({
+                                defaultText: "Ada görə axtar",
+                                translateText: staticContent?.catalogList__searchByNamePlaceholder,
+                              })}
                             />
                             <button type="submit" className="btn btn-dark">
-                              Search
+                              {HelperTranslate({ defaultText: "Search", translateText: staticContent?.catalog__searchButton })}
                             </button>
                           </form>
                         </div>
                       </div>
 
                       <div className={styles.sidebarSingleWidget}>
-                        <h6 className={styles.sidebarTitle}>Categories</h6>
+                        <h6 className={styles.sidebarTitle}>
+                          {HelperTranslate({ defaultText: "Categories", translateText: staticContent?.catalogList__categoriesTitle })}
+                        </h6>
                         <div className="sidebar-content">
                           <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
                             <option value="" />
@@ -134,7 +175,9 @@ export default function ProductCatalogList({
                       </div>
 
                       <div className={styles.sidebarSingleWidget}>
-                        <h6 className={styles.sidebarTitle}>Brend</h6>
+                        <h6 className={styles.sidebarTitle}>
+                          {HelperTranslate({ defaultText: "Brend", translateText: staticContent?.catalog__brandPlaceholder })}
+                        </h6>
                         <div className="sidebar-content">
                           <select className="form-select" value={brand} onChange={(e) => setBrand(e.target.value)}>
                             <option value="" />
@@ -143,7 +186,9 @@ export default function ProductCatalogList({
                       </div>
 
                       <div className={styles.sidebarSingleWidget}>
-                        <h6 className={styles.sidebarTitle}>Mark</h6>
+                        <h6 className={styles.sidebarTitle}>
+                          {HelperTranslate({ defaultText: "Mark", translateText: staticContent?.catalog__markPlaceholder })}
+                        </h6>
                         <div className="sidebar-content">
                           <select className="form-select" value={mark} onChange={(e) => setMark(e.target.value)}>
                             <option value="" />
@@ -152,7 +197,9 @@ export default function ProductCatalogList({
                       </div>
 
                       <div className={styles.sidebarSingleWidget}>
-                        <h6 className={styles.sidebarTitle}>Model</h6>
+                        <h6 className={styles.sidebarTitle}>
+                          {HelperTranslate({ defaultText: "Model", translateText: staticContent?.catalog__modelPlaceholder })}
+                        </h6>
                         <div className="sidebar-content">
                           <select className="form-select" value={model} onChange={(e) => setModel(e.target.value)}>
                             <option value="" />
@@ -216,7 +263,14 @@ export default function ProductCatalogList({
                         </div> */}
 
                         <div className="page-amount">
-                          <span>Showing {filteredProducts.length} results</span>
+                          <span>
+                            {HelperTranslate({
+                              defaultText: `Showing ${filteredProducts.length} results`,
+                              translateText: staticContent?.catalogList__showingResults
+                                ? String(staticContent.catalogList__showingResults).replace("{count}", String(filteredProducts.length))
+                                : undefined,
+                            })}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -234,13 +288,19 @@ export default function ProductCatalogList({
                                 filteredProducts.map((p, idx) => (
                                   <div key={p.id} className="col-xl-4 col-sm-6 col-12 d-flex">
                                     <div className="w-100">
-                                      <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
+                                      <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} showCartIcon={showCartIcon} />
                                     </div>
                                   </div>
                                 ))
                               ) : (
                                 <div className="col-12">
-                                  <div className="alert alert-light border mb-0">{emptyMessage ?? "Məhsul tapılmadı"}</div>
+                                  <div className="alert alert-light border mb-0">
+                                    {emptyMessage ??
+                                      HelperTranslate({
+                                        defaultText: "Məhsul tapılmadı",
+                                        translateText: staticContent?.catalog__emptyMessage,
+                                      })}
+                                  </div>
                                 </div>
                               )}
                             </div>
@@ -249,10 +309,16 @@ export default function ProductCatalogList({
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
                               {hasResults ? (
-                                listProducts.map((p) => <ProductListItem key={p.id} product={p} showPrice={showPrice} />)
+                                listProducts.map((p) => <ProductListItem key={p.id} product={p} showPrice={showPrice} showCartIcon={showCartIcon} />)
                               ) : (
                                 <div className="col-12">
-                                  <div className="alert alert-light border mb-0">{emptyMessage ?? "Məhsul tapılmadı"}</div>
+                                  <div className="alert alert-light border mb-0">
+                                    {emptyMessage ??
+                                      HelperTranslate({
+                                        defaultText: "Məhsul tapılmadı",
+                                        translateText: staticContent?.catalog__emptyMessage,
+                                      })}
+                                  </div>
                                 </div>
                               )}
                             </div>
@@ -268,7 +334,7 @@ export default function ProductCatalogList({
                     <ul>
                       <li>
                         <button type="button" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
-                          Previous
+                          {HelperTranslate({ defaultText: "Previous", translateText: staticContent?.pagination__previous })}
                         </button>
                       </li>
                       {pageNumbers.map((n) => (
@@ -280,7 +346,7 @@ export default function ProductCatalogList({
                       ))}
                       <li>
                         <button type="button" disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>
-                          Next
+                          {HelperTranslate({ defaultText: "Next", translateText: staticContent?.pagination__next })}
                         </button>
                       </li>
                     </ul>
@@ -291,7 +357,7 @@ export default function ProductCatalogList({
           ) : (
             <div className="row flex-column-reverse flex-lg-row">
               <div className="col-lg-12">
-                <div className="shop-sort-section" data-aos="fade-up" data-aos-delay="0">
+                <div className="shop-sort-section">
                   <div className="container">
                     <div className="row">
                       <div className="sort-box d-flex justify-content-between align-items-center flex-wrap">
@@ -318,30 +384,22 @@ export default function ProductCatalogList({
                           </ul>
                         </div>
 
-                        <div className="sort-select-list">
-                          <form action="#" onSubmit={(e) => e.preventDefault()}>
-                            <fieldset>
-                              <select className="form-select" name="speed" id="speed" defaultValue="Sort by newness">
-                                <option>Sort by average rating</option>
-                                <option>Sort by popularity</option>
-                                <option>Sort by newness</option>
-                                <option>Sort by price: low to high</option>
-                                <option>Sort by price: high to low</option>
-                                <option>Product Name: Z</option>
-                              </select>
-                            </fieldset>
-                          </form>
-                        </div>
-
                         <div className="page-amount">
-                          <span>Showing {filteredProducts.length} results</span>
+                          <span>
+                            {HelperTranslate({
+                              defaultText: `Showing ${filteredProducts.length} results`,
+                              translateText: staticContent?.catalogList__showingResults
+                                ? String(staticContent.catalogList__showingResults).replace("{count}", String(filteredProducts.length))
+                                : undefined,
+                            })}
+                          </span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="sort-product-tab-wrapper">
+                <div className="mt-5 sort-product-tab-wrapper">
                   <div className="container">
                     <div className="row">
                       <div className="col-12">
@@ -351,14 +409,20 @@ export default function ProductCatalogList({
                               {hasResults ? (
                                 filteredProducts.map((p) => (
                                   <div key={p.id} className="col-xl-3 col-lg-4 col-sm-6 col-12 d-flex">
-                                    <div data-aos="fade-up" className="w-100">
-                                      <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} />
+                                    <div className="w-100">
+                                      <ProductCard product={p} actionsVariant="modals" showPrice={showPrice} showCartIcon={showCartIcon} />
                                     </div>
                                   </div>
                                 ))
                               ) : (
                                 <div className="col-12">
-                                  <div className="alert alert-light border mb-0">{emptyMessage ?? "Məhsul tapılmadı"}</div>
+                                  <div className="alert alert-light border mb-0">
+                                    {emptyMessage ??
+                                      HelperTranslate({
+                                        defaultText: "Məhsul tapılmadı",
+                                        translateText: staticContent?.catalog__emptyMessage,
+                                      })}
+                                  </div>
                                 </div>
                               )}
                             </div>
@@ -367,10 +431,16 @@ export default function ProductCatalogList({
                           <div className={cn(styles.tabPane, !isGridDefault && styles.tabPaneActive)} id="layout-list">
                             <div className="row">
                               {hasResults ? (
-                                listProducts.map((p) => <ProductListItem key={p.id} product={p} showPrice={showPrice} />)
+                                listProducts.map((p) => <ProductListItem key={p.id} product={p} showPrice={showPrice} showCartIcon={showCartIcon} />)
                               ) : (
                                 <div className="col-12">
-                                  <div className="alert alert-light border mb-0">{emptyMessage ?? "Məhsul tapılmadı"}</div>
+                                  <div className="alert alert-light border mb-0">
+                                    {emptyMessage ??
+                                      HelperTranslate({
+                                        defaultText: "Məhsul tapılmadı",
+                                        translateText: staticContent?.catalog__emptyMessage,
+                                      })}
+                                  </div>
                                 </div>
                               )}
                             </div>
@@ -386,7 +456,7 @@ export default function ProductCatalogList({
                     <ul>
                       <li>
                         <button type="button" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
-                          Previous
+                          {HelperTranslate({ defaultText: "Previous", translateText: staticContent?.pagination__previous })}
                         </button>
                       </li>
                       {pageNumbers.map((n) => (
@@ -398,7 +468,7 @@ export default function ProductCatalogList({
                       ))}
                       <li>
                         <button type="button" disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>
-                          Next
+                          {HelperTranslate({ defaultText: "Next", translateText: staticContent?.pagination__next })}
                         </button>
                       </li>
                     </ul>

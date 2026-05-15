@@ -7,6 +7,8 @@ import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
 import useShowPrice from "@/hooks/use-show-price";
 import styles from "./CartPage.module.scss";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 
 function parsePriceNumber(priceText) {
   if (typeof priceText === "number" && Number.isFinite(priceText)) return priceText;
@@ -26,13 +28,15 @@ function formatMoney(value, currency) {
 export default function CartPage() {
   const { showPrice } = useShowPrice();
   const { cartItems, cartSubtotalText, setCartItemQuantity, removeCartItem } = useCart();
+  const { staticContent } = useInitial();
 
   return (
     <div className={styles.scope}>
       <Breadcrumb
         title="Cart"
+        titleKey="cart__breadcrumbTitle"
         items={[
-          { label: "Home", href: "/" },
+          { label: "Home", labelKey: "breadcrumb__home", href: "/" },
           { label: "Cart" },
         ]}
       />
@@ -47,12 +51,24 @@ export default function CartPage() {
                     <table>
                       <thead>
                         <tr>
-                          <th className="product_remove">Delete</th>
-                          <th className="product_thumb">Image</th>
-                          <th className="product_name">Product</th>
-                          <th className="product-price">Price</th>
-                          <th className="product_quantity">Quantity</th>
-                          <th className="product_total">Total</th>
+                          <th className="product_remove">
+                            {HelperTranslate({ defaultText: "Delete", translateText: staticContent?.cart__delete })}
+                          </th>
+                          <th className="product_thumb">
+                            {HelperTranslate({ defaultText: "Image", translateText: staticContent?.cart__image })}
+                          </th>
+                          <th className="product_name">
+                            {HelperTranslate({ defaultText: "Product", translateText: staticContent?.cart__product })}
+                          </th>
+                          <th className="product-price">
+                            {HelperTranslate({ defaultText: "Price", translateText: staticContent?.cart__price })}
+                          </th>
+                          <th className="product_quantity">
+                            {HelperTranslate({ defaultText: "Quantity", translateText: staticContent?.offerModal__qtyLabel })}
+                          </th>
+                          <th className="product_total">
+                            {HelperTranslate({ defaultText: "Total", translateText: staticContent?.cart__total })}
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -68,7 +84,7 @@ export default function CartPage() {
                             <td className="product_remove">
                               <button
                                 type="button"
-                                aria-label="Delete"
+                                aria-label={HelperTranslate({ defaultText: "Delete", translateText: staticContent?.cart__delete })}
                                 className="p-0 border-0 bg-transparent"
                                 onClick={() => removeCartItem(row.key)}
                               >
@@ -85,7 +101,9 @@ export default function CartPage() {
                             </td>
                             <td className="product-price">{showPrice ? row.unitPriceText || row.unitPrice : null}</td>
                             <td className="product_quantity">
-                              <label>Quantity</label>{" "}
+                              <label>
+                                {HelperTranslate({ defaultText: "Quantity", translateText: staticContent?.offerModal__qtyLabel })}
+                              </label>{" "}
                               <input
                                 min="1"
                                 value={String(row.quantity ?? 1)}
@@ -100,14 +118,18 @@ export default function CartPage() {
                         ))}
                         {cartItems.length === 0 ? (
                           <tr>
-                            <td colSpan={6}>Cart is empty</td>
+                            <td colSpan={6}>
+                              {HelperTranslate({ defaultText: "Cart is empty", translateText: staticContent?.cart__empty })}
+                            </td>
                           </tr>
                         ) : null}
                       </tbody>
                     </table>
                   </div>
                   <div className="cart_submit">
-                    <button type="button">update cart</button>
+                    <button type="button">
+                      {HelperTranslate({ defaultText: "update cart", translateText: staticContent?.cart__update })}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -120,10 +142,10 @@ export default function CartPage() {
             <div className="row">
               <div className="col-lg-12">
                 <div className="coupon_code right">
-                  <h3>Cart Totals</h3>
+                  <h3>{HelperTranslate({ defaultText: "Cart Totals", translateText: staticContent?.cart__totals })}</h3>
                   <div className="coupon_inner">
                     <div className="cart_subtotal">
-                      <p>Subtotal</p>
+                      <p>{HelperTranslate({ defaultText: "Subtotal", translateText: staticContent?.cart__subtotal })}</p>
                       <p className="cart_amount">{showPrice ? cartSubtotalText : null}</p>
                     </div>
                     {/*<div className="cart_subtotal ">*/}
@@ -136,11 +158,13 @@ export default function CartPage() {
                     {/*  Calculate shipping*/}
                     {/*</button>*/}
                     <div className="cart_subtotal">
-                      <p>Total</p>
+                      <p>{HelperTranslate({ defaultText: "Total", translateText: staticContent?.cart__total })}</p>
                       <p className="cart_amount">{showPrice ? cartSubtotalText : null}</p>
                     </div>
                     <div className="checkout_btn">
-                      <Link href="/checkout">Proceed to Checkout</Link>
+                      <Link href="/checkout">
+                        {HelperTranslate({ defaultText: "Proceed to Checkout", translateText: staticContent?.cart__proceedToCheckout })}
+                      </Link>
                     </div>
                   </div>
                 </div>

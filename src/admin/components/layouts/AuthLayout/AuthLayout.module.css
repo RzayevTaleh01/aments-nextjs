@@ -1,0 +1,21 @@
+.sg--layouts--auth {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-700, #0681BE);
+  min-height: 100dvh;
+  padding: 30px;
+}
+.sg--layouts--auth-container {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  border-radius: 40px 0 0 0;
+  background-color: var(--white, #FFFFFF);
+  height: 100%;
+}
+
+/*# sourceMappingURL=AuthLayout.module.css.map */

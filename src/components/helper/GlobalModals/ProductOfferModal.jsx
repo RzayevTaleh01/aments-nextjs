@@ -6,6 +6,8 @@ import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
 import { toast } from "react-toastify";
 import useShowPrice from "@/hooks/use-show-price";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 import styles from "./ProductOfferModal.module.scss";
 
 function coerceNumber(value, fallback) {
@@ -29,6 +31,7 @@ function formatPrice(priceNumber, currencySuffix) {
 export default function ProductOfferModal() {
   const { showPrice } = useShowPrice();
   const { addToCart } = useCart();
+  const { staticContent } = useInitial();
   const [offer, setOffer] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [note, setNote] = useState("");
@@ -46,8 +49,8 @@ export default function ProductOfferModal() {
       setIsOpen(true);
     }
 
-    window.addEventListener("aments:product-offer-modal", onOpen);
-    return () => window.removeEventListener("aments:product-offer-modal", onOpen);
+    window.addEventListener("oem:product-offer-modal", onOpen);
+    return () => window.removeEventListener("oem:product-offer-modal", onOpen);
   }, []);
 
   const title = useMemo(() => {
@@ -95,9 +98,16 @@ export default function ProductOfferModal() {
       <div className="modal-body">
         <div className={styles.row}>
           <div>
-            <p className={styles.label}>Miqdar</p>
+            <p className={styles.label}>
+              {HelperTranslate({ defaultText: "Miqdar", translateText: staticContent?.offerModal__qtyLabel })}
+            </p>
             <div className={styles.qtyControl}>
-              <button type="button" className={styles.qtyBtn} onClick={() => setQuantity((q) => Math.max(1, q - 1))} aria-label="Azalt">
+              <button
+                type="button"
+                className={styles.qtyBtn}
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                aria-label={HelperTranslate({ defaultText: "Azalt", translateText: staticContent?.common__decrease })}
+              >
                 <Icon name="FaMinus" size={12} />
               </button>
               <input
@@ -115,7 +125,7 @@ export default function ProductOfferModal() {
                 onClick={() => {
                   setQuantity((q) => Math.max(1, coerceNumber(q, 1)) + 1);
                 }}
-                aria-label="Artır"
+                aria-label={HelperTranslate({ defaultText: "Artır", translateText: staticContent?.common__increase })}
               >
                 <Icon name="FaPlus" size={12} />
               </button>
@@ -123,18 +133,23 @@ export default function ProductOfferModal() {
           </div>
 
           <div>
-            <p className={styles.label}>Məbləğ</p>
+            <p className={styles.label}>
+              {HelperTranslate({ defaultText: "Məbləğ", translateText: staticContent?.offerModal__amountLabel })}
+            </p>
             <div className={styles.amount}>{showPrice ? totalPriceText : ""}</div>
           </div>
         </div>
 
         <div className={styles.note}>
-          <p className={styles.label}>Qeydləriniz varsa daxil edin.</p>
+          <p className={styles.label}>
+            {HelperTranslate({ defaultText: "Qeydləriniz varsa daxil edin.", translateText: staticContent?.offerModal__noteLabel })}
+          </p>
           <input className={styles.noteInput} value={note} onChange={(e) => setNote(e.target.value)} />
         </div>
 
         <div className={styles.delivery}>
-          Çatdırılma tarixi: <strong>30 aprelə</strong>
+          {HelperTranslate({ defaultText: "Çatdırılma tarixi:", translateText: staticContent?.offerModal__deliveryDateLabel })}{" "}
+          <strong>{HelperTranslate({ defaultText: "30 aprelə", translateText: staticContent?.offerModal__deliveryDateValue })}</strong>
         </div>
 
         <div className={styles.action}>
@@ -172,7 +187,7 @@ export default function ProductOfferModal() {
               close();
 
               window.dispatchEvent(
-                new CustomEvent("aments:cart:added", {
+                new CustomEvent("oem:cart:added", {
                   detail: {
                     item: {
                       key: itemKey,
@@ -185,10 +200,16 @@ export default function ProductOfferModal() {
                   },
                 })
               );
-              toast.success("Səbətə uğurla əlavə edildi");
+              toast.success(
+                HelperTranslate({
+                  defaultText: "Səbətə uğurla əlavə edildi",
+                  translateText: staticContent?.offerModal__addedToCartToast,
+                })
+              );
             }}
           >
-            <Icon name="FaShoppingCart" size={16} /> SƏBƏTƏ AT
+            <Icon name="FaShoppingCart" size={16} />{" "}
+            {HelperTranslate({ defaultText: "SƏBƏTƏ AT", translateText: staticContent?.offerModal__addToCart })}
           </button>
         </div>
       </div>

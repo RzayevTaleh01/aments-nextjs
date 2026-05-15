@@ -1,6 +1,8 @@
 import "./globals.css";
 import "@/components/ui/Form/Form.module.scss";
+import "@/assets/css/style.min.css";
 import Providers from "./providers";
+import { cookies } from "next/headers";
 
 export const metadata = {
   title: {
@@ -10,12 +12,20 @@ export const metadata = {
   description: "Aments - Car Accessories Shop",
 };
 
-export default function RootLayout({ children }) {
+function normalizeLang(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return "en";
+  const base = raw.split("-")[0]?.toLowerCase();
+  return base || "en";
+}
+
+export default async function RootLayout({ children }) {
+  const cookieStore = await cookies();
+  const lang = normalizeLang(cookieStore?.get?.("oem_lang")?.value);
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/assets/images/favicon.ico" />
-        <link rel="stylesheet" href="/assets/css/style.min.css" />
       </head>
       <body suppressHydrationWarning>
         <Providers>{children}</Providers>

@@ -8,6 +8,9 @@ import { signOut, useSession } from "next-auth/react";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { cn } from "@/utils/cn";
 import { useCart } from "@/context/ui-drawers-context";
+import { useLanguage } from "@/context/language-context";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 import BottomHeader from "../BottomHeader";
 import styles from "./HeaderGroup.module.scss";
 
@@ -25,6 +28,15 @@ function buildInitials(displayName) {
   return `${first}${last}`.toUpperCase() || "U";
 }
 
+function isAdminRole(user) {
+  const role = user?.role ?? user?.roleId ?? user?.role_id ?? user?.user_role;
+  if (role === 1 || role === "1") return true;
+  if (role && typeof role === "object") {
+    return role?.id === 1 || role?.value === 1 || role?.key === 1;
+  }
+  return false;
+}
+
 export default function HeaderGroup({
   isSticky,
   isActive,
@@ -37,16 +49,55 @@ export default function HeaderGroup({
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
   const { cartCount } = useCart();
+  const { lang, setLang } = useLanguage();
+  const { staticContent } = useInitial();
 
   const displayName = buildDisplayName(session?.user);
   const initials = buildInitials(displayName);
 
+  const langLabel = useMemo(() => {
+    const map = {
+      en: "English",
+      az: "Azərbaycan",
+      ru: "Русский",
+    };
+    return map[String(lang || "").toLowerCase()] ?? map.en;
+  }, [lang]);
+
+  const langOptions = useMemo(
+    () => [
+      { id: "en", label: "English", value: "en" },
+      { id: "az", label: "Azərbaycan", value: "az" },
+      { id: "ru", label: "Русский", value: "ru" },
+    ],
+    []
+  );
+
   const topLinks = topHeaderData?.links ?? [];
-  const filteredTopLinks = topLinks.filter((x) => {
-    if (!x) return false;
-    if (isAuthenticated) return x?.id !== "login" && x?.id !== "register";
-    return x?.id !== "my-account";
-  });
+  const filteredTopLinks = useMemo(() => {
+    return topLinks.filter((x) => {
+      if (!x) return false;
+      if (isAuthenticated) return x?.id !== "login" && x?.id !== "register";
+      return x?.id !== "my-account";
+    });
+  }, [topLinks, isAuthenticated]);
+
+  const topLinksWithAdminPanel = useMemo(() => {
+    const canSeeAdminPanel = isAuthenticated && isAdminRole(session?.user);
+    if (!canSeeAdminPanel) return filteredTopLinks;
+
+    const adminItem = { id: "admin-panel", label: "Admin Panel", href: "/admin" };
+    if (filteredTopLinks.some((x) => x?.id === adminItem.id || x?.href === adminItem.href)) return filteredTopLinks;
+
+    const myAccountIndex = filteredTopLinks.findIndex((x) => x?.id === "my-account");
+    if (myAccountIndex === -1) return [...filteredTopLinks, adminItem];
+
+    return [
+      ...filteredTopLinks.slice(0, myAccountIndex + 1),
+      adminItem,
+      ...filteredTopLinks.slice(myAccountIndex + 1),
+    ];
+  }, [filteredTopLinks, isAuthenticated, session?.user]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const qFromUrl = useMemo(() => String(searchParams?.get("q") ?? "").trim(), [searchParams]);
@@ -62,22 +113,32 @@ export default function HeaderGroup({
           <div className={cn(styles, "row d-flex justify-content-between align-items-center")}>
             <div className={cn(styles, "col-6")}>
               <div className={cn(styles, "header-top--left")}>
-                <span>{topHeaderData?.welcomeText ?? "Welcome to our store!"}</span>
+                <span>
+                  {HelperTranslate({
+                    defaultText: topHeaderData?.welcomeText ?? "Welcome to our store!",
+                    translateText: staticContent?.header__topWelcomeText,
+                  })}
+                </span>
               </div>
             </div>
             <div className={cn(styles, "col-6")}>
               <div className={cn(styles, "header-top--right")}>
                 <ul className={cn(styles, "header-user-menu")}>
-                  {filteredTopLinks.map((item) => {
+                  {topLinksWithAdminPanel.map((item) => {
                     const hasDropdown = Array.isArray(item.children) && item.children.length > 0;
                     const parentHref = item.href && item.href !== "#" ? item.href : "/";
                     const itemKey = item.id ?? item.href ?? item.label;
+                    const isLanguageItem = item?.id === "language";
 
-                    if (!hasDropdown) {
+                    if (!hasDropdown && !isLanguageItem) {
                       return (
                         <li key={itemKey}>
                           <Link href={parentHref}>
-                            {item.iconName ? <Icon name={item.iconName} size={14} /> : null} {item.label}
+                            {item.iconName ? <Icon name={item.iconName} size={14} /> : null}{" "}
+                            {HelperTranslate({
+                              defaultText: item.label,
+                              translateText: staticContent?.[`header__topLink__${String(item?.id ?? "").trim()}`],
+                            })}
                           </Link>
                         </li>
                       );
@@ -85,13 +146,38 @@ export default function HeaderGroup({
 
                     return (
                       <li key={itemKey} className={cn(styles, "has-user-dropdown")}>
-                        <Link href={parentHref}>
-                          {item.label} <Icon name="FaAngleDown" size={14} />
+                        <Link
+                          href={parentHref}
+                          onClick={(e) => {
+                            if (!isLanguageItem) return;
+                            e.preventDefault();
+                          }}
+                        >
+                          {isLanguageItem
+                            ? langLabel
+                            : HelperTranslate({
+                                defaultText: item.label,
+                                translateText: staticContent?.[`header__topLink__${String(item?.id ?? "").trim()}`],
+                              })}{" "}
+                          <Icon name="FaAngleDown" size={14} />
                         </Link>
                         <ul className={cn(styles, "user-sub-menu")}>
-                          {item.children.map((child) => (
+                          {(isLanguageItem ? langOptions : item.children).map((child) => (
                             <li key={`${itemKey}-${child.id ?? child.label ?? child.href}`}>
-                              <Link href={child.href && child.href !== "#" ? child.href : "/"}>
+                              <Link
+                                href={child.href && child.href !== "#" ? child.href : "/"}
+                                onClick={(e) => {
+                                  if (!isLanguageItem) return;
+                                  e.preventDefault();
+                                  setLang(child.value);
+                                  const until = Date.now() + 900;
+                                  try {
+                                    window.localStorage?.setItem("oem_lang_loader_until", String(until));
+                                  } catch {}
+                                  window.dispatchEvent(new CustomEvent("oem:lang-loader", { detail: { until } }));
+                                  window.setTimeout(() => window.location.reload(), 50);
+                                }}
+                              >
                                 {child.iconSrc ? (
                                   <Image
                                     className={cn(styles, "user-sub-menu-in-icon")}
@@ -141,7 +227,7 @@ export default function HeaderGroup({
                     <input
                       className={cn(styles, "default-search-style-input-box border-around border-right-none")}
                       type="search"
-                      placeholder="OEM..."
+                      placeholder={HelperTranslate({ defaultText: "OEM...", translateText: staticContent?.header__searchPlaceholder })}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -186,7 +272,7 @@ export default function HeaderGroup({
                             router.push("/");
                           }}
                         >
-                          Logout
+                          {HelperTranslate({ defaultText: "Logout", translateText: staticContent?.header__logout })}
                         </button>
                       </li>
                     </ul>

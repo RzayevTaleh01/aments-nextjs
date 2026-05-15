@@ -1,0 +1,25 @@
+.sg--buttonGroup {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.sg--buttonGroup--gap {
+  gap: 8px;
+}
+.sg--buttonGroup:not(.sg--buttonGroup--gap) > *:not(:last-child, :first-child) {
+  border-radius: 0;
+  margin-left: -1px;
+}
+.sg--buttonGroup:not(.sg--buttonGroup--gap) > *:not(:first-child) {
+  margin-left: -1px;
+}
+.sg--buttonGroup:not(.sg--buttonGroup--gap) > *:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.sg--buttonGroup:not(.sg--buttonGroup--gap) > *:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/*# sourceMappingURL=ButtonGroup.module.css.map */

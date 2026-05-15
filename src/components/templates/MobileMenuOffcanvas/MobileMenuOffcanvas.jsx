@@ -8,6 +8,9 @@ import { useSession } from "next-auth/react";
 import OffcanvasPanel from "@/components/templates/OffcanvasPanel/OffcanvasPanel";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
+import { useLanguage } from "@/context/language-context";
 import { cn } from "@/utils/cn";
 import styles from "./MobileMenuOffcanvas.module.scss";
 
@@ -21,7 +24,23 @@ export default function MobileMenuOffcanvas({
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
   const { cartCount } = useCart();
+  const { staticContent } = useInitial();
+  const { lang, setLang } = useLanguage();
   const qFromUrl = useMemo(() => String(searchParams?.get("q") ?? "").trim(), [searchParams]);
+
+  const langLabel = useMemo(() => {
+    const map = { en: "English", az: "Azərbaycan", ru: "Русский" };
+    return map[String(lang || "").toLowerCase()] ?? map.en;
+  }, [lang]);
+
+  const langOptions = useMemo(
+    () => [
+      { id: "en", label: "English", value: "en", iconSrc: "/assets/images/icon/lang-en.png" },
+      { id: "az", label: "Azərbaycan", value: "az", iconSrc: "/assets/images/icon/lang-gr.png" },
+      { id: "ru", label: "Русский", value: "ru", iconSrc: "/assets/images/icon/lang-gr.png" },
+    ],
+    []
+  );
 
   useEffect(() => {
     setSearchQuery(qFromUrl);
@@ -40,28 +59,34 @@ export default function MobileMenuOffcanvas({
     >
       <div className={cn(styles, "offcanvas-mobile-menu-wrapper")}>
         <div className={cn(styles, "mobile-menu-top")}>
-          <span>Welcome to our store!</span>
+          <span>
+            {HelperTranslate({
+              defaultText: "Welcome to our store!",
+              translateText: staticContent?.header__topWelcomeText,
+            })}
+          </span>
           <ul className={cn(styles, "mobile-menu-user-menu")}>
             <li className={cn(styles, "has-mobile-user-dropdown")}>
               <Link className={cn(styles, "mobile-user-menu-link")} href="/" onClick={onClose}>
-                Setting <Icon name="FaAngleDown" size={14} />
+                {HelperTranslate({ defaultText: "Setting", translateText: staticContent?.mobile__settings })}{" "}
+                <Icon name="FaAngleDown" size={14} />
               </Link>
               <ul className={cn(styles, "mobile-user-sub-menu")}>
                 <li>
                   <Link href="/checkout" onClick={onClose}>
-                    Checkout
+                    {HelperTranslate({ defaultText: "Checkout", translateText: staticContent?.addToCartModal__checkout })}
                   </Link>
                 </li>
                 {isAuthenticated ? (
                   <li>
                     <Link href="/my-account" onClick={onClose}>
-                      My Account
+                      {HelperTranslate({ defaultText: "My Account", translateText: staticContent?.["header__topLink__my-account"] })}
                     </Link>
                   </li>
                 ) : null}
                 <li>
                   <Link href="/cart" onClick={onClose}>
-                    Shopping Cart
+                    {HelperTranslate({ defaultText: "Shopping Cart", translateText: staticContent?.mobile__shoppingCart })}
                   </Link>
                 </li>
               </ul>
@@ -95,33 +120,38 @@ export default function MobileMenuOffcanvas({
             </li>
             <li className={cn(styles, "has-mobile-user-dropdown")}>
               <Link className={cn(styles, "mobile-user-menu-link")} href="/" onClick={onClose}>
-                English <Icon name="FaAngleDown" size={14} />
+                {langLabel} <Icon name="FaAngleDown" size={14} />
               </Link>
               <ul className={cn(styles, "mobile-user-sub-menu")}>
-                <li>
-                  <Link href="/" onClick={onClose}>
-                    <Image
-                      className={cn(styles, "user-sub-menu-link-icon")}
-                      src="/assets/images/icon/lang-en.png"
-                      alt=""
-                      width={16}
-                      height={11}
-                    />{" "}
-                    English
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/" onClick={onClose}>
-                    <Image
-                      className={cn(styles, "user-sub-menu-link-icon")}
-                      src="/assets/images/icon/lang-gr.png"
-                      alt=""
-                      width={16}
-                      height={11}
-                    />{" "}
-                    Germany
-                  </Link>
-                </li>
+                {langOptions.map((opt) => (
+                  <li key={opt.id}>
+                    <Link
+                      href="/"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setLang(opt.value);
+                        onClose?.();
+                        const until = Date.now() + 900;
+                        try {
+                          window.localStorage?.setItem("oem_lang_loader_until", String(until));
+                        } catch {}
+                        window.dispatchEvent(new CustomEvent("oem:lang-loader", { detail: { until } }));
+                        window.setTimeout(() => window.location.reload(), 50);
+                      }}
+                    >
+                      {opt.iconSrc ? (
+                        <Image
+                          className={cn(styles, "user-sub-menu-link-icon")}
+                          src={opt.iconSrc}
+                          alt=""
+                          width={16}
+                          height={11}
+                        />
+                      ) : null}{" "}
+                      {opt.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </li>
           </ul>
@@ -141,7 +171,10 @@ export default function MobileMenuOffcanvas({
               <input
                 className={cn(styles, "default-search-style-input-box border-around border-right-none")}
                 type="search"
-                placeholder="OEM kod yazın..."
+                placeholder={HelperTranslate({
+                  defaultText: "OEM kod yazın...",
+                  translateText: staticContent?.mobile__searchPlaceholder,
+                })}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -155,7 +188,7 @@ export default function MobileMenuOffcanvas({
               <Image src="/assets/images/icon/support-icon.png" alt="" width={48} height={48} />
             </div>
             <div className={cn(styles, "mobile-menu-customer-support-text")}>
-              <span>Customer Support</span>
+              <span>{HelperTranslate({ defaultText: "Customer Support", translateText: staticContent?.footer__customerSupport })}</span>
               <a className={cn(styles, "mobile-menu-customer-support-text-phone")} href="tel:(08)123456789">
                 (08) 123 456 789
               </a>
@@ -175,22 +208,22 @@ export default function MobileMenuOffcanvas({
             <ul>
               <li>
                 <Link href="/" onClick={onClose}>
-                  Home
+                  {HelperTranslate({ defaultText: "Home", translateText: staticContent?.nav__main__home })}
                 </Link>
               </li>
               <li>
                 <Link href="/products" onClick={onClose}>
-                  Products
+                  {HelperTranslate({ defaultText: "Products", translateText: staticContent?.nav__main__products })}
                 </Link>
               </li>
               <li>
                 <Link href="/about-us" onClick={onClose}>
-                  About Us
+                  {HelperTranslate({ defaultText: "About Us", translateText: staticContent?.["nav__main__about-us"] })}
                 </Link>
               </li>
               <li>
                 <Link href="/contact-us" onClick={onClose}>
-                  Contact Us
+                  {HelperTranslate({ defaultText: "Contact Us", translateText: staticContent?.["nav__main__contact-us"] })}
                 </Link>
               </li>
             </ul>

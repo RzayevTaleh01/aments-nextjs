@@ -1,0 +1,60 @@
+.sg--template--header {
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    background: var(--admin-header-bg, #ffffff);
+    border-bottom: 1px solid var(--admin-border, #eaecf0);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+
+    &-actions {
+        margin-left: auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+    }
+
+    &-toggle {
+        color: var(--gray-700, #344054);
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+        padding: 2px;
+    }
+
+
+
+    &-logo {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        user-select: none;
+
+        &--image {
+            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gray-300, #D0D5DD);
+            background-color: var(--white, #FFFFFF);
+            color: var(--primary-700, #c5141c);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        &--header {
+            color: var(--gray-900, #101828);
+            font-size: 20px;
+            font-weight: 700;
+        }
+    }
+}

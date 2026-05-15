@@ -1,0 +1,39 @@
+.sg--pagination {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.sg--pagination-item {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #EEEEEE;
+  background-color: #EEEEEE;
+  color: #8B7736;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.sg--pagination-item.active {
+  border-color: #8B7736;
+  background-color: #8B7736;
+  color: #FFFFFF;
+}
+
+.sg--pagination-item--controller {
+  background-color: transparent;
+  border-color: #8B7736;
+}
+
+.sg--pagination--center {
+  justify-content: center;
+}
+
+/*# sourceMappingURL=Pagination.module.css.map */

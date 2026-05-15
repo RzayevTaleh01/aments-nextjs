@@ -1,0 +1,133 @@
+.table {
+  width: 100%;
+}
+.table thead tr th {
+  color: #8B7736;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding: 12px 16px;
+  border-bottom: none !important;
+}
+.table tbody tr {
+  position: relative;
+}
+.table tbody tr td {
+  color: #4B4545;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 12px 16px;
+  border-bottom: none !important;
+}
+.table tbody tr:nth-child(odd) td {
+  background-color: #FFFFFF;
+}
+.table tbody tr:nth-child(even) td {
+  background-color: #F5F5F5;
+}
+
+.table-area-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 28px;
+}
+
+/*
+
+.table--hoverable-th, .table--hoverable-td {
+    width: 1px;
+    height: 1px;
+    position: absolute;
+    right: 0;
+    padding: 0 !important;
+    top: 50%;
+    !*opacity: 0;*!
+    !*overflow: hidden;*!
+    transform: translateY(-50%);
+}
+.table--hoverable-td .table--hoverable-td-content {
+    position: absolute;
+    right: -100%;
+    top: 0;
+    background-color: transparent !important;
+    padding-left: 30px !important;
+    transition: all 0.3s;
+    flex-wrap: nowrap;
+}
+.table tbody tr:nth-child(odd) .table--hoverable-td .table--hoverable-td-content {
+    background: linear-gradient(270deg, #FFFFFF 0%, #FFFFFF calc(100% - 30px), rgba(245, 245, 245, 0.00) 100%);
+}
+.table tbody tr:nth-child(even) .table--hoverable-td .table--hoverable-td-content {
+    background: linear-gradient(270deg, #F5F5F5 0%, #F5F5F5 calc(100% - 30px),
+    rgba(245, 245, 245, 0.00) 100%);
+}
+.table tbody tr:hover .table--hoverable-td .table--hoverable-td-content {
+    right: 0;
+}
+.table tbody tr.hover .table--hoverable-td .table--hoverable-td-content {
+    right: 0;
+}
+*/
+.table--hoverable-th {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  right: 0;
+  padding: 0 !important;
+  top: 50%;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-50%);
+}
+
+.table--hoverable-td {
+  width: 1px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  padding: 0 !important;
+  top: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+@media (min-width: 992px) {
+  .table tbody tr:hover .table--hoverable-td,
+  .table tbody tr.hover .table--hoverable-td {
+    overflow: inherit;
+    opacity: 1;
+    right: 0;
+  }
+  .table--hoverable-td-content {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 6px 12px 6px 35px;
+  }
+  .table tbody tr:nth-child(odd) .table--hoverable-td .table--hoverable-td-content {
+    background: linear-gradient(270deg, #FFFFFF 0%, #FFFFFF calc(100% - 30px), rgba(245, 245, 245, 0) 100%);
+  }
+  .table tbody tr:nth-child(even) .table--hoverable-td .table--hoverable-td-content {
+    background: linear-gradient(270deg, #F5F5F5 0%, #F5F5F5 calc(100% - 30px), rgba(245, 245, 245, 0) 100%);
+  }
+  .table--hoverable-td .table--hoverable-td-content .button--group {
+    flex-wrap: nowrap;
+  }
+  .table-cell-lg-hidden {
+    display: none;
+  }
+}
+@media (max-width: 992px) {
+  .table-cell-hidden {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=Table.module.css.map */

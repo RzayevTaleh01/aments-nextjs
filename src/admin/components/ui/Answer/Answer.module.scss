@@ -1,0 +1,50 @@
+.answer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &-item {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+
+        &.dragging .input-wrapper--answer {
+            border-color: #8b7736 !important;
+        }
+
+        &-head {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 4px;
+
+            &--dragging {}
+        }
+
+        &-body {
+            flex: 1 0;
+        }
+
+        &-footer {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex: 0 0 auto;
+            gap: 8px;
+            padding-top: 6px;
+
+            &-item {
+                &--group {
+                    border-right: 1px solid #E5E5E5;
+                    padding-right: 8px;
+                }
+            }
+        }
+
+        &--other {
+            color: #8B7736;
+            text-decoration-line: underline;
+            cursor: pointer;
+        }
+    }
+}

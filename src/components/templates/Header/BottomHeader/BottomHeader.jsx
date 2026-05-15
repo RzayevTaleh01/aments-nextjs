@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/utils/cn";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 import styles from "./BottomHeader.module.scss";
 
 function isMatchActive(isActive, activeMatch) {
@@ -13,6 +15,7 @@ function isMatchActive(isActive, activeMatch) {
 }
 
 export default function BottomHeader({ isSticky, isActive, BottomHeaderData = [] }) {
+  const { staticContent } = useInitial();
   return (
     <div className={cn(styles, `header-bottom sticky-header${isSticky ? " sticky" : ""}`)}>
       <div className={cn(styles, "container")}>
@@ -28,19 +31,31 @@ export default function BottomHeader({ isSticky, isActive, BottomHeaderData = []
                       return (
                         <li key={item.id} className={cn(styles, "has-dropdown has-megaitem")}>
                           <Link href={item.href} className={cn(styles, active && "active")}>
-                            {item.label} <Icon name="FaAngleDown" size={14} />
+                            {HelperTranslate({
+                              defaultText: item.label,
+                              translateText: staticContent?.[`nav__main__${String(item.id)}`],
+                            })}{" "}
+                            <Icon name="FaAngleDown" size={14} />
                           </Link>
                           <div className={cn(styles, "mega-menu")}>
                             <ul className={cn(styles, "mega-menu-inner")}>
                               {item.mega.columns.map((col) => (
                                 <li key={col.id} className={cn(styles, "mega-menu-item")}>
                                   <button type="button" className={cn(styles, "mega-menu-item-title")}>
-                                    {col.title}
+                                    {HelperTranslate({
+                                      defaultText: col.title,
+                                      translateText: staticContent?.[`nav__megaCol__${String(col.id)}`],
+                                    })}
                                   </button>
                                   <ul className={cn(styles, "mega-menu-sub")}>
                                     {col.items.map((link) => (
                                       <li key={link.id}>
-                                        <Link href={link.href}>{link.label}</Link>
+                                        <Link href={link.href}>
+                                          {HelperTranslate({
+                                            defaultText: link.label,
+                                            translateText: staticContent?.[`nav__megaLink__${String(link.id)}`],
+                                          })}
+                                        </Link>
                                       </li>
                                     ))}
                                   </ul>
@@ -72,17 +87,30 @@ export default function BottomHeader({ isSticky, isActive, BottomHeaderData = []
                         <li key={item.id} className={cn(styles, "has-dropdown")}>
                           {item.href ? (
                             <Link href={item.href} className={cn(styles, active && "active")}>
-                              {item.label} <Icon name="FaAngleDown" size={14} />
+                              {HelperTranslate({
+                                defaultText: item.label,
+                                translateText: staticContent?.[`nav__main__${String(item.id)}`],
+                              })}{" "}
+                              <Icon name="FaAngleDown" size={14} />
                             </Link>
                           ) : (
                             <button type="button" className={cn(styles, active && "active")}>
-                              {item.label} <Icon name="FaAngleDown" size={14} />
+                              {HelperTranslate({
+                                defaultText: item.label,
+                                translateText: staticContent?.[`nav__main__${String(item.id)}`],
+                              })}{" "}
+                              <Icon name="FaAngleDown" size={14} />
                             </button>
                           )}
                           <ul className={cn(styles, "sub-menu")}>
                             {item.items.map((link) => (
                               <li key={link.id}>
-                                <Link href={link.href}>{link.label}</Link>
+                                <Link href={link.href}>
+                                  {HelperTranslate({
+                                    defaultText: link.label,
+                                    translateText: staticContent?.[`nav__link__${String(link.id)}`],
+                                  })}
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -96,7 +124,10 @@ export default function BottomHeader({ isSticky, isActive, BottomHeaderData = []
                           href={item.href}
                           className={cn(styles, isMatchActive(isActive, item.activeMatch ?? item.href) && "active")}
                         >
-                          {item.label}
+                          {HelperTranslate({
+                            defaultText: item.label,
+                            translateText: staticContent?.[`nav__main__${String(item.id)}`],
+                          })}
                         </Link>
                       </li>
                     );

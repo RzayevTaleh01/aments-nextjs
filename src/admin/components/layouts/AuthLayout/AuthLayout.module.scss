@@ -1,0 +1,23 @@
+.sg--layouts--auth {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--admin-page-bg, #f5f7fb);
+    min-height: 100dvh;
+    padding: 30px;
+
+    &-container {
+        //width: calc(100% - 280px);
+        width: 100%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+
+        padding: 32px;
+        border-radius: 18px;
+        background-color: var(--admin-header-bg, #ffffff);
+        box-shadow: var(--admin-shadow-sm, 0 1px 2px rgba(16, 24, 40, 0.06));
+        height: 100%;
+    }
+}

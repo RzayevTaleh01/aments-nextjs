@@ -6,12 +6,15 @@ import { useSession } from "next-auth/react";
 import { Modal, ModalBody } from "reactstrap";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 
 export default function AddToCartModal() {
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
   const showPrice = isAuthenticated;
   const { cartCount, cartSubtotalText } = useCart();
+  const { staticContent } = useInitial();
   const [lastItem, setLastItem] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,8 +27,8 @@ export default function AddToCartModal() {
       setLastItem(e?.detail?.item ?? null);
       setIsOpen(true);
     }
-    window.addEventListener("aments:cart:added", onAdded);
-    return () => window.removeEventListener("aments:cart:added", onAdded);
+    window.addEventListener("oem:cart:added", onAdded);
+    return () => window.removeEventListener("oem:cart:added", onAdded);
   }, []);
 
   return (
@@ -64,16 +67,19 @@ export default function AddToCartModal() {
                 <div className="col-md-8">
                   <div className="modal-add-cart-info">
                     <Icon name="FaCheckSquare" size={18} className="me-2" />
-                    Added to cart successfully!
+                    {HelperTranslate({
+                      defaultText: "Added to cart successfully!",
+                      translateText: staticContent?.addToCartModal__successMessage,
+                    })}
                   </div>
                   {lastItem?.name ? <div className="mt-2">{lastItem.name}</div> : null}
                   {isAuthenticated ? (
                     <div className="modal-add-cart-product-cart-buttons">
                       <Link href="/cart" onClick={close}>
-                        View Cart
+                        {HelperTranslate({ defaultText: "View Cart", translateText: staticContent?.addToCartModal__viewCart })}
                       </Link>
                       <Link href="/checkout" onClick={close}>
-                        Checkout
+                        {HelperTranslate({ defaultText: "Checkout", translateText: staticContent?.addToCartModal__checkout })}
                       </Link>
                     </div>
                   ) : null}
@@ -85,16 +91,25 @@ export default function AddToCartModal() {
                 <li>
                   {" "}
                   <strong>
-                    <Icon name="FaShoppingCart" /> There Are {cartCount} Items In Your Cart.
+                    <Icon name="FaShoppingCart" />{" "}
+                    {HelperTranslate({
+                      defaultText: `There Are ${cartCount} Items In Your Cart.`,
+                      translateText: staticContent?.addToCartModal__itemsInCart
+                        ? String(staticContent.addToCartModal__itemsInCart).replace("{count}", String(cartCount))
+                        : undefined,
+                    })}
                   </strong>
                 </li>
                 <li>
                   {" "}
-                  <strong>TOTAL PRICE: </strong> <span>{showPrice ? cartSubtotalText : null}</span>
+                  <strong>
+                    {HelperTranslate({ defaultText: "TOTAL PRICE:", translateText: staticContent?.addToCartModal__totalPriceLabel })}{" "}
+                  </strong>{" "}
+                  <span>{showPrice ? cartSubtotalText : null}</span>
                 </li>
                 <li className="modal-continue-button">
                   <button type="button" onClick={close}>
-                    CONTINUE SHOPPING
+                    {HelperTranslate({ defaultText: "CONTINUE SHOPPING", translateText: staticContent?.addToCartModal__continueShopping })}
                   </button>
                 </li>
               </ul>
