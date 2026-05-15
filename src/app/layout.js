@@ -6,10 +6,10 @@ import { cookies } from "next/headers";
 
 export const metadata = {
   title: {
-    default: "Aments - Car Accessories Shop",
-    template: "%s | Aments",
+    default: "OEM - Car Accessories Shop",
+    template: "%s | OEM",
   },
-  description: "Aments - Car Accessories Shop",
+  description: "OEM - Car Accessories Shop",
 };
 
 function normalizeLang(value) {
