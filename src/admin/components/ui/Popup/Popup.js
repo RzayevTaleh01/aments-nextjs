@@ -1,7 +1,7 @@
 import { Modal } from "reactstrap";
 import makeID from "@/admin/utils/makeID";
 import styles from "@/admin/components/ui/Popup/Popup.module.scss"
-import SgIcon from "@/admin/components/ui/Icon";
+import { FaTimes } from "react-icons/fa";
 
 export default function SgPopup(props) {
     const {className, modalClassName = '', children, header, description, id = makeID(7), setToggleModal, toggleModal = false, size} = props;
@@ -53,7 +53,7 @@ export default function SgPopup(props) {
                             data-bs-dismiss="modal"
                             aria-label="Close"
                     >
-                        <SgIcon icon='close' />
+                        <FaTimes />
                     </button>
                 </div>
                 <div className={styles['modal-body']}>

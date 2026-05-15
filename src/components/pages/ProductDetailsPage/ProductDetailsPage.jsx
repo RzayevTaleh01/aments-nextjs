@@ -12,6 +12,7 @@ import ApiService from "@/services/api/ApiService";
 import styles from "./ProductDetailsPage.module.scss";
 import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
+import UiLoader from "@/components/ui/Loader/Loader";
 
 function mapApiProductToUiProduct(p) {
   const firstStorageProduct = Array.isArray(p?.storageProducts) ? (p.storageProducts.find((sp) => sp?.price != null) ?? p.storageProducts[0]) : null;
@@ -19,7 +20,7 @@ function mapApiProductToUiProduct(p) {
   const price = typeof priceValue === "string" || typeof priceValue === "number" ? `${priceValue} AZN` : "";
   return {
     ...p,
-    imageSrc: p?.image || "/assets/images/products_images/aments_products_image_1.jpg",
+    imageSrc: p?.image,
     price,
   };
 }
@@ -32,7 +33,7 @@ function buildOfferGroupsFromApiProduct(p) {
   const rows = (p?.storageProducts ?? []).map((sp) => {
     const storageProductId = sp?.id ?? sp?.storageProductId ?? sp?.storage_product_id ?? sp?.storage_product?.id ?? null;
     return {
-    img: p?.imageSrc ?? "/assets/images/products_images/aments_products_image_1.jpg",
+    img: p?.imageSrc,
     brand: p?.brand?.name ?? p?.brand ?? "",
     code: p?.code ?? p?.oem_code ?? "",
     name: p?.name ?? "",
@@ -138,9 +139,10 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId, 
           {HelperTranslate({ defaultText: "Məhsul tapılmadı", translateText: staticContent?.productDetailsPage__notFound })}
         </div>
       ) : isLoading || !product ? (
-        <div className="container py-5">
-          {HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
-        </div>
+        <UiLoader
+          fullscreen={true}
+          label={HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
+        />
       ) : (
         <>
           <Breadcrumb
@@ -175,9 +177,7 @@ export default function ProductDetailsPage({ title, breadcrumbLabel, productId, 
               </div>
             </div>
           </div>
-
           <ProductOffersTable product={product} groups={offerGroups.length ? offerGroups : product?.offerGroups} />
-          <ProductDetailsTabs activeTab={activeTab} onTabChange={setActiveTab} product={product} />
         </>
       )}
     </div>

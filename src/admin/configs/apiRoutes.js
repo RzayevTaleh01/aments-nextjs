@@ -73,7 +73,7 @@ export const DELETE_MARK_BY_ID_ROUTE = '/mark'
 
 export const GET_MODELS_ROUTE = '/model'
 export const CREATE_MODEL_ROUTE = '/model'
-export const GET_MODEL_BY_ID_ROUTE = '/model'
+export const GET_MODEL_BY_ID_ROUTE = '/model/model'
 export const EDIT_MODEL_BY_ID_ROUTE = '/model'
 export const DELETE_MODEL_BY_ID_ROUTE = '/model'
 

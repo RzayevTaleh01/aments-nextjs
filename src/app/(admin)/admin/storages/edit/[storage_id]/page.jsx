@@ -41,12 +41,11 @@ export default function Page() {
     })).filter((t) => t.name || t.address);
 
     const payload = {
-      image: String(data.image || ""),
       translations,
       sell_type: Number(data.sell_type ?? 1) || 1,
     };
 
-    ApiService.put(`${EDIT_STORAGE_BY_ID_ROUTE}/${storageId}`, { data: payload })
+    ApiService.put(`${EDIT_STORAGE_BY_ID_ROUTE}/${storageId}`, { ...payload })
       .then(() => {
         router.push("/admin/storages");
       })

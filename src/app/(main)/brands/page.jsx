@@ -5,6 +5,9 @@ import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import ProductCatalogList from "@/components/templates/ProductCatalogList";
 import { BRANDS_ROUTE } from "@/configs/apiRoutes";
 import ApiService from "@/services/api/ApiService";
+import UiLoader from "@/components/ui/Loader/Loader";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 
 const FALLBACK_IMAGE_SRC = "/assets/images/products_images/aments_products_image_1.jpg";
 
@@ -28,6 +31,7 @@ function extractArray(payload, preferredKeys = []) {
 }
 
 export default function Page() {
+  const { staticContent } = useInitial();
   const [brands, setBrands] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -77,6 +81,11 @@ export default function Page() {
 
   return (
     <div>
+      <UiLoader
+        fullscreen={true}
+        visible={isLoading}
+        label={HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
+      />
       <Breadcrumb title="Brands" items={[{ label: "Home", href: "/" }, { label: "Brands" }]} />
 
       <ProductCatalogList
@@ -85,7 +94,7 @@ export default function Page() {
         defaultView="grid"
         showPagination={false}
         showCartIcon={false}
-        emptyMessage={isLoading ? "Yüklənir..." : "Brend tapılmadı"}
+        emptyMessage={"Brend tapılmadı"}
         enableClientSearch={false}
       />
     </div>

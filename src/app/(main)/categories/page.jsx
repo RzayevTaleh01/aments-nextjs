@@ -5,6 +5,9 @@ import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import ProductCategorySingle from "@/components/templates/ProductCategorySingle/ProductCategorySingle";
 import { CATEGORIES_ROUTE } from "@/configs/apiRoutes";
 import ApiService from "@/services/api/ApiService";
+import UiLoader from "@/components/ui/Loader/Loader";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 
 const FALLBACK_IMAGE_SRC = "/assets/images/categories_images/aments_categories_01.jpg";
 
@@ -36,6 +39,7 @@ function buildCategoryItemsLabel(cat) {
 }
 
 export default function Page() {
+  const { staticContent } = useInitial();
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -78,6 +82,11 @@ export default function Page() {
 
   return (
     <div>
+      <UiLoader
+        fullscreen={true}
+        visible={isLoading}
+        label={HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
+      />
       <Breadcrumb title="Categories" items={[{ label: "Home", href: "/" }, { label: "Categories" }]} />
 
       <div className="product-catagory-wrapper section-top-gap-100">
@@ -86,7 +95,7 @@ export default function Page() {
             <div className="col">
               <h3 className="section-title mb-0">All Categories</h3>
             </div>
-            <div className="col-auto text-muted">{isLoading ? "Yüklənir..." : `Cəmi: ${safeCategories.length}`}</div>
+            <div className="col-auto text-muted">{`Cəmi: ${safeCategories.length}`}</div>
           </div>
 
           <div className="row pt-3">

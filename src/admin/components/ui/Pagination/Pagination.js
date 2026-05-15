@@ -1,6 +1,6 @@
-import SgIcon from "@/admin/components/ui/Icon";
 import styles from "@/admin/components/ui/Pagination/Pagination.module.scss";
 import {useEffect, useState} from "react";
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function SgPagination(props) {
     const { pageCount, page, arrow = true, center = false, onClick } = props;
@@ -47,14 +47,14 @@ export default function SgPagination(props) {
                             className={[styles['sg--pagination-item'], styles['sg--pagination-item--controller']].join(' ').trim()}
                             onClick={() => handlePageChange(1)}>
                             <div className={[styles['sg--pagination-item--link']].join(' ').trim()}>
-                                <SgIcon icon='chevrons-left'/>
+                                <FaAngleDoubleLeft />
                             </div>
                         </div>
                         <div
                             className={[styles['sg--pagination-item'], styles['sg--pagination-item--controller']].join(' ').trim()}
                             onClick={() => handlePageChange('prev')}>
                             <div className={[styles['sg--pagination-item--link']].join(' ').trim()}>
-                                <SgIcon icon='chevron-left'/>
+                                <FaChevronLeft />
                             </div>
                         </div>
                     </>
@@ -79,14 +79,14 @@ export default function SgPagination(props) {
                             className={[styles['sg--pagination-item'], styles['sg--pagination-item--controller']].join(' ').trim()}
                             onClick={() => handlePageChange('next')}>
                             <div className={[styles['sg--pagination-item--link']].join(' ').trim()}>
-                                <SgIcon icon='chevron-right'/>
+                                <FaChevronRight />
                             </div>
                         </div>
                         <div
                             className={[styles['sg--pagination-item'], styles['sg--pagination-item--controller']].join(' ').trim()}
                             onClick={() => handlePageChange(pageCount)}>
                             <div className={[styles['sg--pagination-item--link']].join(' ').trim()}>
-                                <SgIcon icon='chevrons-right'/>
+                                <FaAngleDoubleRight />
                             </div>
                         </div>
                     </>

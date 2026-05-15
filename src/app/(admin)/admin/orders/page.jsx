@@ -10,33 +10,8 @@ import { SgPopup } from "@/admin/components/ui/Popup";
 import { useState } from "react";
 import { SgButton } from "@/admin/components/ui/Button";
 import { toast } from "react-toastify";
-
-function toText(value) {
-  if (value === undefined || value === null) return "";
-  if (Array.isArray(value)) return value.length ? toText(value[0]) : "";
-  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
-  if (typeof value === "object") {
-    const translations = Array.isArray(value?.translations) ? value.translations : null;
-    if (translations?.length) {
-      const candidate = translations.find((t) => t?.name || t?.title || t?.label) || translations[0];
-      const t = toText(candidate);
-      if (t.trim() !== "") return t;
-    }
-
-    const v = value?.name ?? value?.title ?? value?.label ?? value?.slug ?? value?.code ?? value?.id;
-    return v === undefined || v === null ? "" : String(v);
-  }
-  return String(value);
-}
-
-function pickText(row, keys) {
-  for (const key of keys) {
-    const raw = row?.[key];
-    const value = toText(raw);
-    if (value.trim() !== "") return value;
-  }
-  return "-";
-}
+import { FaTrash } from "react-icons/fa";
+import { pickText } from "@/admin/utils/text";
 
 export default function Page() {
   const [reloadKey, setReloadKey] = useState(0);
@@ -112,7 +87,7 @@ export default function Page() {
                   hoverable: false,
                   cell: (row) => (
                     <SgButtonGroup gap={true}>
-                      <SgButton size="sm" color="error-outline" icon="trash" onlyIcon={true} minimal={true} onClick={() => openDeleteModal(row)} />
+                      <SgButton size="sm" color="error-outline" icon={FaTrash} onlyIcon={true} minimal={true} onClick={() => openDeleteModal(row)} />
                     </SgButtonGroup>
                   ),
                 },

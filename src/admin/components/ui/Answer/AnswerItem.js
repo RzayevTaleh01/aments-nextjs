@@ -1,4 +1,3 @@
-import SgIcon from "@/admin/components/ui/Icon";
 import {SgCheckbox, SgInput} from "@/admin/components/ui/Form";
 import {SgButton} from "@/admin/components/ui/Button";
 import FilePreview from "@/admin/components/templates/FilePreview";
@@ -6,10 +5,11 @@ import {
     sortableHandle
 } from "react-sortable-hoc";
 import styles from "@/admin/components/ui/Answer/Answer.module.scss"
+import { FaGripVertical, FaRegCheckSquare, FaRegDotCircle, FaTimes, FaUpload } from "react-icons/fa";
 
 const DragHandle = sortableHandle(() => (
     <div className='answer-item-head--dragging'>
-        <SgIcon icon='drop' />
+        <FaGripVertical />
     </div>
 ));
 
@@ -53,13 +53,13 @@ export default function AnswerItem(props) {
                             }
                             {type === 2 ?
                                 <h6 className={styles['answer-item-head--icon']}>
-                                    <SgIcon icon='check-square' />
+                                    <FaRegCheckSquare />
                                 </h6>
                                 : ''
                             }
                             {type === 1 ?
                                 <h6 className={styles['answer-item-head--icon']}>
-                                    <SgIcon icon='disc' />
+                                    <FaRegDotCircle />
                                 </h6>
                                 : ''
                             }
@@ -88,13 +88,13 @@ export default function AnswerItem(props) {
                                 }
                                 {type === 2 ?
                                     <h6 className={styles['answer-item-head--icon']}>
-                                        <SgIcon icon='check-square' />
+                                        <FaRegCheckSquare />
                                     </h6>
                                     : ''
                                 }
                                 {type === 1 ?
                                     <h6 className={styles['answer-item-head--icon']}>
-                                        <SgIcon icon='disc' />
+                                        <FaRegDotCircle />
                                     </h6>
                                     : ''
                                 }
@@ -133,7 +133,7 @@ export default function AnswerItem(props) {
                             onlyIcon={true}
                             padding={0}
                             size='xs'
-                            icon='x'
+                            icon={FaTimes}
                             color='secondary-outline'
                             onClick={(e) => {
                                 // if (dataLength > 1) {
@@ -154,7 +154,7 @@ export default function AnswerItem(props) {
                             onlyIcon={true}
                             padding={0}
                             size='xs'
-                            icon='upload'
+                            icon={FaUpload}
                             color='secondary-outline'
                             onClick={() => {
                                 handleAddFileClick(`questions.${questionIndex}.variants.${index}`)

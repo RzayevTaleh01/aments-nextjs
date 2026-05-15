@@ -3,8 +3,8 @@ import {GET_FILE_ROUTE} from "@/admin/configs/apiRoutes";
 import Image from "next/image";
 import {SgRatio} from "@/admin/components/ui/Ratio";
 import React from "react";
-import SgIcon from "@/admin/components/ui/Icon";
 import "./FilePreview.scss";
+import { FaPen, FaTrash } from "react-icons/fa";
 const REQUEST_STORAGE_URL = process.env.NEXT_PUBLIC_REQUEST_STORAGE_URL;
 const REQUEST_BACKEND_URL = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL;
 
@@ -77,7 +77,7 @@ export default function FilePreview(props) {
                             {!preview ? (
                                 <div className='filePreview-thumbActions'>
                                     <button type='button' className='filePreview-thumbEdit' onClick={() => handleEditFile?.(index)}>
-                                        <SgIcon icon='pen' size={14} />
+                                        <FaPen size={14} />
                                     </button>
                                     <button type='button' className='filePreview-thumbRemove' onClick={() => handleRemoveFile?.(index)}>
                                         ×
@@ -140,7 +140,7 @@ export default function FilePreview(props) {
                                         <div className='filePreview-file-operation-item'>
                                             <SgButton
                                                 onlyIcon={true}
-                                                icon='pen'
+                                                icon={FaPen}
                                                 withOutBlock={true}
                                                 padding={0}
                                                 size='big'
@@ -152,7 +152,7 @@ export default function FilePreview(props) {
                                         <div className='filePreview-file-operation-item'>
                                             <SgButton
                                                 onlyIcon={true}
-                                                icon='trash'
+                                                icon={FaTrash}
                                                 withOutBlock={true}
                                                 padding={0}
                                                 size='big'

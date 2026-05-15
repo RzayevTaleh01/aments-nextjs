@@ -10,6 +10,7 @@ import { BRANDS_ROUTE, CATEGORIES_ROUTE, MARKS_ROUTE, MODELS_BY_MARK_ROUTE } fro
 import ApiService from "@/services/api/ApiService";
 import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
+import UiLoader from "@/components/ui/Loader/Loader";
 
 function pickFirstString(values) {
   for (const v of values) {
@@ -341,6 +342,11 @@ export default function ProductCatalogPage({
   
   return (
     <div>
+      <UiLoader
+        fullscreen={true}
+        visible={isLoading}
+        label={HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
+      />
       <Breadcrumb
         title={title}
         items={[
@@ -358,11 +364,6 @@ export default function ProductCatalogPage({
               </span>{" "}
               {normalizedQ}
             </div>
-            {isLoading ? (
-              <span className="text-muted">
-                {HelperTranslate({ defaultText: "Yüklənir...", translateText: staticContent?.common__loading })}
-              </span>
-            ) : null}
           </div>
           {isShowingSimilarAsFallback && !isLoading ? (
             <div className="alert alert-light border border-top-0 rounded-top-0 mt-2">

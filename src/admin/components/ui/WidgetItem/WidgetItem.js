@@ -1,11 +1,11 @@
 import styles from '@/admin/components/ui/WidgetItem/WidgetItem.module.scss';
-import SgIcon from "@/admin/components/ui/Icon";
 import { sortableHandle } from "react-sortable-hoc";
 import {SgButton} from "@/components/ui/Button";
+import { FaBars } from "react-icons/fa";
 
 const DragHandle = sortableHandle(({index, handleRemove}) => (
 	<div className={[styles['sg--widgetItem--key']].join(' ').trim()}>
-		<SgIcon icon='menu' size={20} />
+		<FaBars size={20} />
 		{index + 1}
 		<SgButton
 			className='ms-auto'

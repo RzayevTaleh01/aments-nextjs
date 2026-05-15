@@ -64,7 +64,7 @@ export default function Page() {
       image: String(data.image || ""),
     };
 
-    ApiService.put(`${EDIT_MODEL_BY_ID_ROUTE}/${modelId}`, { data: payload })
+    ApiService.put(`${EDIT_MODEL_BY_ID_ROUTE}/${modelId}`, { ...payload })
       .then(() => {
         router.push("/admin/models");
       })
@@ -113,7 +113,7 @@ export default function Page() {
           <div className={["row"].join(" ").trim()}>
             <div className="col-lg-12">
               <div className="row">
-                <div className="col-lg-6">
+                <div className="col-lg-12">
                   <SgFormGroup>
                     <SgInput
                       name="markId"

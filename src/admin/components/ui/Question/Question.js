@@ -1,15 +1,15 @@
 import {SgFormGroup, SgInput, SgSwitch} from "@/admin/components/ui/Form";
 import {SgButton} from "@/admin/components/ui/Button";
-import SgIcon from "@/admin/components/ui/Icon";
 import Answer from "@/admin/components/ui/Answer";
 import { sortableHandle } from "react-sortable-hoc";
 import FilePreview from "@/admin/components/templates/FilePreview";
 import SgTooltip from "../Tooltip";
 import styles from '@/admin/components/ui/Question/Question.module.scss'
+import { FaBars, FaRegCalendarAlt, FaRegCircle, FaRegClock, FaRegDotCircle, FaTrash } from "react-icons/fa";
 
 const DragHandle = sortableHandle(() => (
     <div className={styles["question_head--center"]}>
-        <SgIcon icon='menu' />
+        <FaBars />
     </div>
 ));
 
@@ -22,7 +22,7 @@ export default function Question(props) {
                 <div className={styles["question_head--left"]}>
                     <div className={styles['question_head--header']}>
                         {((linked && linkedAnswer.questionIndex !== index) || questionTemplate) ?
-                            <SgIcon icon={(answersLinked || []).includes(data.id) ? 'radio' : 'radio-outline'} />
+                            ((answersLinked || []).includes(data.id) ? <FaRegDotCircle /> : <FaRegCircle />)
                             : ''
                         }
                     </div>
@@ -121,7 +121,7 @@ export default function Question(props) {
                                     placeholder='Saat'
                                     onChange={handleChange}
                                     type='text'
-                                    suffix={<SgIcon icon='time' />}
+                                    suffix={<FaRegClock />}
                                     labelHidden={true}
                                     disabled={true}
                                 />
@@ -135,7 +135,7 @@ export default function Question(props) {
                                     placeholder='Tarix'
                                     onChange={handleChange}
                                     type='text'
-                                    suffix={<SgIcon icon='date' />}
+                                    suffix={<FaRegCalendarAlt />}
                                     labelHidden={true}
                                     disabled={true}
                                 />
@@ -214,7 +214,7 @@ export default function Question(props) {
                             onlyIcon={true}
                             padding={0}
                             size='extraBig'
-                            icon='trash'
+                            icon={FaTrash}
                             color='secondary-outline'
                             onClick={(e) => {
                                 // if (questions.length > 1) {

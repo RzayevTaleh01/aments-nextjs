@@ -402,6 +402,7 @@ export default function Page() {
                   id="similar_oem_codes"
                   placeholder="W712/94, OP526/1, OC295"
                   label="Similar OEM kodlar"
+                  variant="creatable-select"
                   value={data.similar_oem_codes || ""}
                   onChange={handleChange}
                   isInvalid={valueErrors.similar_oem_codes}
