@@ -28,7 +28,7 @@ function resolveAdminPath(path, external) {
 }
 
 export default function SgSideBarMenuItem(props) {
-    const { item, isOpen } = props;
+    const { item, isOpen, onNavigate } = props;
     const {data: session} = useSession();
     const pathname = usePathname();
 
@@ -84,6 +84,9 @@ export default function SgSideBarMenuItem(props) {
                                                 href={resolveAdminPath(el?.path, el?.external)}
                                                 target={el?.external ? '_blank' : '_self'}
                                                 key={`main__${i}`}
+                                                onClick={() => {
+                                                    if (typeof onNavigate === "function" && !el?.external) onNavigate();
+                                                }}
                                                 className={[
                                                     styles['sg--template--sidebar-body-menu-item--dropdown-link'],
                                                     isActivePath(resolveAdminPath(el?.path, el?.external)) ? 'active' : ''
@@ -118,6 +121,8 @@ export default function SgSideBarMenuItem(props) {
                                             {(item.children || []).map((el, index) =>
                                                 <SgSideBarMenuItem
                                                     key={index}
+                                                    isOpen={isOpen}
+                                                    onNavigate={onNavigate}
                                                     item={{...el, path: resolveAdminPath(el?.path, el?.external)}}
                                                 />
                                             )}
@@ -131,6 +136,9 @@ export default function SgSideBarMenuItem(props) {
                                 <Link
                                     href={resolvedPath}
                                     target={item?.external ? '_blank' : '_self'}
+                                    onClick={() => {
+                                        if (typeof onNavigate === "function" && !item?.external) onNavigate();
+                                    }}
                                     className={[styles['sg--template--sidebar-body-menu-item--link'], isActive ? 'active' : ''].join(' ').trim()}
                                 >
                                     <div className={[styles['sg--template--sidebar-body-menu-item--link-icon']].join(' ').trim()}>

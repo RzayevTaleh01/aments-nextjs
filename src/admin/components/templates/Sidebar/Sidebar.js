@@ -6,7 +6,7 @@ import Image from "next/image";
 import Logo from "@/assets/images/company_logo/company_logo_2.png";
 
 export default function SgTemplateSidebar(props) {
-    const { isOpen } = props;
+    const { isOpen, onNavigate } = props;
 
     return (
         <>
@@ -36,6 +36,7 @@ export default function SgTemplateSidebar(props) {
                         {(sidebarPrimaryMenu || []).map((item, index) =>
                             <SgSideBarMenuItem
                                 isOpen={isOpen}
+                                onNavigate={onNavigate}
                                 key={index}
                                 item={item}
                                 index={index}
@@ -45,6 +46,8 @@ export default function SgTemplateSidebar(props) {
                     <div className={[styles['sg--template--sidebar-body-menu'], 'mt-auto'].join(' ').trim()}>
                         {(sidebarSecondaryMenu || []).map((item, index) =>
                             <SgSideBarMenuItem
+                                isOpen={isOpen}
+                                onNavigate={onNavigate}
                                 key={index}
                                 item={item}
                                 index={index}
