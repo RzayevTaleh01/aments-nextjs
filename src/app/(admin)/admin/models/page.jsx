@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { FaPen, FaPlus, FaTrash } from "react-icons/fa";
 import TableFilter from "@/admin/components/ui/TableFilter/TableFilter";
 import { pickText, toText } from "@/admin/utils/text";
+import { CONTENT_LANGUAGE_OPTIONS, CONTENT_LANGUAGES } from "@/admin/constants/constants";
 
 export default function Page() {
   const [reloadKey, setReloadKey] = useState(0);
@@ -53,6 +54,20 @@ export default function Page() {
         <SgPageBody>
           <TableFilter
             fields={[
+              {
+                key: "lang",
+                kind: "select",
+                width: 140,
+                filterKey: "lang",
+                defaultValue: CONTENT_LANGUAGES.AZ,
+                selectProps: {
+                  variant: "select",
+                  size: "small",
+                  labelHidden: true,
+                  placeholder: "Dil",
+                },
+                options: CONTENT_LANGUAGE_OPTIONS,
+              },
               {
                 key: "search",
                 kind: "input",

@@ -11,10 +11,13 @@ import { SgPopup } from "@/admin/components/ui/Popup";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FaPen, FaPlus, FaTrash } from "react-icons/fa";
+import TableFilter from "@/admin/components/ui/TableFilter/TableFilter";
 import { pickText } from "@/admin/utils/text";
+import { CONTENT_LANGUAGE_OPTIONS, CONTENT_LANGUAGES } from "@/admin/constants/constants";
 
 export default function Page() {
   const [reloadKey, setReloadKey] = useState(0);
+  const [tableFilters, setTableFilters] = useState({});
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
@@ -49,6 +52,25 @@ export default function Page() {
           </SgButton>
         </SgPageHead>
         <SgPageBody>
+          <TableFilter
+            fields={[
+              {
+                key: "lang",
+                kind: "select",
+                width: 140,
+                filterKey: "lang",
+                defaultValue: CONTENT_LANGUAGES.AZ,
+                selectProps: {
+                  variant: "select",
+                  size: "small",
+                  labelHidden: true,
+                  placeholder: "Dil",
+                },
+                options: CONTENT_LANGUAGE_OPTIONS,
+              },
+            ]}
+            onChange={(payload) => setTableFilters(payload?.filters || {})}
+          />
           <SgTable
             data_key="data"
             reloadKey={reloadKey}
@@ -80,6 +102,7 @@ export default function Page() {
                 },
               ],
               api: GET_CATEGORIES_ROUTE,
+              filters: tableFilters,
             }}
           />
           <SgPopup
