@@ -7,18 +7,15 @@ import BannerSection from "@/components/sections/home/BannerSection/BannerSectio
 import ProductsCarousel from "@/components/templates/ProductsCarousel";
 import CompanyLogoSection from "@/components/sections/home/CompanyLogoSection/CompanyLogoSection";
 import { companyLogos, home1HeroSlides, homeBanners} from "@/constants/home";
-import { ALL_PRODUCTS_ROUTE } from "@/configs/apiRoutes";
+import { ALL_PRODUCTS_ROUTE, STATISTICS_CATEGORY_POPULAR_ROUTE } from "@/configs/apiRoutes";
 import ApiService from "@/services/api/ApiService";
 import { toast } from "react-toastify";
+import { useLanguage } from "@/context/language-context";
 
-export default function HomePage({ popularCategories, popularCategoriesError }) {
-  const categoriesRaw = popularCategories?.length ? popularCategories : [];
-  const categories = Array.isArray(categoriesRaw)
-    ? categoriesRaw.map((cat) => ({
-        ...cat,
-        imageSrc: cat?.image,
-      }))
-    : [];
+export default function HomePage() {
+  const { lang } = useLanguage();
+  const [categories, setCategories] = useState([]);
+  const [popularCategoriesError, setPopularCategoriesError] = useState(null);
   const [products, setProducts] = useState([]);
   const popularToastShownRef = useRef(false);
 
@@ -31,6 +28,35 @@ export default function HomePage({ popularCategories, popularCategoriesError }) 
 
   useEffect(() => {
     let isActive = true;
+    setPopularCategoriesError(null);
+    popularToastShownRef.current = false;
+
+    (async () => {
+      try {
+        const res = await ApiService.get(STATISTICS_CATEGORY_POPULAR_ROUTE, { params: { lang } });
+        const list = res?.data?.data;
+        const mapped = Array.isArray(list)
+          ? list.map((cat) => ({
+              ...cat,
+              imageSrc: cat?.image,
+            }))
+          : [];
+        if (!isActive) return;
+        setCategories(mapped);
+      } catch {
+        if (!isActive) return;
+        setCategories([]);
+        setPopularCategoriesError("Request failed");
+      }
+    })();
+
+    return () => {
+      isActive = false;
+    };
+  }, [lang]);
+
+  useEffect(() => {
+    let isActive = true;
     (async () => {
       try {
         const res = await ApiService.get(ALL_PRODUCTS_ROUTE);
@@ -38,7 +64,7 @@ export default function HomePage({ popularCategories, popularCategoriesError }) 
         const list = Array.isArray(data?.products) ? data.products : [];
         const mapped = list.map((p) => {
           const imageSrc = p?.images?.[0]?.image ?? p?.image ?? "";
-          const href = p?.id ? `/product/${p.id}` : "/product/default";
+          const href = p?.id ? `/product/${p.id}` : "/404";
           return { ...p, imageSrc, href };
         });
         if (!isActive) return;
