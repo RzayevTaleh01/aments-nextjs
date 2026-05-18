@@ -22,6 +22,12 @@ export default function Page() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
+  function toEditUrl(id) {
+    const lang = tableFilters?.lang;
+    const base = `/admin/products/edit/${id}`;
+    return lang ? `${base}?lang=${encodeURIComponent(lang)}` : base;
+  }
+
   function openDeleteModal(row) {
     setSelectedRow(row || null);
     setConfirmOpen(true);
@@ -181,7 +187,7 @@ export default function Page() {
                         onlyIcon={true}
                         minimal={true}
                       />
-                      <SgButton type="link" to={`/admin/products/edit/${row?.id}`} size="sm" color="secondary-outline" icon={FaPen} onlyIcon={true} minimal={true} />
+                      <SgButton type="link" to={toEditUrl(row?.id)} size="sm" color="secondary-outline" icon={FaPen} onlyIcon={true} minimal={true} />
                       <SgButton size="sm" color="error-outline" icon={FaTrash} onlyIcon={true} minimal={true} onClick={() => openDeleteModal(row)} />
                     </SgButtonGroup>
                   ),

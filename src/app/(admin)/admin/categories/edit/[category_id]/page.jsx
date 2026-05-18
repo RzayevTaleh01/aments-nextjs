@@ -11,7 +11,7 @@ import { validate } from "@/admin/utils/validate";
 import { CONTENT_LANGUAGE_OPTIONS, CONTENT_LANGUAGES, validationConstraints } from "@/admin/constants/constants";
 import ApiService from "@/admin/services/ApiService";
 import { EDIT_CATEGORY_BY_ID_ROUTE, GET_CATEGORY_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { getBase64 } from "@/admin/utils/getBase64";
 
 export default function Page() {
@@ -19,8 +19,17 @@ export default function Page() {
   const [valueErrors, setValueErrors] = useState({});
   const [activeLang, setActiveLang] = useState(CONTENT_LANGUAGES.AZ);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const params = useParams();
   const categoryId = params?.category_id;
+
+  const langParam = searchParams?.get("lang");
+  useEffect(() => {
+    const next = String(langParam || "").trim().toLowerCase();
+    if (!next) return;
+    const ok = CONTENT_LANGUAGE_OPTIONS.some((l) => String(l?.id || "").toLowerCase() === next);
+    if (ok) setActiveLang(next);
+  }, [langParam]);
 
   function handleChange(e) {
     changeData(e, data, setData, valueErrors, setValueErrors);
