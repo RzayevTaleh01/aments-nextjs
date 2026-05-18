@@ -39,7 +39,6 @@ export default function Page() {
   useEffect(() => {
     let isActive = true;
     const baseUrl =
-      process.env.NEXT_PUBLIC_ADMIN_API ||
       process.env.NEXT_PUBLIC_REQUEST_ADMIN_BASE_URL ||
       process.env.NEXT_PUBLIC_REQUEST_BASE_URL ||
       "";

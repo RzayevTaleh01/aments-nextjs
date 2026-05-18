@@ -11,6 +11,7 @@ import ApiService from "@/services/api/ApiService";
 import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
 import UiLoader from "@/components/ui/Loader/Loader";
+import { ALL_PRODUCTS_ROUTE } from "@/configs/apiRoutes";
 
 function pickFirstString(values) {
   for (const v of values) {
@@ -66,10 +67,10 @@ export default function ProductCatalogPage({
   sidebarPosition = "left",
   defaultView = "list",
   products: productsProp,
-  productsApiRoute,
   searchParamKey,
 }) {
   const router = useRouter();
+  const productsApiRoute = ALL_PRODUCTS_ROUTE;
   const pathname = usePathname();
   const { staticContent } = useInitial();
   const [apiProducts, setApiProducts] = useState(null);
