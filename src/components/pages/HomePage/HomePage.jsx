@@ -16,7 +16,7 @@ export default function HomePage({ popularCategories, popularCategoriesError }) 
   const categories = Array.isArray(categoriesRaw)
     ? categoriesRaw.map((cat) => ({
         ...cat,
-        imageSrc: cat?.imageSrc ?? cat?.image ?? cat?.icon ?? cat?.photo ?? cat?.thumbnail ?? cat?.logo ?? cat?.banner ?? cat?.avatar,
+        imageSrc: cat?.image,
       }))
     : [];
   const [products, setProducts] = useState([]);

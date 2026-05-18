@@ -1,10 +1,27 @@
 import HomePage from "@/components/pages/HomePage";
 import ApiService from "@/services/api/ApiService";
 import { STATISTICS_CATEGORY_POPULAR_ROUTE } from "@/configs/apiRoutes";
+import { cookies } from "next/headers";
 export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Home",
 };
+
+function normalizeLang(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return "en";
+  const base = raw.split("-")[0]?.toLowerCase();
+  return base || "en";
+}
+
+async function getServerLang() {
+  try {
+    const cookieStore = await cookies();
+    return normalizeLang(cookieStore.get("oem_lang")?.value);
+  } catch {
+    return "en";
+  }
+}
 
 function toErrorMessage(error) {
   const code = error?.code ? String(error.code) : "";
@@ -15,7 +32,8 @@ function toErrorMessage(error) {
 
 async function getPopularCategoriesForHome() {
   try {
-    const res = await ApiService.get(STATISTICS_CATEGORY_POPULAR_ROUTE);
+    const lang = await getServerLang();
+    const res = await ApiService.get(STATISTICS_CATEGORY_POPULAR_ROUTE, { params: { lang } });
     if (!res?.data?.data || !Array.isArray(res.data.data)) return { data: null, error: null };
     return { data: res.data.data, error: null };
   } catch (error) {
