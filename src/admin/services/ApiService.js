@@ -8,6 +8,7 @@ const REQUEST_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL;
 const REQUEST_TIME_OUT = process.env.NEXT_PUBLIC_REQUEST_TIME_OUT;
 const REQUEST_TOKEN_TYPE = process.env.NEXT_PUBLIC_REQUEST_TOKEN_TYPE || "Bearer";
 const REQUEST_NEXT_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_NEXT_ADMIN_BASE_URL;
+const ADMIN_DEFAULT_LANG = "az";
 
 
 const ApiService = axios.create({
@@ -20,6 +21,14 @@ ApiService.interceptors.request.use(
     async (config) => {
         let _config = {...config};
         _config.headers = _config.headers ?? {};
+
+        const hasLangInUrl = typeof _config.url === 'string' && /(^|[?&])lang=/.test(_config.url);
+        if (typeof _config.params?.get === 'function') {
+            if (!_config.params.has('lang') && !hasLangInUrl) _config.params.set('lang', ADMIN_DEFAULT_LANG);
+        } else {
+            const hasParamsLang = _config.params && typeof _config.params === 'object' && 'lang' in _config.params;
+            if (!hasParamsLang && !hasLangInUrl) _config.params = { ...(_config.params ?? {}), lang: ADMIN_DEFAULT_LANG };
+        }
 
         const session = await getSession();
         if (session?.token?.accessToken) _config.headers[REQUEST_HEADER_AUTH_KEY] = `${REQUEST_TOKEN_TYPE} ${session?.token?.accessToken}`;
