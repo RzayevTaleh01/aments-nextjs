@@ -54,7 +54,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!storageId) return;
-    ApiService.get(`${GET_STORAGE_BY_ID_ROUTE}/${storageId}`)
+    ApiService.get(`${GET_STORAGE_BY_ID_ROUTE}/${storageId}`, { _skipLang: true })
       .then((resp) => {
         const payload = resp?.data?.data ?? {};
         const storage = payload?.storage ?? payload;

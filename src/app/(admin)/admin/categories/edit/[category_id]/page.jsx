@@ -69,7 +69,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!categoryId) return;
-    ApiService.get(`${GET_CATEGORY_BY_ID_ROUTE}/${categoryId}`)
+    ApiService.get(`${GET_CATEGORY_BY_ID_ROUTE}/${categoryId}`, { _skipLang: true })
       .then((resp) => {
         const payload = resp?.data?.data ?? {};
         const category = payload?.category ?? payload;

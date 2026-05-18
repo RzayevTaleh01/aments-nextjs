@@ -22,12 +22,14 @@ ApiService.interceptors.request.use(
         let _config = {...config};
         _config.headers = _config.headers ?? {};
 
-        const hasLangInUrl = typeof _config.url === 'string' && /(^|[?&])lang=/.test(_config.url);
-        if (typeof _config.params?.get === 'function') {
-            if (!_config.params.has('lang') && !hasLangInUrl) _config.params.set('lang', ADMIN_DEFAULT_LANG);
-        } else {
-            const hasParamsLang = _config.params && typeof _config.params === 'object' && 'lang' in _config.params;
-            if (!hasParamsLang && !hasLangInUrl) _config.params = { ...(_config.params ?? {}), lang: ADMIN_DEFAULT_LANG };
+        if (!_config._skipLang) {
+            const hasLangInUrl = typeof _config.url === 'string' && /(^|[?&])lang=/.test(_config.url);
+            if (typeof _config.params?.get === 'function') {
+                if (!_config.params.has('lang') && !hasLangInUrl) _config.params.set('lang', ADMIN_DEFAULT_LANG);
+            } else {
+                const hasParamsLang = _config.params && typeof _config.params === 'object' && 'lang' in _config.params;
+                if (!hasParamsLang && !hasLangInUrl) _config.params = { ...(_config.params ?? {}), lang: ADMIN_DEFAULT_LANG };
+            }
         }
 
         const session = await getSession();

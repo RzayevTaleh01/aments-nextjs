@@ -46,7 +46,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!markId) return;
-    ApiService.get(`${GET_MARK_BY_ID_ROUTE}/${markId}`)
+    ApiService.get(`${GET_MARK_BY_ID_ROUTE}/${markId}`, { _skipLang: true })
       .then((resp) => {
         const payload = resp?.data?.data ?? {};
         const mark = payload?.mark ?? payload;

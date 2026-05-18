@@ -63,7 +63,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!brandId) return;
-    ApiService.get(`${GET_BRAND_BY_ID_ROUTE}/${brandId}`)
+    ApiService.get(`${GET_BRAND_BY_ID_ROUTE}/${brandId}`, { _skipLang: true })
       .then((resp) => {
         const payload = resp?.data?.data ?? {};
         const brand = payload?.brand ?? payload;

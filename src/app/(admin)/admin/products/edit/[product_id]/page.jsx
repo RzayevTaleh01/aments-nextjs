@@ -264,7 +264,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!productId) return;
-    ApiService.get(`${GET_PRODUCT_BY_ID_ROUTE}/${productId}`)
+    ApiService.get(`${GET_PRODUCT_BY_ID_ROUTE}/${productId}`, { _skipLang: true })
       .then((resp) => {
         const payload = resp?.data?.data ?? {};
         const product = payload?.product ?? payload;

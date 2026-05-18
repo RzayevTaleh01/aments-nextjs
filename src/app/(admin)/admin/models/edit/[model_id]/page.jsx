@@ -85,7 +85,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!modelId) return;
-    ApiService.get(`${GET_MODEL_BY_ID_ROUTE}/${modelId}`)
+    ApiService.get(`${GET_MODEL_BY_ID_ROUTE}/${modelId}`, { _skipLang: true })
       .then((resp) => {
         const payload = resp?.data?.data ?? {};
         const model = payload?.model ?? payload;
