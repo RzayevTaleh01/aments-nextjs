@@ -1,64 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HeroHome from "@/components/sections/home/HeroHome/HeroHome";
 import PopularCategoriesSection from "@/components/sections/home/PopularCategoriesSection/PopularCategoriesSection";
 import BannerSection from "@/components/sections/home/BannerSection/BannerSection";
 import ProductsCarousel from "@/components/templates/ProductsCarousel";
 import CompanyLogoSection from "@/components/sections/home/CompanyLogoSection/CompanyLogoSection";
-import { companyLogos, home1HeroSlides, homeBanners, popularCategories as fallbackPopularCategories } from "@/constants/home";
+import { companyLogos, home1HeroSlides, homeBanners} from "@/constants/home";
 import { ALL_PRODUCTS_ROUTE } from "@/configs/apiRoutes";
 import ApiService from "@/services/api/ApiService";
+import { toast } from "react-toastify";
 
-function pickFirstString(values) {
-  for (const v of values) {
-    if (typeof v === "string" && v.trim()) return v.trim();
-  }
-  return "";
-}
-
-function extractApiImage(product) {
-  if (!product || typeof product !== "object") return "";
-
-  const direct = pickFirstString([product.image, product.thumbnail, product.photo, product.img, product.imageUrl, product.image_url]);
-  if (direct) return direct;
-
-  const directObj = [product.image, product.thumbnail, product.photo, product.img, product.imageUrl, product.image_url].find((v) => v && typeof v === "object");
-  if (directObj && typeof directObj === "object") {
-    const nested = pickFirstString([directObj.url, directObj.image, directObj.path, directObj.src, directObj.file]);
-    if (nested) return nested;
-  }
-
-  const images = product.images;
-  if (typeof images === "string" && images.trim()) return images.trim();
-  if (Array.isArray(images)) {
-    const first = images.find((x) => x != null);
-    if (typeof first === "string" && first.trim()) return first.trim();
-    if (first && typeof first === "object") {
-      const nested = pickFirstString([first.image, first.url, first.path, first.src, first.file]);
-      if (nested) return nested;
-    }
-  }
-
-  return "";
-}
-
-function mapApiProductToUiProduct(p) {
-  const slug = p?.slug;
-  const firstStorageProduct = Array.isArray(p?.storageProducts) ? (p.storageProducts.find((sp) => sp?.price != null) ?? p.storageProducts[0]) : null;
-  const priceValue = firstStorageProduct?.price;
-  const price = typeof priceValue === "string" || typeof priceValue === "number" ? `${priceValue} AZN` : "";
-  const apiImage = extractApiImage(p);
-  return {
-    ...p,
-    imageSrc: apiImage,
-    href: p?.href ?? (p?.id ? `/product/${p.id}` : slug ? `/product/${slug}` : "/product/default"),
-    price,
-  };
-}
-
-export default function HomePage({ popularCategories }) {
-  const categoriesRaw = popularCategories?.length ? popularCategories : fallbackPopularCategories;
+export default function HomePage({ popularCategories, popularCategoriesError }) {
+  const categoriesRaw = popularCategories?.length ? popularCategories : [];
   const categories = Array.isArray(categoriesRaw)
     ? categoriesRaw.map((cat) => ({
         ...cat,
@@ -66,6 +20,14 @@ export default function HomePage({ popularCategories }) {
       }))
     : [];
   const [products, setProducts] = useState([]);
+  const popularToastShownRef = useRef(false);
+
+  useEffect(() => {
+    if (!popularCategoriesError) return;
+    if (popularToastShownRef.current) return;
+    popularToastShownRef.current = true;
+    toast.error("Xəta! Zəhmət olmasa interneti/serveri yoxlayın.");
+  }, [popularCategoriesError]);
 
   useEffect(() => {
     let isActive = true;
@@ -74,7 +36,11 @@ export default function HomePage({ popularCategories }) {
         const res = await ApiService.get(ALL_PRODUCTS_ROUTE);
         const data = res?.data?.data ?? {};
         const list = Array.isArray(data?.products) ? data.products : [];
-        const mapped = list.map(mapApiProductToUiProduct);
+        const mapped = list.map((p) => {
+          const imageSrc = p?.images?.[0]?.image ?? p?.image ?? "";
+          const href = p?.id ? `/product/${p.id}` : "/product/default";
+          return { ...p, imageSrc, href };
+        });
         if (!isActive) return;
         setProducts(mapped);
       } catch {
