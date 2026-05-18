@@ -28,7 +28,7 @@ export default async function RootLayout({ children }) {
         <link rel="icon" href="/assets/images/favicon.ico" />
       </head>
       <body suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers initialLang={lang}>{children}</Providers>
       </body>
     </html>
   );

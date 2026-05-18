@@ -71,7 +71,7 @@ function LanguageSwitchLoader() {
   return <UiLoader fullscreen={true} label={label} />;
 }
 
-export default function Providers({ children }) {
+export default function Providers({ children, initialLang }) {
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -83,7 +83,7 @@ export default function Providers({ children }) {
 
   return (
     <SessionProvider>
-      <LanguageProvider>
+      <LanguageProvider initialLang={initialLang}>
         <StaticContentProvider>
           <UIDrawersProvider>
             {children}

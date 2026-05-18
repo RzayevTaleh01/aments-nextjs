@@ -29,13 +29,13 @@ function getCookieValue(name) {
 }
 
 function getStoredLang() {
+  const cookieLang = getCookieValue(LANG_COOKIE_KEY);
+  if (cookieLang) return normalizeLang(cookieLang);
+
   try {
     const raw = window?.localStorage?.getItem(LANG_LOCAL_STORAGE_KEY);
     if (raw) return normalizeLang(raw);
   } catch {}
-
-  const cookieLang = getCookieValue(LANG_COOKIE_KEY);
-  if (cookieLang) return normalizeLang(cookieLang);
 
   try {
     const navLang = navigator?.language;
@@ -56,12 +56,12 @@ function persistLang(lang) {
   } catch {}
 }
 
-export function LanguageProvider({ children }) {
-  const [lang, setLangState] = useState(DEFAULT_LANG);
+export function LanguageProvider({ children, initialLang }) {
+  const [lang, setLangState] = useState(() => normalizeLang(initialLang));
 
   useEffect(() => {
     const initial = getStoredLang();
-    setLangState(initial);
+    setLangState((prev) => (prev === initial ? prev : initial));
     persistLang(initial);
   }, []);
 
