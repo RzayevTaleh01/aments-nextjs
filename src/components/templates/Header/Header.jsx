@@ -12,7 +12,6 @@ import MobileMenuOffcanvas from "../MobileMenuOffcanvas";
 
 export default function Header() {
   const pathname = usePathname();
-  const [isSticky, setIsSticky] = useState(false);
   const [openOffcanvasId, setOpenOffcanvasId] = useState(null);
 
   const closeOffcanvas = useCallback(() => {
@@ -34,16 +33,6 @@ export default function Header() {
     },
     [openOffcanvas]
   );
-
-  useEffect(() => {
-    const onScroll = () => {
-      setIsSticky(window.scrollY >= 100);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -172,7 +161,6 @@ export default function Header() {
   return (
     <>
       <HeaderGroup
-        isSticky={isSticky}
         isActive={isActive}
         onOffcanvasToggle={handleOffcanvasToggle}
         BottomHeaderData={BottomHeaderData}

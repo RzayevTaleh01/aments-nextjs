@@ -37,8 +37,13 @@ export default function ProductsCarousel({
       <div className="section-content-gap">
         <div className="container">
           <div className="row">
-            <div className={cn("section-content d-flex justify-content-between align-items-md-center align-items-start flex-md-row flex-column", styles.header)}>
-              <h3 className="section-title" >
+            <div
+              className={cn(
+                "section-content d-flex justify-content-between align-items-center flex-row flex-wrap",
+                styles.header
+              )}
+            >
+              <h3 className="section-title">
                 {HelperTranslate({
                   defaultText: title,
                   translateText: title === "Products" ? staticContent?.home__productsSectionTitle : undefined,

@@ -32,8 +32,9 @@ export default function ProductCatalogList({
 }) {
   const { showPrice } = useShowPrice();
   const { staticContent } = useInitial();
-  const rowClass = sidebarPosition === "right" ? "row flex-column-reverse flex-lg-row-reverse" : "row flex-column-reverse flex-lg-row";
+  const rowClass = sidebarPosition === "right" ? "row flex-column flex-lg-row-reverse" : "row flex-column flex-lg-row";
   const [activeView, setActiveView] = useState(defaultView);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("");
@@ -130,92 +131,108 @@ export default function ProductCatalogList({
             <div className={rowClass}>
               <div className="col-lg-3">
                 <div className="siderbar-section">
-                  {renderSidebar ? (
-                    renderSidebar(sidebarApi)
-                  ) : (
-                    <>
-                      <div className={styles.sidebarSingleWidget}>
-                        <h6 className={styles.sidebarTitle}>
-                          {HelperTranslate({ defaultText: "Search", translateText: staticContent?.catalogList__searchTitle })}
-                        </h6>
-                        <div className="sidebar-content">
-                          <form
-                            className="d-flex gap-2"
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              applyFilters();
-                            }}
-                          >
-                            <input
-                              className="form-control"
-                              type="text"
-                              value={searchInput}
-                              onChange={(e) => setSearchInput(e.target.value)}
-                              placeholder={HelperTranslate({
-                                defaultText: "Ada görə axtar",
-                                translateText: staticContent?.catalogList__searchByNamePlaceholder,
-                              })}
-                            />
-                            <button type="submit" className="btn btn-dark">
-                              {HelperTranslate({ defaultText: "Search", translateText: staticContent?.catalog__searchButton })}
-                            </button>
-                          </form>
-                        </div>
-                      </div>
+                  <button
+                    type="button"
+                    className={cn("btn btn-outline-dark w-100 d-flex justify-content-between align-items-center d-lg-none", styles.mobileFiltersToggle)}
+                    aria-expanded={filtersOpen}
+                    aria-controls="catalog-filters"
+                    onClick={() => setFiltersOpen((v) => !v)}
+                  >
+                    <span>{HelperTranslate({ defaultText: "Filters", translateText: staticContent?.catalog__filtersTitle })}</span>
+                    <span className={cn(styles.mobileFiltersToggleIcon, filtersOpen && styles.mobileFiltersToggleIconOpen)} />
+                  </button>
 
-                      <div className={styles.sidebarSingleWidget}>
-                        <h6 className={styles.sidebarTitle}>
-                          {HelperTranslate({ defaultText: "Categories", translateText: staticContent?.catalogList__categoriesTitle })}
-                        </h6>
-                        <div className="sidebar-content">
-                          <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
-                            <option value="" />
-                          </select>
+                  <div id="catalog-filters" className={cn(styles.mobileFiltersBody, filtersOpen && styles.mobileFiltersBodyOpen)}>
+                    {renderSidebar ? (
+                      renderSidebar(sidebarApi)
+                    ) : (
+                      <>
+                        <div className={styles.sidebarSingleWidget}>
+                          <h6 className={styles.sidebarTitle}>
+                            {HelperTranslate({ defaultText: "Search", translateText: staticContent?.catalogList__searchTitle })}
+                          </h6>
+                          <div className="sidebar-content">
+                            <form
+                              className="d-flex gap-2"
+                              onSubmit={(e) => {
+                                e.preventDefault();
+                                applyFilters();
+                              }}
+                            >
+                              <input
+                                className="form-control"
+                                type="text"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                placeholder={HelperTranslate({
+                                  defaultText: "Ada görə axtar",
+                                  translateText: staticContent?.catalogList__searchByNamePlaceholder,
+                                })}
+                              />
+                              <button type="submit" className="btn btn-dark">
+                                {HelperTranslate({ defaultText: "Search", translateText: staticContent?.catalog__searchButton })}
+                              </button>
+                            </form>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className={styles.sidebarSingleWidget}>
-                        <h6 className={styles.sidebarTitle}>
-                          {HelperTranslate({ defaultText: "Brend", translateText: staticContent?.catalog__brandPlaceholder })}
-                        </h6>
-                        <div className="sidebar-content">
-                          <select className="form-select" value={brand} onChange={(e) => setBrand(e.target.value)}>
-                            <option value="" />
-                          </select>
+                        <div className={styles.sidebarSingleWidget}>
+                          <h6 className={styles.sidebarTitle}>
+                            {HelperTranslate({
+                              defaultText: "Categories",
+                              translateText: staticContent?.catalogList__categoriesTitle,
+                            })}
+                          </h6>
+                          <div className="sidebar-content">
+                            <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+                              <option value="" />
+                            </select>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className={styles.sidebarSingleWidget}>
-                        <h6 className={styles.sidebarTitle}>
-                          {HelperTranslate({ defaultText: "Mark", translateText: staticContent?.catalog__markPlaceholder })}
-                        </h6>
-                        <div className="sidebar-content">
-                          <select className="form-select" value={mark} onChange={(e) => setMark(e.target.value)}>
-                            <option value="" />
-                          </select>
+                        <div className={styles.sidebarSingleWidget}>
+                          <h6 className={styles.sidebarTitle}>
+                            {HelperTranslate({ defaultText: "Brend", translateText: staticContent?.catalog__brandPlaceholder })}
+                          </h6>
+                          <div className="sidebar-content">
+                            <select className="form-select" value={brand} onChange={(e) => setBrand(e.target.value)}>
+                              <option value="" />
+                            </select>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className={styles.sidebarSingleWidget}>
-                        <h6 className={styles.sidebarTitle}>
-                          {HelperTranslate({ defaultText: "Model", translateText: staticContent?.catalog__modelPlaceholder })}
-                        </h6>
-                        <div className="sidebar-content">
-                          <select className="form-select" value={model} onChange={(e) => setModel(e.target.value)}>
-                            <option value="" />
-                          </select>
+                        <div className={styles.sidebarSingleWidget}>
+                          <h6 className={styles.sidebarTitle}>
+                            {HelperTranslate({ defaultText: "Mark", translateText: staticContent?.catalog__markPlaceholder })}
+                          </h6>
+                          <div className="sidebar-content">
+                            <select className="form-select" value={mark} onChange={(e) => setMark(e.target.value)}>
+                              <option value="" />
+                            </select>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className={styles.sidebarSingleWidget}>
-                        <div className="sidebar-content">
-                          <Link href="/product/kapot" className={styles.sidebarBanner}>
-                            <img className="img-fluid" src="/assets/images/banner_images/aments_banner_04.jpg" alt="" />
-                          </Link>
+                        <div className={styles.sidebarSingleWidget}>
+                          <h6 className={styles.sidebarTitle}>
+                            {HelperTranslate({ defaultText: "Model", translateText: staticContent?.catalog__modelPlaceholder })}
+                          </h6>
+                          <div className="sidebar-content">
+                            <select className="form-select" value={model} onChange={(e) => setModel(e.target.value)}>
+                              <option value="" />
+                            </select>
+                          </div>
                         </div>
-                      </div>
-                    </>
-                  )}
+
+                        <div className={styles.sidebarSingleWidget}>
+                          <div className="sidebar-content">
+                            <Link href="/product/kapot" className={styles.sidebarBanner}>
+                              <img className="img-fluid" src="/assets/images/banner_images/aments_banner_04.jpg" alt="" />
+                            </Link>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
 

@@ -1,6 +1,47 @@
 .scope {
 }
 
+.mobileFiltersToggle {
+  margin-top: 60px;
+}
+
+.mobileFiltersToggleIcon {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease 0s;
+}
+
+.mobileFiltersToggleIconOpen {
+  transform: rotate(-135deg);
+}
+
+.mobileFiltersBody {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.25s ease 0s, opacity 0.2s ease 0s;
+}
+
+.mobileFiltersBodyOpen {
+  max-height: 2000px;
+  opacity: 1;
+}
+
+@media (min-width: 992px) {
+  .mobileFiltersToggle {
+    margin-top: 0;
+  }
+
+  .mobileFiltersBody {
+    max-height: none;
+    overflow: visible;
+    opacity: 1;
+  }
+}
+
 .sidebarSingleWidget {
   margin-top: 20px;
   margin-bottom: 40px;

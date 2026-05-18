@@ -3,30 +3,14 @@
   position:relative
 }
 
-.sticky-header.sticky{
-  position:fixed;
+.sticky-header{
+  position:sticky;
+  top:0;
   z-index:99;
   width:100%;
-  top:0;
   background:#333;
   -webkit-box-shadow:0 0 2px rgba(0,0,0,.1);
   box-shadow:0 0 2px rgba(0,0,0,.1);
-  -webkit-animation-name:fadeInDown;
-  animation-name:fadeInDown;
-  -webkit-animation-duration:.9s;
-  animation-duration:.9s;
-  -webkit-animation-timing-function:cubic-bezier(.2,1,.22,1);
-  animation-timing-function:cubic-bezier(.2,1,.22,1);
-  -webkit-animation-delay:0s;
-  animation-delay:0s;
-  -webkit-animation-iteration-count:1;
-  animation-iteration-count:1;
-  -webkit-animation-direction:normal;
-  animation-direction:normal;
-  -webkit-animation-fill-mode:none;
-  animation-fill-mode:none;
-  -webkit-animation-play-state:running;
-  animation-play-state:running;
   border-bottom:0
 }
 

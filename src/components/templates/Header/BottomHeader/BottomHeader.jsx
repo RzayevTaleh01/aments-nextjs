@@ -14,10 +14,10 @@ function isMatchActive(isActive, activeMatch) {
   return isActive(activeMatch);
 }
 
-export default function BottomHeader({ isSticky, isActive, BottomHeaderData = [] }) {
+export default function BottomHeader({ isActive, BottomHeaderData = [] }) {
   const { staticContent } = useInitial();
   return (
-    <div className={cn(styles, `header-bottom sticky-header${isSticky ? " sticky" : ""}`)}>
+    <div className={cn(styles, "header-bottom sticky-header d-lg-block d-none")}>
       <div className={cn(styles, "container")}>
         <div className={cn(styles, "row")}>
           <div className={cn(styles, "col-12")}>
