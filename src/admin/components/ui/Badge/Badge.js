@@ -28,9 +28,19 @@ export default function SgBadge(props){
         return icon ? `sg-${icon}` : ''
     }
 
+    const resolvedClassName = (() => {
+        const raw = String(className || '').trim();
+        if (!raw) return '';
+        return raw
+            .split(/\s+/)
+            .filter(Boolean)
+            .map((token) => styles?.[token] || token)
+            .join(' ');
+    })()
+
     return (
         <>
-            <div onClick={onClick} className={[styles['sg--badge'] , getBadgeIcon(), icon ? styles['sg--badge--icon'] : '', dot ? styles['sg--badge--dot'] : '', className].join(' ').trim()}>
+            <div onClick={onClick} className={[styles['sg--badge'] , getBadgeIcon(), icon ? styles['sg--badge--icon'] : '', dot ? styles['sg--badge--dot'] : '', resolvedClassName].join(' ').trim()}>
                 {header}
             </div>
         </>

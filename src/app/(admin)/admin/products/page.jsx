@@ -85,7 +85,7 @@ export default function Page() {
                   size: "small",
                   labelHidden: true,
                   type: "text",
-                  placeholder: "Ada görə axtar...",
+                  placeholder: "OEM görə axtar...",
                 },
               },
               {
@@ -149,9 +149,9 @@ export default function Page() {
                 },
                 {
                   key: "code",
-                  name: "Kod",
+                  name: "Kod/OEM",
                   hidden: false,
-                  cell: (row) => <>{pickText(row, ["code", "product_code"])}</>,
+                  cell: (row) => <>{pickText(row, ["code", "product_code"])} / {pickText(row, ["oem_code"])}</>,
                 },
                 {
                   key: "category",
