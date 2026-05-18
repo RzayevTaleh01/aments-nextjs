@@ -2,40 +2,6 @@ import axios from 'axios';
 import {getSession, signOut} from "next-auth/react";
 import { toast } from 'react-toastify';
 
-function normalizeLang(value) {
-    const raw = String(value ?? '').trim();
-    if (!raw) return 'en';
-    const base = raw.split('-')[0]?.toLowerCase();
-    return base || 'en';
-}
-
-function getClientCookieValue(name) {
-    try {
-        const cookie = String(document?.cookie ?? '');
-        if (!cookie) return null;
-        const parts = cookie.split(';').map((p) => p.trim());
-        const match = parts.find((p) => p.startsWith(`${name}=`));
-        if (!match) return null;
-        return decodeURIComponent(match.slice(name.length + 1));
-    } catch {
-        return null;
-    }
-}
-
-function resolveRequestLang() {
-    try {
-        try {
-            const rawLocal = window?.localStorage?.getItem('oem_lang');
-            if (rawLocal) return normalizeLang(rawLocal);
-        } catch {}
-        const rawCookie = getClientCookieValue('oem_lang');
-        if (rawCookie) return normalizeLang(rawCookie);
-        return 'en';
-    } catch {
-        return 'en';
-    }
-}
-
 const REQUEST_HEADER_AUTH_KEY = process.env.NEXT_PUBLIC_REQUEST_HEADER_AUTH_KEY || "Authorization";
 const REQUEST_ADMIN_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_ADMIN_BASE_URL;
 const REQUEST_BASE_URL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL;
@@ -54,15 +20,6 @@ ApiService.interceptors.request.use(
     async (config) => {
         let _config = {...config};
         _config.headers = _config.headers ?? {};
-
-        const lang = resolveRequestLang();
-        const hasLangInUrl = typeof _config.url === 'string' && /(^|[?&])lang=/.test(_config.url);
-        if (typeof _config.params?.get === 'function') {
-            if (!_config.params.has('lang') && !hasLangInUrl) _config.params.set('lang', lang);
-        } else {
-            const hasParamsLang = _config.params && typeof _config.params === 'object' && 'lang' in _config.params;
-            if (!hasParamsLang && !hasLangInUrl) _config.params = { ...(_config.params ?? {}), lang };
-        }
 
         const session = await getSession();
         if (session?.token?.accessToken) _config.headers[REQUEST_HEADER_AUTH_KEY] = `${REQUEST_TOKEN_TYPE} ${session?.token?.accessToken}`;
