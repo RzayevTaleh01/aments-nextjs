@@ -13,7 +13,6 @@ import ApiService from "@/admin/services/ApiService";
 import { EDIT_PRODUCT_BY_ID_ROUTE, GET_PRODUCT_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
 import { getBase64 } from "@/admin/utils/getBase64";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { getSession } from "next-auth/react";
 
 export default function Page() {
   const [data, setData] = useState({});
@@ -47,78 +46,11 @@ export default function Page() {
 
   useEffect(() => {
     let isActive = true;
-    const baseUrl =
-      process.env.NEXT_PUBLIC_REQUEST_ADMIN_BASE_URL ||
-      process.env.NEXT_PUBLIC_REQUEST_BASE_URL ||
-      "";
-    const authHeaderKey = process.env.NEXT_PUBLIC_REQUEST_HEADER_AUTH_KEY || "Authorization";
-    const tokenType = process.env.NEXT_PUBLIC_REQUEST_TOKEN_TYPE || "Bearer";
-
-    function normalizeLang(value) {
-      const raw = String(value ?? "").trim();
-      if (!raw) return "en";
-      const base = raw.split("-")[0]?.toLowerCase();
-      return base || "en";
-    }
-
-    function getCookieValue(name) {
-      try {
-        const cookie = String(document?.cookie ?? "");
-        if (!cookie) return null;
-        const parts = cookie.split(";").map((p) => p.trim());
-        const match = parts.find((p) => p.startsWith(`${name}=`));
-        if (!match) return null;
-        return decodeURIComponent(match.slice(name.length + 1));
-      } catch {
-        return null;
-      }
-    }
-
-    function resolveLang() {
-      try {
-        const rawLocal = window?.localStorage?.getItem("oem_lang");
-        if (rawLocal) return normalizeLang(rawLocal);
-      } catch {}
-      const rawCookie = getCookieValue("oem_lang");
-      if (rawCookie) return normalizeLang(rawCookie);
-      return "en";
-    }
-
-    function withLang(url) {
-      const lang = resolveLang();
-      try {
-        const u = new URL(url);
-        if (!u.searchParams.has("lang")) u.searchParams.set("lang", lang);
-        return u.toString();
-      } catch {
-        if (/(^|[?&])lang=/.test(url)) return url;
-        const sep = url.includes("?") ? "&" : "?";
-        return `${url}${sep}lang=${encodeURIComponent(lang)}`;
-      }
-    }
-
-    function joinUrl(base, path) {
-      const b = String(base || "").replace(/\/+$/, "");
-      const p = String(path || "").startsWith("/") ? String(path || "") : `/${path || ""}`;
-      return `${b}${p}`;
-    }
-
-    async function safeGetJson(path) {
-      const session = await getSession();
-      const headers = {};
-      const accessToken = session?.token?.accessToken;
-      if (accessToken) headers[authHeaderKey] = `${tokenType} ${accessToken}`;
-
-      const url = withLang(joinUrl(baseUrl, path));
-      const res = await fetch(url, { method: "GET", headers });
-      if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
-      return res.json();
-    }
-
     async function safeGetFirst(paths) {
       for (const p of paths) {
         try {
-          return await safeGetJson(p);
+          const res = await ApiService.get(p);
+          return res.data;
         } catch {}
       }
       return null;

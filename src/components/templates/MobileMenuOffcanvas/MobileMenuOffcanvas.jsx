@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import OffcanvasPanel from "@/components/templates/OffcanvasPanel/OffcanvasPanel";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
@@ -12,7 +12,27 @@ import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
 import { useLanguage } from "@/context/language-context";
 import { cn } from "@/utils/cn";
+import { navigation } from "@/constants/navigation";
 import styles from "./MobileMenuOffcanvas.module.scss";
+
+const TOP_LINKS = navigation.topLinks ?? [];
+const MAIN_NAV_ITEMS = navigation.main ?? [];
+
+const LANG_LABELS = { en: "English", az: "Azərbaycan", ru: "Русский" };
+const LANG_OPTIONS = [
+  { id: "en", label: "English", value: "en", iconSrc: "/assets/images/icon/lang-en.png" },
+  { id: "az", label: "Azərbaycan", value: "az" },
+  { id: "ru", label: "Русский", value: "ru" },
+];
+
+function isAdminRole(user) {
+  const role = user?.role ?? user?.roleId ?? user?.role_id ?? user?.user_role;
+  if (role === 1 || role === "1") return true;
+  if (role && typeof role === "object") {
+    return role?.id === 1 || role?.value === 1 || role?.key === 1;
+  }
+  return false;
+}
 
 export default function MobileMenuOffcanvas({
   isOpen,
@@ -21,6 +41,7 @@ export default function MobileMenuOffcanvas({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
+  const [openMenuId, setOpenMenuId] = useState(null);
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
   const { cartCount } = useCart();
@@ -29,22 +50,52 @@ export default function MobileMenuOffcanvas({
   const qFromUrl = useMemo(() => String(searchParams?.get("q") ?? "").trim(), [searchParams]);
 
   const langLabel = useMemo(() => {
-    const map = { en: "English", az: "Azərbaycan", ru: "Русский" };
-    return map[String(lang || "").toLowerCase()] ?? map.en;
+    return LANG_LABELS[String(lang || "").toLowerCase()] ?? LANG_LABELS.en;
   }, [lang]);
-
-  const langOptions = useMemo(
-    () => [
-      { id: "en", label: "English", value: "en", iconSrc: "/assets/images/icon/lang-en.png" },
-      { id: "az", label: "Azərbaycan", value: "az", iconSrc: "/assets/images/icon/lang-gr.png" },
-      { id: "ru", label: "Русский", value: "ru", iconSrc: "/assets/images/icon/lang-gr.png" },
-    ],
-    []
-  );
 
   useEffect(() => {
     setSearchQuery(qFromUrl);
   }, [qFromUrl]);
+
+  const filteredTopLinks = useMemo(() => {
+    return TOP_LINKS.filter((x) => {
+      if (!x) return false;
+      if (isAuthenticated) return x?.id !== "login" && x?.id !== "register";
+      return x?.id !== "my-account";
+    });
+  }, [isAuthenticated]);
+
+  const topLinksWithAdminPanel = useMemo(() => {
+    const canSeeAdminPanel = isAuthenticated && isAdminRole(session?.user);
+    if (!canSeeAdminPanel) return filteredTopLinks;
+
+    const adminItem = { id: "admin-panel", label: "Admin Panel", href: "/admin" };
+    if (filteredTopLinks.some((x) => x?.id === adminItem.id || x?.href === adminItem.href)) return filteredTopLinks;
+
+    const myAccountIndex = filteredTopLinks.findIndex((x) => x?.id === "my-account");
+    if (myAccountIndex === -1) return [...filteredTopLinks, adminItem];
+
+    return [
+      ...filteredTopLinks.slice(0, myAccountIndex + 1),
+      adminItem,
+      ...filteredTopLinks.slice(myAccountIndex + 1),
+    ];
+  }, [filteredTopLinks, isAuthenticated, session?.user]);
+
+  const handleLangSelect = (value) => {
+    setLang(value);
+    onClose?.();
+    const until = Date.now() + 900;
+    try {
+      window.localStorage?.setItem("oem_lang_loader_until", String(until));
+    } catch {}
+    window.dispatchEvent(new CustomEvent("oem:lang-loader", { detail: { until } }));
+    window.setTimeout(() => window.location.reload(), 50);
+  };
+
+  const toggleSubmenu = (id) => {
+    setOpenMenuId((prev) => (prev === id ? null : id));
+  };
 
   return (
     <OffcanvasPanel
@@ -66,94 +117,62 @@ export default function MobileMenuOffcanvas({
             })}
           </span>
           <ul className={cn(styles, "mobile-menu-user-menu")}>
-            <li className={cn(styles, "has-mobile-user-dropdown")}>
-              <Link className={cn(styles, "mobile-user-menu-link")} href="/" onClick={onClose}>
-                {HelperTranslate({ defaultText: "Setting", translateText: staticContent?.mobile__settings })}{" "}
-                <Icon name="FaAngleDown" size={14} />
-              </Link>
-              <ul className={cn(styles, "mobile-user-sub-menu")}>
-                <li>
-                  <Link href="/checkout" onClick={onClose}>
-                    {HelperTranslate({ defaultText: "Checkout", translateText: staticContent?.addToCartModal__checkout })}
-                  </Link>
-                </li>
-                {isAuthenticated ? (
-                  <li>
-                    <Link href="/my-account" onClick={onClose}>
-                      {HelperTranslate({ defaultText: "My Account", translateText: staticContent?.["header__topLink__my-account"] })}
+            {topLinksWithAdminPanel.map((item) => {
+              const itemKey = item.id ?? item.href ?? item.label;
+              const href = item?.href && item.href !== "#" ? item.href : "/";
+              const translateKey = `header__topLink__${String(item?.id ?? "").trim()}`;
+
+              if (item?.id !== "language") {
+                return (
+                  <li key={itemKey}>
+                    <Link href={href} onClick={onClose}>
+                      {HelperTranslate({ defaultText: item.label, translateText: staticContent?.[translateKey] })}
                     </Link>
                   </li>
-                ) : null}
-                <li>
-                  <Link href="/cart" onClick={onClose}>
-                    {HelperTranslate({ defaultText: "Shopping Cart", translateText: staticContent?.mobile__shoppingCart })}
-                  </Link>
+                );
+              }
+
+              return (
+                <li key={itemKey} className={cn(styles, "has-mobile-user-dropdown")}>
+                  <button type="button" className={cn(styles, "mobile-user-menu-link")}>
+                    {langLabel} <Icon name="FaAngleDown" size={14} />
+                  </button>
+                  <ul className={cn(styles, "mobile-user-sub-menu")}>
+                    {LANG_OPTIONS.map((opt) => (
+                      <li key={opt.id}>
+                        <button type="button" onClick={() => handleLangSelect(opt.value)}>
+                          {opt.iconSrc ? (
+                            <Image
+                              className={cn(styles, "user-sub-menu-link-icon")}
+                              src={opt.iconSrc}
+                              alt=""
+                              width={16}
+                              height={11}
+                            />
+                          ) : null}
+                          {opt.label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
                 </li>
-              </ul>
-            </li>
-            <li className={cn(styles, "has-mobile-user-dropdown")}>
-              <Link className={cn(styles, "mobile-user-menu-link")} href="/" onClick={onClose}>
-                $ USD <Icon name="FaAngleDown" size={14} />
-              </Link>
-              <ul className={cn(styles, "mobile-user-sub-menu")}>
-                <li>
-                  <Link href="/" onClick={onClose}>
-                    EUR – Euro
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/" onClick={onClose}>
-                    GBP – British Pound
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cart" onClick={onClose}>
-                    Shopping Cart
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/" onClick={onClose}>
-                    INR – India Rupee
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className={cn(styles, "has-mobile-user-dropdown")}>
-              <Link className={cn(styles, "mobile-user-menu-link")} href="/" onClick={onClose}>
-                {langLabel} <Icon name="FaAngleDown" size={14} />
-              </Link>
-              <ul className={cn(styles, "mobile-user-sub-menu")}>
-                {langOptions.map((opt) => (
-                  <li key={opt.id}>
-                    <Link
-                      href="/"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setLang(opt.value);
-                        onClose?.();
-                        const until = Date.now() + 900;
-                        try {
-                          window.localStorage?.setItem("oem_lang_loader_until", String(until));
-                        } catch {}
-                        window.dispatchEvent(new CustomEvent("oem:lang-loader", { detail: { until } }));
-                        window.setTimeout(() => window.location.reload(), 50);
-                      }}
-                    >
-                      {opt.iconSrc ? (
-                        <Image
-                          className={cn(styles, "user-sub-menu-link-icon")}
-                          src={opt.iconSrc}
-                          alt=""
-                          width={16}
-                          height={11}
-                        />
-                      ) : null}{" "}
-                      {opt.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
+              );
+            })}
+            {isAuthenticated ? (
+              <li>
+                <button
+                  type="button"
+                  className={cn(styles, "mobile-user-menu-link")}
+                  onClick={async () => {
+                    await signOut({ redirect: false });
+                    onClose?.();
+                    router.push("/");
+                  }}
+                >
+                  {HelperTranslate({ defaultText: "Logout", translateText: staticContent?.header__logout })}
+                </button>
+              </li>
+            ) : null}
           </ul>
         </div>
         <div className={cn(styles, "mobile-menu-center")}>
@@ -206,26 +225,52 @@ export default function MobileMenuOffcanvas({
         <div className={cn(styles, "mobile-menu-bottom")}>
           <div className={cn(styles, "offcanvas-menu")}>
             <ul>
-              <li>
-                <Link href="/" onClick={onClose}>
-                  {HelperTranslate({ defaultText: "Home", translateText: staticContent?.nav__main__home })}
-                </Link>
-              </li>
-              <li>
-                <Link href="/products" onClick={onClose}>
-                  {HelperTranslate({ defaultText: "Products", translateText: staticContent?.nav__main__products })}
-                </Link>
-              </li>
-              <li>
-                <Link href="/about-us" onClick={onClose}>
-                  {HelperTranslate({ defaultText: "About Us", translateText: staticContent?.["nav__main__about-us"] })}
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact-us" onClick={onClose}>
-                  {HelperTranslate({ defaultText: "Contact Us", translateText: staticContent?.["nav__main__contact-us"] })}
-                </Link>
-              </li>
+              {MAIN_NAV_ITEMS.map((item) => {
+                const hasChildren = Array.isArray(item?.children) && item.children.length > 0;
+                const itemId = item?.id ?? item?.href ?? item?.label;
+                const navKey = `nav__main__${String(item?.id ?? "").trim()}`;
+                const href = item?.href && item.href !== "#" ? item.href : "/";
+                const isOpenItem = openMenuId === itemId;
+
+                if (!hasChildren) {
+                  return (
+                    <li key={itemId}>
+                      <Link href={href} onClick={onClose}>
+                        {HelperTranslate({ defaultText: item.label, translateText: staticContent?.[navKey] })}
+                      </Link>
+                    </li>
+                  );
+                }
+
+                return (
+                  <li key={itemId} className={isOpenItem ? cn(styles, "active") : undefined}>
+                    <button type="button" onClick={() => toggleSubmenu(itemId)}>
+                      {HelperTranslate({ defaultText: item.label, translateText: staticContent?.[navKey] })}
+                    </button>
+                    <button
+                      type="button"
+                      className={cn(styles, "offcanvas-menu-expand")}
+                      onClick={() => toggleSubmenu(itemId)}
+                      aria-label="Toggle submenu"
+                    >
+                      <Icon name={isOpenItem ? "FaMinus" : "FaPlus"} size={12} />
+                    </button>
+                    <ul className={cn(styles, "mobile-sub-menu")}>
+                      {item.children.map((child) => {
+                        const childKey = child?.id ?? child?.href ?? child?.label;
+                        const childHref = child?.href && child.href !== "#" ? child.href : "/";
+                        return (
+                          <li key={childKey}>
+                            <Link href={childHref} onClick={onClose}>
+                              {child.label}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <a className={cn(styles, "mobile-menu-email icon-text-end")} href="mailto:info@yourdomain.com">
