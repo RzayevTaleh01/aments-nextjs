@@ -290,7 +290,7 @@ export default function CheckoutPageClient() {
                                 country <span>*</span>
                               </label>
                               <select className="form-select" name="cuntry" id="countru_name" defaultValue="2">
-                                <option value="2">Bangladesh</option>
+                                <option value="2">Azerbaijan</option>
                                 <option value="3">Algeria</option>
                                 <option value="4">Afghanistan</option>
                                 <option value="5">Ghana</option>
