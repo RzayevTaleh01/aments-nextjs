@@ -3,8 +3,8 @@
 import { useSession } from "next-auth/react";
 
 export default function useShowPrice() {
-  const { status } = useSession();
-  const showPrice = status === "authenticated";
-  return { status, showPrice, isAuthenticated: showPrice };
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
+  return { status, showPrice: isAuthenticated, isAuthenticated };
 }
 
