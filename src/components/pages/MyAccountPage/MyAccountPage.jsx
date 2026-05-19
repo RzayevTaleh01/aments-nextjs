@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import styles from "./MyAccountPage.module.scss";
 import { cn } from "@/utils/cn";
+import ApiService from "@/services/api/ApiService";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 
 function TabLink({ id, activeId, setActiveId, children }) {
   const isActive = activeId === id;
@@ -30,6 +32,10 @@ export default function MyAccountPageClient() {
   const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user ?? {};
+  const { staticContent } = useInitial();
+
+  const [orders, setOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
 
   const fullName = `${user?.first_name ?? ""} ${user?.last_name ?? ""}`.trim();
   const displayName = fullName || user?.username || user?.email || "";
@@ -37,6 +43,47 @@ export default function MyAccountPageClient() {
   const billingAddressLine = [user?.street, user?.home_number, user?.home_office].filter(Boolean).join(" ");
   const cityRegionLine = [user?.post_index, user?.city, user?.region].filter(Boolean).join(", ");
   const countryLine = [user?.country].filter(Boolean).join("");
+
+  const processingLabel = useMemo(
+    () =>
+      HelperTranslate({
+        defaultText: "Processing",
+        translateText: staticContent?.myAccount__orderStatus__processing,
+      }),
+    [staticContent]
+  );
+
+  useEffect(() => {
+    let isActive = true;
+    setOrdersLoading(true);
+
+    const normalizeOrders = (resp) => {
+      const payload = resp?.data?.data ?? resp?.data ?? null;
+      if (Array.isArray(payload)) return payload;
+      if (Array.isArray(payload?.data)) return payload.data;
+      if (Array.isArray(payload?.items)) return payload.items;
+      if (Array.isArray(payload?.orders)) return payload.orders;
+      return [];
+    };
+
+    ApiService.get("/order/")
+      .then((resp) => {
+        if (!isActive) return;
+        setOrders(normalizeOrders(resp));
+      })
+      .catch(() => {
+        if (!isActive) return;
+        setOrders([]);
+      })
+      .finally(() => {
+        if (!isActive) return;
+        setOrdersLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   return (
     <div className="account_dashboard">
@@ -115,30 +162,50 @@ export default function MyAccountPageClient() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>May 10, 2022</td>
-                        <td>
-                          <span className="success">Completed</span>
-                        </td>
-                        <td>$25.00 for 1 item </td>
-                        <td>
-                          <Link href="/cart" className="view">
-                            view
-                          </Link>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>May 10, 2022</td>
-                        <td>Processing</td>
-                        <td>$17.00 for 1 item </td>
-                        <td>
-                          <Link href="/cart" className="view">
-                            view
-                          </Link>
-                        </td>
-                      </tr>
+                      {ordersLoading ? (
+                        <tr>
+                          <td colSpan={5}>
+                            {HelperTranslate({
+                              defaultText: "Loading...",
+                              translateText: staticContent?.common__loading,
+                            })}
+                          </td>
+                        </tr>
+                      ) : orders?.length ? (
+                        orders.map((o) => {
+                          const id = o?.id ?? "-";
+                          const dateRaw = o?.createdAt ?? o?.created_at ?? o?.date ?? null;
+                          const date = dateRaw ? String(dateRaw) : "-";
+                          const total = o?.total_price ?? o?.totalPrice ?? "-";
+                          const qty = Number(o?.quantity ?? o?.qty ?? 0) || 0;
+
+                          return (
+                            <tr key={String(id)}>
+                              <td>{id}</td>
+                              <td>{date}</td>
+                              <td>{processingLabel}</td>
+                              <td>
+                                {String(total)}
+                                {qty ? ` (${qty})` : ""}
+                              </td>
+                              <td>
+                                <button type="button" className="view" disabled aria-disabled="true">
+                                  view
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan={5}>
+                            {HelperTranslate({
+                              defaultText: "No results found",
+                              translateText: staticContent?.common__noResults,
+                            })}
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>
