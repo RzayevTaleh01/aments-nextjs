@@ -10,6 +10,8 @@ import { ORDER_POST_ROUTE } from "@/configs/apiRoutes";
 import ApiService from "@/services/api/ApiService";
 import { toast } from "react-toastify";
 import styles from "./CheckoutPage.module.scss";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 
 function parsePriceNumber(priceText) {
   if (typeof priceText === "number" && Number.isFinite(priceText)) return priceText;
@@ -31,6 +33,7 @@ export default function CheckoutPageClient() {
   const router = useRouter();
   const showPrice = status === "authenticated";
   const { cartItems, cartSubtotalNumber, cartSubtotalText, clearCart } = useCart();
+  const { staticContent } = useInitial();
   const user = session?.user ?? {};
   const [shipToDifferentAddress, setShipToDifferentAddress] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,7 +83,12 @@ export default function CheckoutPageClient() {
   async function submitOrder() {
     if (isSubmitting) return;
     if (status !== "authenticated") {
-      toast.error("Sifarişi tamamlamaq üçün daxil olun");
+      toast.error(
+        HelperTranslate({
+          defaultText: "Please log in to complete the order",
+          translateText: staticContent?.checkout__loginToCompleteOrderToast,
+        })
+      );
       return;
     }
     if (!cartItems.length) return;
@@ -102,14 +110,24 @@ export default function CheckoutPageClient() {
     });
 
     if (payloads.some((x) => !x)) {
-      toast.error("Səbətdə storage_product_id tapılmadı");
+      toast.error(
+        HelperTranslate({
+          defaultText: "storage_product_id was not found in cart",
+          translateText: staticContent?.checkout__cartMissingProductIdToast,
+        })
+      );
       return;
     }
 
     try {
       setIsSubmitting(true);
       await Promise.all(payloads.map((body) => ApiService.post(ORDER_POST_ROUTE, body)));
-      toast.success("Sifariş uğurla göndərildi");
+      toast.success(
+        HelperTranslate({
+          defaultText: "Order submitted successfully",
+          translateText: staticContent?.checkout__orderSuccessToast,
+        })
+      );
       clearCart();
       router.push("/");
     } catch {
@@ -122,9 +140,10 @@ export default function CheckoutPageClient() {
     <div className={styles.scope}>
       <Breadcrumb
         title="Checkout"
+        titleKey="checkout__breadcrumbTitle"
         items={[
-          { label: "Home", href: "/" },
-          { label: "Checkout" },
+          { label: "Home", labelKey: "breadcrumb__home", href: "/" },
+          { label: "Checkout", labelKey: "checkout__breadcrumbTitle" },
         ]}
       />
 
@@ -134,12 +153,14 @@ export default function CheckoutPageClient() {
             <div className="row">
               <div className="col-lg-6 col-md-6">
                 <form action="#" onSubmit={(e) => e.preventDefault()}>
-                  <h3>Billing Details</h3>
+                  <h3>
+                    {HelperTranslate({ defaultText: "Billing Details", translateText: staticContent?.checkout__billingDetails })}
+                  </h3>
                   <div className="row">
                     <div className="col-lg-6 mb-20">
                       <div className="default-form-box">
                         <label>
-                          First Name <span>*</span>
+                          {HelperTranslate({ defaultText: "First Name", translateText: staticContent?.checkout__firstName })} <span>*</span>
                         </label>
                         <input
                           type="text"
@@ -151,7 +172,7 @@ export default function CheckoutPageClient() {
                     <div className="col-lg-6 mb-20">
                       <div className="default-form-box">
                         <label>
-                          Last Name <span>*</span>
+                          {HelperTranslate({ defaultText: "Last Name", translateText: staticContent?.checkout__lastName })} <span>*</span>
                         </label>
                         <input
                           type="text"
@@ -163,7 +184,7 @@ export default function CheckoutPageClient() {
                     <div className="col-12 mb-20">
                       <div className="default-form-box">
                         <label htmlFor="country">
-                          country <span>*</span>
+                          {HelperTranslate({ defaultText: "Country", translateText: staticContent?.checkout__country })} <span>*</span>
                         </label>
                         <input
                           id="country"
@@ -176,10 +197,13 @@ export default function CheckoutPageClient() {
                     <div className="col-12 mb-20">
                       <div className="default-form-box">
                         <label>
-                          Street address <span>*</span>
+                          {HelperTranslate({ defaultText: "Street address", translateText: staticContent?.checkout__streetAddress })} <span>*</span>
                         </label>
                         <input
-                          placeholder="House number and street name"
+                          placeholder={HelperTranslate({
+                            defaultText: "House number and street name",
+                            translateText: staticContent?.checkout__streetPlaceholderHouseNumber,
+                          })}
                           type="text"
                           value={billing.street}
                           onChange={(e) => setBilling((prev) => ({ ...prev, street: e.target.value }))}
@@ -189,7 +213,10 @@ export default function CheckoutPageClient() {
                     <div className="col-12 mb-20">
                       <div className="default-form-box">
                         <input
-                          placeholder="Apartment, suite, unit etc. (optional)"
+                          placeholder={HelperTranslate({
+                            defaultText: "Apartment, suite, unit etc. (optional)",
+                            translateText: staticContent?.checkout__apartmentPlaceholder,
+                          })}
                           type="text"
                           value={billing.apartment}
                           onChange={(e) => setBilling((prev) => ({ ...prev, apartment: e.target.value }))}
@@ -199,7 +226,7 @@ export default function CheckoutPageClient() {
                     <div className="col-12 mb-20">
                       <div className="default-form-box">
                         <label>
-                          Town / City <span>*</span>
+                          {HelperTranslate({ defaultText: "Town / City", translateText: staticContent?.checkout__townCity })} <span>*</span>
                         </label>
                         <input
                           type="text"
@@ -211,7 +238,7 @@ export default function CheckoutPageClient() {
                     <div className="col-12 mb-20">
                       <div className="default-form-box">
                         <label>
-                          State / County <span>*</span>
+                          {HelperTranslate({ defaultText: "State / County", translateText: staticContent?.checkout__stateCounty })} <span>*</span>
                         </label>
                         <input
                           type="text"
@@ -223,7 +250,8 @@ export default function CheckoutPageClient() {
                     <div className="col-lg-6 mb-20">
                       <div className="default-form-box">
                         <label>
-                          Phone<span>*</span>
+                          {HelperTranslate({ defaultText: "Phone", translateText: staticContent?.checkout__phone })}
+                          <span>*</span>
                         </label>
                         <input
                           type="text"
@@ -236,7 +264,7 @@ export default function CheckoutPageClient() {
                       <div className="default-form-box">
                         <label>
                           {" "}
-                          Email Address <span>*</span>
+                          {HelperTranslate({ defaultText: "Email Address", translateText: staticContent?.checkout__emailAddress })} <span>*</span>
                         </label>
                         <input
                           type="text"
@@ -256,7 +284,12 @@ export default function CheckoutPageClient() {
                             checked={shipToDifferentAddress}
                             onChange={(e) => setShipToDifferentAddress(e.target.checked)}
                           />
-                          <span>Ship to a different address?</span>
+                          <span>
+                            {HelperTranslate({
+                              defaultText: "Ship to a different address?",
+                              translateText: staticContent?.checkout__shipDifferentAddress,
+                            })}
+                          </span>
                         </label>
                       </div>
 
@@ -265,7 +298,7 @@ export default function CheckoutPageClient() {
                           <div className="col-lg-6 mb-20">
                             <div className="default-form-box">
                               <label>
-                                First Name <span>*</span>
+                                {HelperTranslate({ defaultText: "First Name", translateText: staticContent?.checkout__firstName })} <span>*</span>
                               </label>
                               <input type="text" />
                             </div>
@@ -273,21 +306,23 @@ export default function CheckoutPageClient() {
                           <div className="col-lg-6 mb-20">
                             <div className="default-form-box">
                               <label>
-                                Last Name <span>*</span>
+                                {HelperTranslate({ defaultText: "Last Name", translateText: staticContent?.checkout__lastName })} <span>*</span>
                               </label>
                               <input type="text" />
                             </div>
                           </div>
                           <div className="col-12 mb-20">
                             <div className="default-form-box">
-                              <label>Company Name</label>
+                              <label>
+                                {HelperTranslate({ defaultText: "Company Name", translateText: staticContent?.checkout__companyName })}
+                              </label>
                               <input type="text" />
                             </div>
                           </div>
                           <div className="col-12 mb-20">
                             <div className="select_form_select default-form-box">
                               <label htmlFor="countru_name">
-                                country <span>*</span>
+                                {HelperTranslate({ defaultText: "Country", translateText: staticContent?.checkout__country })} <span>*</span>
                               </label>
                               <select className="form-select" name="cuntry" id="countru_name" defaultValue="2">
                                 <option value="2">Azerbaijan</option>
@@ -305,20 +340,32 @@ export default function CheckoutPageClient() {
                           <div className="col-12 mb-20">
                             <div className="default-form-box">
                               <label>
-                                Street address <span>*</span>
+                                {HelperTranslate({ defaultText: "Street address", translateText: staticContent?.checkout__streetAddress })} <span>*</span>
                               </label>
-                              <input placeholder="House number and street name" type="text" />
+                              <input
+                                placeholder={HelperTranslate({
+                                  defaultText: "House number and street name",
+                                  translateText: staticContent?.checkout__streetPlaceholderHouseNumber,
+                                })}
+                                type="text"
+                              />
                             </div>
                           </div>
                           <div className="col-12 mb-20">
                             <div className="default-form-box">
-                              <input placeholder="Apartment, suite, unit etc. (optional)" type="text" />
+                              <input
+                                placeholder={HelperTranslate({
+                                  defaultText: "Apartment, suite, unit etc. (optional)",
+                                  translateText: staticContent?.checkout__apartmentPlaceholder,
+                                })}
+                                type="text"
+                              />
                             </div>
                           </div>
                           <div className="col-12 mb-20">
                             <div className="default-form-box">
                               <label>
-                                Town / City <span>*</span>
+                                {HelperTranslate({ defaultText: "Town / City", translateText: staticContent?.checkout__townCity })} <span>*</span>
                               </label>
                               <input type="text" />
                             </div>
@@ -326,7 +373,7 @@ export default function CheckoutPageClient() {
                           <div className="col-12 mb-20">
                             <div className="default-form-box">
                               <label>
-                                State / County <span>*</span>
+                                {HelperTranslate({ defaultText: "State / County", translateText: staticContent?.checkout__stateCounty })} <span>*</span>
                               </label>
                               <input type="text" />
                             </div>
@@ -334,7 +381,8 @@ export default function CheckoutPageClient() {
                           <div className="col-lg-6 mb-20">
                             <div className="default-form-box">
                               <label>
-                                Phone<span>*</span>
+                                {HelperTranslate({ defaultText: "Phone", translateText: staticContent?.checkout__phone })}
+                                <span>*</span>
                               </label>
                               <input type="text" />
                             </div>
@@ -343,7 +391,7 @@ export default function CheckoutPageClient() {
                             <div className="default-form-box">
                               <label>
                                 {" "}
-                                Email Address <span>*</span>
+                                {HelperTranslate({ defaultText: "Email Address", translateText: staticContent?.checkout__emailAddress })} <span>*</span>
                               </label>
                               <input type="text" />
                             </div>
@@ -354,8 +402,16 @@ export default function CheckoutPageClient() {
 
                     <div className="col-12">
                       <div className="order-notes">
-                        <label htmlFor="order_note">Order Notes</label>
-                        <textarea id="order_note" placeholder="Notes about your order, e.g. special notes for delivery." />
+                        <label htmlFor="order_note">
+                          {HelperTranslate({ defaultText: "Order Notes", translateText: staticContent?.checkout__orderNotes })}
+                        </label>
+                        <textarea
+                          id="order_note"
+                          placeholder={HelperTranslate({
+                            defaultText: "Notes about your order, e.g. special notes for delivery.",
+                            translateText: staticContent?.checkout__orderNotesPlaceholder,
+                          })}
+                        />
                       </div>
                     </div>
                   </div>
@@ -370,13 +426,13 @@ export default function CheckoutPageClient() {
                     submitOrder();
                   }}
                 >
-                  <h3>Your order</h3>
+                  <h3>{HelperTranslate({ defaultText: "Your order", translateText: staticContent?.checkout__yourOrder })}</h3>
                   <div className="order_table table-responsive">
                     <table>
                       <thead>
                         <tr>
-                          <th>Product</th>
-                          <th>Total</th>
+                          <th>{HelperTranslate({ defaultText: "Product", translateText: staticContent?.checkout__tableProduct })}</th>
+                          <th>{HelperTranslate({ defaultText: "Total", translateText: staticContent?.checkout__tableTotal })}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -397,23 +453,23 @@ export default function CheckoutPageClient() {
                         })}
                         {cartItems.length === 0 ? (
                           <tr>
-                            <td colSpan={2}>Cart is empty</td>
+                            <td colSpan={2}>{HelperTranslate({ defaultText: "Cart is empty", translateText: staticContent?.cart__empty })}</td>
                           </tr>
                         ) : null}
                       </tbody>
                       <tfoot>
                         <tr>
-                          <th>Cart Subtotal</th>
+                          <th>{HelperTranslate({ defaultText: "Cart Subtotal", translateText: staticContent?.checkout__cartSubtotal })}</th>
                           <td>{showPrice ? cartSubtotalText : null}</td>
                         </tr>
                         <tr>
-                          <th>Shipping</th>
+                          <th>{HelperTranslate({ defaultText: "Shipping", translateText: staticContent?.checkout__shipping })}</th>
                           <td>
                             <strong>{showPrice ? formatMoney(shippingNumber, currency) : null}</strong>
                           </td>
                         </tr>
                         <tr className="order_total">
-                          <th>Order Total</th>
+                          <th>{HelperTranslate({ defaultText: "Order Total", translateText: staticContent?.checkout__orderTotal })}</th>
                           <td>
                             <strong>{showPrice ? orderTotalText : null}</strong>
                           </td>
@@ -421,11 +477,15 @@ export default function CheckoutPageClient() {
                       </tfoot>
                     </table>
                   </div>
-                  {!showPrice ? <div className="mt-10">Login to see prices</div> : null}
+                  {!showPrice ? (
+                    <div className="mt-10">
+                      {HelperTranslate({ defaultText: "Login to see prices", translateText: staticContent?.checkout__loginToSeePrices })}
+                    </div>
+                  ) : null}
                   <div className="payment_method">
                     <div className="order_button pt-15">
                       <button type="submit" disabled={!cartItems.length || isSubmitting}>
-                        Complete
+                        {HelperTranslate({ defaultText: "Complete", translateText: staticContent?.checkout__complete })}
                       </button>
                     </div>
                   </div>

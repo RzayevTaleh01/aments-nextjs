@@ -7,6 +7,8 @@ import OffcanvasPanel from "@/components/templates/OffcanvasPanel";
 import Icon from "@/components/ui/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
 import { cn } from "@/utils/cn";
+import useInitial from "@/hooks/use-initial";
+import HelperTranslate from "@/components/helper/HelperTranslate";
 import styles from "./CartOffcanvas.module.scss";
 
 export default function CartOffcanvas({ isOpen, onClose }) {
@@ -14,6 +16,7 @@ export default function CartOffcanvas({ isOpen, onClose }) {
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
   const showPrice = isAuthenticated;
    const { cartItems, cartSubtotalText, removeCartItem } = useCart();
+  const { staticContent } = useInitial();
 
   return (
     <OffcanvasPanel
@@ -27,7 +30,9 @@ export default function CartOffcanvas({ isOpen, onClose }) {
       onClose={onClose}
     >
       <div className={cn(styles, "offcanvas-add-cart-wrapper")}>
-        <h4 className={cn(styles, "offcanvas-title")}>Shopping Cart</h4>
+        <h4 className={cn(styles, "offcanvas-title")}>
+          {HelperTranslate({ defaultText: "Shopping Cart", translateText: staticContent?.mobile__shoppingCart })}
+        </h4>
         <ul className={cn(styles, "offcanvas-cart")}>
           {cartItems.length ? (
             cartItems.map((item) => (
@@ -55,7 +60,7 @@ export default function CartOffcanvas({ isOpen, onClose }) {
                 <div className={cn(styles, "offcanvas-cart-item-delete text-end")}>
                   <button
                     type="button"
-                    aria-label="Delete"
+                    aria-label={HelperTranslate({ defaultText: "Delete", translateText: staticContent?.cart__delete })}
                     className={cn(styles, "offcanvas-cart-item-delete p-0 border-0 bg-transparent")}
                     onClick={() => removeCartItem(item.key)}
                   >
@@ -66,24 +71,28 @@ export default function CartOffcanvas({ isOpen, onClose }) {
             ))
           ) : (
             <li className={cn(styles, "offcanvas-cart-item-single")}>
-              <div className={cn(styles, "offcanvas-cart-item-block")}>Cart is empty</div>
+              <div className={cn(styles, "offcanvas-cart-item-block")}>
+                {HelperTranslate({ defaultText: "Cart is empty", translateText: staticContent?.cart__empty })}
+              </div>
             </li>
           )}
         </ul>
         <div className={cn(styles, "offcanvas-cart-total-price")}>
-          <span className={cn(styles, "offcanvas-cart-total-price-text")}>Subtotal:</span>
+          <span className={cn(styles, "offcanvas-cart-total-price-text")}>
+            {HelperTranslate({ defaultText: "Subtotal", translateText: staticContent?.cart__subtotal })}:
+          </span>
           <span className={cn(styles, "offcanvas-cart-total-price-value")}>{showPrice ? cartSubtotalText : null}</span>
         </div>
         {isAuthenticated ? (
           <ul className={cn(styles, "offcanvas-cart-action-button")}>
             <li className={cn(styles, "offcanvas-cart-action-button-list")}>
               <Link href="/cart" className={cn(styles, "offcanvas-cart-action-button-link")} onClick={onClose}>
-                View Cart
+                {HelperTranslate({ defaultText: "View Cart", translateText: staticContent?.addToCartModal__viewCart })}
               </Link>
             </li>
             <li className={cn(styles, "offcanvas-cart-action-button-list")}>
               <Link href="/checkout" className={cn(styles, "offcanvas-cart-action-button-link")} onClick={onClose}>
-                Checkout
+                {HelperTranslate({ defaultText: "Checkout", translateText: staticContent?.addToCartModal__checkout })}
               </Link>
             </li>
           </ul>
