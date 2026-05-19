@@ -125,7 +125,6 @@ export const callBackChangeDataFile = (e, _formData, setFormData, _valueErrors, 
 		}
 	}
 	else {
-		console.log('salam 3')
 	}
 }
 

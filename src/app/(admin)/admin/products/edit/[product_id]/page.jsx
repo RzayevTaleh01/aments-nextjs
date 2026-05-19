@@ -139,8 +139,6 @@ export default function Page() {
   function handleChange(e) {
     changeData(e, data, setData, valueErrors, setValueErrors);
   }
-console.log(data);
-
   async function handleImagesChange(e) {
     const files = Array.from(e?.target?.files || []);
     if (!files.length) return;
