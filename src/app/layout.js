@@ -23,7 +23,7 @@ export default async function RootLayout({ children }) {
   const cookieStore = await cookies();
   const lang = normalizeLang(cookieStore?.get?.("oem_lang")?.value);
   return (
-    <html lang={lang} suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <head>
         <link rel="icon" href="/assets/images/favicon.ico" />
       </head>
