@@ -13,6 +13,7 @@ import ApiService from "@/admin/services/ApiService";
 import { EDIT_PRODUCT_BY_ID_ROUTE, GET_PRODUCT_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
 import { getBase64 } from "@/admin/utils/getBase64";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [data, setData] = useState({});
@@ -175,31 +176,50 @@ export default function Page() {
         description: data[`description_${l.id}`] || "",
       })).filter((t) => t.name || t.description);
 
-      const payload = {
-        ...data,
-        translations,
-        images: (Array.isArray(data?.images) ? data.images : []).map((img) => {
+      const imagesRaw = Array.isArray(data?.images) ? data.images : [];
+      const images = imagesRaw
+        .map((img) => {
+          if (!img) return null;
           if (typeof img === "string") {
-            return { url: img };
+            const s = img.trim();
+            if (!s) return null;
+            if (s.startsWith("data:")) return { base64: s };
+            return { url: s };
           }
           const base64 = String(img?.base64 || "").trim();
           if (base64) return { base64 };
-          const urlLike = String(img?.url || img?.image || img?.path || img?.src || img?.file || img?.slug || "").trim();
-          return urlLike ? { url: urlLike } : { url: "" };
-        }).filter((x) => x.base64 || x.url),
+          const urlLike = String(img?.url || img?.image || img?.path || img?.src || img?.file || "").trim();
+          if (urlLike) return { url: urlLike };
+          return null;
+        })
+        .filter(Boolean);
+
+      const payload = {
+        translations,
+        slug: String(data?.slug ?? "").trim(),
+        code: String(data?.code ?? "").trim(),
+        oem_code: String(data?.oem_code ?? "").trim(),
+        similar_oem_codes: String(data?.similar_oem_codes ?? "").trim(),
+        posAppId: String(data?.posAppId ?? "").trim(),
       };
 
-      CONTENT_LANGUAGE_OPTIONS.forEach((l) => {
-        delete payload[`name_${l.id}`];
-        delete payload[`description_${l.id}`];
-      });
-      delete payload.image;
+      const numericFields = ["brandId", "markId", "modelId", "categoryId", "isActivated"];
+      for (const key of numericFields) {
+        const raw = data?.[key];
+        if (raw === "" || raw == null) continue;
+        const n = Number(raw);
+        payload[key] = Number.isFinite(n) ? n : raw;
+      }
+      payload.images = images;
 
       ApiService.put(`${EDIT_PRODUCT_BY_ID_ROUTE}/${productId}`, { ...payload })
         .then(() => {
+          toast.success("Uğurla yeniləndi");
           router.push("/admin/products");
         })
-        .catch(() => {});
+        .catch(() => {
+          toast.error("Xəta baş verdi");
+        });
     }
   }
 
