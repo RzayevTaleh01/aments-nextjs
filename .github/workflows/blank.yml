@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+
+          script: |
+            export PATH=$PATH:/root/.nvm/versions/node/v22.11.0/bin
+            cd /var/www/oem
+            git pull
+            npm install
+            npm run build
+            /root/.nvm/versions/node/v22.22.3/bin/pm2 restart 0
