@@ -1,4 +1,3 @@
-import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import MyAccountPage from "@/components/pages/MyAccountPage/MyAccountPage";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -18,14 +17,6 @@ export default async function Page() {
 
   return (
     <div>
-      <Breadcrumb
-        title="My Account"
-        items={[
-          { label: "Home", href: "/" },
-          { label: "My Account" },
-        ]}
-      />
-
       <MyAccountPage />
     </div>
   );
