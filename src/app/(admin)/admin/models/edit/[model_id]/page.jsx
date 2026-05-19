@@ -4,7 +4,7 @@ import { MainLayout } from "@/admin/components/layouts";
 import { SgPage, SgPageBody, SgPageFooter, SgPageHead } from "@/admin/components/ui/Page";
 import { SgButton } from "@/admin/components/ui/Button";
 import { useEffect, useState } from "react";
-import { SgFile, SgFormGroup, SgInput } from "@/admin/components/ui/Form";
+import { SgFormGroup, SgInput } from "@/admin/components/ui/Form";
 import { changeData } from "@/admin/utils/changeData";
 import SgButtonGroup from "@/admin/components/ui/ButtonGroup/ButtonGroup";
 import { validate } from "@/admin/utils/validate";
@@ -12,7 +12,7 @@ import { validationConstraints } from "@/admin/constants/constants";
 import ApiService from "@/admin/services/ApiService";
 import { EDIT_MODEL_BY_ID_ROUTE, GET_MARKS_ROUTE, GET_MODEL_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
 import { useParams, useRouter } from "next/navigation";
-import { getBase64 } from "@/admin/utils/getBase64";
+import { toast } from "react-toastify";
 
 function normalizeListResponse(resp) {
   const payload = resp?.data?.data ?? resp?.data ?? null;
@@ -34,21 +34,6 @@ export default function Page() {
     changeData(e, data, setData, valueErrors, setValueErrors);
   }
 
-  async function handleImageChange(e) {
-    const file = (e?.target?.files || [])[0];
-    if (!file) return;
-
-    const dataUrl = await new Promise((resolve) => {
-      getBase64(file, (result64) => resolve(String(result64?.result || "")));
-    });
-
-    setData((prev) => ({ ...prev, image: dataUrl }));
-  }
-
-  function handleImageRemove() {
-    setData((prev) => ({ ...prev, image: "" }));
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -61,14 +46,16 @@ export default function Page() {
     const payload = {
       markId: data.markId ?? "",
       name: String(data.name || ""),
-      image: String(data.image || ""),
     };
 
     ApiService.put(`${EDIT_MODEL_BY_ID_ROUTE}/${modelId}`, { ...payload })
       .then(() => {
+        toast.success("Uğurla yeniləndi");
         router.push("/admin/models");
       })
-      .catch(() => {});
+      .catch(() => {
+        toast.error("Xəta baş verdi");
+      });
   }
 
   useEffect(() => {
@@ -92,7 +79,6 @@ export default function Page() {
         const next = {
           ...(model || {}),
           name: model?.name ?? "",
-          image: model?.image ?? "",
           markId: model?.markId ?? model?.mark_id ?? model?.mark?.id ?? "",
         };
 
@@ -140,20 +126,6 @@ export default function Page() {
                   value={data.name || ""}
                   onChange={handleChange}
                   isInvalid={valueErrors.name}
-                />
-              </SgFormGroup>
-
-              <SgFormGroup>
-                <SgFile
-                  accepts="image/jpeg, image/png, image/jpg, image/webp"
-                  label="Şəkil"
-                  multiple={false}
-                  onChange={handleImageChange}
-                  onRemove={handleImageRemove}
-                  value={data.image}
-                  id="image"
-                  name="image"
-                  isInvalid={valueErrors.image}
                 />
               </SgFormGroup>
             </div>

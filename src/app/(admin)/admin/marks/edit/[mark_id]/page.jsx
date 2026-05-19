@@ -12,6 +12,7 @@ import { validationConstraints } from "@/admin/constants/constants";
 import ApiService from "@/admin/services/ApiService";
 import { EDIT_MARK_BY_ID_ROUTE, GET_MARK_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
 import { useParams, useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [data, setData] = useState({});
@@ -39,9 +40,12 @@ export default function Page() {
 
     ApiService.put(`${EDIT_MARK_BY_ID_ROUTE}/${markId}`, { ...payload })
       .then(() => {
+        toast.success("Uğurla yeniləndi");
         router.push("/admin/marks");
       })
-      .catch(() => {});
+      .catch(() => {
+        toast.error("Xəta baş verdi");
+      });
   }
 
   useEffect(() => {

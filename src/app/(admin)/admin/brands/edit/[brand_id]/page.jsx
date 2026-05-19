@@ -13,6 +13,7 @@ import ApiService from "@/admin/services/ApiService";
 import { EDIT_BRAND_BY_ID_ROUTE, GET_BRAND_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
 import { useParams, useRouter } from "next/navigation";
 import { getBase64 } from "@/admin/utils/getBase64";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [data, setData] = useState({});
@@ -56,9 +57,12 @@ export default function Page() {
 
     ApiService.put(`${EDIT_BRAND_BY_ID_ROUTE}/${brandId}`, { ...payload })
       .then(() => {
+        toast.success("Uğurla yeniləndi");
         router.push("/admin/brands");
       })
-      .catch(() => {});
+      .catch(() => {
+        toast.error("Xəta baş verdi");
+      });
   }
 
   useEffect(() => {

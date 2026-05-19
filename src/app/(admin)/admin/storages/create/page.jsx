@@ -42,7 +42,7 @@ export default function Page() {
     const payload = {
       image: String(data.image || ""),
       translations,
-      sell_type: Number(data.sell_type ?? 1) || 1,
+      sellType: Number(data.sell_type ?? 1) || 1,
     };
 
     ApiService.post(`${CREATE_STORAGE_ROUTE}`, payload)

@@ -12,6 +12,7 @@ import { CONTENT_LANGUAGE_OPTIONS, CONTENT_LANGUAGES, validationConstraints } fr
 import ApiService from "@/admin/services/ApiService";
 import { EDIT_STORAGE_BY_ID_ROUTE, GET_STORAGE_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [data, setData] = useState({});
@@ -51,27 +52,41 @@ export default function Page() {
 
     const payload = {
       translations,
-      sell_type: Number(data.sell_type ?? 1) || 1,
+      sellType: Number(data.sell_type ?? 1) || 1,
     };
 
     ApiService.put(`${EDIT_STORAGE_BY_ID_ROUTE}/${storageId}`, { ...payload })
       .then(() => {
+        toast.success("Uğurla yeniləndi");
         router.push("/admin/storages");
       })
-      .catch(() => {});
+      .catch(() => {
+        toast.error("Xəta baş verdi");
+      });
   }
 
   useEffect(() => {
     if (!storageId) return;
     ApiService.get(`${GET_STORAGE_BY_ID_ROUTE}/${storageId}`, { _skipLang: true })
       .then((resp) => {
-        const payload = resp?.data?.data ?? {};
-        const storage = payload?.storage ?? payload;
+        const payload = resp?.data?.data ?? resp?.data ?? {};
+
+        let storage = payload?.storage ?? payload;
+        if (storage && typeof storage === "object" && Array.isArray(storage?.data)) {
+          storage = storage.data;
+        }
+        if (Array.isArray(storage)) {
+          const idStr = String(storageId);
+          storage = storage.find((x) => String(x?.id ?? "") === idStr) ?? {};
+        }
+
         const next = { ...(storage || {}) };
 
         const translations = Array.isArray(storage?.translations) ? storage.translations : [];
         CONTENT_LANGUAGE_OPTIONS.forEach((l) => {
-          const hit = translations.find((t) => String(t?.languageCode || "").toLowerCase() === String(l.id).toLowerCase());
+          const hit = translations.find(
+            (t) => String(t?.languageCode ?? t?.lang ?? t?.language ?? "").toLowerCase() === String(l.id).toLowerCase()
+          );
           if (hit) {
             next[`name_${l.id}`] = hit?.name ?? "";
             next[`address_${l.id}`] = hit?.address ?? "";
@@ -82,7 +97,7 @@ export default function Page() {
         if (!next[`address_${CONTENT_LANGUAGES.AZ}`]) next[`address_${CONTENT_LANGUAGES.AZ}`] = storage?.address ?? "";
 
         if (!next.image) next.image = storage?.image ?? "";
-        if (!next.sell_type) next.sell_type = storage?.sell_type ?? storage?.sellType ?? 1;
+        next.sell_type = Number(next.sell_type ?? storage?.sell_type ?? storage?.sellType ?? 1) || 1;
 
         setData(next);
       })
