@@ -16,6 +16,8 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
   const [pendingBrand, setPendingBrand] = useState("ALL");
   const [selectedBrand, setSelectedBrand] = useState("ALL");
   const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
+  const showProductColumn = false;
+  const colCount = showProductColumn ? 7 : 6;
 
   const brands = useMemo(() => {
     const list = [];
@@ -99,7 +101,11 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                       <th className="product_code">
                         {HelperTranslate({ defaultText: "Code", translateText: staticContent?.productDetails__code })}
                       </th>
-                      <th className="product_name">{HelperTranslate({ defaultText: "Product", translateText: staticContent?.cart__product })}</th>
+                      {showProductColumn ? (
+                        <th className="product_name">
+                          {HelperTranslate({ defaultText: "Product", translateText: staticContent?.cart__product })}
+                        </th>
+                      ) : null}
                       <th className="product_stock">{HelperTranslate({ defaultText: "Warehouse", translateText: staticContent?.offers__warehouse })}</th>
                       <th className="product_total">
                         {showPrice ? HelperTranslate({ defaultText: "Price", translateText: staticContent?.offers__price }) : null}
@@ -111,7 +117,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                     {filteredGroups.map((g) => (
                       <Fragment key={g.title}>
                         <tr>
-                          <td colSpan={7} className="text-start fw-bold">
+                          <td colSpan={colCount} className="text-start fw-bold">
                             {g.title}
                           </td>
                         </tr>
@@ -126,7 +132,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                               </td>
                               <td className="product_brand">{r.brand}</td>
                               <td className="product_code">{r.code}</td>
-                              <td className="product_name text-start">{displayName}</td>
+                              {showProductColumn ? <td className="product_name text-start">{displayName}</td> : null}
                               <td className="product_stock">
                                 <button type="button" className="btn btn-link p-0">
                                   {r.warehouse}
@@ -155,7 +161,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                     ))}
                     {filteredGroups.length === 0 ? (
                       <tr>
-                        <td colSpan={7}>
+                        <td colSpan={colCount}>
                           {HelperTranslate({ defaultText: "Nəticə tapılmadı", translateText: staticContent?.common__noResults })}
                         </td>
                       </tr>
