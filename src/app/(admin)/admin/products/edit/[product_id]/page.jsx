@@ -10,10 +10,51 @@ import SgButtonGroup from "@/admin/components/ui/ButtonGroup/ButtonGroup";
 import { validate } from "@/admin/utils/validate";
 import { CONTENT_LANGUAGE_OPTIONS, CONTENT_LANGUAGES, validationConstraints } from "@/admin/constants/constants";
 import ApiService from "@/admin/services/ApiService";
-import { EDIT_PRODUCT_BY_ID_ROUTE, GET_PRODUCT_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
+import { EDIT_PRODUCT_BY_ID_ROUTE, GET_FILE_ROUTE, GET_PRODUCT_BY_ID_ROUTE } from "@/admin/configs/apiRoutes";
 import { getBase64 } from "@/admin/utils/getBase64";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
+
+const REQUEST_STORAGE_URL = process.env.NEXT_PUBLIC_REQUEST_STORAGE_URL;
+const REQUEST_BACKEND_URL = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL;
+const FILE_BASE_URL = (REQUEST_STORAGE_URL || REQUEST_BACKEND_URL || "").replace(/\/api\/?$/, "");
+
+function toDataUrlString(item) {
+  if (!item) return "";
+  if (typeof item === "string") return item;
+  if (typeof item === "object") {
+    const base64 = String(item?.base64 || "").trim();
+    if (base64) return base64;
+    const urlLike = String(item?.url || item?.image || item?.path || item?.src || item?.file || item?.slug || "").trim();
+    return urlLike;
+  }
+  return String(item);
+}
+
+function buildFileUrl(raw) {
+  const v = String(raw || "").trim();
+  if (!v) return "";
+  if (v.startsWith("http://") || v.startsWith("https://") || v.startsWith("data:")) return v;
+  if (v.startsWith("/")) return FILE_BASE_URL ? `${FILE_BASE_URL}${v}` : v;
+  if (v.includes("/")) return FILE_BASE_URL ? `${FILE_BASE_URL}/${v}` : v;
+  return FILE_BASE_URL ? `${FILE_BASE_URL}${GET_FILE_ROUTE}/${v}` : `${GET_FILE_ROUTE}/${v}`;
+}
+
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("Failed to read image"));
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function urlToDataUrl(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch image (${res.status})`);
+  const blob = await res.blob();
+  return blobToDataUrl(blob);
+}
 
 export default function Page() {
   const [data, setData] = useState({});
@@ -98,6 +139,7 @@ export default function Page() {
   function handleChange(e) {
     changeData(e, data, setData, valueErrors, setValueErrors);
   }
+console.log(data);
 
   async function handleImagesChange(e) {
     const files = Array.from(e?.target?.files || []);
@@ -162,7 +204,7 @@ export default function Page() {
     setData((prev) => ({ ...prev, images: [] }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     const errors = validate(data, "productCreate", validationConstraints);
@@ -177,22 +219,23 @@ export default function Page() {
       })).filter((t) => t.name || t.description);
 
       const imagesRaw = Array.isArray(data?.images) ? data.images : [];
-      const images = imagesRaw
-        .map((img) => {
-          if (!img) return null;
-          if (typeof img === "string") {
-            const s = img.trim();
-            if (!s) return null;
-            if (s.startsWith("data:")) return { base64: s };
-            return { url: s };
+      const imagesAsStrings = imagesRaw.map(toDataUrlString).filter(Boolean);
+      const imagesAsBase64 = [];
+
+      try {
+        for (const raw of imagesAsStrings) {
+          if (String(raw).startsWith("data:")) {
+            imagesAsBase64.push(String(raw));
+            continue;
           }
-          const base64 = String(img?.base64 || "").trim();
-          if (base64) return { base64 };
-          const urlLike = String(img?.url || img?.image || img?.path || img?.src || img?.file || "").trim();
-          if (urlLike) return { url: urlLike };
-          return null;
-        })
-        .filter(Boolean);
+          const url = buildFileUrl(raw);
+          const dataUrl = await urlToDataUrl(url);
+          imagesAsBase64.push(dataUrl);
+        }
+      } catch {
+        toast.error("Şəkilləri hazırlamaq mümkün olmadı");
+        return;
+      }
 
       const payload = {
         translations,
@@ -210,7 +253,7 @@ export default function Page() {
         const n = Number(raw);
         payload[key] = Number.isFinite(n) ? n : raw;
       }
-      payload.images = images;
+      payload.images = imagesAsBase64.map((base64) => ({ base64 }));
 
       ApiService.put(`${EDIT_PRODUCT_BY_ID_ROUTE}/${productId}`, { ...payload })
         .then(() => {
@@ -265,6 +308,23 @@ export default function Page() {
         }
 
         setData(next);
+
+        const urls = (Array.isArray(next.images) ? next.images : []).map(toDataUrlString).filter(Boolean);
+        if (!urls.length) return;
+        if (urls.every((u) => String(u).startsWith("data:"))) return;
+
+        (async () => {
+          try {
+            const converted = await Promise.all(
+              urls.map(async (raw) => {
+                if (String(raw).startsWith("data:")) return String(raw);
+                const url = buildFileUrl(raw);
+                return urlToDataUrl(url);
+              })
+            );
+            setData((prev) => ({ ...prev, images: converted.filter(Boolean).map((base64) => ({ base64 })) }));
+          } catch {}
+        })();
       })
       .catch(() => {});
   }, [productId]);
