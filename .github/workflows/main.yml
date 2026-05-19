@@ -21,7 +21,7 @@ jobs:
 
           script: |
             export PATH=$PATH:/root/.nvm/versions/node/v22.11.0/bin
-            cd /var/www/car-parts-store
+            cd /var/www/oem
             git pull
             npm install
             npm run build
