@@ -16,7 +16,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
   const [pendingBrand, setPendingBrand] = useState("ALL");
   const [selectedBrand, setSelectedBrand] = useState("ALL");
   const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
-  const showProductColumn = false;
+  const showProductColumn = true;
   const colCount = showProductColumn ? 7 : 6;
 
   const brands = useMemo(() => {
