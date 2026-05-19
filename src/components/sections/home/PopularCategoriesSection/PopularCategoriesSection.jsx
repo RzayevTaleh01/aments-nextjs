@@ -61,9 +61,7 @@ export default function PopularCategoriesSection({ categories = [] }) {
       <div className="product-catagory-wrapper">
         <div className="container">
           <div className="row">
-            {categories.map((cat, idx) => { 
-              console.log(cat);
-                                   
+            {categories.map((cat, idx) => {
               const id = cat?.id ?? idx;
               const title = categoryTitle(cat, lang);
               const orderCount = Number(cat?.order_count ?? 0);
