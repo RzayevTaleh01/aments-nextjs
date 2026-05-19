@@ -100,15 +100,22 @@ function buildOfferGroupsFromApiProduct(p) {
   const currency = entries.map((x) => extractCurrencyFromPriceText(x?.price)).find((x) => x && x !== "AZN") || "AZN";
   const rows = entries.map((sp) => {
     const storageProductId = sp?.id ?? sp?.storageProductId ?? sp?.storage_product_id ?? sp?.storage_product?.id ?? null;
+    const img = sp?.img ?? sp?.image ?? sp?.photo ?? p?.imageSrc;
+    const brand = sp?.brand ?? sp?.brandName ?? sp?.brand?.name ?? p?.brand?.name ?? p?.brand ?? "";
+    const code = sp?.code ?? sp?.oem_code ?? p?.code ?? p?.oem_code ?? "";
+    const name = sp?.name ?? p?.name ?? "";
+    const warehouse = sp?.warehouse ?? (sp?.storage?.name ?? (sp?.storageId ? `Anbar #${sp.storageId}` : "Anbar"));
+    const qty = Number(sp?.qty ?? sp?.quantity ?? sp?.stockQuantity ?? 0);
+    const price = normalizePriceText(sp?.price, currency);
     return {
-    img: p?.imageSrc,
-    brand: p?.brand?.name ?? p?.brand ?? "",
-    code: p?.code ?? p?.oem_code ?? "",
-    name: p?.name ?? "",
-    warehouse: sp?.warehouse ?? (sp?.storageId ? `Anbar #${sp.storageId}` : "Anbar"),
-    qty: Number(sp?.qty ?? sp?.stockQuantity ?? 0),
-    price: normalizePriceText(sp?.price, currency),
-    storageProductId,
+      img,
+      brand,
+      code,
+      name,
+      warehouse,
+      qty: Number.isFinite(qty) ? qty : 0,
+      price,
+      storageProductId,
     };
   });
 

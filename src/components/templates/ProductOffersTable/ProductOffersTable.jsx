@@ -92,14 +92,17 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                 <table>
                   <thead>
                     <tr>
-                      <th className="product_name" colSpan={2}>
-                        {HelperTranslate({ defaultText: "Detal", translateText: staticContent?.offers__detail })}
+                      <th className="product_thumb">
+                        {HelperTranslate({ defaultText: "Image", translateText: staticContent?.cart__image })}
                       </th>
-                      <th className="product_stock">
-                        {HelperTranslate({ defaultText: "Anbar", translateText: staticContent?.offers__warehouse })}
+                      <th className="product_brand">{HelperTranslate({ defaultText: "Brand", translateText: staticContent?.offers__brandLabel })}</th>
+                      <th className="product_code">
+                        {HelperTranslate({ defaultText: "Code", translateText: staticContent?.productDetails__code })}
                       </th>
+                      <th className="product_name">{HelperTranslate({ defaultText: "Product", translateText: staticContent?.cart__product })}</th>
+                      <th className="product_stock">{HelperTranslate({ defaultText: "Warehouse", translateText: staticContent?.offers__warehouse })}</th>
                       <th className="product_total">
-                        {showPrice ? HelperTranslate({ defaultText: "Qiymət", translateText: staticContent?.offers__price }) : null}
+                        {showPrice ? HelperTranslate({ defaultText: "Price", translateText: staticContent?.offers__price }) : null}
                       </th>
                       <th className="product_addcart" />
                     </tr>
@@ -108,7 +111,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                     {filteredGroups.map((g) => (
                       <Fragment key={g.title}>
                         <tr>
-                          <td colSpan={5} className="text-start fw-bold">
+                          <td colSpan={7} className="text-start fw-bold">
                             {g.title}
                           </td>
                         </tr>
@@ -121,11 +124,9 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                               <td className="product_thumb">
                                 <Image src={resolvedImg} alt={displayName} width={120} height={120} />
                               </td>
-                              <td className="product_name text-start">
-                                <div className="fw-bold">{r.brand}</div>
-                                <div>{r.code}</div>
-                                <div className="mt-5">{displayName}</div>
-                              </td>
+                              <td className="product_brand">{r.brand}</td>
+                              <td className="product_code">{r.code}</td>
+                              <td className="product_name text-start">{displayName}</td>
                               <td className="product_stock">
                                 <button type="button" className="btn btn-link p-0">
                                   {r.warehouse}
@@ -154,7 +155,7 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                     ))}
                     {filteredGroups.length === 0 ? (
                       <tr>
-                        <td colSpan={5}>
+                        <td colSpan={7}>
                           {HelperTranslate({ defaultText: "Nəticə tapılmadı", translateText: staticContent?.common__noResults })}
                         </td>
                       </tr>

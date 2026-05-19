@@ -92,6 +92,7 @@ export default function CheckoutPageClient() {
       return;
     }
     if (!cartItems.length) return;
+console.log(cartItems);
 
     const payloads = cartItems.map((item) => {
       const storageProductId = item?.storageProductId ?? item?.storage_product_id ?? null;
