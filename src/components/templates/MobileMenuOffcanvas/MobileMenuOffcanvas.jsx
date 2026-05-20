@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import OffcanvasPanel from "@/components/templates/OffcanvasPanel/OffcanvasPanel";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
-import { useCart } from "@/context/ui-drawers-context";
+import { useCart } from "@/context/cart-context";
 import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
 import { useLanguage } from "@/context/language-context";

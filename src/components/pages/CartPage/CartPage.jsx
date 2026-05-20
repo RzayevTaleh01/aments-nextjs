@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
-import { useCart } from "@/context/ui-drawers-context";
+import { useCart } from "@/context/cart-context";
 import useShowPrice from "@/hooks/use-show-price";
 import styles from "./CartPage.module.scss";
 import useInitial from "@/hooks/use-initial";
