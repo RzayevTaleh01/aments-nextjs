@@ -120,8 +120,13 @@ function mapApiProductToUiProduct(p) {
   const apiImage = extractApiImage(p);
   return {
     ...p,
-    imageSrc: apiImage,
+    imageSrc: apiImage || "/assets/images/products_images/aments_products_image_1.jpg",
     href: p?.href ?? (p?.id ? `/product/${p.id}` : slug ? `/product/${slug}` : "/product/default"),
+    brandName: p?.brand?.name ?? p?.brand ?? "",
+    markName: p?.mark?.name ?? p?.mark ?? "",
+    modelName: p?.model?.name ?? p?.model ?? "",
+    compareAt: p?.compareAt ?? p?.compare_at ?? null,
+    isSimilarOem: Boolean(p?.isSimilarOem ?? p?.is_similar_oem),
     price,
   };
 }
