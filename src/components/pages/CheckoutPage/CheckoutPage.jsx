@@ -130,7 +130,7 @@ console.log(cartItems);
         })
       );
       clearCart();
-      router.push("/");
+      router.push("/my-account#orders");
     } catch {
     } finally {
       setIsSubmitting(false);

@@ -63,6 +63,14 @@ export default function MyAccountPageClient() {
   }, [staticContent]);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = String(window.location.hash || "");
+    if (hash === "#orders") setActiveId("orders");
+    if (hash === "#address") setActiveId("address");
+    if (hash === "#account-details") setActiveId("account-details");
+  }, []);
+
+  useEffect(() => {
     let isActive = true;
     setOrdersLoading(true);
 
