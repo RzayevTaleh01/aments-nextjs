@@ -6,10 +6,21 @@ import { signIn } from "next-auth/react";
 import { toast } from "react-toastify";
 import LoginPage from "@/components/pages/LoginPage/LoginPage";
 
+function normalizeCallbackUrl(value) {
+  if (!value) return "/";
+  if (value.startsWith("/") && !value.startsWith("//")) return value;
+  try {
+    const url = new URL(value);
+    return `${url.pathname || "/"}${url.search || ""}${url.hash || ""}` || "/";
+  } catch {
+    return "/";
+  }
+}
+
 export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams?.get("callbackUrl") || "/";
+  const callbackUrl = normalizeCallbackUrl(searchParams?.get("callbackUrl"));
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +39,7 @@ export default function Page() {
       });
 
       if (res?.ok) {
-        router.push(res.url || callbackUrl);
+        window.location.assign(callbackUrl);
         return;
       }
 
