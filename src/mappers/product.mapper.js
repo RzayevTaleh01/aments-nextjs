@@ -66,7 +66,7 @@ function computeProductDisplayPrice(p) {
   return `${formatMoney(min, currency)} - ${formatMoney(max, currency)}`;
 }
 
-const HomeProductDefaults = {
+const ProductDefaults = {
   id: null,
   name: "",
   href: "/product/default",
@@ -79,18 +79,19 @@ const HomeProductDefaults = {
   price: null,
 };
 
-export function mapHomeProduct(raw = {}) {
+export function mapProduct(raw = {}) {
   return {
-    ...HomeProductDefaults,
-    id: raw?.id ?? HomeProductDefaults.id,
-    name: raw?.name ?? HomeProductDefaults.name,
-    href: raw?.id != null ? `/product/${String(raw.id)}` : HomeProductDefaults.href,
-    imageSrc: raw?.images?.[0]?.image ?? raw?.image ?? HomeProductDefaults.imageSrc,
-    brandName: raw?.brand?.name ?? raw?.brand ?? HomeProductDefaults.brandName,
-    markName: raw?.mark?.name ?? raw?.mark ?? HomeProductDefaults.markName,
-    modelName: raw?.model?.name ?? raw?.model ?? HomeProductDefaults.modelName,
-    compareAt: raw?.compareAt ?? raw?.compare_at ?? HomeProductDefaults.compareAt,
-    isSimilarOem: Boolean(raw?.isSimilarOem ?? raw?.is_similar_oem ?? HomeProductDefaults.isSimilarOem),
+    ...ProductDefaults,
+    id: raw?.id ?? ProductDefaults.id,
+    name: raw?.name ?? ProductDefaults.name,
+    href: raw?.id != null ? `/product/${String(raw.id)}` : ProductDefaults.href,
+    imageSrc: raw?.images?.[0]?.image ?? raw?.image ?? ProductDefaults.imageSrc,
+    brandName: raw?.brand?.name ?? raw?.brand ?? ProductDefaults.brandName,
+    markName: raw?.mark?.name ?? raw?.mark ?? ProductDefaults.markName,
+    modelName: raw?.model?.name ?? raw?.model ?? ProductDefaults.modelName,
+    compareAt: raw?.compareAt ?? raw?.compare_at ?? ProductDefaults.compareAt,
+    isSimilarOem: Boolean(raw?.isSimilarOem ?? raw?.is_similar_oem ?? ProductDefaults.isSimilarOem),
     price: computeProductDisplayPrice(raw),
   };
 }
+

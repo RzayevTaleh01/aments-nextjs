@@ -5,6 +5,16 @@ export function normalizeLang(value) {
   return base || "en";
 }
 
+export function getClientLang() {
+  if (typeof document === "undefined") return "en";
+  const raw = document.cookie
+    .split(";")
+    .map((x) => x.trim())
+    .find((x) => x.startsWith("oem_lang="));
+  const value = raw ? decodeURIComponent(raw.split("=").slice(1).join("=")) : "";
+  return normalizeLang(value);
+}
+
 export async function getServerLang() {
   const { cookies } = await import("next/headers");
   const cookieStore = await cookies();
