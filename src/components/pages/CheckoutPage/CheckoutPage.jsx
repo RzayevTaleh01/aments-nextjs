@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Collapse } from "reactstrap";
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
-import { useCart } from "@/context/ui-drawers-context";
+import { useCart } from "@/context/cart-context";
 import { ORDER_POST_ROUTE } from "@/configs/apiRoutes";
 import ApiService from "@/services/api/ApiService";
 import { toast } from "react-toastify";

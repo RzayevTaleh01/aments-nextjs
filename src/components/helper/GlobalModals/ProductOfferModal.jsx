@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Modal } from "reactstrap";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
-import { useCart } from "@/context/ui-drawers-context";
+import { useCart } from "@/context/cart-context";
 import { toast } from "react-toastify";
 import useShowPrice from "@/hooks/use-show-price";
 import useInitial from "@/hooks/use-initial";

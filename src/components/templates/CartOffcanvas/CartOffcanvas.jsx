@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import OffcanvasPanel from "@/components/templates/OffcanvasPanel";
 import Icon from "@/components/ui/TemplateIcon";
-import { useCart } from "@/context/ui-drawers-context";
+import { useCart } from "@/context/cart-context";
 import { cn } from "@/utils/cn";
 import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";

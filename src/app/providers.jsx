@@ -6,7 +6,7 @@ import "aos/dist/aos.css";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UIDrawersProvider } from "@/context/ui-drawers-context";
+import { CartProvider } from "@/context/cart-context";
 import { LanguageProvider } from "@/context/language-context";
 import { StaticContentProvider } from "@/context/static-content-context";
 import useInitial from "@/hooks/use-initial";
@@ -85,11 +85,11 @@ export default function Providers({ children, initialLang }) {
     <SessionProvider>
       <LanguageProvider initialLang={initialLang}>
         <StaticContentProvider>
-          <UIDrawersProvider>
+          <CartProvider>
             {children}
             <LanguageSwitchLoader />
             <ToastContainer position="top-right" autoClose={5000} closeOnClick pauseOnHover newestOnTop />
-          </UIDrawersProvider>
+          </CartProvider>
         </StaticContentProvider>
       </LanguageProvider>
     </SessionProvider>
