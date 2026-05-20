@@ -7,7 +7,8 @@ import styles from "./ProductCategorySingle.module.scss";
 
 export default function ProductCategorySingle({ href, imageSrc, title, items, className }) {
   const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
-  const resolvedSrc = String(imageSrc || "").startsWith("/uploads") ? `${base}${imageSrc}` : imageSrc;
+  const normalizedImageSrc = String(imageSrc || "").startsWith("uploads/") ? `/${imageSrc}` : imageSrc;
+  const resolvedSrc = String(normalizedImageSrc || "").startsWith("/uploads") ? `${base}${normalizedImageSrc}` : normalizedImageSrc;
 
   return (
     <Link href={href} className={cn(styles, "product-catagory-single", className)}>

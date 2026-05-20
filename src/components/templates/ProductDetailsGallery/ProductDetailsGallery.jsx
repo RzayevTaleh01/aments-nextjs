@@ -20,7 +20,11 @@ export default function ProductDetailsGallery({
 }) {
   const isGalleryLeft = variant === "gallery-left";
   const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
-  const prefix = (src) => (String(src || "").startsWith("/uploads") ? `${base}${src}` : src);
+  const prefix = (src) => {
+    const raw = String(src || "");
+    const normalized = raw.startsWith("uploads/") ? `/${raw}` : raw;
+    return normalized.startsWith("/uploads") ? `${base}${normalized}` : normalized;
+  };
 
   return (
     <div className={styles.root}>

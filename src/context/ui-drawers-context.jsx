@@ -33,13 +33,17 @@ export function UIDrawersProvider({ children }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [isCartReady, setIsCartReady] = useState(false);
 
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem("oem_cart");
       const parsed = raw ? JSON.parse(raw) : null;
       if (Array.isArray(parsed)) setCartItems(parsed);
-    } catch {}
+    } catch {
+    } finally {
+      setIsCartReady(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -56,8 +60,42 @@ export function UIDrawersProvider({ children }) {
     const quantity = normalizeQuantity(item.quantity);
 
     setCartItems((prev) => {
+      const hasStorageProductId = item?.storageProductId != null || item?.storage_product_id != null;
+      const productId = item?.productId;
+      const brand = item?.brand ?? "";
+      const code = item?.code ?? "";
+      const warehouse = item?.warehouse ?? "";
+      const legacyKey =
+        hasStorageProductId && productId != null ? `${String(productId)}::${String(brand)}::${String(code)}::${String(warehouse)}` : null;
+
       const existingIndex = prev.findIndex((x) => x?.key === key);
-      if (existingIndex === -1) return [...prev, { ...item, key, quantity }];
+      if (existingIndex === -1) {
+        const legacyIndex = legacyKey
+          ? prev.findIndex((x) => {
+              if (x?.key === legacyKey) return true;
+              const xHasSp = x?.storageProductId != null || x?.storage_product_id != null;
+              if (xHasSp) return false;
+              const sameProduct = String(x?.productId ?? "") === String(productId ?? "");
+              const sameBrand = String(x?.brand ?? "").trim() === String(brand ?? "").trim();
+              const sameCode = String(x?.code ?? "").trim() === String(code ?? "").trim();
+              const sameWarehouse = String(x?.warehouse ?? "").trim() === String(warehouse ?? "").trim();
+              return sameProduct && sameBrand && sameCode && sameWarehouse;
+            })
+          : -1;
+        if (legacyIndex !== -1) {
+          const legacy = prev[legacyIndex];
+          const next = [...prev];
+          const desired = normalizeQuantity(coerceNumber(legacy?.quantity, 1) + quantity);
+          next[legacyIndex] = {
+            ...legacy,
+            ...item,
+            key,
+            quantity: desired,
+          };
+          return next;
+        }
+        return [...prev, { ...item, key, quantity }];
+      }
 
       const existing = prev[existingIndex];
       const next = [...prev];
@@ -115,6 +153,7 @@ export function UIDrawersProvider({ children }) {
       isCartOpen,
       isWishlistOpen,
       cartItems,
+      isCartReady,
       cartCount,
       cartSubtotalNumber,
       cartSubtotalText,
@@ -129,7 +168,7 @@ export function UIDrawersProvider({ children }) {
       openWishlist: () => setIsWishlistOpen(true),
       closeWishlist: () => setIsWishlistOpen(false),
     }),
-    [isMobileMenuOpen, isCartOpen, isWishlistOpen, cartItems, cartCount, cartSubtotalNumber, cartSubtotalText]
+    [isMobileMenuOpen, isCartOpen, isWishlistOpen, cartItems, isCartReady, cartCount, cartSubtotalNumber, cartSubtotalText]
   );
 
   return (

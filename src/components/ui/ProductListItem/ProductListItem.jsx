@@ -13,7 +13,8 @@ export default function ProductListItem({ product, showPrice = true, showCartIco
   const title = product?.name;
   const isSimilarOem = Boolean(product?.isSimilarOem);
   const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
-  const resolvedSrc = String(imageSrc || "").startsWith("/uploads") ? `${base}${imageSrc}` : imageSrc;
+  const normalizedImageSrc = String(imageSrc || "").startsWith("uploads/") ? `/${imageSrc}` : imageSrc;
+  const resolvedSrc = String(normalizedImageSrc || "").startsWith("/uploads") ? `${base}${normalizedImageSrc}` : normalizedImageSrc;
 
   return (
     <div className="col-12 mb-4">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Collapse } from "reactstrap";
@@ -32,11 +32,13 @@ export default function CheckoutPageClient() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const showPrice = status === "authenticated";
-  const { cartItems, cartSubtotalNumber, cartSubtotalText, clearCart } = useCart();
+  const { cartItems, isCartReady, cartSubtotalNumber, cartSubtotalText, clearCart } = useCart();
   const { staticContent } = useInitial();
   const user = session?.user ?? {};
   const [shipToDifferentAddress, setShipToDifferentAddress] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const redirectToastShownRef = useRef(false);
+  const isOrderSuccessRedirectRef = useRef(false);
 
   const [billing, setBilling] = useState({
     firstName: "",
@@ -79,6 +81,23 @@ export default function CheckoutPageClient() {
     const total = (Number.isFinite(cartSubtotalNumber) ? cartSubtotalNumber : 0) + shippingNumber;
     return formatMoney(total, currency);
   }, [cartSubtotalNumber, currency, shippingNumber]);
+
+  const shouldRedirect = isCartReady && cartItems.length === 0 && !isOrderSuccessRedirectRef.current;
+  useEffect(() => {
+    if (!shouldRedirect) return;
+    if (!redirectToastShownRef.current) {
+      redirectToastShownRef.current = true;
+      toast.info(
+        HelperTranslate({
+          defaultText: "Cart is empty",
+          translateText: staticContent?.cart__empty,
+        })
+      );
+    }
+    router.replace("/products");
+  }, [router, shouldRedirect, staticContent]);
+
+  if (shouldRedirect) return null;
 
   async function submitOrder() {
     if (isSubmitting) return;
@@ -129,8 +148,9 @@ console.log(cartItems);
           translateText: staticContent?.checkout__orderSuccessToast,
         })
       );
+      isOrderSuccessRedirectRef.current = true;
       clearCart();
-      router.push("/");
+      router.replace("/my-account?tab=orders");
     } catch {
     } finally {
       setIsSubmitting(false);

@@ -99,7 +99,7 @@ function buildOfferGroupsFromApiProduct(p) {
   const entries = (Array.isArray(p?.storageLists) ? p.storageLists : null) ?? (p?.storageProducts ?? []);
   const currency = entries.map((x) => extractCurrencyFromPriceText(x?.price)).find((x) => x && x !== "AZN") || "AZN";
   const rows = entries.map((sp) => {
-    const storageProductId = sp?.id ?? sp?.storageProductId ?? sp?.storage_product_id ?? sp?.storage_product?.id ?? null;
+    const storageProductId =sp?.sp_id ?? null;
     const img = sp?.img ?? sp?.image ?? sp?.photo ?? p?.imageSrc;
     const brand = sp?.brand ?? sp?.brandName ?? sp?.brand?.name ?? p?.brand?.name ?? p?.brand ?? "";
     const code = sp?.code ?? sp?.oem_code ?? p?.code ?? p?.oem_code ?? "";

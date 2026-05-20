@@ -32,6 +32,7 @@ export default function ProductOfferModal() {
   const { showPrice } = useShowPrice();
   const { addToCart } = useCart();
   const { staticContent } = useInitial();
+  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
   const [offer, setOffer] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [note, setNote] = useState("");
@@ -68,7 +69,7 @@ export default function ProductOfferModal() {
   const unitPrice = parsePriceNumber(unitPriceText);
   const totalPriceText = unitPrice != null ? formatPrice(unitPrice * quantity, currencySuffix) : unitPriceText;
 
-  const storageProductId = offer?.row?.storageProductId ?? offer?.row?.storage_product_id ?? offer?.row?.id ?? null;
+  const storageProductId = offer?.row?.storage_product_id ??  null;
   const productId = offer?.product?.id ?? offer?.product?.slug ?? offer?.product?.code ?? "";
   const rowWarehouse = offer?.row?.warehouse ?? "";
   const rowBrand = offer?.row?.brand ?? "";
@@ -161,7 +162,9 @@ export default function ProductOfferModal() {
               const product = offer?.product ?? null;
               const row = offer?.row ?? null;
 
-              const imageSrc = row?.img ?? product?.imageSrc ?? product?.image ?? "/assets/images/products_images/aments_products_image_1.jpg";
+              const rawImageSrc = row?.img;
+              const normalizedImageSrc = String(rawImageSrc || "").startsWith("uploads/") ? `/${rawImageSrc}` : rawImageSrc;
+              const imageSrc = String(normalizedImageSrc || "").startsWith("/uploads") ? `${base}${normalizedImageSrc}` : normalizedImageSrc;
               const href = product?.href ?? (product?.slug ? `/product/${product.slug}` : "/product/default");
 
               const displayName = row?.name ?? product?.name ?? "";
@@ -170,6 +173,7 @@ export default function ProductOfferModal() {
               addToCart({
                 key: itemKey,
                 storageProductId,
+                storage_product_id: storageProductId ?? undefined,
                 productId,
                 name: displayName,
                 brand: row?.brand ?? "",
