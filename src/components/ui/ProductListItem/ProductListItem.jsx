@@ -8,13 +8,13 @@ import HelperTranslate from "@/components/helper/HelperTranslate";
 
 export default function ProductListItem({ product, showPrice = true, showCartIcon = true }) {
   const { staticContent } = useInitial();
-  const href = product?.href;
-  const imageSrc = product?.imageSrc ?? "/assets/images/products_images/aments_products_image_1.jpg";
-  const title = product?.name;
-  const isSimilarOem = Boolean(product?.isSimilarOem);
+  const href = product.href;
+  const imageSrc = product.imageSrc;
+  const title = product.name;
+  const isSimilarOem = Boolean(product.isSimilarOem);
   const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
-  const normalizedImageSrc = String(imageSrc || "").startsWith("uploads/") ? `/${imageSrc}` : imageSrc;
-  const resolvedSrc = String(normalizedImageSrc || "").startsWith("/uploads") ? `${base}${normalizedImageSrc}` : normalizedImageSrc;
+  const normalizedImageSrc = imageSrc.startsWith("uploads/") ? `/${imageSrc}` : imageSrc;
+  const resolvedSrc = normalizedImageSrc.startsWith("/uploads") ? `${base}${normalizedImageSrc}` : normalizedImageSrc;
 
   return (
     <div className="col-12 mb-4">
@@ -31,9 +31,9 @@ export default function ProductListItem({ product, showPrice = true, showCartIco
               {HelperTranslate({ defaultText: "Oxşar OEM", translateText: staticContent?.product__similarBadge })}
             </span>
           ) : null}
-          {showPrice ? (
+          {showPrice && (product.price != null || product.compareAt != null) ? (
             <span className="product-list-price">
-              {product?.compareAt ? <del className="product-list-price-off">{product.compareAt}</del> : null} {product?.price}
+              {product.compareAt ? <del className="product-list-price-off">{product.compareAt}</del> : null} {product.price}
             </span>
           ) : null}
           <p>
