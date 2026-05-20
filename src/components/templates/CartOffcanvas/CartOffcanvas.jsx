@@ -15,8 +15,9 @@ export default function CartOffcanvas({ isOpen, onClose }) {
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" || Boolean(session?.token?.accessToken);
   const showPrice = isAuthenticated;
-   const { cartItems, cartSubtotalText, removeCartItem } = useCart();
+  const { cartItems, cartSubtotalText, removeCartItem } = useCart();
   const { staticContent } = useInitial();
+  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
 
   return (
     <OffcanvasPanel
@@ -35,40 +36,40 @@ export default function CartOffcanvas({ isOpen, onClose }) {
         </h4>
         <ul className={cn(styles, "offcanvas-cart")}>
           {cartItems.length ? (
-            cartItems.map((item) => (
-              <li key={item.key} className={cn(styles, "offcanvas-cart-item-single")}>
-                <div className={cn(styles, "offcanvas-cart-item-block")}>
-                  <Link href={item.href || "/product/default"} className={cn(styles, "offcanvas-cart-item-image-link")} onClick={onClose}>
-                    <Image
-                      src={item.imageSrc || "/assets/images/products_images/aments_products_image_1.jpg"}
-                      alt={item.name || ""}
-                      className={cn(styles, "offcanvas-cart-image")}
-                      width={90}
-                      height={90}
-                    />
-                  </Link>
-                  <div className={cn(styles, "offcanvas-cart-item-content")}>
-                    <Link href={item.href || "/product/default"} className={cn(styles, "offcanvas-cart-item-link")} onClick={onClose}>
-                      {item.name}
+            cartItems.map((item) => {
+              const rawImageSrc = item.imageSrc || item.image || "/assets/images/products_images/aments_products_image_1.jpg";
+              const normalizedImageSrc = String(rawImageSrc || "").startsWith("uploads/") ? `/${rawImageSrc}` : rawImageSrc;
+              const imageSrc = String(normalizedImageSrc || "").startsWith("/uploads") ? `${base}${normalizedImageSrc}` : normalizedImageSrc;
+
+              return (
+                <li key={item.key} className={cn(styles, "offcanvas-cart-item-single")}>
+                  <div className={cn(styles, "offcanvas-cart-item-block")}>
+                    <Link href={item.href || "/product/default"} className={cn(styles, "offcanvas-cart-item-image-link")} onClick={onClose}>
+                      <Image src={imageSrc} alt={item.name || ""} className={cn(styles, "offcanvas-cart-image")} width={90} height={90} />
                     </Link>
-                    <div className={cn(styles, "offcanvas-cart-item-details")}>
-                      <span className={cn(styles, "offcanvas-cart-item-details-quantity")}>{item.quantity} x </span>
-                      <span className={cn(styles, "offcanvas-cart-item-details-price")}>{showPrice ? item.unitPriceText || item.unitPrice : null}</span>
+                    <div className={cn(styles, "offcanvas-cart-item-content")}>
+                      <Link href={item.href || "/product/default"} className={cn(styles, "offcanvas-cart-item-link")} onClick={onClose}>
+                        {item.name}
+                      </Link>
+                      <div className={cn(styles, "offcanvas-cart-item-details")}>
+                        <span className={cn(styles, "offcanvas-cart-item-details-quantity")}>{item.quantity} x </span>
+                        <span className={cn(styles, "offcanvas-cart-item-details-price")}>{showPrice ? item.unitPriceText || item.unitPrice : null}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className={cn(styles, "offcanvas-cart-item-delete text-end")}>
-                  <button
-                    type="button"
-                    aria-label={HelperTranslate({ defaultText: "Delete", translateText: staticContent?.cart__delete })}
-                    className={cn(styles, "offcanvas-cart-item-delete p-0 border-0 bg-transparent")}
-                    onClick={() => removeCartItem(item.key)}
-                  >
-                    <Icon name="FaTrashAlt" size={16} />
-                  </button>
-                </div>
-              </li>
-            ))
+                  <div className={cn(styles, "offcanvas-cart-item-delete text-end")}>
+                    <button
+                      type="button"
+                      aria-label={HelperTranslate({ defaultText: "Delete", translateText: staticContent?.cart__delete })}
+                      className={cn(styles, "offcanvas-cart-item-delete p-0 border-0 bg-transparent")}
+                      onClick={() => removeCartItem(item.key)}
+                    >
+                      <Icon name="FaTrashAlt" size={16} />
+                    </button>
+                  </div>
+                </li>
+              );
+            })
           ) : (
             <li className={cn(styles, "offcanvas-cart-item-single")}>
               <div className={cn(styles, "offcanvas-cart-item-block")}>

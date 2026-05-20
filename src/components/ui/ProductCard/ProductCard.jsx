@@ -17,7 +17,8 @@ export default function ProductCard({ product, showPrice = true, showCartIcon = 
   const isSimilarOem = Boolean(product?.isSimilarOem);
   const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
   const rawImageSrc = product?.imageSrc ?? product?.image ?? "/assets/images/products_images/aments_products_image_1.jpg";
-  const resolvedSrc = String(rawImageSrc || "").startsWith("/uploads") ? `${base}${rawImageSrc}` : rawImageSrc;
+  const normalizedImageSrc = String(rawImageSrc || "").startsWith("uploads/") ? `/${rawImageSrc}` : rawImageSrc;
+  const resolvedSrc = String(normalizedImageSrc || "").startsWith("/uploads") ? `${base}${normalizedImageSrc}` : normalizedImageSrc;
 
   return (
     <div className="product-default-single">

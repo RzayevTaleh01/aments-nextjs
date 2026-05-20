@@ -29,6 +29,7 @@ export default function CartPage() {
   const { showPrice } = useShowPrice();
   const { cartItems, cartSubtotalText, setCartItemQuantity, removeCartItem } = useCart();
   const { staticContent } = useInitial();
+  const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
 
   return (
     <div className={styles.scope}>
@@ -78,6 +79,9 @@ export default function CartPage() {
                             const qty = Number(row.quantity ?? 1);
                             const total = unit * (Number.isFinite(qty) ? qty : 1);
                             const totalText = formatMoney(total, row.currency ?? "");
+                            const rawImageSrc = row.imageSrc || row.image || "/assets/images/products_images/aments_products_image_1.jpg";
+                            const normalizedImageSrc = String(rawImageSrc || "").startsWith("uploads/") ? `/${rawImageSrc}` : rawImageSrc;
+                            const imageSrc = String(normalizedImageSrc || "").startsWith("/uploads") ? `${base}${normalizedImageSrc}` : normalizedImageSrc;
 
                             return (
                           <tr key={row.key}>
@@ -93,7 +97,7 @@ export default function CartPage() {
                             </td>
                             <td className="product_thumb">
                               <Link href={row.href || "/product/default"}>
-                                <Image src={row.imageSrc || "/assets/images/products_images/aments_products_image_1.jpg"} alt={row.name || ""} width={120} height={120} />
+                                <Image src={imageSrc} alt={row.name || ""} width={120} height={120} />
                               </Link>
                             </td>
                             <td className="product_name">
