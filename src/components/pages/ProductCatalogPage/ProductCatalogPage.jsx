@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import { products as allProducts } from "@/constants/products";
@@ -11,125 +11,8 @@ import ApiService from "@/services/api/ApiService";
 import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
 import UiLoader from "@/components/ui/Loader/Loader";
-import { ALL_PRODUCTS_ROUTE } from "@/configs/apiRoutes";
-
-function pickFirstString(values) {
-  for (const v of values) {
-    if (typeof v === "string" && v.trim()) return v.trim();
-  }
-  return "";
-}
-
-function extractApiImage(product) {
-  if (!product || typeof product !== "object") return "";
-
-  const direct = pickFirstString([product.image, product.thumbnail, product.photo, product.img, product.imageUrl, product.image_url]);
-  if (direct) return direct;
-
-  const directObj = [product.image, product.thumbnail, product.photo, product.img, product.imageUrl, product.image_url].find((v) => v && typeof v === "object");
-  if (directObj && typeof directObj === "object") {
-    const nested = pickFirstString([directObj.url, directObj.image, directObj.path, directObj.src, directObj.file]);
-    if (nested) return nested;
-  }
-
-  const images = product.images;
-  if (typeof images === "string" && images.trim()) return images.trim();
-  if (Array.isArray(images)) {
-    const first = images.find((x) => x != null);
-    if (typeof first === "string" && first.trim()) return first.trim();
-    if (first && typeof first === "object") {
-      const nested = pickFirstString([first.image, first.url, first.path, first.src, first.file]);
-      if (nested) return nested;
-    }
-  }
-
-  return "";
-}
-
-function parsePriceNumber(price) {
-  if (typeof price === "number" && Number.isFinite(price)) return price;
-  if (typeof price !== "string") return null;
-  const normalized = price.replace(/\s+/g, " ").trim().replace(/,/g, ".");
-  const match = normalized.match(/-?\d+(?:\.\d+)?/);
-  if (!match) return null;
-  const n = Number(match[0]);
-  return Number.isFinite(n) ? n : null;
-}
-
-function extractCurrencyFromPriceText(priceText) {
-  if (typeof priceText !== "string") return "AZN";
-  const match = priceText.toUpperCase().match(/[A-Z]{3}/);
-  return match?.[0] || "AZN";
-}
-
-function formatMoney(value, currency) {
-  const n = typeof value === "number" ? value : parsePriceNumber(value);
-  if (!Number.isFinite(n)) return currency ? `0.00 ${currency}` : "0.00";
-  const text = n.toFixed(2);
-  return currency ? `${text} ${currency}` : text;
-}
-
-function normalizePriceText(rawPrice, fallbackCurrency = "AZN") {
-  if (typeof rawPrice === "number" && Number.isFinite(rawPrice)) return formatMoney(rawPrice, fallbackCurrency);
-  if (typeof rawPrice !== "string") return "";
-  const text = rawPrice.trim();
-  if (!text) return "";
-  const hasCurrency = /[A-Za-z]{3}/.test(text);
-  if (hasCurrency) return text;
-  const n = parsePriceNumber(text);
-  if (!Number.isFinite(n)) return "";
-  return formatMoney(n, fallbackCurrency);
-}
-
-function computeProductDisplayPrice(p) {
-  const storageLists = Array.isArray(p?.storageLists) ? p.storageLists : null;
-  const storageProducts = Array.isArray(p?.storageProducts) ? p.storageProducts : null;
-  const entries = storageLists ?? storageProducts ?? [];
-  if (!entries.length) return null;
-
-  const rawPriceTexts = entries.map((x) => x?.price).filter((v) => v != null);
-  if (!rawPriceTexts.length) return null;
-
-  const currency = rawPriceTexts.map(extractCurrencyFromPriceText).find((x) => x && x !== "AZN") || "AZN";
-  const parsed = rawPriceTexts
-    .map((raw) => ({ raw, n: parsePriceNumber(raw) }))
-    .filter((x) => Number.isFinite(x.n));
-
-  if (!parsed.length) return null;
-
-  if (parsed.length === 1) {
-    const raw = parsed[0].raw;
-    const normalized = normalizePriceText(raw, currency);
-    return normalized || null;
-  }
-
-  let min = Infinity;
-  let max = -Infinity;
-  for (const x of parsed) {
-    if (x.n < min) min = x.n;
-    if (x.n > max) max = x.n;
-  }
-  if (!Number.isFinite(min) || !Number.isFinite(max)) return null;
-  if (Math.abs(min - max) < 1e-9) return formatMoney(min, currency);
-  return `${formatMoney(min, currency)} - ${formatMoney(max, currency)}`;
-}
-
-function mapApiProductToUiProduct(p) {
-  const slug = p?.slug;
-  const price = computeProductDisplayPrice(p);
-  const apiImage = extractApiImage(p);
-  return {
-    ...p,
-    imageSrc: apiImage || "/assets/images/products_images/aments_products_image_1.jpg",
-    href: p?.href ?? (p?.id ? `/product/${p.id}` : slug ? `/product/${slug}` : "/product/default"),
-    brandName: p?.brand?.name ?? p?.brand ?? "",
-    markName: p?.mark?.name ?? p?.mark ?? "",
-    modelName: p?.model?.name ?? p?.model ?? "",
-    compareAt: p?.compareAt ?? p?.compare_at ?? null,
-    isSimilarOem: Boolean(p?.isSimilarOem ?? p?.is_similar_oem),
-    price,
-  };
-}
+import { getProducts } from "@/queries/products.query";
+import { getClientLang } from "@/utils/lang";
 
 export default function ProductCatalogPage({
   title,
@@ -138,21 +21,26 @@ export default function ProductCatalogPage({
   sidebarPosition = "left",
   defaultView = "list",
   products: productsProp,
+  initialProducts,
+  initialMeta,
+  initialSimilarProducts,
+  initialSimilarTotal,
   searchParamKey,
 }) {
   const router = useRouter();
-  const productsApiRoute = ALL_PRODUCTS_ROUTE;
   const pathname = usePathname();
   const { staticContent } = useInitial();
-  const [apiProducts, setApiProducts] = useState(null);
-  const [apiSimilarProducts, setApiSimilarProducts] = useState([]);
-  const [, setApiSimilarTotal] = useState(null);
-  const [apiMeta, setApiMeta] = useState(null);
+  const [apiProducts, setApiProducts] = useState(() => (Array.isArray(initialProducts) ? initialProducts : null));
+  const [apiSimilarProducts, setApiSimilarProducts] = useState(() => (Array.isArray(initialSimilarProducts) ? initialSimilarProducts : []));
+  const [, setApiSimilarTotal] = useState(() => (typeof initialSimilarTotal === "number" ? initialSimilarTotal : null));
+  const [apiMeta, setApiMeta] = useState(() => initialMeta ?? null);
   const [isLoading, setIsLoading] = useState(false);
   const [categoryOptions, setCategoryOptions] = useState([{ label: "Kateqoriya", value: "" }]);
   const [brandOptions, setBrandOptions] = useState([{ label: "Brend", value: "" }]);
   const [markOptions, setMarkOptions] = useState([{ label: "Marka", value: "" }]);
   const [modelOptions, setModelOptions] = useState([{ label: "Model", value: "" }]);
+
+  const skipInitialProductsFetchRef = useRef(initialProducts !== undefined);
 
   const urlSearchParams = useSearchParams();
   const q = searchParamKey ? urlSearchParams?.get(searchParamKey) ?? "" : "";
@@ -287,7 +175,11 @@ export default function ProductCatalogPage({
   }, [markId]);
 
   useEffect(() => {
-    if (!productsApiRoute) return;
+    if (Array.isArray(productsProp)) return;
+    if (skipInitialProductsFetchRef.current) {
+      skipInitialProductsFetchRef.current = false;
+      return;
+    }
     let isActive = true;
     setIsLoading(true);
 
@@ -300,31 +192,14 @@ export default function ProductCatalogPage({
         if (markId) params.markId = markId;
         if (modelId) params.modelId = modelId;
         if (page > 1) params.page = page;
-        const res = await ApiService.get(productsApiRoute, Object.keys(params).length ? { params } : undefined);
-        const data = res?.data?.data ?? {};
-
-        const products = Array.isArray(data?.products) ? data.products : [];
-        const mapped = products.map(mapApiProductToUiProduct);
-
-        const rawSimilar = data?.similar_praducts ?? data?.similar_products;
-        let similarList = [];
-        let similarTotal = null;
-        if (Array.isArray(rawSimilar)) {
-          if (Array.isArray(rawSimilar[0])) {
-            similarList = rawSimilar[0];
-            similarTotal = typeof rawSimilar[1] === "number" ? rawSimilar[1] : null;
-          } else if (rawSimilar.length > 0 && typeof rawSimilar[0] === "object") {
-            similarList = rawSimilar;
-          }
-        }
-        const mappedSimilar = Array.isArray(similarList) ? similarList.map(mapApiProductToUiProduct) : [];
-        const meta = data?.meta ?? null;
+        const lang = getClientLang();
+        const res = await getProducts({ lang, params: Object.keys(params).length ? params : undefined });
 
         if (!isActive) return;
-        setApiProducts(mapped);
-        setApiSimilarProducts(mappedSimilar);
-        setApiSimilarTotal(similarTotal);
-        setApiMeta(meta);
+        setApiProducts(res.products);
+        setApiSimilarProducts(res.similarProducts);
+        setApiSimilarTotal(res.similarTotal);
+        setApiMeta(res.meta);
       } catch {
         if (!isActive) return;
         setApiProducts([]);
@@ -340,13 +215,13 @@ export default function ProductCatalogPage({
     return () => {
       isActive = false;
     };
-  }, [productsApiRoute, normalizedQ, page, searchParamKey, categoryId, brandId, markId, modelId]);
+  }, [productsProp, normalizedQ, page, searchParamKey, categoryId, brandId, markId, modelId]);
 
   const products = useMemo(() => {
     if (Array.isArray(productsProp)) return productsProp;
-    if (productsApiRoute) return Array.isArray(apiProducts) ? apiProducts : [];
+    if (Array.isArray(apiProducts)) return apiProducts;
     return allProducts.slice(0, 8);
-  }, [apiProducts, productsApiRoute, productsProp]);
+  }, [apiProducts, productsProp]);
 
   const showSearchInfo = Boolean(searchParamKey && normalizedQ);
 
@@ -458,7 +333,7 @@ export default function ProductCatalogPage({
             : undefined
         }
         pagination={pagination}
-        enableClientSearch={!productsApiRoute}
+        enableClientSearch={false}
         initialSearchValue={normalizedQ}
         initialCategoryValue={categoryId}
         initialBrandValue={brandId}
