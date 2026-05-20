@@ -33,13 +33,17 @@ export function UIDrawersProvider({ children }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [isCartReady, setIsCartReady] = useState(false);
 
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem("oem_cart");
       const parsed = raw ? JSON.parse(raw) : null;
       if (Array.isArray(parsed)) setCartItems(parsed);
-    } catch {}
+    } catch {
+    } finally {
+      setIsCartReady(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -149,6 +153,7 @@ export function UIDrawersProvider({ children }) {
       isCartOpen,
       isWishlistOpen,
       cartItems,
+      isCartReady,
       cartCount,
       cartSubtotalNumber,
       cartSubtotalText,
@@ -163,7 +168,7 @@ export function UIDrawersProvider({ children }) {
       openWishlist: () => setIsWishlistOpen(true),
       closeWishlist: () => setIsWishlistOpen(false),
     }),
-    [isMobileMenuOpen, isCartOpen, isWishlistOpen, cartItems, cartCount, cartSubtotalNumber, cartSubtotalText]
+    [isMobileMenuOpen, isCartOpen, isWishlistOpen, cartItems, isCartReady, cartCount, cartSubtotalNumber, cartSubtotalText]
   );
 
   return (

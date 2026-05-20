@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb";
 import Icon from "@/components/ui/TemplateIcon/TemplateIcon";
 import { useCart } from "@/context/ui-drawers-context";
@@ -9,6 +11,7 @@ import useShowPrice from "@/hooks/use-show-price";
 import styles from "./CartPage.module.scss";
 import useInitial from "@/hooks/use-initial";
 import HelperTranslate from "@/components/helper/HelperTranslate";
+import { toast } from "react-toastify";
 
 function parsePriceNumber(priceText) {
   if (typeof priceText === "number" && Number.isFinite(priceText)) return priceText;
@@ -26,10 +29,29 @@ function formatMoney(value, currency) {
 }
 
 export default function CartPage() {
+  const router = useRouter();
   const { showPrice } = useShowPrice();
-  const { cartItems, cartSubtotalText, setCartItemQuantity, removeCartItem } = useCart();
+  const { cartItems, isCartReady, cartSubtotalText, setCartItemQuantity, removeCartItem } = useCart();
   const { staticContent } = useInitial();
   const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
+  const redirectToastShownRef = useRef(false);
+
+  const shouldRedirect = isCartReady && cartItems.length === 0;
+  useEffect(() => {
+    if (!shouldRedirect) return;
+    if (!redirectToastShownRef.current) {
+      redirectToastShownRef.current = true;
+      toast.info(
+        HelperTranslate({
+          defaultText: "Cart is empty",
+          translateText: staticContent?.cart__empty,
+        })
+      );
+    }
+    router.replace("/products");
+  }, [router, shouldRedirect, staticContent]);
+
+  if (shouldRedirect) return null;
 
   return (
     <div className={styles.scope}>

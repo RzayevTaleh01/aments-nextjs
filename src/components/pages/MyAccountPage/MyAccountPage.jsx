@@ -64,10 +64,18 @@ export default function MyAccountPageClient() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const search = String(window.location.search || "");
+    const params = new URLSearchParams(search);
+    const tab = String(params.get("tab") || "").trim();
+    if (tab === "orders" || tab === "dashboard" || tab === "address" || tab === "account-details") {
+      setActiveId(tab);
+      return;
+    }
+
     const hash = String(window.location.hash || "");
-    if (hash === "#orders") setActiveId("orders");
-    if (hash === "#address") setActiveId("address");
-    if (hash === "#account-details") setActiveId("account-details");
+    if (hash.includes("orders")) setActiveId("orders");
+    if (hash.includes("address")) setActiveId("address");
+    if (hash.includes("account-details")) setActiveId("account-details");
   }, []);
 
   useEffect(() => {
