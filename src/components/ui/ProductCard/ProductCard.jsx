@@ -9,16 +9,16 @@ import "./ProductCard.module.scss";
 
 export default function ProductCard({ product, showPrice = true, showCartIcon = true }) {
   const { staticContent } = useInitial();
-  const detailsHref = product?.href ?? (product?.slug ? `/product/${product.slug}` : "/product/default");
+  const detailsHref = product.href;
   const offersHref = `${detailsHref}#offers`;
-  const brandName = product?.brand?.name ?? product?.brand ?? "";
-  const markName = product?.mark?.name ?? product?.mark ?? "";
-  const modelName = product?.model?.name ?? product?.model ?? "";
-  const isSimilarOem = Boolean(product?.isSimilarOem);
+  const brandName = product.brandName;
+  const markName = product.markName;
+  const modelName = product.modelName;
+  const isSimilarOem = Boolean(product.isSimilarOem);
   const base = process.env.NEXT_PUBLIC_REQUEST_BACKEND_LOCAL_URL || "";
-  const rawImageSrc = product?.imageSrc ?? product?.image ?? "/assets/images/products_images/aments_products_image_1.jpg";
-  const normalizedImageSrc = String(rawImageSrc || "").startsWith("uploads/") ? `/${rawImageSrc}` : rawImageSrc;
-  const resolvedSrc = String(normalizedImageSrc || "").startsWith("/uploads") ? `${base}${normalizedImageSrc}` : normalizedImageSrc;
+  const rawImageSrc = product.imageSrc;
+  const normalizedImageSrc = rawImageSrc.startsWith("uploads/") ? `/${rawImageSrc}` : rawImageSrc;
+  const resolvedSrc = normalizedImageSrc.startsWith("/uploads") ? `${base}${normalizedImageSrc}` : normalizedImageSrc;
 
   return (
     <div className="product-default-single">
@@ -26,7 +26,7 @@ export default function ProductCard({ product, showPrice = true, showCartIcon = 
         <Link href={detailsHref}>
           <Image
             src={resolvedSrc}
-            alt={HelperTranslate({ defaultText: product?.name || "Product", translateText: product?.name || staticContent?.common__productAlt })}
+            alt={product.name}
             width={300}
             height={300}
             className="product-default-img"
@@ -65,7 +65,7 @@ export default function ProductCard({ product, showPrice = true, showCartIcon = 
             {modelName ? <span className="badge rounded-pill text-bg-light border border-dark-subtle text-body-secondary">{modelName}</span> : null}
           </div>
         ) : null}
-        {showPrice && (product?.price != null || product?.compareAt != null) ? (
+        {showPrice && (product.price != null || product.compareAt != null) ? (
           <span className="product-default-price">
             {product.compareAt ? <del className="product-default-price-off">{product.compareAt}</del> : null} {product.price}
           </span>

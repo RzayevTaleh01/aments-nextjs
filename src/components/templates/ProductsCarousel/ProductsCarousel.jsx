@@ -89,8 +89,8 @@ export default function ProductsCarousel({
                   breakpoints={breakpoints}
                   className="product-default-slider product-default-slider-4grids-1row"
                 >
-                  {safeProducts.map((p, idx) => (
-                    <SwiperSlide key={p?.id ?? idx}>
+                  {safeProducts.map((p) => (
+                    <SwiperSlide key={p.id}>
                       <ProductCard product={p} showPrice={showPrice} />
                     </SwiperSlide>
                   ))}
