@@ -12,9 +12,9 @@ export default function ProductDetailsSummary({ product }) {
   if (!product) return null;
 
 
-  const brandName = product?.brand?.name ?? product?.brand ?? "";
-  const markName = product?.mark?.name ?? product?.mark ?? "";
-  const modelName = product?.model?.name ?? product?.model ?? "";
+  const brandName = product.brandName;
+  const markName = product.markName;
+  const modelName = product.modelName;
 
   return (
     <div className="product-details-content-area-sticky">
@@ -54,7 +54,7 @@ export default function ProductDetailsSummary({ product }) {
             {product.price}
           </div>
         ) : null}
-        {product.code || product.oem_code ? (
+        {product.code || product.oemCode ? (
           <div className="mt-2">
             {product.code ? (
               <div>
@@ -64,20 +64,20 @@ export default function ProductDetailsSummary({ product }) {
                 <span>{product.code}</span>
               </div>
             ) : null}
-            {product.oem_code ? (
+            {product.oemCode ? (
               <div className="mt-1">
                 <span className="badge rounded-pill text-bg-light border border-dark-subtle text-body-secondary me-2">
                   {HelperTranslate({ defaultText: "OEM", translateText: staticContent?.productDetails__oem })}
                 </span>
-                <span>{product.oem_code}</span>
+                <span>{product.oemCode}</span>
               </div>
             ) : null}
-            {product?.similar_oem_codes ? (
+            {product.similarOemCodes ? (
               <div className="mt-1 d-flex flex-wrap align-items-center gap-2">
                 <span className="badge rounded-pill text-bg-light border border-dark-subtle text-body-secondary">
                   {HelperTranslate({ defaultText: "Similar OEM", translateText: staticContent?.productDetails__similarOem })}
                 </span>
-                {String(product.similar_oem_codes)
+                {String(product.similarOemCodes)
                   .split(",")
                   .map((x) => x.trim())
                   .filter(Boolean)
@@ -91,7 +91,7 @@ export default function ProductDetailsSummary({ product }) {
           </div>
         ) : null}
         <p className={cn("product-description")}>
-          {product.description || ""}
+          {product.description}
         </p>
       </div>
     </div>

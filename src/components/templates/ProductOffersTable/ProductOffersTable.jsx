@@ -122,26 +122,11 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                           </td>
                         </tr>
                         {g.rows.map((r) => {
-                          const displayName = r.name || product?.name || "Məhsul";
-                          const rawImg =
-                            r.img ||
-                            r.image ||
-                            r.photo ||
-                            product?.imageSrc ||
-                            product?.image ||
-                            "/assets/images/products_images/aments_products_image_1.jpg";
-                          const normalizedImg = String(rawImg || "").startsWith("uploads/") ? `/${rawImg}` : rawImg;
-                          const resolvedImg = String(normalizedImg || "").startsWith("/uploads") ? `${base}${normalizedImg}` : normalizedImg;
-                          const storageProductId =
-                            r?.storageProductId ??
-                            r?.storage_product_id ??
-                            r?.storageProduct?.id ??
-                            r?.storage_product?.id ??
-                            r?.storage_product?.storage_product_id ??
-                            r?.sp_id ??
-                            r?.spId ??
-                            r?.id ??
-                            null;
+                          const displayName = r.name;
+                          const rawImg = r.imageSrc;
+                          const normalizedImg = rawImg.startsWith("uploads/") ? `/${rawImg}` : rawImg;
+                          const resolvedImg = normalizedImg.startsWith("/uploads") ? `${base}${normalizedImg}` : normalizedImg;
+                          const storageProductId = r.storageProductId;
                           return (
                             <tr key={`${g.title}-${r.brand}-${r.code}-${r.warehouse}-${r.qty}-${r.price}`}>
                               <td className="product_thumb">
@@ -160,13 +145,9 @@ export default function ProductOffersTable({ product, groups = defaultGroups }) 
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    const normalizedRow =
-                                      storageProductId != null
-                                        ? { ...r, storageProductId, storage_product_id: storageProductId }
-                                        : r;
                                     window.dispatchEvent(
                                       new CustomEvent("oem:product-offer-modal", {
-                                        detail: { row: normalizedRow, product },
+                                        detail: { row: { ...r, storage_product_id: storageProductId }, product },
                                       })
                                     );
                                   }}

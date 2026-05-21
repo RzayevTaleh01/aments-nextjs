@@ -1,6 +1,6 @@
 import ApiService from "@/services/api/ApiService";
 import { STATISTICS_CATEGORY_POPULAR_ROUTE } from "@/configs/apiRoutes";
-import { mapPopularCategory } from "@/mappers/popular-category.mapper";
+import { mapPopularCategory } from "@/mappers/popularCategory.mapper";
 
 export async function getPopularCategories({ lang } = {}) {
   const res = await ApiService.get(STATISTICS_CATEGORY_POPULAR_ROUTE, { params: { lang } });
